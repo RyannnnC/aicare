@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     marginTop: 20,
-    flex: 1,
     alignItems: 'center',
   },
   consumerWrapper: {
@@ -165,5 +164,81 @@ export const styles = StyleSheet.create({
   },
   onsite_text:{
     color: 'white',
+  },
+  r_text:{
+    color: '#333333',
+    marginLeft:145,
+  },
+  f_text: {
+    color: '#333333',
+    marginLeft:0,
+  },
+  f_wrapper:{
+    marginTop:20,
+  },
+  container2:{
+    flexDirection: 'row',
+  },
+  loginWrapper: {
+    backgroundColor: '#8FD7D3',
+    padding:10,
+    width:240,
+    marginTop:60,
+    height:45,
+    alignItems: 'center',
+    borderRadius:25,
+  },
+  img_ac:{
+    height:30,
+    width:300,
+    marginTop:40,
+  },
+  img_pw:{
+    marginTop:30,
+    height:30,
+    width:300,
+  },
+  account:{
+    height: 35,
+    width: 300,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,
+  },
+  password:{
+    height: 35,
+    width: 300,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,
+  },
+  onsite_text:{
+    color: 'white',
+  },
+  consumer_wrapper:{
+    backgroundColor: '#8FD7D3',
+    padding:10,
+    width:280,
+    marginTop:60,
+    height:45,
+    alignItems: 'center',
+    borderRadius:25,
+  },
+  providerWrapper:{
+    backgroundColor: '#FDB0A8',
+    padding:10,
+    width:280,
+    marginTop:30,
+    height:45,
+    alignItems: 'center',
+    borderRadius:25,
+  },
+  img3:{
+    marginTop:70,
+    width:300,
+    height:300,
+  },
+  img4:{
+    marginTop:90,
+    width:120,
+    height:32,
   },
 });

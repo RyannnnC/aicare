@@ -16,10 +16,10 @@ export default function App() {
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.consumerWrapper}>
-          <Text class="onsite-text">我是消费者</Text>
+          <Text>我是消费者</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.providerWrapper}>
-          <Text class="onsite-text">我是服务者</Text>
+          <Text>我是服务者</Text>
         </TouchableOpacity>
       </View>
       <Image
