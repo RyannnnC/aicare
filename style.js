@@ -241,4 +241,9 @@ export const styles = StyleSheet.create({
     width:120,
     height:32,
   },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  }
 });
