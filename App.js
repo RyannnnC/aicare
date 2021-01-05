@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity } from 'react-native';
-import {styles, buttons} from './style';
+import {styles} from './style';
 //import Navigator from './routes/homeStack';
 
 export default function App() {

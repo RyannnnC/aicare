@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
+import {styles} from '../style';
 
 export default function Consumer() {
   return (
