@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
 import {styles} from './providerStyle';
 
-export default function Provider() {
+export default function ProviderOrder() {
   const alertHandler= () => {
     Alert.alert('function unimplemented')
   }

@@ -9,7 +9,7 @@ export default function Home() {
     Actions.login()
   }
   const goToProvider = () => {
-    Actions.provider()
+    Actions.providerMain()
   }
   return (
     <View style={styles.container}>
