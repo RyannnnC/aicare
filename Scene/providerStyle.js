@@ -3,7 +3,7 @@ import { StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   store:{
-    marginTop:30,
+    marginTop:17,
     height:40,
     width:40,
   },
@@ -12,22 +12,38 @@ export const styles = StyleSheet.create({
     height:100,
     width:100,
   },
+  img3:{
+    height:50,
+    width:70,
+  },
   buttonContainer:{
-    width: 280,
-    height: 100,
+    width: 90,
+    height: 90,
     backgroundColor: '#9ADAD6',
-    borderRadius: 10,
+    borderRadius: 15,
+    alignItems: 'center',
   },
   buttonContainer2:{
-    width: 280,
-    height: 100,
+    width: 90,
+    height: 90,
     backgroundColor: '#196F75',
-    borderRadius: 10,
+    borderRadius: 15,
+    alignItems: 'center',
   },
   buttonContainer3:{
-    width: 280,
-    height: 100,
+    width: 90,
+    height: 90,
     backgroundColor: '#FF816B',
-    borderRadius: 10,
+    borderRadius: 15,
+    alignItems: 'center',
   },
+  buttons:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  searchBar: {
+    width: 315,
+    height: 35,
+    borderRadius: 15,
+  }
 });
