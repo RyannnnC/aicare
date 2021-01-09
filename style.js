@@ -62,6 +62,8 @@ export const styles = StyleSheet.create({
   bottom:{
     marginTop:90,
     marginLeft:50,
+    width:380,
+    height:50,
   },
   comments: {
     marginLeft:30,
@@ -106,6 +108,30 @@ export const styles = StyleSheet.create({
     marginTop:20,
     marginLeft:20,
   },
+  wechat_image:{
+    width:220,
+    height:28,
+    marginTop:20,
+    marginLeft:20,
+  },
+  name_image:{
+    width:80,
+    height:30,
+    marginTop:20,
+    marginLeft:10,
+  },
+  address_image:{
+    width:120,
+    height:30,
+    marginTop:20,
+    marginLeft:20,
+  },
+  time_image:{
+    width:240,
+    height:30,
+    marginTop:20,
+    marginLeft:20,
+  },
   comment:{
     width:100,
     height:25,
@@ -116,7 +142,12 @@ export const styles = StyleSheet.create({
     color:'#006A71',
     fontSize:16,
     marginTop:20,
-    marginLeft:160,
+    marginLeft:80,
+  },
+  street:{
+    fontSize:18,
+    marginTop:20,
+    marginLeft:80,
   },
   choice:{
     marginTop:20,
@@ -199,6 +230,26 @@ export const styles = StyleSheet.create({
     width:300,
   },
   account:{
+    height: 35,
+    width: 300,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,
+  },
+  finish_image:{
+    marginTop:40,
+    height:400,
+    width:280,
+    marginLeft:40,
+  },
+  time:{
+    marginLeft:40,
+    height: 35,
+    width: 80,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,
+  },
+  street_input:{
+    marginLeft:40,
     height: 35,
     width: 300,
     borderBottomColor: '#999999',
