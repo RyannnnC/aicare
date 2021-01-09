@@ -8,7 +8,11 @@ export default function Plan() {
   }
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text> Plan page!</Text>
+    <Image
+      style = {styles.img4}
+      source = {require('../images/crayon-892.png')}
+      />
+    <Text>进行中</Text>
     </View>
   );
 }

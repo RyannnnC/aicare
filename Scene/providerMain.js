@@ -2,27 +2,27 @@ import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from './providerStyle';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import ProviderOrder from './providerOrder.js'
-import Account from './account.js'
-import Plan from './plan.js'
+
+
 
 export default function ProviderMain() {
   const alertHandler= () => {
     Alert.alert('function unimplemented')
   }
-  const Tab = createBottomTabNavigator();
+
   return (
-    <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 40 }}>
+    <View style={{ flex:1, justifyContent: "center", alignItems: "center", paddingTop: 40 }}>
     <Text>今天有什么新安排吗？</Text>
     <Image
       style = {styles.store}
       source = {require('../images/crayon-1317.png')}
       />
-    <View style={styles.searchBar}>
-      <SearchBar placeholder="搜服务/订单..."/>
-    </View>
+      <SearchBar
+        inputStyle={{backgroundColor: 'white'}}
+        containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
+        inputContainerStyle={{backgroundColor: 'white'}}
+        placeholder="搜服务/订单..."
+      />
       <Text>服务</Text>
     <View style={styles.buttons}>
       <TouchableOpacity style={styles.buttonContainer} onPress={alertHandler}>
@@ -48,10 +48,12 @@ export default function ProviderMain() {
       </TouchableOpacity>
     </View>
     <Text style={styles.buttonText}>行程</Text>
-    <Image
-      style = {styles.img3}
-      source = {require('../images/crayon-892.png')}
-      />
+    <View style={styles.home}>
+      <Image
+        style = {styles.img3}
+        source = {require('../images/crayon-892.png')}
+        />
+    </View>
     </View>
   );
 }

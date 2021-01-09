@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
 import {styles} from './providerStyle';
+import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 export default function Account() {
   const alertHandler= () => {
@@ -8,7 +9,14 @@ export default function Account() {
   }
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text> Account page!</Text>
+      <View style={styles.buttons}>
+        <MaterialCommunityIcons name="calendar-text-outline" size={24} color="black" />
+        <Text>订单</Text>
+        <MaterialCommunityIcons name="comment-multiple-outline" size={24} color="black" />
+        <Text>评价</Text>
+        <Ionicons name="wallet" size={24} color="black" />
+        <Text>流水</Text>
+      </View>
     </View>
   );
 }

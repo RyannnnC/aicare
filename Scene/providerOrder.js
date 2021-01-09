@@ -1,39 +1,18 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
 import {styles} from './providerStyle';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Order from './Orders/Order';
+import OrderMain from './Orders/OrderMain';
 
 export default function ProviderOrder() {
-  const alertHandler= () => {
-    Alert.alert('function unimplemented')
-  }
+  const Stack = createStackNavigator();
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>请选择服务类型</Text>
-      <TouchableOpacity style={styles.buttonContainer} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../images/Store.png')}
-          />
-        <Text style={styles.buttonText}>上门服务</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonContainer2} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../images/To-do.png')}
-        />
-        <Text style={styles.buttonText}>远程医疗</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonContainer3} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../images/Banquet.png')}
-          />
-        <Text style={styles.buttonText}>外卖配送</Text>
-      </TouchableOpacity>
-      <Image
-        style = {styles.img2}
-        source = {require('../images/crayon-1317.png')}
-        />
-    </View>
+      <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+        <Stack.Screen name="订单" component={OrderMain} />
+        <Stack.Screen name="上门服务" component={Order} />
+      </Stack.Navigator>
   );
 }
