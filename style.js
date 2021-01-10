@@ -2,17 +2,11 @@ import React from 'react';
 import { StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  buttonContainer: {
-    width: '280px',
-    height: '40px',
-    alignSelf: 'center',
-    marginVertical: 30,
-  },
   logo: {
-    width: '220px',
-    height: '70px',
+    width: 220,
+    height: 70,
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: '600',
     textAlign: 'center',
     color: '#68b0ab',
     lineHeight: 35,
@@ -21,8 +15,8 @@ export const styles = StyleSheet.create({
     color: 'white',
   },
   container: {
+    flex: 1,
     backgroundColor: 'white',
-    marginTop: 20,
     alignItems: 'center',
   },
   consumerWrapper: {
@@ -35,6 +29,15 @@ export const styles = StyleSheet.create({
     borderRadius:25,
   },
   providerWrapper: {
+    backgroundColor: '#006A71',
+    padding:10,
+    width:280,
+    marginTop:30,
+    height:45,
+    alignItems: 'center',
+    borderRadius:25,
+  },
+  deliveryWrapper:{
     backgroundColor: '#FDB0A8',
     padding:10,
     width:280,
@@ -49,9 +52,8 @@ export const styles = StyleSheet.create({
     height:32,
   },
   img: {
-    marginTop:30,
-    width:380,
-    height:500,
+    width:375,
+    height:375,
   },
   contact: {
     width:220,
