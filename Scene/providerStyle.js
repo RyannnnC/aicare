@@ -73,9 +73,9 @@ export const styles = StyleSheet.create({
     flex:1,
     width: 315,
     height: 35,
-    borderRadius: 15,
   },
   home: {
+    flex:1,
     width: 315,
     height: 210,
     backgroundColor: '#ffffff',
@@ -87,4 +87,16 @@ export const styles = StyleSheet.create({
     margin: 10,
     borderBottomColor: 'black',
   },
+  mainImg:{
+    height:120,
+    width:120,
+  },
+  orderImg: {
+    width: 375,
+    height: 100,
+  },
+  plans: {
+    width: 330,
+    height: 120,
+  }
 });

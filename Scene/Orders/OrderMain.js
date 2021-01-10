@@ -13,7 +13,7 @@ const OrderMain = ({navigation}) => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>请选择服务类型</Text>
+      <Text style={{fontSize:18, color: "#006A71"}}>请选择服务类型</Text>
       <TouchableOpacity style={styles.buttonContainer4}  onPress={goToOrder}>
         <Image
           style = {styles.store}
