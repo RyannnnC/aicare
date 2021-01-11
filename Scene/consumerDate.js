@@ -3,9 +3,11 @@ import {
   StyleSheet, Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
-import {styles} from './style';
+import {styles} from '../style';
+import { StackActions } from '@react-navigation/native';
 
-export default class App extends Component {
+export default class ConsumerDate extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -20,14 +22,17 @@ export default class App extends Component {
     });
   }
   render() {
+    const { navigation } = this.props;
     const { selectedStartDate } = this.state;
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
     return (
       <View style={styles.container}>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={() =>
+            this.props.navigation.dispatch(StackActions.pop(1))
+          }>
           <Image
             style = {styles.arrow_image}
-            source={require('./images/icon/2/Arrow_left.png')}
+            source={require('../images/icon/2/Arrow_left.png')}
           />
         </TouchableOpacity>
 
@@ -40,27 +45,29 @@ export default class App extends Component {
           height = "300"
         />
         <Image style = {styles.time_image}
-          source= {require('./images/icon/3/time.png')}
+          source= {require('../images/icon/3/time.png')}
         />
         <View style ={styles.comment_container}>
-          <TextInput style = {styles.time}/>
+          <TextInput style = {styles.time} placeholder="24时格式"/>
           <Text>至</Text>
-          <TextInput style = {styles.time}/>
+          <TextInput style = {styles.time} placeholder="24时格式"/>
         </View>
         <Image style = {styles.time_image}
-          source= {require('./images/icon/3/price.png')}
+          source= {require('../images/icon/3/price.png')}
         />
         {/*this need to be automatically calculated but leave to later stage*/}
         <Text>$160</Text>
         <Image style = {styles.bottom}
-        source={require('./images/icon/2/bottom2.png')}
+        source={require('../images/icon/2/bottom2.png')}
         />
-        <TouchableOpacity style={styles.next_wrapper}>
+        <TouchableOpacity style={styles.next_wrapper} onPress={() =>
+            this.props.navigation.dispatch(StackActions.pop(1))
+          }>
           <Text style={styles.onsite_text}>确定</Text>
         </TouchableOpacity>
 
         <Image style = {styles.contact}
-          source = {require('./images/icon/1/contact.png')}
+          source = {require('../images/icon/1/contact.png')}
         />
       </View>
     );

@@ -1,37 +1,29 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
-import {styles} from './style';
+import Info from './Scene/consumerInfo';
+import ConsumerOrder from './Scene/consumerOrder';
+import ConsumerIcon from "./Scene/consumerIcon";
+import ConsumerDate from './Scene/consumerDate';
+import ConsumerAddress from './Scene/consumerAdrress';
+import ConsumerPayInfo from './Scene/consumerPayInfo';
+import ConsumerPaySuccess from "./Scene/consumerPaySuccess";
+const Stack = createStackNavigator();
 
-export default function Consumer() {
+function App() {
   return (
-    <View style={styles.container}>
-
-    <Image style = {styles.finish_image}
-        source= {require('./images/icon/3/finishPayment.png')}
-      />
-    {/*this should generate automatically instead of hand coded */}
-    <View style ={styles.comment_container}>
-      <Text>支付方式:       </Text>
-      <Text>Mastercard</Text>      
-    </View>
-    <View style ={styles.comment_container}>
-      <Text>订单号:       </Text>
-      <Text>123123123</Text>      
-    </View>
-    <View style ={styles.comment_container}>
-      <Text>下单时间:       </Text>
-      <Text>2020.10.02 14:20</Text>      
-    </View>
-    <Image style = {styles.bottom}
-        source={require('./images/icon/3/bottom4.png')}
-    />
-    <TouchableOpacity style={styles.next_wrapper}>
-      <Text style={styles.onsite_text}>确认</Text>
-    </TouchableOpacity>
-
-    <Image style = {styles.contact}
-      source = {require('./images/icon/1/contact.png')}
-    />
-  </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="consumerIcon">
+        <Stack.Screen name="consumerIcon" component={ConsumerIcon} />
+        <Stack.Screen name="consumerOrder" component={ConsumerOrder} />
+        <Stack.Screen name="consumerInfo" component={Info} />
+        <Stack.Screen name="consumerDate" component={ConsumerDate} />
+        <Stack.Screen name="consumerAddress" component={ConsumerAddress} />
+        <Stack.Screen name="consumerPayInfo" component={ConsumerPayInfo} />
+        <Stack.Screen name="consumerPaySuccess" component={ConsumerPaySuccess} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+
+export default App;

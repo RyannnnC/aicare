@@ -235,10 +235,21 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#999999',
     borderBottomWidth:1,
   },
+  topping_image:{
+    marginTop:20,
+    height:150,
+    width:300
+  },
   finish_image:{
     marginTop:40,
     height:400,
     width:280,
+    marginLeft:40,
+  },
+  button_image:{
+    marginTop:40,
+    height:70,
+    width:200,
     marginLeft:40,
   },
   time:{

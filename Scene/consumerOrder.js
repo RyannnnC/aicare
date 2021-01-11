@@ -1,11 +1,21 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
 import {styles} from '../style';
+import { StackActions } from '@react-navigation/native';
 
-export default function Consumer() {
+
+export default function Consumer({navigation}) {
+  const gotoInfo= () => {
+    navigation.navigate('consumerInfo')
+  }
+  
+  const goBack= () => {
+    navigation.dispatch(StackActions.pop(1))
+  }
+
   return (
     <View style={styles.container}>
-    <TouchableOpacity >
+    <TouchableOpacity onPress = {goBack}>
       <Image
         style = {styles.arrow_image}
         source={require('../images/icon/2/Arrow_left.png')}
@@ -57,7 +67,7 @@ export default function Consumer() {
     <Image style = {styles.bottom}
         source={require('../images/icon/2/bottom.png')}
     />
-    <TouchableOpacity style={styles.next_wrapper}>
+    <TouchableOpacity style={styles.next_wrapper} onPress ={gotoInfo}>
       <Text style={styles.onsite_text}>下一步</Text>
     </TouchableOpacity>
 
