@@ -4,7 +4,7 @@ import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import {data} from './data';
 
-export default function Order() {
+export default function ProcessingOrder() {
   const orders = data.map((item) => {
     return (
       <View style={styles.card}>

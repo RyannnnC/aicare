@@ -5,8 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProviderOrder from './providerOrder.js'
 import ProviderMain from './providerMain.js'
 import Account from './account.js'
-import Plan from './plan.js'
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import Income from './income.js'
+import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function Home() {
@@ -36,11 +36,11 @@ export default function Home() {
           />
           <Tab.Screen
             name="行程"
-            component={Plan}
+            component={Income}
             options={{
-              tabBarLabel: '行程',
+              tabBarLabel: '收益',
               tabBarIcon: ({ color, size }) => (
-                <AntDesign name="calendar" size={size} color={color} />
+                <Feather name="dollar-sign" size={24} color="black" />
               ),
             }}
              />

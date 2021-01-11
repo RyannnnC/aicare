@@ -1,9 +1,8 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
 import {styles} from '../providerStyle';
-import Order from './Order';
 
-const OrderMain = ({navigation}) => {
+const CompletedOrder = ({navigation}) => {
   const alertHandler= () => {
     Alert.alert('function unimplemented')
   }
@@ -42,4 +41,4 @@ const OrderMain = ({navigation}) => {
     </View>
   );
 }
- export default OrderMain;
+ export default CompletedOrder;

@@ -3,10 +3,11 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } fr
 import { Actions } from 'react-native-router-flux'
 import {styles} from '../style';
 
-export default function Login() {
-  const goToConsumer = () => {
-    Actions.consumer()
+const Login = ({navigation}) => {
+  const goToHome= () => {
+    navigation.navigate('Home')
   }
+
   return (
     <View style = {styles.container}>
       <Image style = {styles.img3}
@@ -28,7 +29,7 @@ export default function Login() {
           <Text style={styles.r_Text}>注册账户</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.login_wrapper} onPress = {goToConsumer}>
+      <TouchableOpacity style={styles.loginWrapper} onPress = {goToHome}>
         <Text style={styles.onsite_Text}>登陆</Text>
       </TouchableOpacity>
       <Image style = {styles.img4}
@@ -37,3 +38,4 @@ export default function Login() {
     </View>
   );
 }
+export default Login;

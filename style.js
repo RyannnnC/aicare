@@ -28,8 +28,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius:25,
   },
-  providerWrapper: {
-    backgroundColor: '#006A71',
+  providerWrapper2: {
+    backgroundColor: '#196F75',
     padding:10,
     width:280,
     marginTop:30,
@@ -184,11 +184,11 @@ export const styles = StyleSheet.create({
   loginWrapper: {
     backgroundColor: '#8FD7D3',
     padding:10,
-    width:240,
+    width:280,
     marginTop:60,
-    height:45,
+    height:40,
     alignItems: 'center',
-    borderRadius:25,
+    borderRadius:20,
   },
   img_ac:{
     height:30,
@@ -215,15 +215,6 @@ export const styles = StyleSheet.create({
   onsite_text:{
     color: 'white',
   },
-  consumer_wrapper:{
-    backgroundColor: '#8FD7D3',
-    padding:10,
-    width:280,
-    marginTop:60,
-    height:45,
-    alignItems: 'center',
-    borderRadius:25,
-  },
   providerWrapper:{
     backgroundColor: '#FDB0A8',
     padding:10,
@@ -246,6 +237,11 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  welcomeText:{
+    width: 220,
+    height: 70,
     textAlign: 'center',
   }
 });

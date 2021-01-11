@@ -12,7 +12,7 @@ export default function ProviderMain() {
 
   return (
     <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40}}>
-    <Text>今天有什么新安排吗？</Text>
+    <Text>您今日有2项工作待完成</Text>
     <Image
       style = {styles.mainImg}
       source = {require('../images/crayon-1317.png')}
@@ -25,31 +25,22 @@ export default function ProviderMain() {
         placeholder="搜服务/订单..."
         />
     </View>
-      <Text>服务</Text>
+      <Text>当月数据</Text>
     <View style={styles.buttons}>
       <TouchableOpacity style={styles.buttonContainer} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../images/Store.png')}
-          />
-        <Text style={styles.buttonText}>上门服务</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '600'}}>21</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>已完成</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.buttonContainer2} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../images/To-do.png')}
-        />
-        <Text style={styles.buttonText}>远程医疗</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '600'}}>7</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>待完成</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.buttonContainer3} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../images/Banquet.png')}
-          />
-        <Text style={styles.buttonText}>外卖配送</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '600'}}>$756</Text>
+        <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>月收入</Text>
       </TouchableOpacity>
     </View>
-    <Text style={styles.buttonText}>行程</Text>
+    <Text style={styles.buttonText}>当日订单</Text>
     <View style={styles.home}>
       <Image
         style = {styles.img3}
