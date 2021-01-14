@@ -82,10 +82,12 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
   },
   card: {
-    width: 300,
-    height: 90,
-    margin: 10,
-    borderBottomColor: 'black',
+    width: 315,
+    height: 160,
+    marginTop:15,
+    marginBottom:15,
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
   },
   mainImg:{
     height:120,
@@ -98,5 +100,75 @@ export const styles = StyleSheet.create({
   plans: {
     width: 330,
     height: 120,
-  }
+  },
+  personIcon:{
+    width: 40,
+    height: 44,
+  },
+  iconImg:{
+    width: 45,
+    height: 40,
+  },
+  smallIconImg:{
+    width: 20,
+    height: 20,
+  },
+  accountBar:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom:15,
+  },
+  profileBar:{
+    width: 332,
+    height: 25,
+    marginTop: 15,
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  benefit: {
+    width: 320,
+    height: 60,
+    marginTop:25,
+    marginBottom:30,
+    backgroundColor:'#68b0ab',
+    borderRadius: 15,
+    textAlign: 'center',
+  },
+  orderButton: {
+    width: 75,
+    height: 30,
+    backgroundColor: '#FF7E67',
+    borderRadius: 10,
+  },
+  orderButton2: {
+    width: 75,
+    height: 30,
+    backgroundColor: '#68B0AB',
+    borderRadius: 10,
+  },
+  resumeImg: {
+    width:110,
+    height:110,
+  },
+  resumeInput: {
+    width: 300,
+    height: 22,
+  },
+  resumeInput1: {
+    width: 115,
+    height: 22,
+  },
+  resumeInput2: {
+    width: 335,
+    height: 22,
+  },
+  resumeButton: {
+    width: 280,
+    height: 40,
+    backgroundColor: '#68B0AB',
+    borderRadius: 20,
+    alignItems: 'center',
+  },
+
 });

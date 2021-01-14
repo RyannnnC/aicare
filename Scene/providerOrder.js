@@ -1,19 +1,26 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity, SafeAreaView } from 'react-native';
 import {styles} from './providerStyle';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ProcessingOrder from './Orders/processingOrder';
 import PendingOrder from './Orders/pendingOrder';
 import CompletedOrder from './Orders/completedOrder';
 
 export default function ProviderOrder() {
-  const Stack = createStackNavigator();
+  const Tab = createMaterialTopTabNavigator();
 
   return (
-      <Stack.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
-        <Stack.Screen name="订单" component={CompletedOrder} />
-        <Stack.Screen name="上门服务" component={PendingOrder} />
-      </Stack.Navigator>
+    <SafeAreaView style={{flex:1}}>
+      <Image
+        style = {styles.orderImg}
+        source = {require('../images/providerImg/order_img.png')}
+      />
+      <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
+        <Tab.Screen name="待接取" component={PendingOrder} />
+        <Tab.Screen name="进行中" component={ProcessingOrder} />
+        <Tab.Screen name="已完成" component={CompletedOrder} />
+      </Tab.Navigator>
+    </SafeAreaView>
   );
 }

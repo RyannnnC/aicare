@@ -30,7 +30,7 @@ const Welcome = ({ navigation }) => {
      <Image
        source={require('../images/logo.png')}
        style = {styles.img2}
-     />
+      />
    </SafeAreaView>
  );
 }
