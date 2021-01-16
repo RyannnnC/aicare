@@ -11,9 +11,11 @@ export default function Income() {
     <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <Image
       style = {styles.img4}
-      source = {require('../images/crayon-892.png')}
+      source = {require('../images/providerImg/money_img.png')}
       />
-    <Text>数据统计</Text>
+    <View style={{alignItems: "Left" }}>
+      <Text style= {{color: '#333333', fontSize: 16, fontWeight: '500'}}>数据统计</Text>
+    </View>
     <View style={styles.buttons}>
       <TouchableOpacity style={styles.buttonContainer} onPress={alertHandler}>
         <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '600'}}>$100</Text>

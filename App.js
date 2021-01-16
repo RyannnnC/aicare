@@ -18,7 +18,13 @@ import Comment from './Scene/Account/comment';
 import AccountInfo from './Scene/Account/accountInfo';
 import ChangePwd from './Scene/Account/changePwd';
 import Setting from './Scene/Account/setting';
-
+import WorkExperience from './Scene/Account/workExperience';
+import License from './Scene/Account/license';
+import PersonalTag from './Scene/Account/personalTag';
+import Certificate from './Scene/Account/certificate';
+import ServiceType from './Scene/Account/serviceType';
+import ChangeMail from './Scene/Account/changeMail';
+ 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -85,6 +91,12 @@ export default function App() {
         <Stack.Screen name="账户信息" component={AccountInfo} />
         <Stack.Screen name="修改密码" component={ChangePwd} />
         <Stack.Screen name="我的设置" component={Setting} />
+        <Stack.Screen name="工作经历" component={WorkExperience} />
+        <Stack.Screen name="证书执照" component={License} />
+        <Stack.Screen name="个人简介" component={PersonalTag} />
+        <Stack.Screen name="证件上传" component={Certificate} />
+        <Stack.Screen name="服务类型" component={ServiceType} />
+        <Stack.Screen name="修改邮箱" component={ChangeMail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
