@@ -24,7 +24,8 @@ import PersonalTag from './Scene/Account/personalTag';
 import Certificate from './Scene/Account/certificate';
 import ServiceType from './Scene/Account/serviceType';
 import ChangeMail from './Scene/Account/changeMail';
- 
+import TransferOut from './Scene/Income/transferOut';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -97,6 +98,7 @@ export default function App() {
         <Stack.Screen name="证件上传" component={Certificate} />
         <Stack.Screen name="服务类型" component={ServiceType} />
         <Stack.Screen name="修改邮箱" component={ChangeMail} />
+        <Stack.Screen name="资金转出" component={TransferOut} />
       </Stack.Navigator>
     </NavigationContainer>
   );

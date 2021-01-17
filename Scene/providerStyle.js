@@ -250,5 +250,13 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     borderWidth: 1,
     borderRadius: 10,
-  }
+  },
+  incomeCard: {
+    width:325,
+    height: 60,
+  },
+  incomeIcon: {
+    width: 40,
+    height: 40,
+  },
 });
