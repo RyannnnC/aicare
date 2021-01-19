@@ -5,13 +5,16 @@ import {
 import CalendarPicker from 'react-native-calendar-picker';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
+import DataContext from "../consumerContext";
 
-export default class ConsumerDate extends Component {
+
+class ConsumerDate extends Component {
   
   constructor(props) {
     super(props);
     this.state = {
       selectedStartDate: null,
+      duration:0,
     };
     this.onDateChange = this.onDateChange.bind(this);
   }
@@ -20,10 +23,15 @@ export default class ConsumerDate extends Component {
     this.setState({
       selectedStartDate: date,
     });
+    this.context.action.changetime(date.toString().substring(0, 15));
   }
+  
+  
   render() {
+    let state = this.context;
     const { navigation } = this.props;
     const { selectedStartDate } = this.state;
+    const duration = this.state.duration;
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
     return (
       <View style={styles.container}>
@@ -36,7 +44,7 @@ export default class ConsumerDate extends Component {
           />
         </TouchableOpacity>
 
-        <Text style = {styles.service}>预约地址</Text>
+        <Text style = {styles.service}>预约时间</Text>
         <CalendarPicker
           onDateChange={this.onDateChange}
           previousTitle="上一月"
@@ -48,20 +56,23 @@ export default class ConsumerDate extends Component {
           source= {require('../images/icon/3/time.png')}
         />
         <View style ={styles.comment_container}>
-          <TextInput style = {styles.time} placeholder="24时格式"/>
+          <TextInput style = {styles.time} placeholder="24时格式"
+          onChangeText={(text) => {state.action.changestarttime(text)}}/>
           <Text>至</Text>
-          <TextInput style = {styles.time} placeholder="24时格式"/>
+          <TextInput style = {styles.time} placeholder="24时格式"
+          onChangeText={(text) => {state.action.changeendtime(text);
+          }}/>
         </View>
         <Image style = {styles.time_image}
           source= {require('../images/icon/3/price.png')}
         />
-        {/*this need to be automatically calculated but leave to later stage*/}
-        <Text>$160</Text>
+        <Text>{40*(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60)}</Text>
         <Image style = {styles.bottom}
         source={require('../images/icon/2/bottom2.png')}
         />
-        <TouchableOpacity style={styles.next_wrapper} onPress={() =>
-            this.props.navigation.dispatch(StackActions.pop(1))
+        <TouchableOpacity style={styles.next_wrapper} onPress={() =>{
+            state.action.changetotal(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60);
+            this.props.navigation.dispatch(StackActions.pop(1))}
           }>
           <Text style={styles.onsite_text}>确定</Text>
         </TouchableOpacity>
@@ -72,5 +83,8 @@ export default class ConsumerDate extends Component {
       </View>
     );
   }
+
 }
+ConsumerDate.contextType = DataContext;
+export default ConsumerDate;
 

@@ -1,11 +1,18 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
+import DataContext from '../consumerContext';
+import { State } from 'react-native-gesture-handler';
+import { format } from 'date-fns';
+
 
 export default function Info({navigation}) {
+  const [text, setText] = useState('')
+  const [text1, setText1] = useState('')
+
   const goBack= () => {
-    navigation.dispatch(StackActions.pop(1))
+    navigation.navigate("consumerOrder")
   }
   const gotoDate= () => {
     navigation.navigate("consumerDate")
@@ -16,7 +23,13 @@ export default function Info({navigation}) {
   const gotoAddress= () => {
     navigation.navigate("consumerAddress")
   }
+  const typename = (value) => {
+    text => setText(text);
+    state.action.changename(text);
+  }
   return (
+    <DataContext.Consumer>
+    {(state)  => (
     <View style={styles.container}>
     <TouchableOpacity onPress = {goBack}>
       <Image
@@ -29,17 +42,21 @@ export default function Info({navigation}) {
     <Image style = {styles.name_image}
         source= {require('../images/icon/3/name.png')}
       />
-    <TextInput style = {styles.account} placeholder="姓名：张三"/>
-
+    <TextInput style = {styles.account} placeholder="姓名：张三"
+    onChangeText={(text) => {text => setText(text);state.action.changename(text)}}
+    />
+    
     <Image style = {styles.name_image}
         source= {require('../images/icon/3/mobile.png')}
       />
-    <TextInput style = {styles.account} placeholder="澳大利亚电话号码，以0开头。"/>
+    <TextInput style = {styles.account} placeholder="澳大利亚电话号码，以0开头。"
+    onChangeText={text1 => setText1(text1)}
+    />
     <Image style = {styles.address_image}
         source= {require('../images/icon/3/booking.png')}
       />
     <View style ={styles.comment_container}>
-      <TextInput style = {styles.account} placeholder="请点击右边箭头按钮输入预约时间信息。"/>
+      <Text>{state.date + " "+state.start_time}</Text>
       <TouchableOpacity onPress={gotoDate}>
       <Image style = {styles.comment_image}
         source= {require('../images/icon/2/Arrow_right.png')}
@@ -52,7 +69,7 @@ export default function Info({navigation}) {
         source= {require('../images/icon/3/address.png')}
       />
     <View style ={styles.comment_container}>
-      <TextInput style = {styles.account} placeholder="请点击右边箭头按钮输入预约地址信息。"/>
+      <Text>{state.street + " " + state.suburb + " " + state.state + state.postcode.toString()}</Text>
       <TouchableOpacity onPress={gotoAddress}>
       <Image style = {styles.comment_image}
         source= {require('../images/icon/2/Arrow_right.png')}
@@ -76,5 +93,7 @@ export default function Info({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  )}
+  </DataContext.Consumer>
   );
 }

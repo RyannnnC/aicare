@@ -1,19 +1,27 @@
-import React from 'react';
+import React,{ useState,setState }from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
+import DataContext from '../consumerContext';
 
 
 export default function Consumer({navigation}) {
+  
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () =>{ 
+    setIsEnabled(previousState => !previousState);
+  }
   const gotoInfo= () => {
     navigation.navigate('consumerInfo')
   }
-  
+
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
   }
 
   return (
+    <DataContext.Consumer>
+    {(state)  => (
     <View style={styles.container}>
     <TouchableOpacity onPress = {goBack}>
       <Image
@@ -35,8 +43,9 @@ export default function Consumer({navigation}) {
     <Text style={styles.caption}>口味可自行挑选，一餐1-5道菜。</Text>
     <View style ={styles.switch_container}>
       <Switch style={styles.tick1}
-          value="value"
-          onValueChange="handleChange"
+          onValueChange={() => { state.action.changesupply(true);setIsEnabled(previousState => !previousState);
+          }}
+          value={isEnabled}
         />
       <Text style={styles.switch_text}>如需额外购买食材将收取$20。</Text>
     </View>
@@ -75,5 +84,8 @@ export default function Consumer({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  )}
+  </DataContext.Consumer>
+
   );
 }

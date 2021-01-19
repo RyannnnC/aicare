@@ -1,15 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
+import DataContext from "../consumerContext";
+//import RNLocation from 'react-native-location';
 
-export default function ConsumerAddress({navigation}) {
-  const goBack= () => {
-    navigation.dispatch(StackActions.pop(1))
+
+class ConsumerAddress extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: null
+    };
+  }
+
+  goBack(){
+    this.props.navigation.dispatch(StackActions.pop(1));
   }  
+  
+  
+  render(){
+    let state = this.context;
+    const { navigation } = this.props;
+
   return (
+    
     <View style={styles.container}>
-    <TouchableOpacity onPress = {goBack}>
+    <TouchableOpacity onPress={() =>{
+            this.props.navigation.dispatch(StackActions.pop(1))}}>
       <Image
         style = {styles.arrow_image}
         source={require('../images/icon/2/Arrow_left.png')}
@@ -26,32 +44,36 @@ export default function ConsumerAddress({navigation}) {
       <Image style = {styles.address_image}
         source= {require('../images/icon/3/localize.png')}
       />
-    </TouchableOpacity>
+    </TouchableOpacity> 
     </View>
-
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>Street</Text>
-      <TextInput style = {styles.street_input} placeholder="街道"/>
+      <TextInput style = {styles.street_input} placeholder="街道"
+      onChangeText={(text) => {state.action.changestreet(text)}}/>
     </View>
 
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>Suburb</Text>
-      <TextInput style = {styles.street_input} placeholder="区"/>
+      <TextInput style = {styles.street_input} placeholder="区"
+      onChangeText={(text) => {state.action.changesuburb(text)}}/>
     </View>
 
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>State </Text>
-      <TextInput style = {styles.street_input} placeholder="州"/>
+      <TextInput style = {styles.street_input} placeholder="州"
+      onChangeText={(text) => {state.action.changestate(text)}}/>
     </View>
 
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>postcode</Text>
-      <TextInput style = {styles.street_input} placeholder="邮编"/>
+      <TextInput style = {styles.street_input} placeholder="邮编"
+      onChangeText={(text) => {state.action.changepostcode(text)}}/>
     </View>
     <Image style = {styles.bottom}
         source={require('../images/icon/2/bottom2.png')}
     />
-    <TouchableOpacity style={styles.next_wrapper} onPress={goBack}>
+    <TouchableOpacity style={styles.next_wrapper} onPress={() =>{
+            this.props.navigation.dispatch(StackActions.pop(1))}}>
       <Text style={styles.onsite_text}>确定</Text>
     </TouchableOpacity>
 
@@ -59,5 +81,8 @@ export default function ConsumerAddress({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
-  );
+  )}
+
 }
+ConsumerAddress.contextType = DataContext;
+export default ConsumerAddress;

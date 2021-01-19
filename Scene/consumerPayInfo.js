@@ -3,7 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput } from 're
 import {styles} from '../style';
 import { Checkbox } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
-
+import DataContext from "../consumerContext"
 export default function ConsumerPayInfo({navigation}) {
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
@@ -16,6 +16,8 @@ export default function ConsumerPayInfo({navigation}) {
   const [checked3, setChecked3] = React.useState(false);
   
   return (
+    <DataContext.Consumer>
+    {(state)  => (
     <View style={styles.container}>
     <TouchableOpacity onPress = {goBack}>
       <Image
@@ -32,29 +34,28 @@ export default function ConsumerPayInfo({navigation}) {
     <View style ={styles.comment_container}>
       {/*this need to be automatically shown instead of hard code but where 
       can we store these states?*/}
-      <Text>服务*3小时           </Text>
-      <Text>$160</Text>
+      <Text>服务*{state.total_time}小时           </Text>
+      <Text>${state.total_time*40}</Text>
     </View>
-    <View style ={styles.comment_container}>
+    {state.extra_supply?<View style ={styles.comment_container}>
       {/*this need to be automatically shown instead of hard code but where 
       can we store these states?*/}
       <Text>食材购买服务费       </Text>
       <Text>$20</Text>
       
-    </View>
+    </View>:null}
 
     <View style ={styles.comment_container}>
       {/*this need to be automatically shown instead of hard code but where 
       can we store these states?*/}
       <Text>GST                 </Text>
-      <Text>$18</Text>
-
+      <Text>${0.2*(state.total_time*40+(state.extra_supply?20:0))}</Text>
     </View>
     <View style ={styles.comment_container}>
       {/*this need to be automatically shown instead of hard code but where 
       can we store these states?*/}
       <Text>总费用              </Text>
-      <Text>$198</Text>
+      <Text>{state.total_time*40 + (state.extra_supply?20:0) + 0.2*(state.total_time*40+(state.extra_supply?20:0))}</Text>
       
     </View>
     
@@ -69,6 +70,8 @@ export default function ConsumerPayInfo({navigation}) {
       status={checked1 ? 'checked' : 'unchecked'}
       onPress={() => {
         setChecked1(!checked1);
+        setChecked2(false);
+        setChecked3(false);
       }}
     />
     </View>
@@ -79,7 +82,9 @@ export default function ConsumerPayInfo({navigation}) {
       <Checkbox
       status={checked2 ? 'checked' : 'unchecked'}
       onPress={() => {
+        setChecked1(false);
         setChecked2(!checked2);
+        setChecked3(false);
       }}
     />
     </View>
@@ -90,6 +95,8 @@ export default function ConsumerPayInfo({navigation}) {
       <Checkbox
       status={checked3 ? 'checked' : 'unchecked'}
       onPress={() => {
+        setChecked1(false);
+        setChecked2(false);
         setChecked3(!checked3);
       }}
     />
@@ -126,5 +133,7 @@ export default function ConsumerPayInfo({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  )}
+  </DataContext.Consumer>
   );
 }
