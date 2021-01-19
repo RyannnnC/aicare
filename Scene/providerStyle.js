@@ -82,12 +82,12 @@ export const styles = StyleSheet.create({
     margin: 20,
   },
   searchBar: {
-    flex:1,
     width: 315,
     height: 35,
+    marginTop:15,
+    marginBottom:30,
   },
   home: {
-    flex:1,
     width: 315,
     height: 210,
     backgroundColor: '#ffffff',
@@ -154,12 +154,16 @@ export const styles = StyleSheet.create({
     height: 30,
     backgroundColor: '#FF7E67',
     borderRadius: 10,
+    textAlign: 'center',
+    marginRight: 25,
   },
   orderButton2: {
     width: 75,
     height: 30,
     backgroundColor: '#68B0AB',
     borderRadius: 10,
+    textAlign: 'center',
+    marginRight: 25,
   },
   resumeImg: {
     width:110,
@@ -259,4 +263,12 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  finishImg: {
+    width: 300,
+    height: 225,
+  },
+  smallAddImg: {
+    width: 25,
+    height:25,
+  }
 });

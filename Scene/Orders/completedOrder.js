@@ -12,32 +12,11 @@ const CompletedOrder = ({navigation}) => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{fontSize:18, color: "#006A71"}}>请选择服务类型</Text>
-      <TouchableOpacity style={styles.buttonContainer4}  onPress={goToOrder}>
-        <Image
-          style = {styles.store}
-          source = {require('../../images/Store.png')}
-          />
-        <Text style={styles.buttonText}>上门服务</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonContainer5} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../../images/To-do.png')}
-        />
-        <Text style={styles.buttonText}>远程医疗</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonContainer6} onPress={alertHandler}>
-        <Image
-          style = {styles.store}
-          source = {require('../../images/Banquet.png')}
-          />
-        <Text style={styles.buttonText}>外卖配送</Text>
-      </TouchableOpacity>
       <Image
-        style = {styles.img2}
-        source = {require('../../images/crayon-1317.png')}
+        style = {styles.finishImg}
+        source = {require('../../images/providerImg/order_img_finish@3x.png')}
         />
+       <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有完成的订单哦，快去完成吧！</Text>
     </View>
   );
 }

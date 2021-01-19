@@ -12,11 +12,16 @@ export default function ProviderMain() {
 
   return (
     <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40}}>
-    <Text>您今日有2项工作待完成</Text>
-    <Image
-      style = {styles.mainImg}
-      source = {require('../images/crayon-1317.png')}
-      />
+      <View style={{flexDirection: 'row', marginBottom: 15}}>
+        <View style={{marginLeft:30, marginRight:30}}>
+          <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >12月25日，</Text>
+          <Text>您今日有2项工作待完成</Text>
+        </View>
+        <Image
+          style = {styles.mainImg}
+          source = {require('../images/crayon-1317.png')}
+        />
+      </View>
     <View style={styles.searchBar}>
       <SearchBar
         inputStyle={{backgroundColor: 'white'}}
@@ -25,7 +30,9 @@ export default function ProviderMain() {
         placeholder="搜服务/订单..."
         />
     </View>
-      <Text>当月数据</Text>
+    <View style={{textAlign: "left" }}>
+      <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当月数据</Text>
+    </View>
     <View style={styles.buttons}>
       <TouchableOpacity style={styles.buttonContainer} onPress={alertHandler}>
         <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '600'}}>21</Text>
@@ -40,7 +47,9 @@ export default function ProviderMain() {
         <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>月收入</Text>
       </TouchableOpacity>
     </View>
-    <Text style={styles.buttonText}>当日订单</Text>
+      <View style={{textAlign: "left" }}>
+        <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当日订单</Text>
+      </View>
     <View style={styles.home}>
       <Image
         style = {styles.img3}

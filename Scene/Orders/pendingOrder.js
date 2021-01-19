@@ -14,10 +14,10 @@ export default function PendingOrder() {
         <Text>{item.price}</Text>
         <View style={{flexDirection: 'row-reverse'}}>
           <TouchableOpacity style={styles.orderButton2}>
-          <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
+            <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.orderButton}>
-          <Text style={{fontSize:14, color:'#FAFAFA'}}>拒绝</Text>
+            <Text style={{fontSize:14, color:'#FAFAFA'}}>拒绝</Text>
           </TouchableOpacity>
         </View>
       </View>
