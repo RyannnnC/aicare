@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var data = [];","map":{"version":3,"sources":["F:/Github/aicare/Scene/Orders/data.js"],"names":["data"],"mappings":"AAAA,OAAO,IAAMA,IAAI,GAAG,EAAb","sourcesContent":["export const data = [\r\n\r\n];\r\n"]},"metadata":{},"sourceType":"module"}

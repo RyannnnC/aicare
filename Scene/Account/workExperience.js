@@ -14,6 +14,12 @@ export default class WorkExperience extends Component {
         source={require('../../images/providerImg/account_icon_profile_normal.png')}
       />
       <Text style={{ fontSize:16, fontWeight: '400' }}>经历1</Text>
+      <TouchableOpacity style={{ marginTop: 5,marginBottom: 5,marginLeft:180}}>
+        <Image
+          style = {styles.smallAddImg}
+          source={require('../../images/providerImg/account_icon_add.png')}
+        />
+      </TouchableOpacity>
       </View>
       <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
         <Text style={{ fontSize:16, fontWeight: '400' }}>公司</Text>

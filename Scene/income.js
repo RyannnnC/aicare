@@ -10,11 +10,14 @@ export default function Income() {
   const Tab = createMaterialTopTabNavigator();
 
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center'}}>
-    <Image
-      style = {styles.img4}
-      source = {require('../images/providerImg/money_img.png')}
+    <SafeAreaView style={{ flex: 1}}>
+      <View style={{alignItems: "center" }}>
+      <Text style={{ color: '#333333', fontSize: 18, fontWeight: '600'}}>我的收益</Text>
+      <Image
+        style = {styles.img4}
+        source = {require('../images/providerImg/money_img.png')}
       />
+      </View>
     <View style={{alignItems: "Left" }}>
       <Text style= {{color: '#333333', fontSize: 16, fontWeight: '500'}}>数据统计</Text>
     </View>
@@ -32,12 +35,10 @@ export default function Income() {
         <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>本月收入</Text>
       </TouchableOpacity>
     </View>
-      <SafeAreaView>
         <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
           <Tab.Screen name="收入明细" component={IncomeMain} />
           <Tab.Screen name="转出明细" component={Transfer} />
         </Tab.Navigator>
-      </SafeAreaView>
     </SafeAreaView>
   );
 }

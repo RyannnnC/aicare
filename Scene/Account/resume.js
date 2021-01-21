@@ -155,12 +155,13 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(0)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>周一</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[0].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
             </TouchableOpacity>
+            }
           </View>
           <View  style={{flexDirection: 'row'}}>
             <TouchableOpacity style={{
@@ -177,12 +178,13 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(1)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>周二</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[1].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
             </TouchableOpacity>
+            }
             </View>
             <View style={{flexDirection: 'row'}}>
             <TouchableOpacity style={{
@@ -199,12 +201,13 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(2)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>周三</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[2].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
             </TouchableOpacity>
+            }
             </View>
             <View  style={{flexDirection: 'row'}}>
             <TouchableOpacity style={{
@@ -221,12 +224,13 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(3)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>周四</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[3].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
             </TouchableOpacity>
+            }
             </View>
             <View style={{flexDirection: 'row'}}>
             <TouchableOpacity style={{
@@ -243,12 +247,13 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(4)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>周五</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[4].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
             </TouchableOpacity>
+            }
             </View>
             <View style={{flexDirection: 'row'}}>
             <TouchableOpacity style={{
@@ -265,12 +270,13 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(5)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>周六</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[5].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
             </TouchableOpacity>
+            }
             </View>
             <View style={{flexDirection: 'row'}}>
             <TouchableOpacity style={{
@@ -287,12 +293,13 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(6)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>周天</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[6].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
             </TouchableOpacity>
+            }
             </View>
             <Text style={{ fontSize:16, fontWeight: '400' }}>服务类型（选填）</Text>
             <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>

@@ -14,7 +14,7 @@ const CompletedOrder = ({navigation}) => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Image
         style = {styles.finishImg}
-        source = {require('../../images/providerImg/order_img_finish@3x.png')}
+        source = {require('../../images/providerImg/order_img_finish.png')}
         />
        <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有完成的订单哦，快去完成吧！</Text>
     </View>

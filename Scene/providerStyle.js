@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     marginRight: 15,
     backgroundColor: '#9ADAD6',
     borderRadius: 15,
-    alignItems: 'center',
+    textAlign: 'center',
   },
   buttonContainer2:{
     width: 90,
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     marginRight: 15,
     backgroundColor: '#196F75',
     borderRadius: 15,
-    alignItems: 'center',
+    textAlign: 'center',
   },
   buttonContainer3:{
     width: 90,
@@ -51,11 +51,11 @@ export const styles = StyleSheet.create({
     marginRight: 15,
     backgroundColor: '#FF816B',
     borderRadius: 15,
-    alignItems: 'center',
+    textAlign: 'center',
   },
   buttons:{
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   buttonContainer4:{
     width: 280,
@@ -156,6 +156,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     textAlign: 'center',
     marginRight: 25,
+    marginTop: 15,
   },
   orderButton2: {
     width: 75,
@@ -164,6 +165,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     textAlign: 'center',
     marginRight: 25,
+    marginTop: 15,
   },
   resumeImg: {
     width:110,
@@ -270,5 +272,9 @@ export const styles = StyleSheet.create({
   smallAddImg: {
     width: 25,
     height:25,
+  },
+  pendingImg: {
+    width: 40,
+    height:40,
   }
 });
