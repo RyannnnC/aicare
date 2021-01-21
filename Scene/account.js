@@ -13,6 +13,7 @@ import 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);

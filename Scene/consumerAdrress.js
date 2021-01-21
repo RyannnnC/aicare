@@ -3,21 +3,49 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } fr
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../consumerContext";
+import Geocoder from 'react-native-geocoding';
+import MapView ,{Marker} from "react-native-maps"; 
+
 //import RNLocation from 'react-native-location';
 
 
 class ConsumerAddress extends Component{
   constructor(props) {
     super(props);
-    this.state = {
-      location: null
+    
+    this.state={
+      latitude:0,
+      longitude:0,
     };
   }
 
   goBack(){
     this.props.navigation.dispatch(StackActions.pop(1));
   }  
-  
+  getdata(){
+    Geocoder.init("AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"); // use a valid API key
+    Geocoder.from(this.state.latitude, this.state.longitude)
+		.then(json => {
+            var addressComponent = json.results[0].address_components;
+            this.context.action.changestreet(addressComponent[0].long_name + addressComponent[1].long_name);
+            this.context.action.changesuburb(addressComponent[2].long_name);
+            this.context.action.changestate(addressComponent[4].long_name );
+            this.context.action.changepostcode(addressComponent[6].long_name);
+			//alert("gps enabled, this is your address");
+		})
+		.catch(error => console.warn(error));
+  }
+  componentDidMount(){
+    navigator.geolocation.getCurrentPosition(
+      position=>{
+        this.setState({
+          latitude:position.coords.latitude,
+          longitude:position.coords.longitude
+        });
+      },
+
+    )
+  }
   
   render(){
     let state = this.context;
@@ -40,7 +68,7 @@ class ConsumerAddress extends Component{
     <Image style = {styles.address_image}
         source= {require('../images/icon/3/address.png')}
       />
-      <TouchableOpacity >
+    <TouchableOpacity onPress = {this.getdata}>
       <Image style = {styles.address_image}
         source= {require('../images/icon/3/localize.png')}
       />
@@ -49,24 +77,28 @@ class ConsumerAddress extends Component{
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>Street</Text>
       <TextInput style = {styles.street_input} placeholder="街道"
+      value = {state.street}
       onChangeText={(text) => {state.action.changestreet(text)}}/>
     </View>
 
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>Suburb</Text>
       <TextInput style = {styles.street_input} placeholder="区"
+      value = {state.suburb}
       onChangeText={(text) => {state.action.changesuburb(text)}}/>
     </View>
 
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>State </Text>
       <TextInput style = {styles.street_input} placeholder="州"
+      value = {state.state}
       onChangeText={(text) => {state.action.changestate(text)}}/>
     </View>
 
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>postcode</Text>
       <TextInput style = {styles.street_input} placeholder="邮编"
+      value = {state.postcode}
       onChangeText={(text) => {state.action.changepostcode(text)}}/>
     </View>
     <Image style = {styles.bottom}

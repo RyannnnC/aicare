@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
     marginTop:15,
   },
   bottom:{
-    marginTop:90,
+    marginTop:40,
     marginLeft:50,
     width:380,
     height:50,
@@ -168,7 +168,7 @@ export const styles = StyleSheet.create({
     padding:10,
     width:220,
     marginLeft:100,
-    marginTop:15,
+    marginTop:10,
     height:45,
     alignItems: 'center',
     borderRadius:25,
