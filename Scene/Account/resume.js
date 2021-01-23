@@ -2,9 +2,18 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import Picker from 'react-mobile-picker-scroll';
 
 export default class Resume extends Component {
   state={
+    valueGroups: {
+        hour: '00',
+        minite: '00'
+      },
+      optionGroups: {
+        hour: ['00', '01', '02','03','04','05','06','07','08','09','10','11', '12','13','14','15','16','17','18','19','20','21','22','23'],
+        minite: ['00', '10', '20', '30', '40','50']
+      },
     buttons: [
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -13,6 +22,15 @@ export default class Resume extends Component {
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+    ],
+    times: [
+        {  pressed: false, },
+        { pressed: false, },
+        { pressed: false, },
+        { pressed: false, },
+        {  pressed: false, },
+        { pressed: false, },
+        { pressed: false, },
     ]
 
   };
@@ -32,9 +50,30 @@ export default class Resume extends Component {
       but[index].fontColor = '#999999';
       this.setState({buttons: but});
     }
-  }
+  };
+
+  handleChange = (name, value) => {
+    this.setState(({valueGroups}) => ({
+      valueGroups: {[name]: value}
+    }));
+  };
+
+  showTimepicker(index) {
+    console.log('called');
+    this.setState({show:true});
+    this.setState({mode:'time'});
+    let but = this.state.times;
+    if(!but[index].pressed){
+       but[index].pressed = true;
+       this.setState({buttons: but});
+    } else {
+      but[index].pressed = false;
+      this.setState({buttons: but});
+    }
+  };
 
   render() {
+    const {optionGroups, valueGroups} = this.state;
 
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
@@ -155,12 +194,25 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(0)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>周一</Text>
             </TouchableOpacity>
-            { this.state.buttons[0].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[0].pressed &&
+              <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}} onPress={()=>this.showTimepicker(0)}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
-            </TouchableOpacity>
+              </TouchableOpacity>
+              { this.state.times[0].pressed && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={this.date}
+                    mode={this.mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={this.onChange}
+                  />
+              )}
+              </View>
             }
           </View>
           <View  style={{flexDirection: 'row'}}>
@@ -178,7 +230,8 @@ export default class Resume extends Component {
               onPress={()=>this.changeColor(1)}>
               <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>周二</Text>
             </TouchableOpacity>
-            { this.state.buttons[1].pressed && <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}}>
+            { this.state.buttons[1].pressed &&
+              <TouchableOpacity style={{  marginRight: 20, marginTop: 5,marginBottom: 5}}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}

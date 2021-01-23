@@ -3,39 +3,79 @@ import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity } from 'reac
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import {data} from './data';
+import moment from "moment"
 
 export default class ProcessingOrder extends Component {
-  state={
-    buttons: [
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-    ]
-
-  };
-
-  changeColor(index){
-    let but = this.state.buttons;
-    if(!but[index].pressed){
-       but[index].pressed = true;
-       but[index].backgroundColor = '#FF7E67';
-       but[index].borderWidth = 0;
-       but[index].fontColor = '#FFFFFF';
-       this.setState({buttons: but});
-    } else {
-      but[index].pressed = false;
-      but[index].backgroundColor = 'transparent';
-      but[index].borderWidth = 1;
-      but[index].fontColor = '#999999';
-      this.setState({buttons: but});
+    constructor(props) {
+      super(props);
+      date: new Date();
+      this.state={
+        secondsElapsed: 3600,
+        buttons: [
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:0},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:1},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:2},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:3},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:4},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:5},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:6},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:7},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:8},
+          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:9},
+        ]
+      };
     }
+
+
+  componentDidMount = () => {
+    console.log("set buttons work")
+    var i=0;
+    let butt=[];
+    while (i < data.length) {
+      butt.push({ backgroundColor: '#68B0AB', pressed: false,timeSlot: data[i].timeSlot, id:i });
+      i++;
+    }
+    this.setState({buttons:butt});
+  }
+
+  getHours() {
+    return ("0" + Math.floor(this.state.secondsElapsed / 3600)).slice(-2);
+  }
+
+  getMinutes() {
+    return ("0" + Math.floor((this.state.secondsElapsed % 3600) / 60)).slice(
+      -2
+    );
+  }
+
+  getSeconds() {
+    return ("0" + (this.state.secondsElapsed % 60)).slice(-2);
+  }
+
+  startTime(index) {
+    let but = this.state.buttons;
+    but[index].pressed = true;
+    but[index].backgroundColor = '#FF7E67';
+    this.setState({buttons: but});
+    this.setState({secondsElapsed: but[index].timeSlot*3600});
+    this.countdown = setInterval(() => {
+      this.setState(({ secondsElapsed }) => ({
+        secondsElapsed: secondsElapsed - 1
+      }));
+    }, 1000);
+  }
+
+
+  pauseTime(index) {
+    let but = this.state.buttons;
+    clearInterval(this.countdown);
+    but[index].pressed = false;
+    but[index].backgroundColor = '#68B0AB';
+    this.setState({buttons: but});
   }
 
   render () {
+    console.log (this.state);
     if (data.length >0) {
     const orders = data.map((item) => {
       return (
@@ -51,12 +91,28 @@ export default class ProcessingOrder extends Component {
           </View>
           </View>
           <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400', marginLeft:45}}>{item.phone}</Text>
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400', marginLeft:130}}>{item.price}</Text>
+            <Image
+              style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
+              source = {require('../../images/providerImg/order_icon_phone.png')}
+            />
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.phone}</Text>
+            <Image
+              style = {{width: 15, height:15,marginLeft:130, marginRight:5}}
+              source = {require('../../images/providerImg/order_iocn_money.png')}
+            />
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price}</Text>
           </View>
           <View style={{flexDirection: 'row-reverse'}}>
-            <TouchableOpacity style={styles.orderButton2}>
-            <Text style={{fontSize:14, color:'#FAFAFA'}}>开始</Text>
+            <TouchableOpacity style={{
+              width: 75,
+              height: 30,
+              backgroundColor: this.state.buttons[item.id].backgroundColor,
+              borderRadius: 10,
+              textAlign: 'center',
+              marginRight: 25,
+              marginTop: 15,
+            }} onPress={this.state.buttons[item.id].pressed ? ()=>this.pauseTime(item.id) : ()=>this.startTime(item.id)}>
+              <Text style={{fontSize:14, color:'#FAFAFA'}}>开始</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -64,6 +120,7 @@ export default class ProcessingOrder extends Component {
     })
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{fontSize:20}}>{this.getHours()} : {this.getMinutes()} : {this.getSeconds()}</Text>
         <ScrollView style={{ flex:1}}>
           {orders}
         </ScrollView>

@@ -2,20 +2,22 @@ import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from './providerStyle';
-import data from './Orders/data'
+import {data} from './Orders/data'
 
 
 export default function ProviderMain() {
   const alertHandler= () => {
     Alert.alert('function unimplemented')
   }
+  var date = new Date().getDate();
+  var month = new Date().getMonth() + 1;
 
   return (
     <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40}}>
       <View style={{flexDirection: 'row', marginBottom: 15}}>
         <View style={{marginLeft:30, marginRight:30}}>
-          <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >12月25日，</Text>
-          <Text>您今日有2项工作待完成</Text>
+          <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
+          <Text>您今日有{data.length}项工作待完成</Text>
         </View>
         <Image
           style = {styles.mainImg}
@@ -51,10 +53,23 @@ export default function ProviderMain() {
         <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当日订单</Text>
       </View>
     <View style={styles.home}>
+      <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
+        <View style={{marginLeft:20 }}>
+          <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}>罗女士</Text>
+          <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>1008A Mooltan avanue, Macquarie Park</Text>
+        </View>
       <Image
         style = {styles.img3}
         source = {require('../images/crayon-892.png')}
         />
+      </View>
+      <View style={{flexDirection: 'row', marginTop:10}}>
+        <Image
+          style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
+          source = {require('../images/providerImg/order_icon_time.png')}
+          />
+        <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>今日 14：00-17：00</Text>
+      </View>
     </View>
     </View>
   );

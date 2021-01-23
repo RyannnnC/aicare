@@ -10,36 +10,39 @@ const AccountMain = ({navigation}) => {
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
         <Image
           style = {styles.personIcon}
-          source = {require('../../images/providerImg/home_img_person.png')}
+          source = {require('../../images/providerImg/home_img_person1.png')}
         />
-        <Text style={{ fontSize:20, fontWeight: '600' }}>林女士 {"\n"}657416708xy@gmail.com</Text>
+        <View>
+        <Text style={{ fontSize:20, fontWeight: '600' }}>林女士</Text>
+        <Text style={{ fontSize:14, fontWeight: '300' }}>657416708xy@gmail.com</Text>
+        </View>
       </View>
       <View style ={styles.benefit}>
         <Text style={{ fontSize:20, fontWeight: '600', color: 'white' }}>月收入   $ 756   总余额  $100</Text>
       </View>
       <View style={styles.accountBar}>
-      <TouchableOpacity onPress={() => navigation.navigate('简历')}>
+      <TouchableOpacity style={{marginLeft: 40, marginRight: 20}} onPress={() => navigation.navigate('简历')}>
         <Image
           style = {styles.iconImg}
           source={require('../../images/providerImg/account_icon_profile.png')}
         />
         <Text style={{ fontSize:14, fontWeight: '300' }}>简历</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('订单')}>
+      <TouchableOpacity style={{marginLeft: 25, marginRight: 20}} onPress={() => navigation.navigate('订单')}>
         <Image
           style = {styles.iconImg}
           source={require('../../images/providerImg/account_icon_order.png')}
         />
         <Text style={{ fontSize:14, fontWeight: '300' }}>订单</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('收益')}>
+      <TouchableOpacity style={{marginLeft: 25, marginRight: 20}} onPress={() => navigation.navigate('收益')}>
         <Image
           style = {styles.iconImg}
           source={require('../../images/providerImg/account_icon_money.png')}
         />
         <Text style={{ fontSize:14, fontWeight: '300' }}>收益</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('评价')}>
+      <TouchableOpacity style={{marginLeft: 25, marginRight: 40}} onPress={() => navigation.navigate('评价')}>
         <Image
           style = {styles.iconImg}
           source={require('../../images/providerImg/account_icon_comment.png')}

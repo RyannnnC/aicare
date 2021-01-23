@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
   },
   home: {
     width: 315,
-    height: 210,
+    height: 140,
     backgroundColor: '#ffffff',
     borderRadius: 15,
   },
@@ -114,8 +114,8 @@ export const styles = StyleSheet.create({
     height: 120,
   },
   personIcon:{
-    width: 40,
-    height: 44,
+    width: 78,
+    height: 78,
   },
   iconImg:{
     width: 45,

@@ -1,10 +1,30 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import {data} from './data';
 
-export default function PendingOrder() {
+export default class PendingOrder extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      buttons: []
+    };
+  }
+
+
+  componentDidMount = () => {
+    console.log("set buttons work")
+    var i=0;
+    let butt=[];
+    while (i < data.length) {
+      butt.push({ backgroundColor: '#68B0AB', pressed: false,id:i});
+      i++;
+    }
+    this.setState({buttons:butt});
+  }
+
+  render() {
   let orders;
   if (data.length >0) {
   orders = data.map((item) => {
@@ -21,8 +41,16 @@ export default function PendingOrder() {
         </View>
         </View>
         <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400', marginLeft:45}}>{item.time}</Text>
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400', marginLeft:130}}>{item.price}</Text>
+          <Image
+            style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
+            source = {require('../../images/providerImg/order_icon_time.png')}
+            />
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.time}</Text>
+          <Image
+            style = {{width: 15, height:15,marginLeft:130, marginRight:5}}
+            source = {require('../../images/providerImg/order_iocn_money.png')}
+          />
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price}</Text>
         </View>
         <View style={{flexDirection: 'row-reverse'}}>
           <TouchableOpacity style={styles.orderButton2}>
@@ -51,4 +79,5 @@ export default function PendingOrder() {
     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，耐心等待一下吧！</Text>
     </View>
  )};
+  }
 }
