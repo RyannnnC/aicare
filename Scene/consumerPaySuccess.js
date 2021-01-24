@@ -4,7 +4,7 @@ import {styles} from '../style';
 
 export default function ConsumerPaySuccess({navigation}) {
   const goToIcon= () => {
-    navigation.navigate('consumerIcon')
+    navigation.navigate('Home')
   }
   return (
     <View style={styles.container}>

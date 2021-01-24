@@ -8,11 +8,13 @@ import ConsumerDate from './Scene/consumerDate';
 import ConsumerAddress from './Scene/consumerAdrress';
 import ConsumerPayInfo from './Scene/consumerPayInfo';
 import ConsumerPaySuccess from "./Scene/consumerPaySuccess";
+import ConsumerMain from "./Scene/consumerMain";
 import DataContext from './consumerContext';
+import AccountMain from "./Scene/account/aacountMain";
 import 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
-import AccountMain from "./Scene/account/aacountMain"
+//import AccountMain from "./Scene/account/aacountMain"
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -20,8 +22,8 @@ function Home() {
   return (
       <Tab.Navigator>
           <Tab.Screen
-            name="主页"
-            component={ConsumerIcon}
+            name="consumerMain"
+            component={ConsumerMain}
             options={{
               tabBarLabel: '主页',
               tabBarIcon: ({ color, size }) => (
@@ -30,20 +32,20 @@ function Home() {
             }}
             />
           <Tab.Screen
-            name="consumerIcon"
+            name="Icon"
             component={ConsumerIcon}
             options={{
-              tabBarLabel: 'Icon',
+              tabBarLabel: '服务',
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="room-service" size={size} color={color} />
               ),
             }}
           />
           <Tab.Screen
-            name="consumerOrder"
-            component={ConsumerOrder}
+            name="订单"
+            component={ConsumerIcon}
             options={{
-              tabBarLabel: '服务',
+              tabBarLabel: '订单',
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />              ),
             }}
@@ -162,7 +164,8 @@ render() {
     <NavigationContainer>
       <Stack.Navigator >
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name ="accountMain" component ={AccountMain}/>
+        <Stack.Screen name="consumerMain" component={ConsumerMain} />
+        <Stack.Screen name="accountMain" component={AccountMain} />
         <Stack.Screen name="consumerIcon" component={ConsumerIcon} />
         <Stack.Screen name="consumerOrder" component={ConsumerOrder} />
         <Stack.Screen name="consumerInfo" component={Info} />
