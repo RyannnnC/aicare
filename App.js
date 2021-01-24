@@ -40,7 +40,7 @@ function Home() {
             }}
           />
           <Tab.Screen
-            name="订单"
+            name="consumerOrder"
             component={ConsumerIcon}
             options={{
               tabBarLabel: '订单',
