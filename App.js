@@ -12,7 +12,7 @@ import DataContext from './consumerContext';
 import 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
-
+import AccountMain from "./Scene/account/aacountMain"
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -30,28 +30,27 @@ function Home() {
             }}
             />
           <Tab.Screen
+            name="服务"
+            component={ConsumerIcon}
+            options={{
+              tabBarLabel: '服务',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="room-service" size={size} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
             name="订单"
             component={ConsumerIcon}
             options={{
               tabBarLabel: '订单',
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="行程"
-            component={ConsumerIcon}
-            options={{
-              tabBarLabel: '收益',
-              tabBarIcon: ({ color, size }) => (
-                <Feather name="dollar-sign" size={24} color="black" />
-              ),
+                <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />              ),
             }}
              />
           <Tab.Screen
             name="账号"
-            component={ConsumerIcon}
+            component={AccountMain}
             options={{
               tabBarLabel: '账号',
               tabBarIcon: ({ color, size }) => (
@@ -162,7 +161,8 @@ render() {
     <DataContext.Provider value={ this.state }>
     <NavigationContainer>
       <Stack.Navigator >
-        <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name ="accountMain" component ={AccountMain}/>
         <Stack.Screen name="consumerIcon" component={ConsumerIcon} />
         <Stack.Screen name="consumerOrder" component={ConsumerOrder} />
         <Stack.Screen name="consumerInfo" component={Info} />
