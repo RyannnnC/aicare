@@ -41,7 +41,7 @@ function Home() {
           />
           <Tab.Screen
             name="consumerOrder"
-            component={ConsumerIcon}
+            component={ConsumerOrder}
             options={{
               tabBarLabel: '服务',
               tabBarIcon: ({ color, size }) => (
