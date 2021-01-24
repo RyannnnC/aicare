@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
 import {styles} from '../providerStyle';
 //import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';

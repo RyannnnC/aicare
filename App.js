@@ -30,10 +30,10 @@ function Home() {
             }}
             />
           <Tab.Screen
-            name="服务"
+            name="consumerIcon"
             component={ConsumerIcon}
             options={{
-              tabBarLabel: '服务',
+              tabBarLabel: 'Icon',
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="room-service" size={size} color={color} />
               ),
@@ -41,9 +41,9 @@ function Home() {
           />
           <Tab.Screen
             name="consumerOrder"
-            component={ConsumerIcon}
+            component={ConsumerOrder}
             options={{
-              tabBarLabel: '订单',
+              tabBarLabel: '服务',
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />              ),
             }}
