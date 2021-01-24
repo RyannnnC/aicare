@@ -10,9 +10,58 @@ import ConsumerPayInfo from './Scene/consumerPayInfo';
 import ConsumerPaySuccess from "./Scene/consumerPaySuccess";
 import DataContext from './consumerContext';
 import 'react-native-gesture-handler';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
+function Home() {
+  return (
+      <Tab.Navigator>
+          <Tab.Screen
+            name="主页"
+            component={ConsumerIcon}
+            options={{
+              tabBarLabel: '主页',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialIcons name="home" size={size} color={color} />
+              ),
+            }}
+            />
+          <Tab.Screen
+            name="订单"
+            component={ConsumerIcon}
+            options={{
+              tabBarLabel: '订单',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="行程"
+            component={ConsumerIcon}
+            options={{
+              tabBarLabel: '收益',
+              tabBarIcon: ({ color, size }) => (
+                <Feather name="dollar-sign" size={24} color="black" />
+              ),
+            }}
+             />
+          <Tab.Screen
+            name="账号"
+            component={ConsumerIcon}
+            options={{
+              tabBarLabel: '账号',
+              tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="account" color={color} size={size} />
+            ),
+          }}
+             />
+        </Tab.Navigator>
+  );
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -112,7 +161,8 @@ render() {
   return (
     <DataContext.Provider value={ this.state }>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="consumerIcon">
+      <Stack.Navigator >
+        <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
         <Stack.Screen name="consumerIcon" component={ConsumerIcon} />
         <Stack.Screen name="consumerOrder" component={ConsumerOrder} />
         <Stack.Screen name="consumerInfo" component={Info} />
