@@ -54,7 +54,10 @@ export default class Resume extends Component {
 
   handleChange = (name, value) => {
     this.setState(({valueGroups}) => ({
-      valueGroups: {[name]: value}
+      valueGroups: {
+        ...valueGroups,
+        [name]: value
+      }
     }));
   };
 
@@ -203,14 +206,10 @@ export default class Resume extends Component {
               />
               </TouchableOpacity>
               { this.state.times[0].pressed && (
-                  <DateTimePicker
-                    testID="dateTimePicker"
-                    value={this.date}
-                    mode={this.mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={this.onChange}
-                  />
+                <Picker
+                  optionGroups={optionGroups}
+                  valueGroups={valueGroups}
+                  onChange={this.handleChange} />
               )}
               </View>
             }
