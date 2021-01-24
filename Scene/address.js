@@ -6,33 +6,32 @@ import DataContext from "../consumerContext";
 import Geocoder from 'react-native-geocoding';
 import MapView ,{Marker} from "react-native-maps"; 
 
-class ConsumerAddress extends React.Component {
+//import RNLocation from 'react-native-location';
+
+
+class ConsumerAddress extends Component{
   constructor(props) {
     super(props);
+    
     this.state={
       latitude:0,
       longitude:0,
-    }
-
+    };
   }
-  getData(){
+
+  goBack(){
+    this.props.navigation.dispatch(StackActions.pop(1));
+  }  
+  getdata(){
     Geocoder.init("AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"); // use a valid API key
     Geocoder.from(this.state.latitude, this.state.longitude)
 		.then(json => {
-      var addressComponent = json.results[0].address_components;
-      if (addressComponent.length==7){
-      this.context.action.changestreet(addressComponent[0].long_name + addressComponent[1].long_name);
-      this.context.action.changesuburb(addressComponent[2].long_name);
-      this.context.action.changestate(addressComponent[4].long_name );
-      this.context.action.changepostcode(addressComponent[6].long_name);
-      }
-      else{
-       
-        this.context.action.changestreet(addressComponent[0].long_name);
-        this.context.action.changesuburb(addressComponent[1].long_name);
-        this.context.action.changestate(addressComponent[3].long_name );
-        this.context.action.changepostcode(addressComponent[5].long_name);
-      }
+            var addressComponent = json.results[0].address_components;
+            this.context.action.changestreet(addressComponent[0].long_name + addressComponent[1].long_name);
+            this.context.action.changesuburb(addressComponent[2].long_name);
+            this.context.action.changestate(addressComponent[4].long_name );
+            this.context.action.changepostcode(addressComponent[6].long_name);
+			//alert("gps enabled, this is your address");
 		})
 		.catch(error => console.warn(error));
   }
@@ -41,14 +40,17 @@ class ConsumerAddress extends React.Component {
       position=>{
         this.setState({
           latitude:position.coords.latitude,
-          longitude:position.coords.longitude
+          longitude:position.coords.longitude,
         });
       },
 
     )
   }
+  
   render(){
     let state = this.context;
+    const { navigation } = this.props;
+
   return (
     
     <View style={styles.container}>
@@ -66,7 +68,7 @@ class ConsumerAddress extends React.Component {
     <Image style = {styles.address_image}
         source= {require('../images/icon/3/address.png')}
       />
-    <TouchableOpacity onPress = {()=>{this.getData()}}>
+    <TouchableOpacity onPress = {this.getdata}>
       <Image style = {styles.address_image}
         source= {require('../images/icon/3/localize.png')}
       />

@@ -10,6 +10,7 @@ import ConsumerPayInfo from './Scene/consumerPayInfo';
 import ConsumerPaySuccess from "./Scene/consumerPaySuccess";
 import ConsumerMain from "./Scene/consumerMain";
 import DataContext from './consumerContext';
+import AccountMain from "./Scene/account/aacountMain";
 import 'react-native-gesture-handler';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
@@ -51,7 +52,7 @@ function Home() {
              />
           <Tab.Screen
             name="账号"
-            component={ConsumerOrder}
+            component={AccountMain}
             options={{
               tabBarLabel: '账号',
               tabBarIcon: ({ color, size }) => (
@@ -164,7 +165,7 @@ render() {
       <Stack.Navigator >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="consumerMain" component={ConsumerMain} />
-
+        <Stack.Screen name="accountMain" component={AccountMain} />
         <Stack.Screen name="consumerIcon" component={ConsumerIcon} />
         <Stack.Screen name="consumerOrder" component={ConsumerOrder} />
         <Stack.Screen name="consumerInfo" component={Info} />

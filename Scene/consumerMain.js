@@ -33,19 +33,19 @@ export default function ProviderMain({navigation}) {
         <TouchableOpacity onPress={goToOrder}>
           <Image
           style = {{width:100,height:100}}
-          source = {require('../images/service.PNG')}
+          source = {require('../images/service.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer2} onPress={alertHandler}>
           <Image
           style = {{width:95,height:95}}
-          source = {require('../images/medicare.PNG')}
+          source = {require('../images/medicare.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer3} onPress={alertHandler}>
           <Image
           style = {{width:97,height:97}}
-          source = {require('../images/delivery.PNG')}
+          source = {require('../images/delivery.png')}
           />
         </TouchableOpacity>
       </View>

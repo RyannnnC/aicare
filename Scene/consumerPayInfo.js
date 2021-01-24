@@ -1,9 +1,11 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput,Switch } from 'react-native';
 import {styles} from '../style';
 import { Checkbox } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../consumerContext"
+//import { Checkbox } from 'react-native-paper/lib/typescript/components/Checkbox/Checkbox';
+//mport { grey100 } from 'react-native-paper/lib/typescript/styles/colors';
 export default function ConsumerPayInfo({navigation}) {
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
