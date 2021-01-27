@@ -5,6 +5,15 @@ import {styles} from '../../style';
 
 
 const AccountMain = ({navigation}) => {
+  const goInfo= () => {
+    navigation.navigate("accountInfo");
+  }
+  const changePwd= () => {
+    navigation.navigate("changePwd");
+  }
+  const goSetting= () => {
+    navigation.navigate("setting");
+  }
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
@@ -19,21 +28,21 @@ const AccountMain = ({navigation}) => {
       </View>
       
       
-      <TouchableOpacity style={styles.profileBar} >
+      <TouchableOpacity style={styles.profileBar} onPress = {goInfo} >
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/singup_icon_name.png')}
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>个人信息</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.profileBar} >
+      <TouchableOpacity style={styles.profileBar} onPress = {changePwd}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/signup_icon_pswd.png')}
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>修改密码</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.profileBar} >
+      <TouchableOpacity style={styles.profileBar} onPress ={goSetting}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/account_icon_setting.png')}
@@ -57,6 +66,4 @@ const AccountMain = ({navigation}) => {
     </View>
   );
 }
-
 export default AccountMain;
-

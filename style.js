@@ -43,6 +43,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius:25,
   },
+  card: {
+    width: 315,
+    height: 160,
+    marginTop:15,
+    marginBottom:15,
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
+  },
+  finishImg: {
+    width: 300,
+    height: 225,
+  },
   mainImg:{
     height:120,
     width:120,

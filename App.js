@@ -12,8 +12,14 @@ import ConsumerMain from "./Scene/consumerMain";
 import DataContext from './consumerContext';
 import AccountMain from "./Scene/account/aacountMain";
 import 'react-native-gesture-handler';
+import AccountInfo from "./Scene/account/accountInfo";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
+import ChangeEmail from './Scene/account/changeEmail';
+import ChangePwd from "./Scene/account/changePwd";
+import Setting from "./Scene/account/setting";
+import ConsumerOrderPage from "./Scene/consumerOrderPage";
+
 //import AccountMain from "./Scene/account/aacountMain"
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,7 +49,7 @@ function Home() {
           />
           <Tab.Screen
             name="订单"
-            component={ConsumerIcon}
+            component={ConsumerOrderPage}
             options={{
               tabBarLabel: '订单',
               tabBarIcon: ({ color, size }) => (
@@ -173,6 +179,11 @@ render() {
         <Stack.Screen name="consumerAddress" component={ConsumerAddress} />
         <Stack.Screen name="consumerPayInfo" component={ConsumerPayInfo} />
         <Stack.Screen name="consumerPaySuccess" component={ConsumerPaySuccess} />
+        <Stack.Screen name="accountInfo" component ={AccountInfo}/>
+        <Stack.Screen name="changeEmail" component ={ChangeEmail}/>
+        <Stack.Screen name="changePwd" component ={ChangePwd}/>
+        <Stack.Screen name="setting" component ={Setting}/>
+
       </Stack.Navigator>
     </NavigationContainer>
     </DataContext.Provider>
