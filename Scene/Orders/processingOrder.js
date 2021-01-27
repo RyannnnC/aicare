@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity } from 'react-native';
+import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import {data} from './data';
@@ -36,6 +36,20 @@ export default class ProcessingOrder extends Component {
       i++;
     }
     this.setState({buttons:butt});
+  }
+
+  startAlert(index){
+    Alert.alert(
+      '确认',
+      '您确定要结束订单倒计时吗？ 确定后需等待顾客方进行二次确认',
+      [
+        {text: '确定', onPress: () => this.pauseTime(index)},
+        {text: '取消', onPress: () => console.log('OK button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
   }
 
   getHours() {
@@ -111,7 +125,9 @@ export default class ProcessingOrder extends Component {
               textAlign: 'center',
               marginRight: 25,
               marginTop: 15,
-            }} onPress={this.state.buttons[item.id].pressed ? ()=>this.pauseTime(item.id) : ()=>this.startTime(item.id)}>
+              justifyContent: "center",
+              alignItems: "center" ,
+            }} onPress={this.state.buttons[item.id].pressed ? ()=>this.startAlert(item.id) : ()=>this.startTime(item.id)}>
               <Text style={{fontSize:14, color:'#FAFAFA'}}>开始</Text>
             </TouchableOpacity>
           </View>

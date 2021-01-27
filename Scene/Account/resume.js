@@ -2,18 +2,12 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import Picker from 'react-mobile-picker-scroll';
+import { TimePicker } from 'react-native-simple-time-picker';
 
 export default class Resume extends Component {
-  state={
-    valueGroups: {
-        hour: '00',
-        minite: '00'
-      },
-      optionGroups: {
-        hour: ['00', '01', '02','03','04','05','06','07','08','09','10','11', '12','13','14','15','16','17','18','19','20','21','22','23'],
-        minite: ['00', '10', '20', '30', '40','50']
-      },
+    state={
+    selectedHours: 0,
+    selectedMinutes: 0,
     buttons: [
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -24,7 +18,7 @@ export default class Resume extends Component {
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
     ],
     times: [
-        {  pressed: false, },
+        { pressed: false, },
         { pressed: false, },
         { pressed: false, },
         { pressed: false, },
@@ -32,8 +26,12 @@ export default class Resume extends Component {
         { pressed: false, },
         { pressed: false, },
     ]
-
   };
+
+
+  setDate(newDate) {
+    this.setState({startTime: newDate});
+  }
 
   changeColor(index){
     let but = this.state.buttons;
@@ -64,7 +62,6 @@ export default class Resume extends Component {
   showTimepicker(index) {
     console.log('called');
     this.setState({show:true});
-    this.setState({mode:'time'});
     let but = this.state.times;
     if(!but[index].pressed){
        but[index].pressed = true;
@@ -76,14 +73,15 @@ export default class Resume extends Component {
   };
 
   render() {
-    const {optionGroups, valueGroups} = this.state;
-
+    const { selectedHours, selectedMinutes } = this.state;
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
       <ScrollView style={{ flex: 1 }}>
-        <Image style={styles.resumeImg}
-          source = {require('../../images/providerImg/home_img_person.png')}
-        />
+        <View style={{ justifyContent: "center" }}>
+          <Image style={styles.resumeImg}
+            source = {require('../../images/providerImg/home_img_person.png')}
+          />
+        </View>
         <View style={{flexDirection: 'row'}}>
           <Image
             style = {styles.smallIconImg}
@@ -205,12 +203,15 @@ export default class Resume extends Component {
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
               </TouchableOpacity>
-              { this.state.times[0].pressed && (
-                <Picker
-                  optionGroups={optionGroups}
-                  valueGroups={valueGroups}
-                  onChange={this.handleChange} />
-              )}
+              { this.state.times[0].pressed &&
+                <View style={{flex: 1, alignItems: 'center',justifyContent: 'center',}}>
+                <TimePicker
+                  hours={selectedHours}
+                  minutes={selectedMinutes}
+                  onChange={({ hours, minutes }) => this.setState({ selectedHours: hours, selectedMinutes: minutes })}
+                />
+                </View>
+              }
               </View>
             }
           </View>

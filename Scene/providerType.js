@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,SafeAreaView } from 'react-native';
 import {styles} from '../style';
 //import Navigator from './routes/homeStack';
 
@@ -12,7 +12,7 @@ const ProviderType = ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image
         source={require('../images/login.png')}
         style = {styles.img}
@@ -36,7 +36,7 @@ const ProviderType = ({navigation}) => {
         source={require('../images/logo.png')}
         style = {styles.img2}
       />
-    </View>
+    </SafeAreaView>
   );
 }
  export default ProviderType;

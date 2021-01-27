@@ -30,6 +30,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#9ADAD6',
     borderRadius: 15,
     textAlign: 'center',
+    justifyContent: "center",
+    alignItems: "center" ,
   },
   buttonContainer2:{
     width: 90,
@@ -41,6 +43,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#196F75',
     borderRadius: 15,
     textAlign: 'center',
+    justifyContent: "center",
+    alignItems: "center" ,
   },
   buttonContainer3:{
     width: 90,
@@ -52,10 +56,13 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FF816B',
     borderRadius: 15,
     textAlign: 'center',
+    justifyContent: "center",
+    alignItems: "center" ,
   },
   buttons:{
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: "center",
   },
   buttonContainer4:{
     width: 280,
@@ -148,6 +155,8 @@ export const styles = StyleSheet.create({
     backgroundColor:'#68b0ab',
     borderRadius: 15,
     textAlign: 'center',
+    justifyContent: "center",
+    alignItems: "center" ,
   },
   orderButton: {
     width: 75,
@@ -157,6 +166,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginRight: 25,
     marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center" ,
   },
   orderButton2: {
     width: 75,
@@ -166,6 +177,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginRight: 25,
     marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center" ,
   },
   resumeImg: {
     width:110,
@@ -190,6 +203,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#68B0AB',
     borderRadius: 20,
     alignItems: 'center',
+    justifyContent: "center",
   },
   resumeSmallButton: {
     width: 60,
@@ -276,5 +290,15 @@ export const styles = StyleSheet.create({
   pendingImg: {
     width: 40,
     height:40,
+  },
+  timePicker: {
+    width: 60,
+    height: 30,
+    borderWidth: 1,
+    borderRadius: 10,
+    marginLeft:20,
+    marginRight:20,
+    justifyContent: "center",
+    alignItems: "center",
   }
 });

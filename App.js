@@ -13,7 +13,6 @@ import Login from './Scene/login';
 import AccountMain from './Scene/Account/accountMain';
 import Resume from './Scene/Account/resume';
 import Orders from './Scene/Account/orders';
-import Benefit from './Scene/Account/benefit';
 import Comment from './Scene/Account/comment';
 import AccountInfo from './Scene/Account/accountInfo';
 import ChangePwd from './Scene/Account/changePwd';
@@ -53,7 +52,7 @@ function Home() {
             }}
           />
           <Tab.Screen
-            name="行程"
+            name="收益"
             component={Income}
             options={{
               tabBarLabel: '收益',
@@ -87,7 +86,6 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name="accountMain" component={AccountMain}/>
         <Stack.Screen name="简历" component={Resume} />
         <Stack.Screen name="订单" component={Orders} />
-        <Stack.Screen name="收益" component={Benefit} />
         <Stack.Screen name="评价" component={Comment} />
         <Stack.Screen name="账户信息" component={AccountInfo} />
         <Stack.Screen name="修改密码" component={ChangePwd} />

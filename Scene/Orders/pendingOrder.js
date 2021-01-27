@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity } from 'react-native';
+import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import {data} from './data';
@@ -22,6 +22,20 @@ export default class PendingOrder extends Component {
       i++;
     }
     this.setState({buttons:butt});
+  }
+
+  startAlert(index){
+    Alert.alert(
+      '提醒',
+      '您确定要接受这桩订单吗？',
+      [
+        {text: '确定', onPress: () => console.log('yes button clicked')},
+        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
   }
 
   render() {
@@ -53,7 +67,7 @@ export default class PendingOrder extends Component {
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price}</Text>
         </View>
         <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity style={styles.orderButton2}>
+          <TouchableOpacity style={styles.orderButton2} onPress ={this.startAlert} >
             <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.orderButton}>
