@@ -4,7 +4,7 @@ import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../consumerContext";
 import Geocoder from 'react-native-geocoding';
-import MapView ,{Marker} from "react-native-maps"; 
+
 
 class ConsumerAddress extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class ConsumerAddress extends React.Component {
       this.context.action.changepostcode(addressComponent[6].long_name);
       }
       else{
-       
+
         this.context.action.changestreet(addressComponent[0].long_name);
         this.context.action.changesuburb(addressComponent[1].long_name);
         this.context.action.changestate(addressComponent[3].long_name );
@@ -50,7 +50,7 @@ class ConsumerAddress extends React.Component {
   render(){
     let state = this.context;
   return (
-    
+
     <View style={styles.container}>
     <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}>
@@ -61,7 +61,7 @@ class ConsumerAddress extends React.Component {
     </TouchableOpacity>
 
     <Text style = {styles.service}>预约地址</Text>
-    
+
     <View style ={styles.comment_container}>
     <Image style = {styles.address_image}
         source= {require('../images/icon/3/address.png')}
@@ -70,7 +70,7 @@ class ConsumerAddress extends React.Component {
       <Image style = {styles.address_image}
         source= {require('../images/icon/3/localize.png')}
       />
-    </TouchableOpacity> 
+    </TouchableOpacity>
     </View>
     <View style ={styles.comment_container}>
       <Text style = {styles.street}>Street</Text>
