@@ -54,6 +54,8 @@ export default class ServiceType extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(0)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[0].fontColor }}>杂物收纳</Text>
@@ -68,6 +70,8 @@ export default class ServiceType extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(1)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[1].fontColor }}>清扫清洁</Text>
@@ -82,6 +86,8 @@ export default class ServiceType extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(2)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[2].fontColor }}>生活料理</Text>
@@ -98,6 +104,8 @@ export default class ServiceType extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(3)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[3].fontColor }}>上门做饭</Text>
@@ -112,6 +120,8 @@ export default class ServiceType extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(4)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[4].fontColor }}>出门陪同</Text>

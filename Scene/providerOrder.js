@@ -12,10 +12,12 @@ export default function ProviderOrder() {
 
   return (
     <SafeAreaView style={{flex:1}}>
+      <View style={{alignItems: "center" }}>
       <Image
         style = {styles.orderImg}
         source = {require('../images/providerImg/order_img.png')}
       />
+      </View>
       <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
         <Tab.Screen name="待接取" component={PendingOrder} />
         <Tab.Screen name="进行中" component={ProcessingOrder} />

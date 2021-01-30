@@ -50,6 +50,8 @@ export default class WorkExperience extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(0)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[0].fontColor }}>个人护理三级证书</Text>
@@ -64,25 +66,31 @@ export default class WorkExperience extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(1)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[1].fontColor }}>养老护理四级证书</Text>
       </TouchableOpacity>
       </View>
+      <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
       <TouchableOpacity style={{
         backgroundColor:this.state.buttons[2].backgroundColor,
         borderWidth: this.state.buttons[2].borderWidth,
         height:30,
-        alignSelf:"flex-start",
+        width:'auto',
         marginTop:5,
         marginBottom:5,
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(2)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[2].fontColor }}>注册护士执照</Text>
       </TouchableOpacity>
+      </View>
       <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
         <TextInput style={styles.resumeInput} placeholder= "请填写需要添加的证书名称"/>
         <TouchableOpacity>

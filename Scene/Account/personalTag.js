@@ -54,6 +54,8 @@ export default class PersonalTag extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(0)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[0].fontColor }}>粤语</Text>
@@ -68,6 +70,8 @@ export default class PersonalTag extends Component {
         marginLeft: 10,
         marginRight: 10,
         borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
       }}
       onPress={()=>this.changeColor(1)}>
         <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[1].fontColor }}>热情</Text>
@@ -77,6 +81,8 @@ export default class PersonalTag extends Component {
         borderWidth: this.state.buttons[2].borderWidth,
         height:30,
         width:'auto',
+        paddingLeft:15,
+        paddingRight:15,
         marginTop:5,
         marginBottom:5,
         marginLeft: 10,
@@ -91,6 +97,8 @@ export default class PersonalTag extends Component {
         borderWidth: this.state.buttons[3].borderWidth,
         height:30,
         width:'auto',
+        paddingLeft:15,
+        paddingRight:15,
         marginTop:5,
         marginBottom:5,
         marginLeft: 10,
@@ -107,6 +115,8 @@ export default class PersonalTag extends Component {
         borderWidth: this.state.buttons[4].borderWidth,
         height:30,
         width:'auto',
+        paddingLeft:15,
+        paddingRight:15,
         marginTop:5,
         marginBottom:5,
         marginLeft: 10,
@@ -121,6 +131,8 @@ export default class PersonalTag extends Component {
         borderWidth: this.state.buttons[5].borderWidth,
         height:30,
         width:'auto',
+        paddingLeft:15,
+        paddingRight:15,
         marginTop:5,
         marginBottom:5,
         marginLeft: 10,
@@ -135,6 +147,8 @@ export default class PersonalTag extends Component {
         borderWidth: this.state.buttons[6].borderWidth,
         height:30,
         width:'auto',
+        paddingLeft:15,
+        paddingRight:15,
         marginTop:5,
         marginBottom:5,
         marginLeft: 10,

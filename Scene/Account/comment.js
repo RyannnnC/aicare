@@ -10,12 +10,12 @@ export default function Comment() {
       <View style={styles.commentCard}>
         <View style={{flexDirection: 'row', marginTop:5, marginBottom:5, marginLeft:5, marginRight:5}}>
           <Image
-            style = {styles.commentIcon}
+            style = {styles.commentPerson}
             source={require('../../images/providerImg/person_img2.png')}
           />
           <View>
             <Text>{item.name}</Text>
-            <View>
+            <View style={{flexDirection: 'row'}}>
               <Text>{item.time}</Text>
               <Text> ★ ★ ★ ★ ★ </Text>
             </View>
@@ -44,7 +44,7 @@ export default function Comment() {
               style = {styles.commentIcon}
               source={require('../../images/providerImg/account_icon_like_white.png')}
             />
-            <Text style={{fontSize:14, fontWeight: '400', color: '#FFFFFF'}}>满意度</Text>
+            <Text style={{fontSize:14, fontWeight: '400', color: '#FFFFFF',marginLeft:10}}>满意度</Text>
           </View>
           <Text style={{fontSize:18, fontWeight: '600', color: '#FFFFFF'}}>4.9</Text>
         </View>
@@ -55,7 +55,7 @@ export default function Comment() {
               style = {styles.commentIcon}
               source={require('../../images/providerImg/account_icon_comment_white.png')}
               />
-              <Text style={{fontSize:14, fontWeight: '400', color: '#FFFFFF'}}>总评价</Text>
+              <Text style={{fontSize:14, fontWeight: '400', color: '#FFFFFF', marginLeft:10}}>总评价</Text>
           </View>
           <Text style={{fontSize:18, fontWeight: '600', color: '#FFFFFF'}}>220</Text>
         </View>

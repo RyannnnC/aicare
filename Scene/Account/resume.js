@@ -3,11 +3,18 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaVi
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { TimePicker } from 'react-native-simple-time-picker';
+import Geocoder from 'react-native-geocoding';
+
 
 export default class Resume extends Component {
     state={
     selectedHours: 0,
     selectedMinutes: 0,
+    latitude:0,
+    longitude:0,
+    street:"",
+    suburb:"",
+    postcode:"",
     buttons: [
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -28,11 +35,17 @@ export default class Resume extends Component {
     ]
   };
 
+  componentDidMount(){
+   navigator.geolocation.getCurrentPosition(
+     position=>{
+       this.setState({
+         latitude:position.coords.latitude,
+         longitude:position.coords.longitude
+       });
+     },
 
-  setDate(newDate) {
-    this.setState({startTime: newDate});
+   )
   }
-
   changeColor(index){
     let but = this.state.buttons;
     if(!but[index].pressed){
@@ -50,14 +63,37 @@ export default class Resume extends Component {
     }
   };
 
-  handleChange = (name, value) => {
-    this.setState(({valueGroups}) => ({
-      valueGroups: {
-        ...valueGroups,
-        [name]: value
+  getData(){
+    Geocoder.init("AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"); // use a valid API key
+    Geocoder.from(this.state.latitude, this.state.longitude)
+		.then(json => {
+      var addressComponent = json.results[0].address_components;
+      if (addressComponent.length==7){
+      this.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name + ' ' + addressComponent[2].long_name);
+      this.changepostcode(addressComponent[6].long_name);
       }
-    }));
-  };
+      else{
+        this.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name);
+        this.changepostcode(addressComponent[5].long_name);
+      }
+		})
+		.catch(error => console.warn(error));
+  }
+  changepostcode = (value) => {
+    this.setState({
+        postcode: value
+    });
+  }
+  changesuburb = (value) => {
+    this.setState({
+        suburb: value
+    });
+  }
+  changestreet = (value) => {
+    this.setState({
+        street: value
+    });
+  }
 
   showTimepicker(index) {
     console.log('called');
@@ -87,8 +123,15 @@ export default class Resume extends Component {
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/singup_icon_name.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>基本信息</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>基本信息</Text>
+          <TouchableOpacity style={{flexDirection: 'row', marginRight: 5}} onPress = {()=>{this.getData()}}>
+            <Image style = {{width:12, height:15}}
+              source= {require('../../images/providerImg/order_icon_location.png')}
+            />
+            <Text>自动定位</Text>
+          </TouchableOpacity>
         </View>
+
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>姓名</Text>
           <TextInput style={styles.resumeInput} placeholder= "林三"/>
@@ -107,11 +150,21 @@ export default class Resume extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>地址</Text>
-          <TextInput style={styles.resumeInput} placeholder= "1001/1 Mooltan Avanue"/>
+          <TextInput
+          style={styles.resumeInput}
+          placeholder= "1001/1 Mooltan Avanue"
+          value = {this.state.street}
+          onChangeText={(text) => {this.state.changestreet(text)}}
+          />
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>编码</Text>
-          <TextInput style={styles.resumeInput1} placeholder= "2113"/>
+          <TextInput
+            style={styles.resumeInput1}
+            placeholder= "2113"
+            value = {this.state.postcode}
+            onChangeText={(text) => {this.state.changepostcode(text)}}
+          />
           <Text style={{ fontSize:16, fontWeight: '400' }}>城市</Text>
           <TextInput style={styles.resumeInput1} placeholder= "悉尼"/>
         </View>
