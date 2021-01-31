@@ -13,15 +13,15 @@ class Setting extends React.Component {
         //might need async storage to store this in the later stage
         language: '中文',
       };
-      
-    }    
+
+    }
     messageSwitch = (value) => {
         this.setState({message: value})
      }
     gpsSwitch = (value) => {
         this.setState({gps: value})
     }
-    
+
     render(){
     return (
         <View style={styles.container}>
@@ -62,7 +62,7 @@ class Setting extends React.Component {
                  }>
                     <Picker.Item label="中文" value="中文" />
                     <Picker.Item label="English" value="English" />
-                    <Picker.Item label="にほんご" value="にほんご" />
+                    <Picker.Item label="日本語" value="日本語" />
 
                 </Picker>
             </View>
@@ -78,9 +78,5 @@ class Setting extends React.Component {
     );
     }
 }
-  
+
 export default Setting;
-  
-  
-
-

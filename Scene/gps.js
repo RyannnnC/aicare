@@ -14,7 +14,7 @@ import ConsumerPayInfo from './Scene/consumerPayInfo';
 import ConsumerPaySuccess from "./Scene/consumerPaySuccess";
 import DataContext from './consumerContext';
 import 'react-native-gesture-handler';
-import MapView ,{Marker} from "react-native-maps"; 
+
 //import {styles} from './style';
 const Stack = createStackNavigator();
 
@@ -74,7 +74,7 @@ render() {
         longitudeDelta:0.021
       }}
       style = {styles.map}
-      
+
     >
       <Marker coordinate = {this.state}/>
     </MapView>*/}
