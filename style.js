@@ -299,9 +299,8 @@ export const styles = StyleSheet.create({
     borderBottomWidth:1,
   },
   topping_image:{
-    marginTop:20,
-    height:150,
-    width:300
+    height:100,
+    width:410,
   },
   finish_image:{
     marginTop:40,

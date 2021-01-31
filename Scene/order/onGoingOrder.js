@@ -9,7 +9,7 @@ export default class OngoingingOrder extends Component {
       super(props);
       //date: new Date();
       this.state={
-        secondsElapsed: 3600,
+        //secondsElapsed: 3600,
         buttons: [
           { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:0},
           { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:1},
@@ -37,7 +37,7 @@ export default class OngoingingOrder extends Component {
     this.setState({buttons:butt});
   }
 
-  getHours() {
+  /*getHours() {
     return ("0" + Math.floor(this.state.secondsElapsed / 3600)).slice(-2);
   }
 
@@ -72,7 +72,7 @@ export default class OngoingingOrder extends Component {
     but[index].backgroundColor = '#68B0AB';
     this.setState({buttons: but});
   }
-
+*/
   render () {
     //console.log (this.state);
     if (data.length >0) {
@@ -96,7 +96,7 @@ export default class OngoingingOrder extends Component {
             />
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.phone}</Text>
             <Image
-              style = {{width: 15, height:15,marginLeft:130, marginRight:5}}
+              style = {{width: 15, height:15,marginLeft:50, marginRight:5}}
               source = {require('../../images/order_iocn_money.png')}
             />
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price}</Text>
@@ -110,20 +110,20 @@ export default class OngoingingOrder extends Component {
               textAlign: 'center',
               marginRight: 25,
               marginTop: 15,
-            }} onPress={this.state.buttons[item.id].pressed ? ()=>this.pauseTime(item.id) : ()=>this.startTime(item.id)}>
-              <Text style={{fontSize:14, color:'#FAFAFA'}}>开始</Text>
+            }} >
+              <Text style={{fontSize:14, color:'#FAFAFA'}}>未开始</Text>
             </TouchableOpacity>
           </View>
         </View>
       )
     })
     return (
-      <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{fontSize:20}}>{this.getHours()} : {this.getMinutes()} : {this.getSeconds()}</Text>
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
+        
         <ScrollView style={{ flex:1}}>
           {orders}
         </ScrollView>
-      </SafeAreaView>
+      </View>
     )} else {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

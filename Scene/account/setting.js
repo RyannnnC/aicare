@@ -45,7 +45,8 @@ class Setting extends React.Component {
             />
             </View>
 
-            <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>                <Text style={{ fontSize:16, fontWeight: '400' }}>地理位置访问</Text>
+            <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>  
+                <Text style={{ fontSize:16, fontWeight: '400' }}>地理位置访问</Text>
                 <Switch
                     onValueChange={this.gpsSwitch}
                     value={this.state.gps}
@@ -65,7 +66,7 @@ class Setting extends React.Component {
 
                 </Picker>
             </View>
-            <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
+            <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row',marginTop:120}}>
                 <Text>联系我们  </Text>
                 <Text>+61 0403555431</Text>
             </View>

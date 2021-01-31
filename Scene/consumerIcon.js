@@ -16,11 +16,9 @@ const  ConsumerIcon= ({navigation}) => {
     <View style={styles.container}>
     <Image
       style = {styles.topping_image}
-      source={require('../images/icon/1/topping.png')}
+      source={require('../images/order_img.png')}
     />
     
-
-    <Text style = {styles.service}>请选择服务类型</Text>
     <Image
       style = {styles.choice}
       source = {require('../images/icon/2/choice.png')}
