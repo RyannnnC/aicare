@@ -3,7 +3,12 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from '../consumerContext';
+import call from 'react-native-phone-call'
 
+const args = {
+  number: '0403555432', // String value with the number to call
+  prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call 
+}
 
 export default function Consumer({navigation}) {
   
@@ -14,7 +19,9 @@ export default function Consumer({navigation}) {
   const gotoInfo= () => {
     navigation.navigate('consumerInfo')
   }
-
+  const makecall=()=>{
+    call(args).catch(console.error)
+  }
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
   }
@@ -70,6 +77,12 @@ export default function Consumer({navigation}) {
       />
     </TouchableOpacity>
     </View>
+    <TouchableOpacity onPress={makecall}>
+            <Image
+                style={{width:60,height:60,position:"absolute",borderRadius:30,bottom:5,right:-170}}
+                source = {require("../images/mobile_icon.png")}
+            />
+    </TouchableOpacity>
     <Image style = {styles.comments}
         source={require('../images/icon/2/comments.png')}
     />

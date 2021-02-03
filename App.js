@@ -19,7 +19,12 @@ import ChangeEmail from './Scene/account/changeEmail';
 import ChangePwd from "./Scene/account/changePwd";
 import Setting from "./Scene/account/setting";
 import ConsumerOrderPage from "./Scene/consumerOrderPage";
-
+import ConsumerProvider from "./Scene/consumerProvider";
+import ProviderInfo from "./Scene/ProviderInfo";
+import Consumer from './Scene/consumerOrder';
+import ConsumerMapView from "./Scene/consumerMapView";
+import consumerRating from './Scene/order/rating';
+import CompletedOrder from "./Scene/order/completedOrder";
 //import AccountMain from "./Scene/account/aacountMain"
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -183,6 +188,12 @@ render() {
         <Stack.Screen name="changeEmail" component ={ChangeEmail}/>
         <Stack.Screen name="changePwd" component ={ChangePwd}/>
         <Stack.Screen name="setting" component ={Setting}/>
+        <Stack.Screen name="cp" component ={ConsumerProvider}/>
+        <Stack.Screen name="ProviderInfo" component ={ProviderInfo}/>
+        <Stack.Screen name="consumerMV" component ={ConsumerMapView}/>
+        <Stack.Screen name="consumerRating" component ={consumerRating}/>
+        <Stack.Screen name="completedOrder" component ={CompletedOrder}/>
+
 
       </Stack.Navigator>
     </NavigationContainer>

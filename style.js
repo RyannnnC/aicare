@@ -45,9 +45,7 @@ export const styles = StyleSheet.create({
   },
   card: {
     width: 315,
-    height: 160,
-    marginTop:15,
-    marginBottom:15,
+    height: 100,
     backgroundColor: '#ffffff',
     borderRadius: 15,
   },
@@ -215,6 +213,8 @@ export const styles = StyleSheet.create({
   choice:{
     marginTop:20,
     marginLeft:40,
+    width:290,
+    height:40,
   },
   clean_wrapper:{
     backgroundColor: '#8FD7D3',
@@ -374,15 +374,8 @@ export const styles = StyleSheet.create({
     height:140,
     borderRadius:15,
     backgroundColor:'#FFFFFF',
-  },
-  card: {
-   width: 315,
-   height: 160,
-   marginTop:15,
-   marginBottom:15,
-   backgroundColor: '#ffffff',
-   borderRadius: 15,
- },
+    borderColor:"#999999",
+    borderWidth:0.3 },
  mainImg:{
    height:120,
    width:120,

@@ -3,7 +3,8 @@ import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
 import {styles} from '../style';
 import {data} from './order/data';
-
+ 
+//call(args).catch(console.error)
 export default function ProviderMain({navigation}) {
     const alertHandler= () => {
       Alert.alert('function unimplemented')
@@ -11,15 +12,16 @@ export default function ProviderMain({navigation}) {
     const goToOrder= () => {
         navigation.navigate("consumerOrder")
     }
+    
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     
     return (
-      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40}}>
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white"}}>
         <View style={{flexDirection: 'row', marginBottom: 15}}>
           <View style={{marginLeft:30, marginRight:30}}>
             <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
-            <Text>您今日有{data.length}项工作待完成</Text>
+            <Text>您今日有{data.length}项行程待完成</Text>
           </View>
           <Image
             style = {styles.mainImg}
@@ -50,7 +52,7 @@ export default function ProviderMain({navigation}) {
         </TouchableOpacity>
       </View>
         <View style={{textAlign: "left" }}>
-          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>行程</Text>
+          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>行程</Text>
         </View>
       <View style={styles.home}>
         <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>

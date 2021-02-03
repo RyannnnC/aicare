@@ -78,7 +78,14 @@ export default class OngoingingOrder extends Component {
     if (data.length >0) {
     const orders = data.map((item) => {
       return (
-        <View style={styles.card} key={item.id}>
+        <View style={{
+            width: 315,
+            height: 160,
+            backgroundColor: '#F1F4F3',
+            borderRadius: 15,
+            marginTop:10,
+            marginBottom:5,
+         }} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:16, marginBottom:16, marginLeft:25}}>
           <Image
             style = {styles.pendingImg}
@@ -111,14 +118,14 @@ export default class OngoingingOrder extends Component {
               marginRight: 25,
               marginTop: 15,
             }} >
-              <Text style={{fontSize:14, color:'#FAFAFA'}}>未开始</Text>
+              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:14}}>未开始</Text>
             </TouchableOpacity>
           </View>
         </View>
       )
     })
     return (
-      <View style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
         
         <ScrollView style={{ flex:1}}>
           {orders}
@@ -126,7 +133,7 @@ export default class OngoingingOrder extends Component {
       </View>
     )} else {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
       <Image
         style = {styles.finishImg}
         source = {require('../../images/complete_empty.png')}

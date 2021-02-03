@@ -1,14 +1,23 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput,Switch } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput,Switch,ScrollView } from 'react-native';
 import {styles} from '../style';
 import { Checkbox } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../consumerContext"
+import call from 'react-native-phone-call'
+
+const args = {
+  number: '0403555432', // String value with the number to call
+  prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call 
+}
 //import { Checkbox } from 'react-native-paper/lib/typescript/components/Checkbox/Checkbox';
 //mport { grey100 } from 'react-native-paper/lib/typescript/styles/colors';
 export default function ConsumerPayInfo({navigation}) {
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
+  }
+  const makecall=()=>{
+    call(args).catch(console.error)
   }
   const gotoSuccess= () => {
     navigation.navigate("consumerPaySuccess")
@@ -20,6 +29,8 @@ export default function ConsumerPayInfo({navigation}) {
   return (
     <DataContext.Consumer>
     {(state)  => (
+    <ScrollView>
+
     <View style={styles.container}>
     <TouchableOpacity onPress = {goBack}>
       <Image
@@ -103,6 +114,12 @@ export default function ConsumerPayInfo({navigation}) {
       }}
     />
     </View>
+    <TouchableOpacity onPress={makecall}>
+            <Image
+                style={{width:60,height:60,position:"absolute",borderRadius:30,bottom:-25,right:-190}}
+                source = {require("../images/mobile_icon.png")}
+            />
+    </TouchableOpacity>
     {checked3?<View style = {styles.container}>
       <View style ={styles.comment_container}>
         <TextInput style = {styles.time}
@@ -135,6 +152,8 @@ export default function ConsumerPayInfo({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  </ScrollView>
+
   )}
   </DataContext.Consumer>
   );

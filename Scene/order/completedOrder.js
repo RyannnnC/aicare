@@ -4,7 +4,7 @@ import {styles} from '../../style';
 import {data} from './data';
 //import moment from "moment"
 
-export default class OngoingingOrder extends Component {
+export default class CompletedOrder extends Component {
     constructor(props) {
       super(props);
       //date: new Date();
@@ -78,7 +78,14 @@ export default class OngoingingOrder extends Component {
     if (data.length >0) {
     const orders = data.map((item) => {
       return (
-        <View style={styles.card} key={item.id}>
+        <View style={{
+          width: 315,
+          height: 160,
+          backgroundColor: '#F1F4F3',
+          borderRadius: 15,
+          marginTop:10,
+          marginBottom:5,
+       }} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:16, marginBottom:16, marginLeft:25}}>
           <Image
             style = {styles.pendingImg}
@@ -102,7 +109,10 @@ export default class OngoingingOrder extends Component {
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price}</Text>
           </View>
           <View style={{flexDirection: 'row-reverse'}}>
-            <TouchableOpacity style={{
+            <TouchableOpacity
+            onPress={() =>{
+              this.props.navigation.navigate("consumerRating")}}
+            style={{
               width: 75,
               height: 30,
               backgroundColor: this.state.buttons[item.id].backgroundColor,
@@ -111,14 +121,14 @@ export default class OngoingingOrder extends Component {
               marginRight: 25,
               marginTop: 15,
             }} >
-              <Text style={{fontSize:14, color:'#FAFAFA'}}>未评价</Text>
+              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:14}}>未评价</Text>
             </TouchableOpacity>
           </View>
         </View>
       )
     })
     return (
-      <View style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
         
         <ScrollView style={{ flex:1}}>
           {orders}
@@ -126,7 +136,7 @@ export default class OngoingingOrder extends Component {
       </View>
     )} else {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white" }}>
       <Image
         style = {styles.finishImg}
         source = {require('../../images/complete_empty.png')}

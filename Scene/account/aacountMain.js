@@ -14,8 +14,23 @@ const AccountMain = ({navigation}) => {
   const goSetting= () => {
     navigation.navigate("setting");
   }
+  const createAlert = () =>
+    Alert.alert(
+      "提醒",
+      "您确定要推出登陆吗？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "确定", onPress: () => console.log("OK Pressed") } //this should navigate to the login page
+      ],
+      { cancelable: false }
+    );
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
         <Image
           style = {styles.personIcon}
@@ -49,7 +64,7 @@ const AccountMain = ({navigation}) => {
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>我的设置</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.profileBar} >
+      <TouchableOpacity style={styles.profileBar} onPress = {createAlert} >
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/account_icon_logout.png')}
