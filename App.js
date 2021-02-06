@@ -24,6 +24,8 @@ import Certificate from './Scene/Account/certificate';
 import ServiceType from './Scene/Account/serviceType';
 import ChangeMail from './Scene/Account/changeMail';
 import TransferOut from './Scene/Income/transferOut';
+import Signup from './Scene/signUp';
+import Forget from './Scene/forget';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -84,6 +86,8 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name="登陆" component={Login} />
         <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
         <Stack.Screen options={{headerShown: false}} name="accountMain" component={AccountMain}/>
+        <Stack.Screen name="注册" component={Signup}/>
+        <Stack.Screen name="忘记密码" component={Forget}/>
         <Stack.Screen name="简历" component={Resume} />
         <Stack.Screen name="订单" component={Orders} />
         <Stack.Screen name="评价" component={Comment} />

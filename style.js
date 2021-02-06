@@ -177,6 +177,13 @@ export const styles = StyleSheet.create({
   },
   f_wrapper:{
     marginTop:20,
+    marginLeft:47,
+    marginRight:77,
+  },
+  z_wrapper:{
+    marginTop:20,
+    marginLeft:77,
+    marginRight:47,
   },
   container2:{
     flexDirection: 'row',

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
-import { Actions } from 'react-native-router-flux'
 import {styles} from '../style';
 
 const Login = ({navigation}) => {
@@ -22,10 +21,10 @@ const Login = ({navigation}) => {
       />
       <TextInput style = {styles.password}/>
       <View style ={styles.container2}>
-        <TouchableOpacity style={styles.f_wrapper}>
+        <TouchableOpacity style={styles.f_wrapper} onPress={() => navigation.navigate('忘记密码')}>
           <Text style={styles.f_Text}>忘记密码？</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.f_wrapper}>
+        <TouchableOpacity style={styles.z_wrapper} onPress={() => navigation.navigate('注册')}>
           <Text style={styles.r_Text}>注册账户</Text>
         </TouchableOpacity>
       </View>

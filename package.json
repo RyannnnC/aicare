@@ -31,7 +31,7 @@
     "react-native-router-flux": "^4.2.0",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
-    "react-native-simple-time-picker": "^1.0.11",
+    "react-native-simple-time-picker": "^1.1.2",
     "react-native-tab-navigator": "^0.3.4",
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.3",
