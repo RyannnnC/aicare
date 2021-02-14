@@ -7,6 +7,7 @@ export const data = [
       phone: '+61 0403571800',
       address: '1008 Waterloo Road, Burwood',
       id: 0,
+      img:"../../images/telehealth_icon/service_telehealth_select_img_clinic1.png"
     },
     {
       name: "林**",
@@ -16,6 +17,7 @@ export const data = [
       phone: '+61 0403571800',
       address: '1008 Waterloo Road, Burwood',
       id: 1,
+      img:"../../images/telehealth_icon/service_telehealth_select_img_clinic2.png"
     },
     {
       name: "姚**",
@@ -25,6 +27,7 @@ export const data = [
       phone: '+61 0403571800',
       address: '1008 Waterloo Road, Burwood',
       id: 2,
+      img:"../../images/telehealth_icon/service_telehealth_select_img_clinic3.png"
     },
     {
       name: "陈**",
@@ -34,6 +37,7 @@ export const data = [
       phone: '+61 0403571800',
       address: '1008 Waterloo Road, Burwood',
       id: 3,
+      img:"../../images/telehealth_icon/service_telehealth_select_img_clinic4.png"
     },
     {
       name: "陈**",
@@ -43,6 +47,7 @@ export const data = [
       phone: '+61 0403571800',
       address: '1008 Waterloo Road, Burwood',
       id: 4,
+      img:"../../images/telehealth_icon/service_telehealth_select_img_clinic5.png"
     },
     {
       name: "王**",
@@ -52,6 +57,7 @@ export const data = [
       phone: '+61 0403571800',
       address: '1008 Waterloo Road, Burwood',
       id: 5,
+      img:"../../images/telehealth_icon/service_telehealth_select_img_clinic6.png"
     },
     {
       name: "李**",
@@ -61,5 +67,6 @@ export const data = [
       phone: '+61 0403571800',
       address: '1008 Waterloo Road, Burwood',
       id: 6,
+      img:"../../images/telehealth_icon/service_telehealth_select_img_clinic7.png"
     },
   ];

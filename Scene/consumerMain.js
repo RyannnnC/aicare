@@ -12,7 +12,9 @@ export default function ProviderMain({navigation}) {
     const goToOrder= () => {
         navigation.navigate("consumerOrder")
     }
-    
+    const goToTelehealth= () => {
+      navigation.navigate("telehealthMain")
+  }
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     
@@ -38,7 +40,7 @@ export default function ProviderMain({navigation}) {
           source = {require('../images/service.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer2} onPress={alertHandler}>
+        <TouchableOpacity style={styles.buttonContainer2} onPress={goToTelehealth}>
           <Image
           style = {{width:95,height:95}}
           source = {require('../images/medicare.png')}

@@ -25,7 +25,16 @@ import Consumer from './Scene/consumerOrder';
 import ConsumerMapView from "./Scene/consumerMapView";
 import consumerRating from './Scene/order/rating';
 import CompletedOrder from "./Scene/order/completedOrder";
+import TelehealthrMain from './Scene/telehealth/telehealthMain';
+import teleSuburb from './Scene/telehealth/telehealthSuburb';
+import telehealthClinic from './Scene/telehealth/telehealthClinic';
+import DocInfo from "./Scene/telehealth/docInfo";
+import TeleSuccess from "./Scene/telehealth/telehealthPaySuccess";
 //import AccountMain from "./Scene/account/aacountMain"
+import Confirm from "./Scene/telehealth/telehealthConfirm";
+import TelePay from "./Scene/telehealth/telehealthPay";
+import ClinicInfo from "./Scene/telehealth/clinicInfo";
+import telehealthDoc from './Scene/telehealth/telehealthDoc';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -193,6 +202,15 @@ render() {
         <Stack.Screen name="consumerMV" component ={ConsumerMapView}/>
         <Stack.Screen name="consumerRating" component ={consumerRating}/>
         <Stack.Screen name="completedOrder" component ={CompletedOrder}/>
+        <Stack.Screen name="telehealthMain" component ={TelehealthrMain}/>
+        <Stack.Screen name="telehealthSub" component ={teleSuburb}/>
+        <Stack.Screen name="telehealthClinic" component ={telehealthClinic}/>
+        <Stack.Screen name="docInfo" component ={DocInfo}/>
+        <Stack.Screen name="teleSuccess" component ={TeleSuccess}/>
+        <Stack.Screen name="teleConfirm" component ={Confirm}/>
+        <Stack.Screen name="telehealthPay" component ={TelePay}/>
+        <Stack.Screen name="ClinicInfo" component ={ClinicInfo}/>
+        <Stack.Screen name="telehealthDoc" component ={telehealthDoc}/>
 
 
       </Stack.Navigator>

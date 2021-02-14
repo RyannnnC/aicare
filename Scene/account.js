@@ -23,6 +23,11 @@ import ConsumerProvider from "./Scene/consumerProvider";
 import ProviderInfo from "./Scene/ProviderInfo";
 import Consumer from './Scene/consumerOrder';
 import ConsumerMapView from "./Scene/consumerMapView";
+import consumerRating from './Scene/order/rating';
+import CompletedOrder from "./Scene/order/completedOrder";
+import TelehealthrMain from './Scene/telehealth/telehealthMain';
+import teleSuburb from './Scene/telehealth/telehealthSuburb';
+import telehealthClinic from './Scene/telehealth/telehealthClinic';
 //import AccountMain from "./Scene/account/aacountMain"
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -189,7 +194,11 @@ render() {
         <Stack.Screen name="cp" component ={ConsumerProvider}/>
         <Stack.Screen name="ProviderInfo" component ={ProviderInfo}/>
         <Stack.Screen name="consumerMV" component ={ConsumerMapView}/>
-
+        <Stack.Screen name="consumerRating" component ={consumerRating}/>
+        <Stack.Screen name="completedOrder" component ={CompletedOrder}/>
+        <Stack.Screen name="telehealthMain" component ={TelehealthrMain}/>
+        <Stack.Screen name="telehealthSub" component ={teleSuburb}/>
+        <Stack.Screen name="telehealthClinic" component ={telehealthClinic}/>
       </Stack.Navigator>
     </NavigationContainer>
     </DataContext.Provider>

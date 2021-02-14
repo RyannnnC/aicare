@@ -49,8 +49,8 @@ class ConsumerDate extends Component {
           onDateChange={this.onDateChange}
           previousTitle="上一月"
           nextTitle = "下一月"
-          width = "300"
-          height = "300"
+          width = {300}
+          height = {300}
         />
         <Image style = {styles.time_image}
           source= {require('../images/icon/3/time.png')}

@@ -12,78 +12,40 @@ export default class ConsumerProvider extends Component {
       //date: new Date();
       this.state={
         //secondsElapsed: 3600,
-        buttons: [
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:0},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:1},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:2},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:3},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:4},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:5},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:6},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:7},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:8},
-          { backgroundColor: '#68B0AB', pressed: false,timeSlot: 0,id:9},
-        ]
+        
+        candidates:[]
       };
     }
-
+  sendRequest=()=>{
+    //var data={address:"UNSW Sydney,NSW",postcode:654,category:"plumber"};
+    var qs = require('qs');
+    console.log("send request");
+    var url = "http://13.239.57.130:8081/aicare/all-providers";
+    fetch(url, {
+      //mode:"no-cors",
+      method:"GET",
+    }).then(data => data.json())
+    .then((handledata)=>{this.setState({candidates:handledata});console.log(handledata)})
+    .catch((error)=>{
+      console.log("Api call error");
+      alert(error.message);
+   });
+  }
 
   componentDidMount = () => {
-    console.log("set buttons work")
-    var i=0;
-    let butt=[];
-    while (i < data.length) {
-      butt.push({ backgroundColor: '#68B0AB', pressed: false,timeSlot: data[i].timeSlot, id:i });
-      i++;
-    }
-    this.setState({buttons:butt});
+    console.log("send");
+    this.sendRequest();
+    console.log("finish")
   }
-
-      /*getHours() {
-    return ("0" + Math.floor(this.state.secondsElapsed / 3600)).slice(-2);
-  }
-
-  getMinutes() {
-    return ("0" + Math.floor((this.state.secondsElapsed % 3600) / 60)).slice(
-      -2
-    );
-  }
-
-  getSeconds() {
-    return ("0" + (this.state.secondsElapsed % 60)).slice(-2);
-  }
-
-  startTime(index) {
-    let but = this.state.buttons;
-    but[index].pressed = true;
-    but[index].backgroundColor = '#FF7E67';
-    this.setState({buttons: but});
-    this.setState({secondsElapsed: but[index].timeSlot*3600});
-    this.countdown = setInterval(() => {
-      this.setState(({ secondsElapsed }) => ({
-        secondsElapsed: secondsElapsed - 1
-      }));
-    }, 1000);
-  }
-
-
-  pauseTime(index) {
-    let but = this.state.buttons;
-    clearInterval(this.countdown);
-    but[index].pressed = false;
-    but[index].backgroundColor = '#68B0AB';
-    this.setState({buttons: but});
-  }
-*/
+  
   render () {
     //console.log (this.state);
-    if (data.length >0) {
-    const orders = data.map((item) => {
+    if (this.state.candidates.length >0) {
+    const orders = this.state.candidates.map((item) => {
       return (
         <View style={styles.card} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:5, marginBottom:5, marginLeft:25}}>
-          <TouchableOpacity onPress={() =>{
-            this.props.navigation.navigate("ProviderInfo")}} >
+          <TouchableOpacity onPress={this.props.navigation.navigate("ProviderInfo")}>
             <Image
             style = {styles.pendingImg}
             source = {require('../images/home_img_person.png')}
@@ -97,14 +59,14 @@ export default class ConsumerProvider extends Component {
           <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
             <Image
               style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
-              source = {require('../images/order_icon_phone.png')}
+              source = {require('../images/telehealth_icon/service_icon_location_green.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.phone}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>1.5km</Text>
             <Image
               style = {{width: 15, height:15,marginLeft:50, marginRight:5}}
               source = {require('../images/order_iocn_money.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{40}</Text>
           </View>
           
         </View>
@@ -140,8 +102,8 @@ export default class ConsumerProvider extends Component {
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>
-        </ScrollView>
-        <TouchableOpacity onPress = {() =>{
+ a       </ScrollView>
+        <TouchableOpacity onPress={() =>{
             this.props.navigation.navigate("consumerMV")}}>
             <Image
                 style={{width:70,height:70,position:"absolute",borderRadius:30,bottom:80,right:35}}

@@ -12,6 +12,9 @@ const  ConsumerIcon= ({navigation}) => {
   const goToOrder= () => {
     navigation.navigate('consumerOrder')
   }
+  const goToTelehealth= () => {
+    navigation.navigate("telehealthMain")
+}
   const makecall=()=>{
     call(args).catch(console.error)
   }
@@ -33,7 +36,7 @@ const  ConsumerIcon= ({navigation}) => {
       />
     </TouchableOpacity>
 
-    <TouchableOpacity onPress = {alertHandler}>
+    <TouchableOpacity onPress = {goToTelehealth}>
       <Image
         style = {styles.button_image}
         source = {require('../images/icon/1/booking_image.png')}

@@ -17,9 +17,7 @@ export const styles = StyleSheet.create({
     color: '#68b0ab',
     lineHeight: 35,
   },
-  onsiteText: {
-    color: 'white',
-  },
+
   container: {
     backgroundColor: 'white',
     marginTop: 20,
@@ -53,10 +51,7 @@ export const styles = StyleSheet.create({
     width: 300,
     height: 225,
   },
-  mainImg:{
-    height:120,
-    width:120,
-  },
+
   buttons:{
     flexDirection: 'row',
     alignItems: 'center',
@@ -256,9 +251,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius:10,
   },
-  onsite_text:{
-    color: 'white',
-  },
+
   r_text:{
     color: '#333333',
     marginLeft:145,

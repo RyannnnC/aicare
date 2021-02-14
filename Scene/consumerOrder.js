@@ -13,9 +13,7 @@ const args = {
 export default function Consumer({navigation}) {
   
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () =>{ 
-    setIsEnabled(previousState => !previousState);
-  }
+
   const gotoInfo= () => {
     navigation.navigate('consumerInfo')
   }
