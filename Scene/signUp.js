@@ -10,27 +10,73 @@ export default class Signup extends Component {
     mail:"",
     password:"",
     confirm: "",
+    userCode:"",
+    mailCode:"",
   }
   sendRequest() {
-    let n = this.state.name;
-    let p = this.state.phone;
-    let m = this.state.mail;
-    let d = this.state.password;
+    let errors = [];
+    let s = this.state;
+
+    if (s.name.length === 0) {
+        errors.push("Enter a username");
+    } else if (s.name.length < 3) {
+        errors.push("Username must be 3 characters or longer");
+    }
+    if (/[^A-Za-z0-9\-_.]/.test(username)) {
+        errors.push("Username must only contain alphanumeric characters and - _ .");
+    }
+
+    if (email.length === 0) {
+        errors.push("Enter an email");
+    } else if (!validEmail(email)) {
+        errors.push("Email is invalid");
+    }
+
+    if (password !== repeatpassword) {
+        errors.push("Passwords do not match");
+    }
+    if (password.length === 0) {
+        errors.push("Enter a password");
+    } else if (password.length < 8) {
+        errors.push("Password must be 8 characters or longer");
+    }
+
+    if (password.length !== 0 && !(/[A-Z]/.test(password) && /[0-9]/.test(password))) {
+        errors.push("Password must have at least one uppercase letter, and at least one digit");
+    }
+
+
     let url = 'http://13.239.57.130:8080/aicare-register/register/provider?'
-    +'name='+ n
-    +'&phone=' + p
-    +'&email=' + m
-    +'&password=' + d;
-    console.log(url);
-    fetch(url,{mode:'no-cors'});
+    +'name='+ s.name
+    +'&phone=' + s.phone
+    +'&email=' + s.mail
+    +'&password=' + s.password;
+    fetch(url,{
+      method: 'POST',
+      headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => console.log(response.status))
+  //  .then(json => {console.log(json)});
   }
   sendCode() {
     let m = this.state.mail;
-    let url = 'http://13.239.57.130:8080/aicare-service/smtp?'
+    let url = 'http://13.239.57.130:8080/aicare-smtp/smtp?'
     +'&mail-address=' + m
     console.log(url);
-    fetch(url,{mode:'no-cors'})
-    .then((response) => console.log(response))
+    fetch(url,{
+      headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      this.setState({ mailCode: json.code});
+      console.log(json.code);
+    });
   }
 
   render() {
@@ -85,7 +131,10 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>验证码</Text>
           </View>
-          <TextInput style={styles.resumeInput} placeholder= "请输入您邮箱内收到的验证码"/>
+          <TextInput style={styles.resumeInput}
+          placeholder= "请输入您邮箱内收到的验证码"
+          onChangeText={(text) => {this.setState({ userCode: text})}}
+          />
 
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image

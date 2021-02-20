@@ -108,6 +108,14 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 15,
   },
+  card2: {
+    width: 330,
+    height: 199,
+    marginTop:15,
+    marginBottom:15,
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
+  },
   mainImg:{
     height:120,
     width:120,

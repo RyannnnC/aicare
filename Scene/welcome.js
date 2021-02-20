@@ -18,8 +18,8 @@ const Welcome = ({ navigation }) => {
        style = {styles.img}
      />
      <View style={styles.welcomeText}>
-      <Text style={{ color: '#68B0AB', fontSize: 20, fontWeight: '600'}}>Aged Care</Text>
-      <Text style={{fontWeight: '600', fontSize: 20}}>专注与老年人的远程服务</Text>
+      <Text style={{ color: '#68B0AB', fontSize: 20, fontWeight: '600'}}>AICare</Text>
+      <Text style={{fontWeight: '600', fontSize: 20}}>您的远程医疗护理好帮手</Text>
      </View>
      <TouchableOpacity style={styles.consumerWrapper} onPress={alertHandler}>
        <Text style={styles.buttonText}>我是消费者</Text>

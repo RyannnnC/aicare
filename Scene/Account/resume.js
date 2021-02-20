@@ -1,15 +1,18 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { TimePicker } from 'react-native-simple-time-picker';
 import Geocoder from 'react-native-geocoding';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default class Resume extends Component {
     state={
     selectedHours: 0,
     selectedMinutes: 0,
+    show: false,
+    mode:'time',
+    date: new Date(1598051730000),
     latitude:0,
     longitude:0,
     street:"",
@@ -46,6 +49,11 @@ export default class Resume extends Component {
 
    )
   }
+  showPicker(){
+    console.log('picker called');
+    this.setState({show:true});
+  };
+
   changeColor(index){
     let but = this.state.buttons;
     if(!but[index].pressed){
@@ -106,6 +114,11 @@ export default class Resume extends Component {
       but[index].pressed = false;
       this.setState({buttons: but});
     }
+  };
+
+   onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.date;
+    this.setState({date:currentDate});
   };
 
   render() {
@@ -250,21 +263,23 @@ export default class Resume extends Component {
             </TouchableOpacity>
             { this.state.buttons[0].pressed &&
               <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}} onPress={()=>this.showTimepicker(0)}>
+              <TouchableOpacity style={{ marginTop: 5,marginBottom: 5}} onPress={()=>this.showPicker()}>
               <Image
                 style = {styles.smallAddImg}
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
               </TouchableOpacity>
-              { this.state.times[0].pressed &&
-                <View style={{flex: 1, alignItems: 'center',justifyContent: 'center',}}>
-                <TimePicker
-                  hours={selectedHours}
-                  minutes={selectedMinutes}
-                  onChange={({ hours, minutes }) => this.setState({ selectedHours: hours, selectedMinutes: minutes })}
-                />
-                </View>
-              }
+              { this.state.show &&
+                (
+                  <DateTimePicker
+                  testID="dateTimePicker"
+                  value={this.state.date}
+                  mode={this.state.mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={this.onChange}
+                  />
+                )}
               </View>
             }
           </View>
