@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
   img3:{
     height:50,
     width:70,
+    marginLeft:78,
   },
   img4:{
     height:100,
@@ -107,14 +108,28 @@ export const styles = StyleSheet.create({
     marginBottom:15,
     backgroundColor: '#ffffff',
     borderRadius: 15,
+    borderWidth: 1,
   },
   card2: {
     width: 330,
-    height: 199,
+    height: 176,
     marginTop:15,
     marginBottom:15,
     backgroundColor: '#ffffff',
     borderRadius: 15,
+    borderWidth: 1,
+  },
+  card3: {
+    width: 316,
+    height: 133,
+    marginTop:15,
+    marginLeft: 24,
+    backgroundColor: '#f7fafa',
+    borderRadius: 15,
+  },
+  cardHolder: {
+    width: 340,
+    height: 175,
   },
   mainImg:{
     height:120,
@@ -184,6 +199,17 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     textAlign: 'center',
     marginRight: 25,
+    marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center" ,
+  },
+  orderButton3: {
+    width: 56,
+    height: 25,
+    backgroundColor: '#68B0AB',
+    borderRadius: 10,
+    marginRight: 25,
+    marginLeft: 43,
     marginTop: 15,
     justifyContent: "center",
     alignItems: "center" ,
@@ -320,5 +346,17 @@ export const styles = StyleSheet.create({
     marginRight:20,
     justifyContent: "center",
     alignItems: "center",
+  },
+  codeTab: {
+    backgroundColor: '#68B0AB',
+    width:'auto',
+    marginTop: 3,
+    marginLeft: 25,
+    paddingLeft:10,
+    paddingRight:10,
+    paddingTop:5,
+    paddingBottom:4,
+    height:30,
+    borderRadius:10,
   }
 });

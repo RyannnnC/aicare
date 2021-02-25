@@ -2,7 +2,7 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import { TimePicker } from 'react-native-simple-time-picker';
+//import { TimePicker } from 'react-native-simple-time-picker';
 import Geocoder from 'react-native-geocoding';
 import DateTimePicker from '@react-native-community/datetimepicker';
 

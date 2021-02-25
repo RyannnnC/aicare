@@ -27,7 +27,7 @@ export default class PendingOrder extends Component {
   startAlert(index){
     Alert.alert(
       '提醒',
-      '您确定要接受这桩订单吗？',
+      '您确定要接受这桩预约吗？',
       [
         {text: '确定', onPress: () => console.log('yes button clicked')},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
@@ -79,7 +79,7 @@ export default class PendingOrder extends Component {
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.treatment}</Text>
         </View>
         <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity style={styles.orderButton2}>
+          <TouchableOpacity style={styles.orderButton2} onPress={() => this.startAlert(item.id)}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.orderButton} >
@@ -90,14 +90,14 @@ export default class PendingOrder extends Component {
     )
   })
   return (
-    <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
+    <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" , backgroundColor:'white'}}>
       <ScrollView style={{ flex:1}}>
         {orders}
       </ScrollView>
     </SafeAreaView>
   )} else {
     return (
-     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , backgroundColor:'white'}}>
      <Image
        style = {styles.finishImg}
        source = {require('../../images/providerImg/order_img_empty1.png')}

@@ -31,6 +31,7 @@ import Agency from './Scene/agency';
 import HealthMain from './Scene/Health/healthMain';
 import HealthAccountMain from './Scene/Health/healthAccountMain';
 import ReservationMain from './Scene/Health/reservationMain';
+import Verify from './Scene/verification';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -149,6 +150,8 @@ export default class App extends React.Component {
         this.state.health ? (
           <>
           <Stack.Screen options={{headerShown: false}} name="healthHome" component={HealthHome} />
+          <Stack.Screen name="修改密码" component={ChangePwd} />
+          <Stack.Screen name="我的设置" component={Setting} />
           </>
         ):(
           <>
@@ -175,6 +178,7 @@ export default class App extends React.Component {
         <Stack.Screen options={{headerShown: false}} name="请选择服务类型" component={ProviderType} />
         <Stack.Screen options={{headerShown: false}} name="登陆" component={Login} />
         <Stack.Screen options={{headerShown: false}} name="机构" component={Agency} />
+        <Stack.Screen name="验证" component={Verify} />
         <Stack.Screen name="注册" component={Signup} />
         <Stack.Screen name="忘记密码" component={Forget}/>
         </>

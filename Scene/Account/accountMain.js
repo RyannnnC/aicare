@@ -95,7 +95,7 @@ export default class AccountMain extends Component {
           style = {{width:85, height:30}}
         />
         <Text style={{fontSize:12, color:'#68B0AB'}}>+61 0403555432</Text>
-       </View>
+      </View>
     </View>
   );}
 }

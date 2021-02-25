@@ -3,7 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity, SafeAreaView } from 
 import {styles} from '../providerStyle';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ProcessingOrder from '../Orders/processingOrder';
+import ProcessingOrder from './processingOrder';
 import PendingOrder from './pendingOrder';
 import {data} from './data';
 
@@ -13,7 +13,7 @@ export default function ReservationMain() {
   let proc = "已预约(" + data.length + ")";
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
       <View style={{alignItems: "center" }}>
       <Image
         style = {styles.orderImg}

@@ -67,7 +67,7 @@ export default class PendingOrder extends Component {
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price}</Text>
         </View>
         <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity style={styles.orderButton2} onPress ={this.startAlert} >
+          <TouchableOpacity style={styles.orderButton2} onPress ={()=> this.startAlert(item.id)} >
             <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.orderButton}>

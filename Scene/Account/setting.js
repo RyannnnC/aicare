@@ -22,7 +22,7 @@ export default class Setting extends Component {
 
   render() {
     return (
-    <SafeAreaView style={{ flex:1, alignItems: "center" }}>
+    <SafeAreaView style={{ flex:1, alignItems: "center" ,backgroundColor:'white'}}>
       <View style={{alignItems: "Left" }}>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Image
@@ -33,7 +33,7 @@ export default class Setting extends Component {
         </View>
 
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>消息通知</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' ,marginRight:211}}>消息通知</Text>
           <Switch
             onValueChange={this.messageSwitch}
             value={this.state.message}
@@ -41,7 +41,7 @@ export default class Setting extends Component {
         </View>
 
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>地理位置访问</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' ,marginRight:179}}>地理位置访问</Text>
           <Switch
             onValueChange={this.gpsSwitch}
             value={this.state.gps}
@@ -54,7 +54,7 @@ export default class Setting extends Component {
         </View>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>联系我们</Text>
-          <TextInput style={styles.resumeInput} placeholder= "+61 0403555431"/>
+          <Text style={{ fontSize:14, fontWeight: '500', color:'#999999'}}> +61 0403555431</Text>
         </View>
 
       </View>

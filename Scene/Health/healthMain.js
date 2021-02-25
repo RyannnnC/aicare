@@ -13,30 +13,22 @@ export default function HealthMain() {
   var month = new Date().getMonth() + 1;
 
   return (
-    <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40}}>
+    <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40, backgroundColor:'white'}}>
       <View style={{flexDirection: 'row', marginBottom: 15}}>
         <View style={{marginLeft:30, marginRight:30}}>
           <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
-          <Text>您今日有{data.length}项订单待完成</Text>
+          <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您今日有{data.length}项行程待完成</Text>
         </View>
         <Image
           style = {styles.mainImg}
           source = {require('../../images/crayon-1317.png')}
         />
       </View>
-    <View style={styles.searchBar}>
-      <SearchBar
-        inputStyle={{backgroundColor: 'white'}}
-        containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
-        inputContainerStyle={{backgroundColor: 'white'}}
-        placeholder="搜服务/订单..."
-        />
-    </View>
-    <View style={{textAlign: "left" }}>
+    <View style={{alignItems: "left" }}>
       <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>代接订单</Text>
     </View>
 
-    <View style={styles.card}>
+    <View style={styles.card2}>
       <View style={{flexDirection: 'row', marginTop:16, marginBottom:16, marginLeft:25}}>
       <Image
         style = {styles.pendingImg}
@@ -54,8 +46,8 @@ export default function HealthMain() {
           />
         <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>12/27 17：00-18：00</Text>
         <Image
-          style = {{width: 15, height:15,marginLeft:130, marginRight:5}}
-          source = {require('../../images/providerImg/home_icon_localtion.png')}
+          style = {{width: 15, height:15,marginLeft:75, marginRight:5}}
+          source = {require('../../images/providerImg/home_icon_location.png')}
         />
         <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地预约</Text>
       </View>
@@ -70,10 +62,10 @@ export default function HealthMain() {
     </View>
 
 
-      <View style={{textAlign: "left" }}>
+      <View style={{alignItems: "left" }}>
         <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当日订单</Text>
       </View>
-    <View style={styles.home}>
+    <View style={styles.card}>
       <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
         <View style={{marginLeft:20 }}>
           <Text style={{ color: '#333333', fontSize: 16, fontWeight: '600', marginBottom:5}}>14：00-15：00</Text>

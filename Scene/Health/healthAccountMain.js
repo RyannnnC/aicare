@@ -11,7 +11,7 @@ export default class HealthAccountMain extends Component {
 
   render() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:'white' }}>
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
         <Image
           style = {styles.personIcon}
