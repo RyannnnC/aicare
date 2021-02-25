@@ -25,7 +25,9 @@ export default function ProviderInfo({navigation}) {
   return (
     <DataContext.Consumer>
     {(state)  => (
-    <View style={styles.container}>
+    <View style={{backgroundColor: 'white',
+    marginTop: 0,
+    alignItems: 'center'}}>
     <ScrollView>
     <TouchableOpacity onPress = {goBack}>
       <Image

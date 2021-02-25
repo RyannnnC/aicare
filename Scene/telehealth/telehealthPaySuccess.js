@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView } from 'react-native';
 import {styles} from '../../style';
 
 export default function TeleSuccess({navigation}) {
@@ -8,6 +8,7 @@ export default function TeleSuccess({navigation}) {
     navigation.navigate('Home')
   }
   return (
+    <ScrollView style={{backgroundColor:"white"}}>
     <View style={styles.container}>
 
     <Image style = {{marginTop:40,
@@ -35,5 +36,6 @@ export default function TeleSuccess({navigation}) {
       source = {require('../../images/icon/1/contact.png')}
     />
   </View>
+  </ScrollView>
   );
 }

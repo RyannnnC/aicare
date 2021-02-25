@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView } from 'react-native';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../consumerContext";
@@ -50,6 +50,7 @@ class ConsumerAddress extends React.Component {
   render(){
     let state = this.context;
   return (
+    <ScrollView style={{ flex:1,backgroundColor:"white"}}>
 
     <View style={styles.container}>
     <TouchableOpacity onPress={() =>{
@@ -111,6 +112,7 @@ class ConsumerAddress extends React.Component {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  </ScrollView>
   )}
 
 }

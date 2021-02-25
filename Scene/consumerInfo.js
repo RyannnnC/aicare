@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView } from 'react-native';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from '../consumerContext';
@@ -37,7 +37,10 @@ export default function Info({navigation}) {
   return (
     <DataContext.Consumer>
     {(state)  => (
+    <ScrollView style={{ flex:1,backgroundColor:"white"}}>
+
     <View style={styles.container}>
+
     <TouchableOpacity onPress = {goBack}>
       <Image
         style = {styles.arrow_image}
@@ -76,8 +79,8 @@ export default function Info({navigation}) {
         source= {require('../images/icon/3/address.png')}
       />
     <View style ={styles.comment_container}>
-      <Text>{state.street + " " + state.suburb + " " + state.state + state.postcode.toString()}</Text>
-      <TouchableOpacity onPress={gotoAddress}>
+      <Text style={{marginLeft:0}}>{state.street + " " + state.suburb + " " + state.state + state.postcode.toString()}</Text>
+      <TouchableOpacity onPress={gotoAddress} style={{marginLeft:-60}}>
       <Image style = {styles.comment_image}
         source= {require('../images/icon/2/Arrow_right.png')}
       />
@@ -106,6 +109,8 @@ export default function Info({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  </ScrollView>
+
   )}
   </DataContext.Consumer>
   );

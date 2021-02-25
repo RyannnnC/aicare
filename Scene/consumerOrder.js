@@ -1,5 +1,5 @@
 import React,{ useState,setState }from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,ScrollView,Linking } from 'react-native';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from '../consumerContext';
@@ -23,11 +23,33 @@ export default function Consumer({navigation}) {
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
   }
+  const callNumber = () => {
+    phone='0403555432';
+    let phoneNumber = phone;
+    if (Platform.OS !== 'android') {
+      phoneNumber = `telprompt:${phone}`;
+    }
+    else  {
+      phoneNumber = `tel:${phone}`;
+    }
+    Linking.canOpenURL(phoneNumber)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(phoneNumber);
+      }
+    })
+    .catch(err => console.log(err));
+  };
 
   return (
     <DataContext.Consumer>
     {(state)  => (
+    <ScrollView style={{ flex:1,backgroundColor:"white"}}>
+
     <View style={styles.container}>
+    
     <TouchableOpacity onPress = {goBack}>
       <Image
         style = {styles.arrow_image}
@@ -75,7 +97,7 @@ export default function Consumer({navigation}) {
       />
     </TouchableOpacity>
     </View>
-    <TouchableOpacity onPress={makecall}>
+    <TouchableOpacity onPress={callNumber}>
             <Image
                 style={{width:60,height:60,position:"absolute",borderRadius:30,bottom:5,right:-170}}
                 source = {require("../images/mobile_icon.png")}
@@ -95,6 +117,7 @@ export default function Consumer({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  </ScrollView>
   )}
   </DataContext.Consumer>
 

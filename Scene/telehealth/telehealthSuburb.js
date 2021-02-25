@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput} from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput,ScrollView} from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import styles from "../../style"
 import { StackActions } from '@react-navigation/native';
@@ -18,8 +18,9 @@ export default function teleSuburb({navigation}) {
     const [checked2, setChecked2] = React.useState(false);
     
     return (
-      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white"}}>
-        <View style={{flexDirection: 'row',marginTop:-140}}>
+      <ScrollView style={{ flex:1,backgroundColor:"white",}}>
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 50,backgroundColor:"white"}}>
+        <View style={{flexDirection: 'row',marginTop:120}}>
             <TouchableOpacity onPress={goBack}>
             <Image
             style = {{width:35,
@@ -106,6 +107,7 @@ export default function teleSuburb({navigation}) {
           }}>确定</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
     );
   }
 

@@ -1,16 +1,20 @@
 
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import {styles} from '../style';
 import {data} from './order/data';
  
 //call(args).catch(console.error)
 export default function ProviderMain({navigation}) {
     const alertHandler= () => {
-      Alert.alert('function unimplemented')
+      Alert.alert('功能还未完善')
     }
     const goToOrder= () => {
         navigation.navigate("consumerOrder")
+    }
+    const gotoOlist=()=>{
+      navigation.navigate("ConsumerOrderPage")
     }
     const goToTelehealth= () => {
       navigation.navigate("telehealthMain")
@@ -20,10 +24,12 @@ export default function ProviderMain({navigation}) {
     
     return (
       <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white"}}>
+        <ScrollView style={{ flex:1}}>
+
         <View style={{flexDirection: 'row', marginBottom: 15}}>
           <View style={{marginLeft:30, marginRight:30}}>
             <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
-            <Text>您今日有{data.length}项行程待完成</Text>
+            <Text>您今日有{data.length}项订单</Text>
           </View>
           <Image
             style = {styles.mainImg}
@@ -34,16 +40,16 @@ export default function ProviderMain({navigation}) {
         <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>服务</Text>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity onPress={goToOrder}>
-          <Image
-          style = {{width:100,height:100}}
-          source = {require('../images/service.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer2} onPress={goToTelehealth}>
+        <TouchableOpacity onPress={goToTelehealth}>
           <Image
           style = {{width:95,height:95}}
           source = {require('../images/medicare.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer2} onPress={goToOrder}>
+          <Image
+          style = {{width:100,height:100}}
+          source = {require('../images/service.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer3} onPress={alertHandler}>
@@ -54,8 +60,9 @@ export default function ProviderMain({navigation}) {
         </TouchableOpacity>
       </View>
         <View style={{textAlign: "left" }}>
-          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>行程</Text>
+          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>订单</Text>
         </View>
+      <TouchableOpacity >
       <View style={styles.home}>
         <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
           <View style={{marginLeft:20 }}>
@@ -71,6 +78,9 @@ export default function ProviderMain({navigation}) {
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>今日 14：00-17：00</Text>
         </View>
       </View>
+      </TouchableOpacity>
+      </ScrollView>
+
       </View>
     );
   }

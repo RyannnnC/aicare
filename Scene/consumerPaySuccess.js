@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView } from 'react-native';
 import {styles} from '../style';
 
 export default function ConsumerPaySuccess({navigation}) {
@@ -7,6 +7,8 @@ export default function ConsumerPaySuccess({navigation}) {
     navigation.navigate('Home')
   }
   return (
+    <ScrollView style={{ flex:1,backgroundColor:"white"}}>
+    <View style={{marginTop:-40}}></View>
     <View style={styles.container}>
 
     <Image style = {styles.finish_image}
@@ -36,5 +38,6 @@ export default function ConsumerPaySuccess({navigation}) {
       source = {require('../images/icon/1/contact.png')}
     />
   </View>
+  </ScrollView>
   );
 }

@@ -28,7 +28,7 @@ export default function TelePay({navigation}) {
   
   return (
 
-    <ScrollView>
+    <ScrollView style={{backgroundColor:"white"}}>
 
     <View style={styles.container}>
     <View style={{flexDirection:'row',marginTop:20,marginLeft:-140}}>
@@ -131,7 +131,7 @@ export default function TelePay({navigation}) {
     </View>: null}
 
     
-
+    <View style={{marginTop:160}}></View>
     <Image style = {styles.contact}
       source = {require('../../images/icon/1/contact.png')}
     />

@@ -35,6 +35,7 @@ import Confirm from "./Scene/telehealth/telehealthConfirm";
 import TelePay from "./Scene/telehealth/telehealthPay";
 import ClinicInfo from "./Scene/telehealth/clinicInfo";
 import telehealthDoc from './Scene/telehealth/telehealthDoc';
+import TelehealthMV from './Scene/telehealth/telehealthMap';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -211,6 +212,8 @@ render() {
         <Stack.Screen name="telehealthPay" component ={TelePay}/>
         <Stack.Screen name="ClinicInfo" component ={ClinicInfo}/>
         <Stack.Screen name="telehealthDoc" component ={telehealthDoc}/>
+        <Stack.Screen name="TelehealthMV" component ={TelehealthMV}/>
+        <Stack.Screen name="ConsumerOrderPage" component ={ConsumerOrderPage}/>
 
 
       </Stack.Navigator>

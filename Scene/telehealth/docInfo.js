@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 import ConsumerDate from "../consumerDate"
 import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
-//import call from 'react-native-phone-call'
+import call from 'react-native-phone-call'
 import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 import DateSelect from "./DateSelect";
 const args = {
@@ -27,7 +27,9 @@ export default function DocInfo({navigation}) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{    backgroundColor: 'white',
+    marginTop: 0,
+    alignItems: 'center'}}>
     <ScrollView>
     <View style={{flexDirection:'row',marginTop:20,marginLeft:-10}}>
     <TouchableOpacity onPress = {goBack} style={{marginRight:30}}>
@@ -36,7 +38,7 @@ export default function DocInfo({navigation}) {
         source={require('../../images/icon/2/Arrow_left.png')}
       />
     </TouchableOpacity>
-    
+    <View style={{marginLeft:30}}></View>
     <Text style = {styles.service}>医生信息</Text>
     <Icon
   onPress={() => { setIsEnabled(isEnabled => !isEnabled,console.log(isEnabled));
@@ -79,7 +81,7 @@ elevation: 24,
           setModalVisible(!modalVisible);
         }}
       >
-      <View style={{marginTop:320,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
+      <View style={{marginTop:200,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
 shadowOffset: {
 	width: 0,
 	height: 12,
@@ -88,6 +90,7 @@ shadowOpacity: 0.58,
 shadowRadius: 16.00,
 
 elevation: 24,}}>
+
     <TouchableOpacity onPress={() =>{setModalVisible(!modalVisible);
             //state.action.changetotal(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60);
             //this.props.navigation.dispatch(StackActions.pop(1))}
@@ -97,6 +100,8 @@ elevation: 24,}}>
         source={require('../../images/icon/2/Arrow_left.png')}
       />
     </TouchableOpacity>
+    <ScrollView style={{backgroundColor:"#F7FAFA"}}>
+
       <DateSelect/>
       <TouchableOpacity style={styles.next_wrapper} onPress={goInsurance
             //state.action.changetotal(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60);
@@ -104,7 +109,10 @@ elevation: 24,}}>
           }>
           <Text style={styles.onsite_text}>确定</Text>
         </TouchableOpacity>
+        </ScrollView>
+
         <View style={{height:20}}/>
+
         </View>
       </Modal>
     <TouchableOpacity style={styles.next_wrapper} onPress={() => setModalVisible(modalVisible=>!modalVisible)}>

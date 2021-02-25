@@ -4,6 +4,8 @@ import { Icon } from 'react-native-elements'
 import ConsumerDate from "../consumerDate"
 import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
+import call from 'react-native-phone-call'
+
 //import call from 'react-native-phone-call'
 //import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 
@@ -13,6 +15,7 @@ const args = {
 }
 
 export default function ClinicInfo({navigation}) {
+  
   const gotoDoc= () => {
     navigation.navigate('telehealthDoc')
   }
@@ -24,16 +27,18 @@ export default function ClinicInfo({navigation}) {
   }
 
   return (
-    <View style={styles.container}>
-    <ScrollView>
-    <View style={{flexDirection:'row',marginTop:20,marginLeft:-10}}>
+    <View style={{    backgroundColor: 'white',
+    marginTop: 0,
+    alignItems: 'center',}}>
+    <ScrollView stype={{backgroundColor:"white"}}>
+    <View style={{flexDirection:'row',marginTop:10,marginLeft:-10,marginBottom:10}}>
     <TouchableOpacity onPress = {goBack} style={{marginRight:30}}>
       <Image
         style = {styles.arrow_image}
         source={require('../../images/icon/2/Arrow_left.png')}
       />
     </TouchableOpacity>
-    
+    <View style={{marginLeft:50}}></View>
     <Text style = {styles.service}>诊所信息</Text>
     
     </View>

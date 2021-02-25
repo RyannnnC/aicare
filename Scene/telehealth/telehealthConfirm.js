@@ -3,7 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } fr
 import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 //import DataContext from '../consumerContext';
-import { State } from 'react-native-gesture-handler';
+import { ScrollView, State } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
 import call from 'react-native-phone-call'
 
@@ -21,7 +21,7 @@ export default function Confirm({navigation}) {
     call(args).catch(console.error)
   }
   const goBack= () => {
-    navigation.navigate("consumerOrder")
+    navigation.navigate("telehealthPay")
   }
   const gotoDate= () => {
     navigation.navigate("consumerDate")
@@ -37,7 +37,7 @@ export default function Confirm({navigation}) {
     state.action.changename(text);
   }
   return (
-   
+    <ScrollView style={{backgroundColor:"white"}}>
     <View style={styles.container}>
     <View style={{flexDirection:'row',marginTop:20,marginLeft:-140}}>
     <TouchableOpacity onPress = {goBack} style={{marginRight:60}}>
@@ -100,5 +100,6 @@ export default function Confirm({navigation}) {
       source = {require('../../images/icon/1/contact.png')}
     />
   </View>
+  </ScrollView>
   )}
 

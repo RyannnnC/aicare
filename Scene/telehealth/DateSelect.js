@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput
+  StyleSheet, Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import {styles} from '../../style';
@@ -34,6 +34,7 @@ class DateSelect extends Component {
     const duration = this.state.duration;
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
     return (
+      
       <View style={{
         backgroundColor: '#F7FAFA',
         alignItems: 'center',
@@ -63,6 +64,7 @@ class DateSelect extends Component {
         <Text>{40*(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60)}</Text>
         
       </View>
+    
     );
   }
 

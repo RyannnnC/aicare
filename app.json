@@ -4,7 +4,7 @@
     "slug": "aicare",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/aicare.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -17,13 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kim2017.aicare"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/aicare.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.kim2017.aicare"
     },
     "web": {
       "favicon": "./assets/favicon.png"

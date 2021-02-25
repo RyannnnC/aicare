@@ -68,7 +68,7 @@ export default class telehealthDoc extends Component {
     })
     return (
       <View style={{ flex:1, backgroundColor:"white" }}>
-        <View style={{flexDirection: 'row', marginBottom:10,marginTop:40}}>
+        <View style={{flexDirection: 'row', marginBottom:10,marginTop:10}}>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}>
             <Image

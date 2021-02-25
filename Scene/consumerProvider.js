@@ -10,13 +10,13 @@ export default class ConsumerProvider extends Component {
     constructor(props) {
       super(props);
       //date: new Date();
-      this.state={
+      /*this.state={
         //secondsElapsed: 3600,
         
         candidates:[]
-      };
+      };*/
     }
-  sendRequest=()=>{
+  /*sendRequest=()=>{
     //var data={address:"UNSW Sydney,NSW",postcode:654,category:"plumber"};
     var qs = require('qs');
     console.log("send request");
@@ -31,48 +31,51 @@ export default class ConsumerProvider extends Component {
       alert(error.message);
    });
   }
-
-  componentDidMount = () => {
+*/
+  /*componentDidMount = () => {
     console.log("send");
     this.sendRequest();
     console.log("finish")
-  }
+  }*/
   
   render () {
     //console.log (this.state);
-    if (this.state.candidates.length >0) {
-    const orders = this.state.candidates.map((item) => {
+    if (data.length >0) {
+    const orders = data.map((item) => {
       return (
+        
         <View style={styles.card} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:5, marginBottom:5, marginLeft:25}}>
-          <TouchableOpacity onPress={this.props.navigation.navigate("ProviderInfo")}>
+          <TouchableOpacity onPress={() =>{
+            this.props.navigation.navigate("ProviderInfo")}}>
             <Image
-            style = {styles.pendingImg}
-            source = {require('../images/home_img_person.png')}
+            style = {{height:40,width:40,marginRight:15,marginLeft:-10}}
+            source = {require('../images/telehealth_icon/service_doctor_img5.png')}
             />
           </TouchableOpacity>    
           <View>
-            <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
+            <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.address}</Text>
           </View>
           </View>
           <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
             <Image
-              style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
+              style = {{width: 20, height:20 , marginLeft:70, marginRight:1}}
+              source = {require('../images/telehealth_icon/stars.png')}
+            />
+      
+            <Image
+              style = {{width: 15, height:15,marginLeft:40, marginRight:5}}
               source = {require('../images/telehealth_icon/service_icon_location_green.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>1.5km</Text>
-            <Image
-              style = {{width: 15, height:15,marginLeft:50, marginRight:5}}
-              source = {require('../images/order_iocn_money.png')}
-            />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{40}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.price+'km'}</Text>
           </View>
           
         </View>
       )
     })
     return (
+
       <View style={{ flex:1, backgroundColor:"white" }}>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
         <TouchableOpacity onPress={() =>{
@@ -94,7 +97,7 @@ export default class ConsumerProvider extends Component {
         <Text style={{fontSize:14,color:"#006A71",marginLeft:30,marginTop:20}}>推荐</Text>
         <ScrollView style={{ flex:1,maxHeight:200}}>
         <View  style={{alignItems:'center'}}>
-          {orders}
+          {orders.slice(0,3)}
         </View>
         </ScrollView>
         <Text style={{fontSize:14,color:"#006A71",marginLeft:30,marginTop:5}}>全部</Text>
@@ -102,7 +105,7 @@ export default class ConsumerProvider extends Component {
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>
- a       </ScrollView>
+        </ScrollView>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.navigate("consumerMV")}}>
             <Image
@@ -113,6 +116,8 @@ export default class ConsumerProvider extends Component {
       </View>
     )} else {
     return (
+      <ScrollView style={{ flex:1,backgroundColor:"white"}}>
+
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Image
         style = {styles.finishImg}
@@ -120,6 +125,7 @@ export default class ConsumerProvider extends Component {
       />
      <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>目前没有可服务人员！</Text>
      </View>
+     </ScrollView>
     )
   }
   }

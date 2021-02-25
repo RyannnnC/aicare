@@ -29,7 +29,8 @@ export default function ConsumerPayInfo({navigation}) {
   return (
     <DataContext.Consumer>
     {(state)  => (
-    <ScrollView>
+    <ScrollView style={{ flex:1,backgroundColor:"white"}}>
+
 
     <View style={styles.container}>
     <TouchableOpacity onPress = {goBack}>

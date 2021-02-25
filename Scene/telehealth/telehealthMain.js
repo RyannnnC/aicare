@@ -7,18 +7,22 @@ import { StackActions } from '@react-navigation/native';
 
 export default function TelehealthrMain({navigation}) {
     const alertHandler= () => {
-      Alert.alert('function unimplemented')
+      Alert.alert('功能还未完善')
     }
     const goToSub= () => {
         navigation.navigate("telehealthSub")
     }
+    const goToDoc= () => {
+      navigation.navigate("docInfo")
+  }
     const [search, setSearch] = React.useState('');
     const goBack= () => {
         navigation.dispatch(StackActions.pop(1))
       }
     
     return (
-      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white"}}>
+      <ScrollView style={{ flex:1,backgroundColor:"white",}}>
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white",marginTop:10}}>
          <View style={{flexDirection: 'row', marginTop:120, marginBottom:10}}>
             <TouchableOpacity onPress={goBack}>
             <Image
@@ -66,6 +70,7 @@ export default function TelehealthrMain({navigation}) {
         <View style={{flexDirection: 'row', marginBottom: 15,marginTop:40}}>
           <Text style={{marginLeft:-170,fontSize:19}}>预约种类</Text>
         </View>
+        <ScrollView horizontal={true} style={{marginLeft:20,maxHeight:210,paddingTop:5,height:130}}>
         <View style={{flexDirection: 'row', marginBottom: 45}}>
         <View style={{shadowColor:"000000",shadowOffset: {
 	              width: 0,
@@ -111,10 +116,10 @@ export default function TelehealthrMain({navigation}) {
                             borderRadius:25,}}
                             onPress={goToSub}>
           <Image
-            style={{width:30,height:30}}
-            source = {require('../../images/telehealth_icon/service_telehealth_icon_dentist.png')}
+            style={{width:34,height:30}}
+            source = {require('../../images/telehealth_icon/service_telehealth_icon_child.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>牙科</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>儿科</Text>
 
           </TouchableOpacity>
           </View>
@@ -151,6 +156,58 @@ export default function TelehealthrMain({navigation}) {
                 shadowOpacity: 0.27,
                 shadowRadius: 4.65,
 
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:80,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:80,
+                            alignItems: 'center',
+                            borderRadius:25,}}
+                            onPress={goToSub}>
+                            
+          <Image
+            style={{width:30,height:30}}
+            source = {require('../../images/中医.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>中医</Text>
+
+          </TouchableOpacity>
+          </View>
+          <View style={{shadowColor:"000000",shadowOffset: {
+	              width: 0,
+	              height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:80,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:80,
+                            alignItems: 'center',
+                            borderRadius:25,}}
+                            onPress={goToSub}>
+                            
+          <Image
+            style={{width:30,height:30}}
+            source = {require('../../images/康复.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>康复</Text>
+
+          </TouchableOpacity>
+          </View>
+          <View style={{shadowColor:"000000",shadowOffset: {
+	              width: 0,
+	              height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+
                 elevation: 6,
                 }}>
           <TouchableOpacity style={{backgroundColor:'#FFFFFF',
@@ -164,17 +221,18 @@ export default function TelehealthrMain({navigation}) {
                             }}
                             onPress={goToSub}>
           <Image
-            style={{width:34,height:30}}
-            source = {require('../../images/telehealth_icon/service_telehealth_icon_child.png')}
+            style={{width:30,height:30}}
+            source = {require('../../images/telehealth_icon/service_telehealth_icon_dentist.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>儿科</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>牙医</Text>
           </TouchableOpacity>
           </View>
         </View>
+        </ScrollView>
         <View style={{flexDirection: 'row', marginBottom: 15}}>
           <Text style={{marginLeft:-170,fontSize:19}}>推荐医生</Text>
         </View>
-        <ScrollView horizontal={true} style={{marginLeft:40,maxHeight:210}}>
+        <ScrollView horizontal={true} style={{marginLeft:40,maxHeight:210,paddingTop:5,height:130}}>
         <View style={{shadowColor:"000000",shadowOffset: {
 	              width: 0,
 	              height: 3,
@@ -193,7 +251,8 @@ export default function TelehealthrMain({navigation}) {
                             //marginTop:10,
                             height:120,
                             alignItems: 'center',
-                            borderRadius:15,}}>
+                            borderRadius:15,}}
+                            onPress={goToDoc}>
             <View style={{flexDirection: 'row'}}>
 
             <Image
@@ -229,7 +288,8 @@ export default function TelehealthrMain({navigation}) {
                             //marginTop:10,
                             height:120,
                             alignItems: 'center',
-                            borderRadius:15,}}>
+                            borderRadius:15,}}
+                            onPress={goToDoc}>
             <View style={{flexDirection: 'row'}}>
 
             <Image
@@ -250,14 +310,15 @@ export default function TelehealthrMain({navigation}) {
           </View>
           </ScrollView>
           <Image style = {{
-          width:220,
-          height:30,
+          width:280,
+          height:40,
           marginLeft:30,
-          marginTop:-50,
+          marginTop:20,
           }}
           source = {require('../../images/icon/1/contact.png')}
           />
 
       </View>
+      </ScrollView>
     );
   }

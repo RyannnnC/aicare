@@ -110,9 +110,9 @@ export const styles = StyleSheet.create({
     height:500,
   },
   contact: {
-    width:220,
-    height:30,
-    marginLeft:100,
+    width:290,
+    height:50,
+    marginLeft:50,
     marginTop:15,
   },
   bottom:{
@@ -196,9 +196,9 @@ export const styles = StyleSheet.create({
   },
   service:{
     color:'#006A71',
-    fontSize:16,
+    fontSize:17,
     marginTop:20,
-    marginLeft:80,
+    marginLeft:40,
   },
   street:{
     fontSize:18,
@@ -303,8 +303,8 @@ export const styles = StyleSheet.create({
   },
   button_image:{
     marginTop:40,
-    height:70,
-    width:200,
+    height:90,
+    width:255,
     marginLeft:40,
   },
   time:{

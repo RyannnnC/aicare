@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput
+  StyleSheet, Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import {styles} from '../style';
@@ -34,6 +34,8 @@ class ConsumerDate extends Component {
     const duration = this.state.duration;
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
     return (
+      <ScrollView style={{ flex:1,backgroundColor:"white"}}>
+
       <View style={styles.container}>
         <TouchableOpacity onPress={() =>
             this.props.navigation.dispatch(StackActions.pop(1))
@@ -81,6 +83,7 @@ class ConsumerDate extends Component {
           source = {require('../images/icon/1/contact.png')}
         />
       </View>
+      </ScrollView>
     );
   }
 
