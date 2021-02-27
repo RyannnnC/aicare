@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
-import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity } from 'react-native';
+import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import {data} from './data';
+import DateSelect from "./dateSelect";
 
 export default class PendingOrder extends Component {
   constructor(props) {
     super(props);
     this.state={
-      buttons: []
+      buttons: [],
+      isEnabled: false,
+      modalVisible: false,
     };
   }
-
 
   componentDidMount = () => {
     console.log("set buttons work")
@@ -23,7 +25,12 @@ export default class PendingOrder extends Component {
     }
     this.setState({buttons:butt});
   }
-
+  setIsEnabled = (value) => {
+    this.setState({isEnabled: value})
+  }
+  setModalVisible = (value) => {
+    this.setState({modalVisible: value})
+  }
   startAlert(index){
     Alert.alert(
       '提醒',
@@ -82,7 +89,7 @@ export default class PendingOrder extends Component {
           <TouchableOpacity style={styles.orderButton2} onPress={() => this.startAlert(item.id)}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.orderButton} >
+          <TouchableOpacity style={styles.orderButton} onPress={() => this.setModalVisible(!this.state.modalVisible)}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
           </TouchableOpacity>
         </View>
@@ -93,6 +100,35 @@ export default class PendingOrder extends Component {
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" , backgroundColor:'white'}}>
       <ScrollView style={{ flex:1}}>
         {orders}
+        <Modal
+         animationType="slide"
+         transparent={true}
+         visible={this.state.modalVisible}
+         onRequestClose={() => this.setModalVisible(!this.state.modalVisible)}>
+         <View style={{marginTop:200,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
+         shadowOffset: {
+   	       width: 0,
+   	       height: 12,
+         },
+         shadowOpacity: 0.58,
+         shadowRadius: 16.00,
+         elevation: 24,}}>
+     <TouchableOpacity onPress={() =>{this.setModalVisible(!this.state.modalVisible)}} style={{marginRight:30}}>
+       <Image
+         style = {styles.arrow_image}
+         source={require('../../images/icon/2/Arrow_left.png')}
+       />
+     </TouchableOpacity>
+     <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
+       <DateSelect/>
+     <TouchableOpacity style={styles.next_wrapper}>
+           <Text style={{color:'white'}}>确定</Text>
+        </TouchableOpacity>
+      </ScrollView>
+      </View>
+      <>
+      </>
+       </Modal>
       </ScrollView>
     </SafeAreaView>
   )} else {

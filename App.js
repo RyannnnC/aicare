@@ -126,6 +126,7 @@ export default class App extends React.Component {
   this.state = {
     authenticate: false,
     health: false,
+    date: "请点击右边箭头按钮输入时间",
     action: {
       changeLogin: this.changeLogin,
       changeHealth: this.changeHealth,
@@ -140,7 +141,11 @@ export default class App extends React.Component {
     this.setState({health: value});
     console.log(value);
   }
-
+  changetime = (value) => {
+    this.setState({
+      date: value
+    });
+  }
   render() {
   return (
     <DataContext.Provider value={ this.state }>

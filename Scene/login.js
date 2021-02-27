@@ -7,7 +7,7 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name:"",
+      info:"",
       password:"",
     }
   }
@@ -15,17 +15,17 @@ export default class Login extends Component {
   loginRequest() {
     let s = this.state;
     let errors=[];
-    if (s.name.length === 0) {
+    if (s.info.length === 0) {
         errors.push("Enter a password");
     }
     if (s.password.length === 0) {
         errors.push("Enter a password");
     }
-    let url = 'http://3.25.192.210:8080//aicaredb/login/provider?'
-    +'username='+ s.name
+    let url = 'http://3.25.192.210:8080/aicaredb/login/provider?'
+    +'user-info='+ s.info
     +'&password=' + s.password;
     fetch(url,{
-      method: 'POST',
+      method: 'GET',
       headers: {
       'Accept':       'application/json',
       'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default class Login extends Component {
       <TextInput
       style = {styles.account}
       placeholder="xxxxx@gmail.com"
-      onChangeText={(text) => {this.setState({ name: text})}}
+      onChangeText={(text) => {this.setState({ info: text})}}
       />
       <Image style = {styles.img_pw}
         source = {require('../images/password.png')}

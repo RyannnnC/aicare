@@ -358,5 +358,40 @@ export const styles = StyleSheet.create({
     paddingBottom:4,
     height:30,
     borderRadius:10,
-  }
+  },
+  service:{
+    color:'#006A71',
+    fontSize:17,
+    marginTop:20,
+    marginLeft:40,
+  },
+  time_image:{
+    width:240,
+    height:30,
+    marginTop:20,
+    marginLeft:20,
+  },
+  time:{
+    marginLeft:40,
+    height: 35,
+    width: 80,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,
+  },
+  next_wrapper:{
+   backgroundColor:'#8FD7D3',
+   padding:10,
+   width:220,
+   marginLeft:100,
+   marginTop:10,
+   height:45,
+   alignItems: 'center',
+   borderRadius:25,
+ },
+ arrow_image:{
+    width:25,
+    height:25,
+    marginTop:20,
+    marginLeft:20,
+  },
 });

@@ -46,7 +46,7 @@ export default class Signup extends Component {
     if (this.state.checked1) {
       let p = this.state.phone;
       let url = 'http://3.25.192.210:8080/aicare-vc/sms?'
-      +'&phone=' + p
+      +'phone=' + p
       console.log(url);
       fetch(url,{
         headers: {
