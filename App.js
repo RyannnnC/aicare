@@ -157,6 +157,7 @@ export default class App extends React.Component {
           <Stack.Screen options={{headerShown: false}} name="healthHome" component={HealthHome} />
           <Stack.Screen name="修改密码" component={ChangePwd} />
           <Stack.Screen name="我的设置" component={Setting} />
+          <Stack.Screen name="账户信息" component={AccountInfo} />
           </>
         ):(
           <>
