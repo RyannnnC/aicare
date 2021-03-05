@@ -1,225 +1,31 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import Info from './Scene/consumerInfo';
-import ConsumerOrder from './Scene/consumerOrder';
-import ConsumerIcon from "./Scene/consumerIcon";
-import ConsumerDate from './Scene/consumerDate';
-import ConsumerAddress from './Scene/consumerAdrress';
-import ConsumerPayInfo from './Scene/consumerPayInfo';
-import ConsumerPaySuccess from "./Scene/consumerPaySuccess";
-import ConsumerMain from "./Scene/consumerMain";
-import DataContext from './consumerContext';
-import AccountMain from "./Scene/account/aacountMain";
-import 'react-native-gesture-handler';
-import AccountInfo from "./Scene/account/accountInfo";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
-import ChangeEmail from './Scene/account/changeEmail';
-import ChangePwd from "./Scene/account/changePwd";
-import Setting from "./Scene/account/setting";
-import ConsumerOrderPage from "./Scene/consumerOrderPage";
-import ConsumerProvider from "./Scene/consumerProvider";
-import ProviderInfo from "./Scene/ProviderInfo";
-import Consumer from './Scene/consumerOrder';
-import ConsumerMapView from "./Scene/consumerMapView";
-import consumerRating from './Scene/order/rating';
-import CompletedOrder from "./Scene/order/completedOrder";
-import TelehealthrMain from './Scene/telehealth/telehealthMain';
-import teleSuburb from './Scene/telehealth/telehealthSuburb';
-import telehealthClinic from './Scene/telehealth/telehealthClinic';
-import DocInfo from "./Scene/telehealth/docInfo";
-import TeleSuccess from "./Scene/telehealth/telehealthPaySuccess";
-//import AccountMain from "./Scene/account/aacountMain"
-import Confirm from "./Scene/telehealth/telehealthConfirm";
-import TelePay from "./Scene/telehealth/telehealthPay";
-import ClinicInfo from "./Scene/telehealth/clinicInfo";
-import telehealthDoc from './Scene/telehealth/telehealthDoc';
-import TelehealthMV from './Scene/telehealth/telehealthMap';
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+import React ,{Component}from 'react';
+import { Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+//import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 
-function Home() {
-  return (
-      <Tab.Navigator>
-          <Tab.Screen
-            name="consumerMain"
-            component={ConsumerMain}
-            options={{
-              tabBarLabel: '主页',
-              tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="home" size={size} color={color} />
-              ),
-            }}
-            />
-          <Tab.Screen
-            name="Icon"
-            component={ConsumerIcon}
-            options={{
-              tabBarLabel: '服务',
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="room-service" size={size} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="订单"
-            component={ConsumerOrderPage}
-            options={{
-              tabBarLabel: '订单',
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />              ),
-            }}
-             />
-          <Tab.Screen
-            name="账号"
-            component={AccountMain}
-            options={{
-              tabBarLabel: '账号',
-              tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="account" color={color} size={size} />
-            ),
-          }}
-             />
-        </Tab.Navigator>
-  );
-}
+export default class Signup extends Component {
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      street:"请点击右边箭头按钮输入您的地址",
-      suburb:"",
-      postcode:"",
-      state:"",
-      name:"kim",
-      mobile:"",
-      date: "请点击右边箭头按钮输入时间",
-      start_time:"",
-      end_time:"",
-      total_time:0,
-      rate:40,
-      extra_supply:false,
-      username: '',
-      address:null,
-      action: {
-        changesupply: this.changesupply,
-        changename:this.changename,
-        changetime:this.changetime,
-        changestreet:this.changestreet,
-        changesuburb:this.changesuburb,
-        changestate:this.changestate,
-        changepostcode:this.changepostcode,
-        changestarttime:this.changestarttime,
-        changeendtime:this.changeendtime,
-        changetotal:this.changetotal,
-        changeaddress:this.changeaddress,
-      }
-    }
+  sendRequest() {
+      let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/user/scheduledetail?'
+      +'orgId=30'
+      +'&deptId=1' 
+      +'&businessEmployerId=1' 
+      +'&dayOfWeek=7';
+      Alert.alert("hi");
+      fetch(url,{
+        credentials:"include",
+        headers:{"sso-auth-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ3Nzk3MzcsInVzZXJpbmZvIjoie1wiYXBwVHlwZVwiOlwiMVwiLFwiY2xpZW50VHlwZVwiOlwiM1wiLFwiY3JlYXRlQnlcIjpcImtpbVwiLFwiY3JlYXRlVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJkZXB0SWRcIjowLFwiZW1haWxcIjpcImtpbXpob25nMjAxN0BnbWFpbC5jb21cIixcImlkXCI6NSxcImxvZ2luTnVtYmVyXCI6MCxcImxvZ2luVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJtb2JpbGVcIjpcIjA0MjY4MDQ4OThcIixcInBhc3N3b3JkXCI6XCJjYjdkNWFjNTM2ZjAyZjhjNGZkZGJmYjg3MDcwNTMyZDc4NWM5YTk2Mzg5ZjYwNmUyZDEyNmEwZjliNTNlMmZhXCIsXCJzYWx0XCI6XCJSaEhkcnBVMTlqN1Q5MnJrY2tsclwiLFwic3RhdHVzXCI6MSxcInVwZGF0ZUJ5XCI6MTYxNDY3OTY4OTAwMCxcInVwZGF0ZVRpbWVcIjoxNjE0Njc5Njg5MDAwLFwidXNlcm5hbWVcIjpcImtpbVwifSJ9.S1zazA1yMZFvfpfet2iC9DJe43Zg8B0cY-aRDZkwouc"},
+        method: 'GET',
+      })
+      .then((response) => response.json())
+      .then((json)=>console.log(json.page[40]))
   }
-  changeaddress = (value) => {
-    this.setState({
-        address: value
-    });
-  }
-  
-changetotal = (value) => {
-  this.setState({
-      total_time: value
-  });
-}
-changestarttime = (value) => {
-  this.setState({
-      start_time: value
-  });
-}
-changeendtime = (value) => {
-  this.setState({
-      end_time: value
-  });
-}
-changestate = (value) => {
-  this.setState({
-      state: value
-  });
-}
-changepostcode = (value) => {
-  this.setState({
-      postcode: value
-  });
-}
-changesuburb = (value) => {
-  this.setState({
-      suburb: value
-  });
-}
 
-
-changestreet = (value) => {
-  this.setState({
-      street: value
-  });
-}
-changesupply = (value) => {
-    this.setState({
-        extra_supply: value
-    });
-}
-changename = (value) => {
-  this.setState({
-      name: value
-  });
-}
-
-changetime = (value) => {
-  this.setState({
-      date: value
-  });
-}
-
-render() {
-  return (
-    <DataContext.Provider value={ this.state }>
-    <NavigationContainer>
-      <Stack.Navigator >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="consumerMain" component={ConsumerMain} />
-        <Stack.Screen name="accountMain" component={AccountMain} />
-        <Stack.Screen name="consumerIcon" component={ConsumerIcon} />
-        <Stack.Screen name="consumerOrder" component={ConsumerOrder} />
-        <Stack.Screen name="consumerInfo" component={Info} />
-        <Stack.Screen name="consumerDate" component={ConsumerDate} />
-        <Stack.Screen name="consumerAddress" component={ConsumerAddress} />
-        <Stack.Screen name="consumerPayInfo" component={ConsumerPayInfo} />
-        <Stack.Screen name="consumerPaySuccess" component={ConsumerPaySuccess} />
-        <Stack.Screen name="accountInfo" component ={AccountInfo}/>
-        <Stack.Screen name="changeEmail" component ={ChangeEmail}/>
-        <Stack.Screen name="changePwd" component ={ChangePwd}/>
-        <Stack.Screen name="setting" component ={Setting}/>
-        <Stack.Screen name="cp" component ={ConsumerProvider}/>
-        <Stack.Screen name="ProviderInfo" component ={ProviderInfo}/>
-        <Stack.Screen name="consumerMV" component ={ConsumerMapView}/>
-        <Stack.Screen name="consumerRating" component ={consumerRating}/>
-        <Stack.Screen name="completedOrder" component ={CompletedOrder}/>
-        <Stack.Screen name="telehealthMain" component ={TelehealthrMain}/>
-        <Stack.Screen name="telehealthSub" component ={teleSuburb}/>
-        <Stack.Screen name="telehealthClinic" component ={telehealthClinic}/>
-        <Stack.Screen name="docInfo" component ={DocInfo}/>
-        <Stack.Screen name="teleSuccess" component ={TeleSuccess}/>
-        <Stack.Screen name="teleConfirm" component ={Confirm}/>
-        <Stack.Screen name="telehealthPay" component ={TelePay}/>
-        <Stack.Screen name="ClinicInfo" component ={ClinicInfo}/>
-        <Stack.Screen name="telehealthDoc" component ={telehealthDoc}/>
-        <Stack.Screen name="TelehealthMV" component ={TelehealthMV}/>
-        <Stack.Screen name="ConsumerOrderPage" component ={ConsumerOrderPage}/>
-
-
-      </Stack.Navigator>
-    </NavigationContainer>
-    </DataContext.Provider>
+  render() {
+    return (
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
+        <Text>test</Text>
+        <Button onPress={()=>this.sendRequest()} title="Learn More"
+        color="#841584"></Button>
+      </View>
   );}
 }
-
-export default App;

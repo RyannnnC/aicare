@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView,Linking } from 'react-native';
 import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from '../consumerContext';
@@ -34,6 +34,33 @@ export default function Info({navigation}) {
     text => setText(text);
     state.action.changename(text);
   }
+  const callNumber = () => {
+    //phone='0403555432';
+    //let phoneNumber = phone;
+    if (Platform.OS !== 'android') {
+      Linking.canOpenURL(`telprompt:${'0403555432'}`)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(`telprompt:${'0403555432'}`);
+      }
+    })
+    .catch(err => console.log(err));
+  }
+    else  {
+     
+      Linking.canOpenURL(`tel:${'0403555432'}`)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(`tel:${'0403555432'}`);
+      }
+    })
+    .catch(err => console.log(err));
+    }
+  };
   return (
     <DataContext.Consumer>
     {(state)  => (
@@ -93,7 +120,7 @@ export default function Info({navigation}) {
     <TextInput style = {styles.account} placeholder="如有备注可以在此处留言。"/>
     <TouchableOpacity onPress={makecall}>
             <Image
-                style={{width:60,height:60,position:"absolute",borderRadius:30,bottom:5,right:-170}}
+                style={{width:60,height:60,borderRadius:30,marginLeft:200,marginBottom:-10}}
                 source = {require("../images/mobile_icon.png")}
             />
     </TouchableOpacity>

@@ -28,7 +28,20 @@ import CompletedOrder from "./Scene/order/completedOrder";
 import TelehealthrMain from './Scene/telehealth/telehealthMain';
 import teleSuburb from './Scene/telehealth/telehealthSuburb';
 import telehealthClinic from './Scene/telehealth/telehealthClinic';
+import DocInfo from "./Scene/telehealth/docInfo";
+import TeleSuccess from "./Scene/telehealth/telehealthPaySuccess";
 //import AccountMain from "./Scene/account/aacountMain"
+import Confirm from "./Scene/telehealth/telehealthConfirm";
+import TelePay from "./Scene/telehealth/telehealthPay";
+import ClinicInfo from "./Scene/telehealth/clinicInfo";
+import telehealthDoc from './Scene/telehealth/telehealthDoc';
+import TelehealthMV from './Scene/telehealth/telehealthMap';
+
+import Welcome from './Scene/welcome';
+import Login from './Scene/login';
+import Signup from './Scene/signUp';
+import Forget from './Scene/forget';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -97,7 +110,9 @@ class App extends React.Component {
       extra_supply:false,
       username: '',
       address:null,
+      authenticate: false,
       action: {
+        changeLogin: this.changeLogin,
         changesupply: this.changesupply,
         changename:this.changename,
         changetime:this.changetime,
@@ -109,8 +124,32 @@ class App extends React.Component {
         changeendtime:this.changeendtime,
         changetotal:this.changetotal,
         changeaddress:this.changeaddress,
+        clearstate:this.clearstate,
       }
     }
+  }
+  clearstate=()=>{
+    this.setState({
+    street:"请点击右边箭头按钮输入您的地址",
+    suburb:"",
+    postcode:"",
+    state:"",
+    name:"kim",
+    mobile:"",
+    date: "请点击右边箭头按钮输入时间",
+    start_time:"",
+    end_time:"",
+    total_time:0,
+    rate:40,
+    extra_supply:false,
+    username: '',
+    address:null,
+    authenticate: false,
+    })
+  }
+  changeLogin = (value) => {
+    this.setState({authenticate: value});
+    console.log(value);
   }
   changeaddress = (value) => {
     this.setState({
@@ -177,6 +216,8 @@ render() {
     <DataContext.Provider value={ this.state }>
     <NavigationContainer>
       <Stack.Navigator >
+        {this.state.authenticate ? (
+        <>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="consumerMain" component={ConsumerMain} />
         <Stack.Screen name="accountMain" component={AccountMain} />
@@ -199,6 +240,24 @@ render() {
         <Stack.Screen name="telehealthMain" component ={TelehealthrMain}/>
         <Stack.Screen name="telehealthSub" component ={teleSuburb}/>
         <Stack.Screen name="telehealthClinic" component ={telehealthClinic}/>
+        <Stack.Screen name="docInfo" component ={DocInfo}/>
+        <Stack.Screen name="teleSuccess" component ={TeleSuccess}/>
+        <Stack.Screen name="teleConfirm" component ={Confirm}/>
+        <Stack.Screen name="telehealthPay" component ={TelePay}/>
+        <Stack.Screen name="ClinicInfo" component ={ClinicInfo}/>
+        <Stack.Screen name="telehealthDoc" component ={telehealthDoc}/>
+        <Stack.Screen name="TelehealthMV" component ={TelehealthMV}/>
+        <Stack.Screen name="ConsumerOrderPage" component ={ConsumerOrderPage}/>
+        </>
+        ):(
+          <>
+          <Stack.Screen options={{headerShown: false}} name="Welcome" component={Welcome} />
+          <Stack.Screen options={{headerShown: false}} name="登陆" component={Login} />
+          <Stack.Screen name="注册" component={Signup} />
+          <Stack.Screen name="忘记密码" component={Forget}/>
+          </>
+        )}
+
       </Stack.Navigator>
     </NavigationContainer>
     </DataContext.Provider>

@@ -150,7 +150,7 @@ export default class telehealthClinic extends Component {
         <TouchableOpacity onPress={() =>{
             this.props.navigation.navigate("TelehealthMV")}}>
             <Image
-                style={{width:70,height:70,position:"absolute",borderRadius:30,bottom:80,right:35}}
+                style={{width:70,height:70,marginLeft:300}}
                 source = {require("../../images/map.png")}
             />
         </TouchableOpacity>

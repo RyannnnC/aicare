@@ -24,23 +24,31 @@ export default function Consumer({navigation}) {
     navigation.dispatch(StackActions.pop(1))
   }
   const callNumber = () => {
-    phone='0403555432';
-    let phoneNumber = phone;
+    //phone='0403555432';
+    //let phoneNumber = phone;
     if (Platform.OS !== 'android') {
-      phoneNumber = `telprompt:${phone}`;
-    }
-    else  {
-      phoneNumber = `tel:${phone}`;
-    }
-    Linking.canOpenURL(phoneNumber)
+      Linking.canOpenURL(`telprompt:${'0403555432'}`)
     .then(supported => {
       if (!supported) {
         Alert.alert('Phone number is not available');
       } else {
-        return Linking.openURL(phoneNumber);
+        return Linking.openURL(`telprompt:${'0403555432'}`);
       }
     })
     .catch(err => console.log(err));
+  }
+    else  {
+     
+      Linking.canOpenURL(`tel:${'0403555432'}`)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(`tel:${'0403555432'}`);
+      }
+    })
+    .catch(err => console.log(err));
+    }
   };
 
   return (
@@ -97,15 +105,17 @@ export default function Consumer({navigation}) {
       />
     </TouchableOpacity>
     </View>
-    <TouchableOpacity onPress={callNumber}>
-            <Image
-                style={{width:60,height:60,position:"absolute",borderRadius:30,bottom:5,right:-170}}
-                source = {require("../images/mobile_icon.png")}
-            />
-    </TouchableOpacity>
+   
     <Image style = {styles.comments}
         source={require('../images/icon/2/comments.png')}
     />
+     <TouchableOpacity onPress={callNumber}>
+            <Image
+                style={{width:60,height:60,marginLeft:220,marginBottom:-10
+              }}
+                source = {require("../images/mobile_icon.png")}
+            />
+    </TouchableOpacity>
     <Image style = {styles.bottom}
         source={require('../images/icon/2/bottom.png')}
     />

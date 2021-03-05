@@ -25,6 +25,11 @@
         "foregroundImage": "./assets/aicare.png",
         "backgroundColor": "#FFFFFF"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"
+        }
+      },
       "package": "com.kim2017.aicare"
     },
     "web": {

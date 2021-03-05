@@ -389,12 +389,6 @@ export const styles = StyleSheet.create({
    width: 45,
    height: 40,
  },
- smallIconImg:{
-   width: 20,
-   height: 20,
-   marginLeft:10,
-   marginRight:10,
- },
  accountBar:{
    flexDirection: 'row',
    justifyContent: 'space-around',

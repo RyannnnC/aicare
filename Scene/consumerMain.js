@@ -19,6 +19,9 @@ export default function ProviderMain({navigation}) {
     const goToTelehealth= () => {
       navigation.navigate("telehealthMain")
   }
+    const gotoOrderPage=()=>{
+      navigation.navigate("订单")
+    }
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     
@@ -62,7 +65,7 @@ export default function ProviderMain({navigation}) {
         <View style={{textAlign: "left" }}>
           <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>订单</Text>
         </View>
-      <TouchableOpacity >
+      <TouchableOpacity onPress ={gotoOrderPage}>
       <View style={styles.home}>
         <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
           <View style={{marginLeft:20 }}>
