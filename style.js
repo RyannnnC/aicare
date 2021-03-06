@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: "center"
   },
   consumerWrapper: {
     backgroundColor: '#8FD7D3',
@@ -210,14 +211,10 @@ export const styles = StyleSheet.create({
   account:{
     height: 35,
     width: 300,
-    borderBottomColor: '#999999',
-    borderBottomWidth:1,
   },
   password:{
     height: 35,
     width: 300,
-    borderBottomColor: '#999999',
-    borderBottomWidth:1,
   },
   onsite_text:{
     color: 'white',
@@ -257,5 +254,12 @@ export const styles = StyleSheet.create({
     width: 80,
     borderBottomColor: '#999999',
     borderBottomWidth:1,
+  },
+  resumeInput: {
+    width: 300,
+    height: 22,
+    marginLeft: 5,
+    borderBottomWidth:1,
+    borderBottomColor:'#EEEEEE',
   },
 });

@@ -38,7 +38,7 @@
     "react-native-tab-navigator": "^0.3.4",
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.3",
-    "react-navigation-stack": "^2.10.2",
+    "react-navigation-stack": "^2.10.4",
     "toggle-switch-react-native": "^2.3.0",
     "undefined": "react-native-community/datetimepicker"
   },

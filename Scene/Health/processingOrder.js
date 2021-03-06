@@ -47,7 +47,7 @@ export default class ProcessingOrder extends Component {
     if (data.length >0) {
     const orders = data.map((item) => {
       return (
-        <View style={styles.cardHolder}>
+        <View style={styles.cardHolder} key={item.id}>
         <View style={{flexDirection: 'row'}}>
         <Image
           style = {{width: 18, height:18,marginRight:14}}
@@ -110,6 +110,7 @@ export default class ProcessingOrder extends Component {
             />
           </TouchableOpacity>
         </View>
+        <ScrollView style={{ flex:1}}>
         <View style={{flexDirection: 'row', marginBottom:20}}>
           <Image
             style = {{width: 40, height:40, marginRight:15}}
@@ -140,7 +141,6 @@ export default class ProcessingOrder extends Component {
         containerStyle= {{width: 315,height: 40,backgroundColor: '#ffffff',borderRadius: 16,marginBottom:20}}
         inputContainerStyle= {{width: 300,height: 30,backgroundColor: '#ffffff',borderRadius: 16}}
         inputStyle={{width: 290,height: 30,backgroundColor: '#ffffff',borderRadius: 16}}/>
-        <ScrollView style={{ flex:1}}>
           {orders}
           <Modal
            animationType="slide"

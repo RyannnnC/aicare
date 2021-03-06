@@ -236,6 +236,13 @@ export const styles = StyleSheet.create({
     width: 335,
     height: 22,
   },
+  resumeInput3: {
+    width: 175,
+    height: 22,
+    marginLeft: 5,
+    borderBottomWidth:1,
+    borderBottomColor:'#EEEEEE',
+  },
   resumeButton: {
     width: 280,
     height: 40,

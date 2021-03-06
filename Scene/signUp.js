@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Platform, Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+import { Platform, KeyboardAvoidingView,Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from './providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
@@ -17,7 +17,9 @@ export default class Signup extends Component {
     checked2: true,
   }
   sendRequest() {
-    console.log(Platform.OS)
+    if (this.state.confirm != this.state.password) {
+      Alert.alert("两次密码必须相同")
+    } else {
     let s = this.state;
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/register?'
       +'username='+ s.name
@@ -39,7 +41,7 @@ export default class Signup extends Component {
       .then((json) => {
         console.log(json.msg);
         this.props.navigation.navigate('验证');
-      });
+      });}
   //  .then(json => {console.log(json)});
   }
   sendCode() {
@@ -84,8 +86,9 @@ export default class Signup extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
-          <ScrollView>
+      <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}>
+          <ScrollView style={{flex:1}}>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
@@ -203,7 +206,7 @@ export default class Signup extends Component {
           </View>
           <View style={{flexDirection: 'row'}}>
             <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
-            <TextInput style={styles.resumeInput}
+            <TextInput style={styles.resumeInput3}
             placeholder= "请输入您收到的验证码"
             onChangeText={(text) => {this.setState({ code: text})}}
             />
@@ -218,6 +221,6 @@ export default class Signup extends Component {
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
           </TouchableOpacity>
           </ScrollView>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
   );}
 }
