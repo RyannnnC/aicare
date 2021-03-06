@@ -8,7 +8,7 @@ const Welcome = ({ navigation }) => {
     Alert.alert('function unimplemented')
   }
   const goToProvider= () => {
-    navigation.navigate('请选择服务类型')
+    navigation.navigate('登陆')
   }
 
   return (

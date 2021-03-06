@@ -5,6 +5,7 @@ import {styles} from '../providerStyle';
 import {doctors} from './doctors';
 import {data} from './data';
 import DateSelect from "./dateSelect";
+import Category from "./category";
 
 export default class ProcessingOrder extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ export default class ProcessingOrder extends Component {
         date: new Date(),
         isEnabled: false,
         modalVisible: false,
+        Visible:false,
       };
     }
 
@@ -35,7 +37,9 @@ export default class ProcessingOrder extends Component {
   setModalVisible = (value) => {
     this.setState({modalVisible: value})
   }
-
+  setVisible = (visible) => {
+    this.setState({ Visible: visible });
+  }
   render () {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
@@ -61,7 +65,7 @@ export default class ProcessingOrder extends Component {
             <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.phone}</Text>
           </View>
-            <TouchableOpacity style={styles.orderButton3} onPress={() => this.setModalVisible(!this.state.modalVisible)}>
+            <TouchableOpacity style={styles.orderButton3} >
               <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
             </TouchableOpacity>
           </View>
@@ -89,14 +93,16 @@ export default class ProcessingOrder extends Component {
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
         <View style={{flexDirection: 'row', marginBottom:21,marginTop:30}}>
-          <TouchableOpacity style={{flexDirection: 'row', marginRight:199,marginLeft:30}}>
+          <TouchableOpacity style={{flexDirection: 'row', marginRight:199,marginLeft:30}}
+          onPress={()=>{this.setVisible(!this.state.Visible)}}>
             <Text style={{fontSize:13}}>全部</Text>
             <Image
               style = {{width: 13, height:13,marginLeft:5}}
               source = {require('../../images/providerImg/schedule_icon_filter.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={{flexDirection: 'row', marginRight:30}}>
+          <TouchableOpacity style={{flexDirection: 'row', marginRight:30}}
+          onPress={() => this.setModalVisible(!this.state.modalVisible)}>
             <Text style={{fontSize:13}}>{month}/{date}</Text>
             <Image
               style = {{width: 13, height:13,marginLeft:5}}
@@ -157,14 +163,57 @@ export default class ProcessingOrder extends Component {
        </TouchableOpacity>
        <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
          <DateSelect/>
-       <TouchableOpacity style={styles.next_wrapper}>
+         <View>
+         <TouchableOpacity style={styles.next_wrapper}>
              <Text style={{color:'white'}}>确定</Text>
           </TouchableOpacity>
+         </View>
         </ScrollView>
         </View>
         <>
         </>
          </Modal>
+         <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.state.Visible}
+        onRequestClose={()=>{
+          this.setVisible(!this.state.Visible);}
+        }
+      >
+      <View style={{marginTop:370,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 12,
+},
+shadowOpacity: 0.58,
+shadowRadius: 16.00,
+
+elevation: 24,}}>
+    <TouchableOpacity style={{marginRight:30}}  onPress={()=>{
+          this.setVisible(!this.state.Visible);}
+        }>
+      <Image
+        style = {styles.arrow_image}
+        source={require('../../images/icon/2/Arrow_left.png')}
+      />
+    </TouchableOpacity>
+    <ScrollView style={{backgroundColor:"#F7FAFA",}}>
+        <View style={{marginLeft:130,marginBottom:10,marginTop:-15}}>
+        <Text style = {styles.service}>类型筛选</Text>
+        </View>
+        <ScrollView horizontal={true} style={{marginLeft:20,maxHeight:210,paddingTop:5,height:130}}>
+          <Category/>
+        </ScrollView>
+        <TouchableOpacity style={styles.next_wrapper} onPress={()=>{
+          this.setVisible(!this.state.Visible);}
+        }>
+      <Text style={styles.onsite_text}>确定</Text>
+    </TouchableOpacity>
+    </ScrollView>
+        <View style={{height:20}}/>
+        </View>
+      </Modal>
         </ScrollView>
       </SafeAreaView>
     )} else {

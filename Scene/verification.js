@@ -47,7 +47,7 @@ export default class Verify extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center", backgroundColor:'white'}}>
-          <View style={{alignItems: "Left" }}>
+          <View >
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}

@@ -18,7 +18,7 @@ export default function Income() {
         source = {require('../images/providerImg/money_img.png')}
       />
       </View>
-    <View style={{alignItems: "Left" }}>
+    <View>
       <Text style= {{color: '#333333', fontSize: 16, fontWeight: '500'}}>数据统计</Text>
     </View>
     <View style={styles.buttons}>

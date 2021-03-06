@@ -7,7 +7,7 @@ export default class WorkExperience extends Component {
 
   render() {
   return (
-    <SafeAreaView style={{ flex:1, alignItems: "Left" }}>
+    <SafeAreaView style={{ flex:1, alignItems: "flex-start" }}>
       <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
       <Image
         style = {styles.smallIconImg}

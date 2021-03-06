@@ -11,7 +11,7 @@ export default class AccountInfo extends Component {
         <Image style={styles.resumeImg}
           source = {require('../../images/providerImg/home_img_person.png')}
         />
-        <View style={{alignItems: "Left" }}>
+        <View style={{alignItems: "flex-start" }}>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Image
             style = {styles.smallIconImg}

@@ -24,8 +24,8 @@ export default function HealthMain() {
           source = {require('../../images/crayon-1317.png')}
         />
       </View>
-    <View style={{alignItems: "left" }}>
-      <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>代接订单</Text>
+    <View>
+      <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>待接订单</Text>
     </View>
 
     <View style={styles.card2}>
@@ -62,7 +62,7 @@ export default function HealthMain() {
     </View>
 
 
-      <View style={{alignItems: "left" }}>
+      <View>
         <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当日订单</Text>
       </View>
     <View style={styles.card}>

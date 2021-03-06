@@ -8,6 +8,20 @@ export default class HealthAccountMain extends Component {
   constructor(props) {
     super(props);
   }
+  startAlert(){
+    Alert.alert(
+      '提醒',
+      '您确定要退出登录吗？',
+      [
+        {text: '确定', onPress: () => {
+                this.context.action.changeLogin(false);}},
+        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
+  }
 
   render() {
   return (
@@ -22,14 +36,14 @@ export default class HealthAccountMain extends Component {
         <Text style={{ fontSize:14, fontWeight: '300' }}>657416708xy@gmail.com</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('账户信息')}>
+      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('机构信息')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_medical.png')}
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>机构信息</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('账户信息')}>
+      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('成员管理')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/singup_icon_name.png')}
@@ -52,10 +66,7 @@ export default class HealthAccountMain extends Component {
       </TouchableOpacity>
       <TouchableOpacity
       style={styles.profileBar}
-      onPress={() => {
-        this.context.action.changeLogin(false);
-        this.context.action.changeHealth(false);
-      }}
+      onPress={() => {this.startAlert()}}
       >
         <Image
           style = {styles.smallIconImg}

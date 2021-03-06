@@ -23,7 +23,7 @@ export default class Setting extends Component {
   render() {
     return (
     <SafeAreaView style={{ flex:1, alignItems: "center" ,backgroundColor:'white'}}>
-      <View style={{alignItems: "Left" }}>
+      <View style={{alignItems: "flex-start" }}>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Image
             style = {styles.smallIconImg}

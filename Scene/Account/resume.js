@@ -178,7 +178,7 @@ export default class Resume extends Component {
             value = {this.state.postcode}
             onChangeText={(text) => {this.state.changepostcode(text)}}
           />
-          <Text style={{ fontSize:16, fontWeight: '400' }}>城市</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>州</Text>
           <TextInput style={styles.resumeInput1} placeholder= "悉尼"/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>

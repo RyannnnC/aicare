@@ -7,7 +7,7 @@ export default class TransferOut extends Component {
   render() {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
-        <View style={{alignItems: "Left" }}>
+        <View style={{alignItems: "flex-start" }}>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Image
             style = {styles.smallIconImg}

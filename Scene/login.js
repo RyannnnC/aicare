@@ -21,27 +21,31 @@ export default class Login extends Component {
     if (s.password.length === 0) {
         errors.push("Enter a password");
     }
-    let url = 'http://3.25.192.210:8080/aicaredb/login/provider?'
-    +'user-info='+ s.info
-    +'&password=' + s.password;
+    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/login?'
+    +'loginName='+ s.info
+    +'&passWord=' + s.password
+    +'&clientType=3'
+    +'&appType=1'
+    +'&loginType=mobile'
     fetch(url,{
-      method: 'GET',
+      method: 'POST',
       headers: {
       'Accept':       'application/json',
       'Content-Type': 'application/json',
       }
     })
-    .then((response) => {
-        if (response.status === 500) {
-            Alert.alert("Invalid username or password");
-            return false;
+    .then((response) => response.json())
+    .then((json) =>  {
+        if (json.code === 0) {
+          console.log("login success");
+          this.context.action.changeLogin(true);
         } else {
-            console.log("login success");
-            this.context.action.changeLogin(true);
+          Alert.alert("Invalid username or password");
+          return false;
         }
     })
-
   }
+
   render(){
   return (
     <View style = {styles.container}>

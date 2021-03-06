@@ -12,7 +12,6 @@ import ProviderType from './Scene/providerType';
 import Login from './Scene/login';
 import AccountMain from './Scene/Account/accountMain';
 import Resume from './Scene/Account/resume';
-import Orders from './Scene/Account/orders';
 import Comment from './Scene/Account/comment';
 import AccountInfo from './Scene/Account/accountInfo';
 import ChangePwd from './Scene/Account/changePwd';
@@ -32,6 +31,12 @@ import HealthMain from './Scene/Health/healthMain';
 import HealthAccountMain from './Scene/Health/healthAccountMain';
 import ReservationMain from './Scene/Health/reservationMain';
 import Verify from './Scene/verification';
+import Info from './Scene/Health/info';
+import Introduction from './Scene/Health/introduction';
+import Languages from './Scene/Health/languages';
+import HealthServiceType from './Scene/Health/healthServiceType';
+import OtherStores from './Scene/Health/otherStores';
+import Members from './Scene/Health/members';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -125,11 +130,12 @@ export default class App extends React.Component {
   super(props);
   this.state = {
     authenticate: false,
-    health: false,
+    health: true,
     date: "请点击右边箭头按钮输入时间",
     action: {
       changeLogin: this.changeLogin,
       changeHealth: this.changeHealth,
+      changetime:this.changetime,
     }
     }
   }
@@ -157,14 +163,18 @@ export default class App extends React.Component {
           <Stack.Screen options={{headerShown: false}} name="healthHome" component={HealthHome} />
           <Stack.Screen name="修改密码" component={ChangePwd} />
           <Stack.Screen name="我的设置" component={Setting} />
-          <Stack.Screen name="账户信息" component={AccountInfo} />
+          <Stack.Screen name="机构信息" component={Info} />
+          <Stack.Screen name="成员管理" component={Members} />
+          <Stack.Screen name="介绍" component={Introduction} />
+          <Stack.Screen name="语言" component={Languages} />
+          <Stack.Screen name="服务种类" component={HealthServiceType} />
+          <Stack.Screen name="分支机构" component={OtherStores} />
           </>
         ):(
           <>
           <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
           <Stack.Screen options={{headerShown: false}} name="accountMain" component={AccountMain}/>
           <Stack.Screen name="简历" component={Resume} />
-          <Stack.Screen name="订单" component={Orders} />
           <Stack.Screen name="评价" component={Comment} />
           <Stack.Screen name="账户信息" component={AccountInfo} />
           <Stack.Screen name="修改密码" component={ChangePwd} />

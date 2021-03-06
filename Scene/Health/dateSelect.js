@@ -35,8 +35,8 @@ export default class DateSelect extends Component {
 
     return (
 
-      <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center'}}>
-        <Text style = {styles.service}>预约时间</Text>
+      <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
+        <Text style = {{ color:'#006A71',fontSize:16}}>预约时间</Text>
         <CalendarPicker
           onDateChange={this.onDateChange}
           previousTitle="上一月"
@@ -44,13 +44,23 @@ export default class DateSelect extends Component {
           width = {300}
           height = {300}
         />
-        <Text>时间</Text>
+        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
         <View style ={{ flexDirection: 'row', marginTop: 30 }}>
-          <TextInput style = {styles.time} placeholder="24时格式"
-        /*  onChangeText={(text) => {state.action.changestarttime(text)}}*//>
+          <TextInput style = {{
+              marginLeft: 30,
+              marginRight:10,
+              height: 35,
+              width: 80,
+              borderBottomColor: '#999999',
+              borderBottomWidth:1}} placeholder="24时格式"/>
           <Text>至</Text>
-          <TextInput style = {styles.time} placeholder="24时格式"
-    /*    onChangeText={(text) => {state.action.changeendtime(text);}}*//>
+          <TextInput style = {{
+              marginLeft: 10,
+              marginRight:30,
+              height: 35,
+              width: 80,
+              borderBottomColor: '#999999',
+              borderBottomWidth:1}} placeholder="24时格式"/>
         </View>
       </View>
     );

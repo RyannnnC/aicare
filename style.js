@@ -192,7 +192,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#8FD7D3',
     padding:10,
     width:280,
-    marginTop:60,
+    marginTop:40,
     height:40,
     alignItems: 'center',
     borderRadius:20,
@@ -250,5 +250,12 @@ export const styles = StyleSheet.create({
     width: 220,
     height: 70,
     textAlign: 'center',
-  }
+  },
+  time:{
+    marginLeft:40,
+    height: 35,
+    width: 80,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,
+  },
 });

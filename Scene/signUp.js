@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+import { Platform, Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from './providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
@@ -11,19 +11,23 @@ export default class Signup extends Component {
     mail:"",
     password:"",
     confirm: "",
-    userCode:"",
-    mailCode:"",
+    code:"",
+    type:"",
     checked1: false,
     checked2: true,
   }
   sendRequest() {
+    console.log(Platform.OS)
     let s = this.state;
-    if (s.userCode === s.mailCode) {
-      let url = 'http://3.25.192.210:8080/aicaredb/register/provider?'
-      +'name='+ s.name
-      +'&phone=' + s.phone
+    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/register?'
+      +'username='+ s.name
+      +'&password=' + s.password
       +'&email=' + s.mail
-      +'&password=' + s.password;
+      +'&mobile=' + s.phone
+      +'&code=' + s.code
+      +'&clientType=3'
+      +'&appType=1'
+      +'&type=' + s.type;
       fetch(url,{
         method: 'POST',
         headers: {
@@ -31,24 +35,22 @@ export default class Signup extends Component {
         'Content-Type': 'application/json',
         }
       })
-      .then((response) => {
-        console.log(response.status);
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.msg);
         this.props.navigation.navigate('验证');
-      })
-    } else {
-      Alert.alert("验证码错误，请重新输入");
-      alert("验证码错误，请重新输入");
-    }
-
+      });
   //  .then(json => {console.log(json)});
   }
   sendCode() {
     if (this.state.checked1) {
       let p = this.state.phone;
-      let url = 'http://3.25.192.210:8080/aicare-vc/sms?'
-      +'phone=' + p
+      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/send?'
+      +'mobile=' + p
+      +'&type=mobile';
       console.log(url);
       fetch(url,{
+        method: 'POST',
         headers: {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
@@ -56,15 +58,17 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
-        this.setState({mailCode: json.code});
-        console.log(json.code);
+        this.setState({type: 'mobile'});
+        console.log(json.msg);
       });
     } else {
       let m = this.state.mail;
-      let url = 'http://3.25.192.210:8080/aicare-vc/smtp?'
-      +'&mail-address=' + m
+      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/send?'
+      +'email=' + m
+      +'&type=email';
       console.log(url);
       fetch(url,{
+        method: 'POST',
         headers: {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
@@ -72,8 +76,8 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ mailCode: json.code});
-        console.log(json.code);
+        this.setState({ type: 'email'});
+        console.log(json.msg);
       });
     }
   }
@@ -81,7 +85,7 @@ export default class Signup extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
-          <View style={{alignItems: "Left" }}>
+          <ScrollView>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
@@ -201,7 +205,7 @@ export default class Signup extends Component {
             <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
             <TextInput style={styles.resumeInput}
             placeholder= "请输入您收到的验证码"
-            onChangeText={(text) => {this.setState({ userCode: text})}}
+            onChangeText={(text) => {this.setState({ code: text})}}
             />
             </View>
             <TouchableOpacity style={styles.codeTab}
@@ -210,11 +214,10 @@ export default class Signup extends Component {
               <Text style={{ fontSize:14, fontWeight: '300' }}>获取验证码</Text>
             </TouchableOpacity>
           </View>
-
-          </View>
           <TouchableOpacity style={styles.resumeButton} onPress={()=>this.sendRequest()}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
           </TouchableOpacity>
+          </ScrollView>
       </SafeAreaView>
   );}
 }

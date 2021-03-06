@@ -32,7 +32,7 @@ export default function ProviderMain() {
         placeholder="搜服务/订单..."
         />
     </View>
-    <View style={{textAlign: "left" }}>
+    <View>
       <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当月数据</Text>
     </View>
     <View style={styles.buttons}>
@@ -49,7 +49,7 @@ export default function ProviderMain() {
         <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>月收入</Text>
       </TouchableOpacity>
     </View>
-      <View style={{textAlign: "left" }}>
+      <View>
         <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当日订单</Text>
       </View>
     <View style={styles.home}>
