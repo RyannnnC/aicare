@@ -133,6 +133,7 @@ export default class Forget extends Component {
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
               checkedColor='red'
+              containerStyle={{borderWidth:0, backgroundColor:'white'}}
               checked={this.state.mobile}
               onPress={() => {
                 console.log("电话");
@@ -151,6 +152,7 @@ export default class Forget extends Component {
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
               checkedColor='red'
+              containerStyle={{borderWidth:0, backgroundColor:'white'}}
               checked={this.state.email}
               onPress={() => {
                 console.log("switch to mail");

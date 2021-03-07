@@ -656,11 +656,12 @@ export default class Info extends Component {
             <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
               <CheckBox
                 center
-                title='实地问诊                      '
+                title='实地问诊                                '
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
                 checkedColor='red'
+                containerStyle={{borderWidth:0,backgroundColor:'white'}}
                 size={this.state.size}
                 checked={this.state.checked1}
                 onPress={() => {
@@ -674,10 +675,11 @@ export default class Info extends Component {
             <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
               <CheckBox
                 center
-                title='远程医疗                      '
+                title='远程医疗                                '
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
+                containerStyle={{borderWidth:0, backgroundColor:'white'}}
                 checkedColor='red'
                 size={this.state.size}
                 checked={this.state.checked2}
@@ -694,10 +696,11 @@ export default class Info extends Component {
             <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
               <CheckBox
                 center
-                title='bulk billing                '
+                title='bulk billing                          '
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
+                containerStyle={{borderWidth:0,backgroundColor:'white'}}
                 checkedColor='red'
                 size={this.state.size}
                 checked={this.state.checked3}

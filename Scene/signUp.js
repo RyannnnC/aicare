@@ -175,6 +175,7 @@ export default class Signup extends Component {
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
               checkedColor='red'
+              containerStyle={{borderWidth:0, backgroundColor:'white'}}
               size={this.state.size}
               checked={this.state.checked1}
               onPress={() => {
@@ -194,6 +195,7 @@ export default class Signup extends Component {
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
               checkedColor='red'
+              containerStyle={{borderWidth:0, backgroundColor:'white'}}
               size={this.state.size}
               checked={this.state.checked2}
               onPress={() => {
