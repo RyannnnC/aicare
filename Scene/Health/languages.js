@@ -1,7 +1,8 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+import { Dimensions, Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import TagInput from 'react-native-tags-input';
 
 export default class Languages extends Component {
   state={
@@ -13,9 +14,19 @@ export default class Languages extends Component {
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-    ]
+    ],
+    tags: {
+      tag: '',
+      tagsArray: []
+    },
   };
 
+  updateTagState = (state) => {
+    this.setState({
+      tags: state
+    })
+  };
+  
   changeColor(index){
     let but = this.state.buttons;
     if(!but[index].pressed){
@@ -175,7 +186,12 @@ export default class Languages extends Component {
       </View>
 
       <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
-        <TextInput style={styles.resumeInput} placeholder= "请填写需要添加的支持语言"/>
+          <TagInput
+          updateState={this.updateTagState}
+          tags={this.state.tags}
+          placeholder="请输入要添加的语言"
+          containerStyle={{width: (Dimensions.get('window').width - 40)}}
+          />
         <TouchableOpacity>
           <Image
             style = {styles.smallIconImg}
