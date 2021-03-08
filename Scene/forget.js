@@ -116,7 +116,7 @@ export default class Forget extends Component {
       style={{ flex:1 ,justifyContent: "center",backgroundColor:'white'}}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-      <View style={{flex:1, marginLeft:50}}>
+      <View style={{width:'75%',flex:1, marginLeft:'13%',marginTop:35}}>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
@@ -125,7 +125,7 @@ export default class Forget extends Component {
             <Text style={{ fontSize:18, fontWeight: '500' }}>绑定方式</Text>
           </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
               title='电话          '
@@ -143,8 +143,7 @@ export default class Forget extends Component {
               })}}
              />
           </View>
-
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
               title='邮箱          '

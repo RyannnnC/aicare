@@ -240,11 +240,9 @@ export const styles = StyleSheet.create({
     width: 175,
     height: 22,
     marginLeft: 5,
-    borderBottomWidth:1,
-    borderBottomColor:'#EEEEEE',
   },
   resumeButton: {
-    width: 280,
+    width: '100%',
     height: 40,
     marginTop: 40,
     backgroundColor: '#68B0AB',

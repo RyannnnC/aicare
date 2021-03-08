@@ -89,7 +89,7 @@ export default class Signup extends Component {
       <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}>
           <ScrollView style={{flex:1}}>
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{marginTop:30, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/providerImg/singup_icon_name.png')}
@@ -166,8 +166,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>绑定方式</Text>
           </View>
-
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
               title='电话          '
@@ -186,8 +185,7 @@ export default class Signup extends Component {
               })}}
              />
           </View>
-
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
               title='邮箱          '
