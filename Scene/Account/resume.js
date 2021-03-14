@@ -7,7 +7,9 @@ import Geocoder from 'react-native-geocoding';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default class Resume extends Component {
-    state={
+   constructor(props) {
+    super(props);
+    this.state={
     selectedHours: 0,
     selectedMinutes: 0,
     show: false,
@@ -15,9 +17,6 @@ export default class Resume extends Component {
     date: new Date(1598051730000),
     latitude:0,
     longitude:0,
-    street:"",
-    suburb:"",
-    postcode:"",
     buttons: [
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -36,7 +35,7 @@ export default class Resume extends Component {
         { pressed: false, },
         { pressed: false, },
     ]
-  };
+  };}
 
   componentDidMount(){
    navigator.geolocation.getCurrentPosition(
@@ -77,30 +76,15 @@ export default class Resume extends Component {
 		.then(json => {
       var addressComponent = json.results[0].address_components;
       if (addressComponent.length==7){
-      this.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name + ' ' + addressComponent[2].long_name);
-      this.changepostcode(addressComponent[6].long_name);
+      this.context.action.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name + ' ' + addressComponent[2].long_name);
+      this.context.action.changepostcode(addressComponent[6].long_name);
       }
       else{
-        this.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name);
-        this.changepostcode(addressComponent[5].long_name);
+        this.context.action.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name);
+        this.context.action.changepostcode(addressComponent[5].long_name);
       }
 		})
 		.catch(error => console.warn(error));
-  }
-  changepostcode = (value) => {
-    this.setState({
-        postcode: value
-    });
-  }
-  changesuburb = (value) => {
-    this.setState({
-        suburb: value
-    });
-  }
-  changestreet = (value) => {
-    this.setState({
-        street: value
-    });
   }
 
   showTimepicker(index) {
@@ -166,8 +150,8 @@ export default class Resume extends Component {
           <TextInput
           style={styles.resumeInput}
           placeholder= "1001/1 Mooltan Avanue"
-          value = {this.state.street}
-          onChangeText={(text) => {this.state.changestreet(text)}}
+          value = {this.context.street}
+          onChangeText={(text) => {this.context.action.changestreet(text)}}
           />
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
@@ -175,8 +159,8 @@ export default class Resume extends Component {
           <TextInput
             style={styles.resumeInput1}
             placeholder= "2113"
-            value = {this.state.postcode}
-            onChangeText={(text) => {this.state.changepostcode(text)}}
+            value = {this.context.postcode}
+            onChangeText={(text) => {this.context.action.changepostcode(text)}}
           />
           <Text style={{ fontSize:16, fontWeight: '400' }}>州</Text>
           <TextInput style={styles.resumeInput1} placeholder= "悉尼"/>

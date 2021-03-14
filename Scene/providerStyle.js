@@ -410,6 +410,7 @@ export const styles = StyleSheet.create({
   doctorHolder: {
     width:315,
     height:55,
+    marginTop:5,
     borderBottomWidth:1,
     borderBottomColor:'#EEEEEE',
     flexDirection: 'row',

@@ -39,8 +39,8 @@ export default class Login extends Component {
     .then((response) => response.json())
     .then((json) =>  {
         if (json.code === 0) {
-          console.log("login success");
           this.context.action.changeLogin(true);
+          this.context.action.changetoken(json.data);
         } else {
           Alert.alert("Invalid username or password");
           return false;
@@ -64,6 +64,7 @@ export default class Login extends Component {
           if (json.code === 0) {
             console.log("login success");
             this.context.action.changeLogin(true);
+            this.context.action.changetoken(json.data);
           } else {
             Alert.alert("Invalid username or password");
             return false;
@@ -79,7 +80,7 @@ export default class Login extends Component {
     behavior={Platform.OS === "ios" ? "padding" : "height"}>
     <View style={styles.container}>
       <Image style = {styles.img3}
-        source = {require('../images/welcome.png')}
+        source = {require('../images/providerImg/login_img_1.png')}
       />
       {this.state.mobile && (
         <View style={{marginTop:50,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
@@ -108,7 +109,7 @@ export default class Login extends Component {
               />
               <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>账号</Text>
               <TouchableOpacity style={{marginLeft:150}} onPress={() => {this.setState({email:false,mobile:true})}}>
-                <Text>手机登陆</Text>
+                <Text style={{color:'blue'}}>手机登陆</Text>
               </TouchableOpacity>
             </View>
             <TextInput

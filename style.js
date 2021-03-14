@@ -23,10 +23,11 @@ export const styles = StyleSheet.create({
   consumerWrapper: {
     backgroundColor: '#8FD7D3',
     padding:10,
-    width:280,
+    width:'100%',
     marginTop:60,
     height:45,
     alignItems: 'center',
+    justifyContent: "center",
     borderRadius:25,
   },
   providerWrapper2: {
@@ -222,10 +223,11 @@ export const styles = StyleSheet.create({
   providerWrapper:{
     backgroundColor: '#FDB0A8',
     padding:10,
-    width:280,
+    width:'100%',
     marginTop:30,
     height:45,
     alignItems: 'center',
+    justifyContent: "center",
     borderRadius:25,
   },
   img3:{

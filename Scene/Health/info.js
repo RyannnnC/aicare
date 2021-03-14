@@ -2,43 +2,43 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
-//import { TimePicker } from 'react-native-simple-time-picker';
 import Geocoder from 'react-native-geocoding';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
+import DataContext from '../../providerContext';
 
 export default class Info extends Component {
-    state={
-    show: false,
-    latitude:0,
-    longitude:0,
-    street:"",
-    suburb:"",
-    state:"",
-    postcode:"",
-    checked1: true,
-    checked2: false,
-    checked3:true,
-    buttons: [
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-    ],
-    times: [
-        { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-        { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-        { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-        { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-        { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-        { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-        { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-    ]
-  };
+    constructor(props) {
+      super(props);
+      this.state={
+      show: false,
+      latitude:0,
+      longitude:0,
+      checked1: true,
+      checked2: false,
+      checked3:true,
+      buttons: [
+          { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+          { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+          { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+          { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+          { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+          { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+          { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+      ],
+      times: [
+          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+      ]
+    }
+    }
+
 
   componentDidMount(){
    navigator.geolocation.getCurrentPosition(
@@ -74,37 +74,74 @@ export default class Info extends Component {
 		.then(json => {
       var addressComponent = json.results[0].address_components;
       if (addressComponent.length==7){
-      this.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name + ' ' + addressComponent[2].long_name);
-      this.changestate(addressComponent[4].long_name);
-      this.changepostcode(addressComponent[6].long_name);
+      this.context.action.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name + ' ' + addressComponent[2].long_name);
+      this.context.action.changestate(addressComponent[4].long_name);
+      this.context.action.changepostcode(addressComponent[6].long_name);
       }
       else{
-        this.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name);
-        this.changestate(addressComponent[4].long_name);
-        this.changepostcode(addressComponent[5].long_name);
+        this.context.action.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name);
+        this.context.action.changestate(addressComponent[3].long_name);
+        this.context.action.changepostcode(addressComponent[5].long_name);
       }
 		})
 		.catch(error => console.warn(error));
   }
-  changepostcode = (value) => {
-    this.setState({
-        postcode: value
-    });
-  }
-  changestate = (value) => {
-    this.setState({
-        state: value
-    });
-  }
-  changesuburb = (value) => {
-    this.setState({
-        suburb: value
-    });
-  }
-  changestreet = (value) => {
-    this.setState({
-        street: value
-    });
+
+  sendRequest() {
+    let s = this.state;
+    let url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/save';
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      },
+      body: JSON.stringify({
+        name: this.context.name,
+        mobile: this.context.phone,
+        email: this.context.email,
+        address: this.context.street,
+        postalCode: this.context.postcode,
+        Languages: [{
+            "value": "1",
+            "name": "英文",
+            "status": 1
+        },
+        {
+            "value": "2",
+            "name": "中文",
+            "status": 1
+        }],
+        serviceClassList:[
+          {
+            "value": "1",
+            "name": "心理咨询",
+            "status": -1
+          },
+          {
+            "value": "2",
+            "name": "眼科问诊",
+            "status": -1
+          }
+        ],
+      })
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          alert("提交成功");
+          console.log(json.msg);
+        } else {
+          alert('提交失败');
+        }
+      });
   }
 
   hidePicker = () => {
@@ -140,25 +177,28 @@ export default class Info extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>名称</Text>
           <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
-          onChangeText={(text) => {this.setState({ name: text})}}/>
+          value={this.context.name}
+          onChangeText={(text) => {this.context.action.changename(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>电话</Text>
           <TextInput style={styles.resumeInput} placeholder= "0403571833"
-          onChangeText={(text) => {this.setState({ phone: text})}}/>
+          value={this.context.phone}
+          onChangeText={(text) => {this.context.action.changephone(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>邮箱</Text>
           <TextInput style={styles.resumeInput} placeholder= "657416708xy@gmail.com"
-          onChangeText={(text) => {this.setState({ phone: text})}}/>
+          value={this.context.email}
+          onChangeText={(text) => {this.context.action.changeemail(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>地址</Text>
           <TextInput
           style={styles.resumeInput}
           placeholder= "1001/1 Mooltan Avanue"
-          value = {this.state.street}
-          onChangeText={(text) => {this.state.changestreet(text)}}
+          value = {this.context.street}
+          onChangeText={(text) => {this.context.action.changestreet(text)}}
           />
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
@@ -166,14 +206,14 @@ export default class Info extends Component {
           <TextInput
             style={styles.resumeInput1}
             placeholder= "2113"
-            value = {this.state.postcode}
-            onChangeText={(text) => {this.state.changepostcode(text)}}
+            value = {this.context.postcode}
+            onChangeText={(text) => {this.context.action.changepostcode(text)}}
           />
           <Text style={{ fontSize:16, fontWeight: '400' }}>州</Text>
           <TextInput
             style={styles.resumeInput1}
-            value = {this.state.state}
-            onChangeText={(text) => {this.state.changestate(text)}}
+            value = {this.context.state}
+            onChangeText={(text) => {this.context.action.changestate(text)}}
             placeholder= "NSW"/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
@@ -716,10 +756,11 @@ export default class Info extends Component {
                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
               </TouchableOpacity>
             </View>
-        <TouchableOpacity style={styles.resumeButton}>
+        <TouchableOpacity style={styles.resumeButton} onPress={() => {this.sendRequest()}}>
           <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );}
 }
+Info.contextType = DataContext;

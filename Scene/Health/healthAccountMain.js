@@ -14,7 +14,9 @@ export default class HealthAccountMain extends Component {
       '您确定要退出登录吗？',
       [
         {text: '确定', onPress: () => {
-                this.context.action.changeLogin(false);}},
+                this.context.action.changeLogin(false);
+                this.context.action.changetoken(null);
+                this.context.action.changedoctors(null);}},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
       {

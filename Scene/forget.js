@@ -113,8 +113,8 @@ export default class Forget extends Component {
   render() {
     return (
       <KeyboardAvoidingView
-      style={{ flex:1 ,justifyContent: "center",backgroundColor:'white'}}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex:1 ,justifyContent: "center",backgroundColor:'white'}}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
       <View style={{width:'75%',flex:1, marginLeft:'13%',marginTop:35}}>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>

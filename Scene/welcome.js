@@ -14,19 +14,21 @@ const Welcome = ({ navigation }) => {
   return (
    <SafeAreaView style={styles.container}>
      <Image
-       source={require('../images/login.png')}
+       source={require('../images/providerImg/launchpage_img_1.png')}
        style = {styles.img}
      />
      <View style={styles.welcomeText}>
       <Text style={{ color: '#68B0AB', fontSize: 20, fontWeight: '600'}}>AICare</Text>
       <Text style={{fontWeight: '600', fontSize: 20}}>您的远程医疗护理好帮手</Text>
      </View>
+     <View style={{alignItems: "center",width:'75%' }}>
      <TouchableOpacity style={styles.consumerWrapper} onPress={alertHandler}>
        <Text style={styles.buttonText}>我是消费者</Text>
      </TouchableOpacity>
      <TouchableOpacity style={styles.providerWrapper} onPress={goToProvider}>
        <Text style={styles.buttonText}>我是服务者</Text>
      </TouchableOpacity>
+     </View>
      <Image
        source={require('../images/logo.png')}
        style = {styles.img2}

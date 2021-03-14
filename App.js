@@ -37,6 +37,7 @@ import Languages from './Scene/Health/languages';
 import HealthServiceType from './Scene/Health/healthServiceType';
 import OtherStores from './Scene/Health/otherStores';
 import Members from './Scene/Health/members';
+import UploadMember from './Scene/Health/uploadMember';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -132,26 +133,89 @@ export default class App extends React.Component {
     authenticate: false,
     health: true,
     date: "请点击右边箭头按钮输入时间",
+    name: 'Kingsford Clinic',
+    phone: '0403571833',
+    email: '657416708xy@gmail.com',
+    street:"",
+    suburb:"",
+    postcode:"",
+    state:'',
+    token:'',
+    doctors:[],
     action: {
       changeLogin: this.changeLogin,
       changeHealth: this.changeHealth,
       changetime:this.changetime,
+      changestreet:this.changestreet,
+      changepostcode:this.changepostcode,
+      changesuburb:this.changesuburb,
+      changestate:this.changestate,
+      changeemail:this.changeemail,
+      changephone:this.changephone,
+      changename:this.changename,
+      changetoken:this.changetoken,
+      changedoctors:this.changedoctors,
     }
     }
   }
   changeLogin = (value) => {
     this.setState({authenticate: value});
-    console.log(value);
   }
   changeHealth = (value) => {
     this.setState({health: value});
-    console.log(value);
   }
   changetime = (value) => {
     this.setState({
       date: value
     });
   }
+  changepostcode = (value) => {
+    this.setState({
+        postcode: value
+    });
+  }
+  changesuburb = (value) => {
+    this.setState({
+        suburb: value
+    });
+  }
+  changestreet = (value) => {
+    this.setState({
+        street: value
+    });
+  }
+  changestate = (value) => {
+    this.setState({
+        state: value
+    });
+  }
+  changephone = (value) => {
+    this.setState({
+        phone: value
+    });
+  }
+  changeemail = (value) => {
+    this.setState({
+        email: value
+    });
+  }
+  changename = (value) => {
+    this.setState({
+        name: value
+    });
+  }
+  changetoken = (value) => {
+    this.setState({
+        token: value
+    });
+  }
+
+  changedoctors = (value) => {
+    this.setState({
+        doctors: value
+    });
+  }
+
   render() {
   return (
     <DataContext.Provider value={ this.state }>
@@ -169,6 +233,7 @@ export default class App extends React.Component {
           <Stack.Screen name="语言" component={Languages} />
           <Stack.Screen name="服务种类" component={HealthServiceType} />
           <Stack.Screen name="分支机构" component={OtherStores} />
+          <Stack.Screen name="成员添加" component={UploadMember} />
           </>
         ):(
           <>
