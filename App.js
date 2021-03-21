@@ -38,6 +38,7 @@ import HealthServiceType from './Scene/Health/healthServiceType';
 import OtherStores from './Scene/Health/otherStores';
 import Members from './Scene/Health/members';
 import UploadMember from './Scene/Health/uploadMember';
+import DoctorInfo from './Scene/Health/doctorInfo';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -132,13 +133,14 @@ export default class App extends React.Component {
   this.state = {
     authenticate: false,
     health: true,
-    date: "请点击右边箭头按钮输入时间",
-    name: 'Kingsford Clinic',
-    phone: '0403571833',
-    email: '657416708xy@gmail.com',
+    date: "",
+    name: '',
+    phone: '',
+    email: '',
     street:"",
     suburb:"",
     postcode:"",
+    intro:'',
     state:'',
     token:'',
     doctors:[],
@@ -155,6 +157,8 @@ export default class App extends React.Component {
       changename:this.changename,
       changetoken:this.changetoken,
       changedoctors:this.changedoctors,
+      clearstate:this.clearstate,
+      changeintro:this.changeintro,
     }
     }
   }
@@ -215,6 +219,28 @@ export default class App extends React.Component {
         doctors: value
     });
   }
+  changeintro = (value) => {
+    this.setState({
+        intro: value
+    });
+  }
+
+  clearstate=()=>{
+    this.setState({
+    authenticate: false,
+    date: "",
+    name: '',
+    phone: '',
+    email: '',
+    street:"",
+    suburb:"",
+    postcode:"",
+    state:'',
+    token:'',
+    intro:'',
+    doctors:[],
+    })
+  }
 
   render() {
   return (
@@ -234,6 +260,7 @@ export default class App extends React.Component {
           <Stack.Screen name="服务种类" component={HealthServiceType} />
           <Stack.Screen name="分支机构" component={OtherStores} />
           <Stack.Screen name="成员添加" component={UploadMember} />
+          <Stack.Screen name="成员信息" component={DoctorInfo} />
           </>
         ):(
           <>

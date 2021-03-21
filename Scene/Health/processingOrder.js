@@ -91,7 +91,7 @@ export default class ProcessingOrder extends Component {
       )
     })
     return (
-      <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" }}>
+      <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
         <View style={{flexDirection: 'row', marginBottom:21,marginTop:30}}>
           <TouchableOpacity style={{flexDirection: 'row', marginRight:199,marginLeft:30}}
           onPress={()=>{this.setVisible(!this.state.Visible)}}>

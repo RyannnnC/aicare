@@ -39,6 +39,20 @@ export default class Info extends Component {
     }
     }
 
+  convertTime12to24(time12h) {
+    const [time, modifier] = time12h.split(' ');
+
+    let [hours, minutes] = time.split(':');
+
+    if (hours === '12') {
+      hours = '00';
+    }
+
+    if (modifier === 'PM') {
+      hours = parseInt(hours, 10) + 12;
+    }
+    return `${hours}:${minutes}`;
+  }
 
   componentDidMount(){
    navigator.geolocation.getCurrentPosition(
@@ -109,6 +123,7 @@ export default class Info extends Component {
         email: this.context.email,
         address: this.context.street,
         postalCode: this.context.postcode,
+        introduce:this.context.intro,
         Languages: [{
             "value": "1",
             "name": "英文",
@@ -151,7 +166,6 @@ export default class Info extends Component {
 
 
   render() {
-    const { selectedHours, selectedMinutes } = this.state;
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1 }}>
@@ -218,7 +232,7 @@ export default class Info extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
-          <Text style={{ fontSize:16, fontWeight: '400' , color:'#999999'}}>Kingsford Clinic 是一家专注...</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' , color:'#999999'}}>{this.context.intro}</Text>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('介绍')}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
@@ -291,7 +305,9 @@ export default class Info extends Component {
                   let t = this.state.times;
                   t[0].visible1 = false;
                 this.setState({times:t})}}
+              display="spinner"
               mode={'time'}
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[0].visible2}
@@ -304,7 +320,9 @@ export default class Info extends Component {
                     let t = this.state.times;
                     t[0].visible2 = false;
                   this.setState({times:t})}}
+                display="spinner"
                 mode={'time'}
+                minuteInterval={10}
                 />
           </View>
           <View  style={{flexDirection: 'row'}}>
@@ -351,7 +369,9 @@ export default class Info extends Component {
                   let t = this.state.times;
                   t[1].visible1 = false;
                 this.setState({times:t})}}
+              display="spinner"
               mode={'time'}
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[1].visible2}
@@ -364,7 +384,9 @@ export default class Info extends Component {
                     let t = this.state.times;
                     t[1].visible2 = false;
                   this.setState({times:t})}}
+                display="spinner"
                 mode={'time'}
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -411,7 +433,9 @@ export default class Info extends Component {
                   let t = this.state.times;
                   t[2].visible1 = false;
                 this.setState({times:t})}}
+              display="spinner"
               mode={'time'}
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[2].visible2}
@@ -425,6 +449,8 @@ export default class Info extends Component {
                     t[2].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View  style={{flexDirection: 'row'}}>
@@ -472,6 +498,8 @@ export default class Info extends Component {
                   t[3].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[3].visible2}
@@ -485,6 +513,8 @@ export default class Info extends Component {
                     t[3].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -532,6 +562,8 @@ export default class Info extends Component {
                   t[4].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[4].visible2}
@@ -545,6 +577,8 @@ export default class Info extends Component {
                     t[4].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -592,6 +626,8 @@ export default class Info extends Component {
                   t[5].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[5].visible2}
@@ -605,6 +641,8 @@ export default class Info extends Component {
                     t[5].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -652,6 +690,8 @@ export default class Info extends Component {
                   t[6].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[6].visible2}
@@ -665,6 +705,8 @@ export default class Info extends Component {
                     t[6].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <Text style={{ fontSize:16, fontWeight: '400' }}>服务种类</Text>
@@ -693,7 +735,7 @@ export default class Info extends Component {
             <View style={{ marginTop:10, marginBottom:10}}>
               <Text style={{ fontSize:16, fontWeight: '400' }}>服务类型</Text>
             </View>
-            <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row'}}>
               <CheckBox
                 center
                 title='实地问诊                                '
@@ -712,7 +754,7 @@ export default class Info extends Component {
                />
             </View>
 
-            <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row'}}>
               <CheckBox
                 center
                 title='远程医疗                                '
@@ -733,7 +775,7 @@ export default class Info extends Component {
             <View style={{ marginTop:10, marginBottom:10}}>
               <Text style={{ fontSize:16, fontWeight: '400' }}>收费方式</Text>
             </View>
-            <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row'}}>
               <CheckBox
                 center
                 title='bulk billing                          '

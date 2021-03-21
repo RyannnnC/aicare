@@ -23,7 +23,7 @@ export default class Setting extends Component {
   render() {
     return (
     <SafeAreaView style={{ flex:1, alignItems: "center" ,backgroundColor:'white'}}>
-      <View style={{alignItems: "flex-start" }}>
+      <View style={{alignItems: "flex-start",width:'80%' }}>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Image
             style = {styles.smallIconImg}
@@ -56,11 +56,10 @@ export default class Setting extends Component {
           <Text style={{ fontSize:18, fontWeight: '500' }}>联系我们</Text>
           <Text style={{ fontSize:14, fontWeight: '500', color:'#999999'}}> +61 0403555431</Text>
         </View>
-
-      </View>
         <TouchableOpacity style={styles.resumeButton}>
           <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
         </TouchableOpacity>
+      </View>      
     </SafeAreaView>
   );}
 }

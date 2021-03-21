@@ -154,7 +154,6 @@ export const styles = StyleSheet.create({
   smallIconImg:{
     width: 20,
     height: 20,
-    marginLeft:10,
     marginRight:10,
   },
   accountBar:{
@@ -182,7 +181,7 @@ export const styles = StyleSheet.create({
     alignItems: "center" ,
   },
   orderButton: {
-    width: 75,
+    width: 'auto',
     height: 30,
     backgroundColor: '#FF7E67',
     borderRadius: 10,
@@ -191,9 +190,11 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     justifyContent: "center",
     alignItems: "center" ,
+    paddingLeft:15,
+    paddingRight:15,
   },
   orderButton2: {
-    width: 75,
+    width: 'auto',
     height: 30,
     backgroundColor: '#68B0AB',
     borderRadius: 10,
@@ -202,6 +203,8 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     justifyContent: "center",
     alignItems: "center" ,
+    paddingLeft:15,
+    paddingRight:15,
   },
   orderButton3: {
     width: 56,
@@ -414,5 +417,31 @@ export const styles = StyleSheet.create({
     borderBottomWidth:1,
     borderBottomColor:'#EEEEEE',
     flexDirection: 'row',
-  }
+  },
+  infoButton1: {
+    width: 'auto',
+    height: 30,
+    backgroundColor: '#FF7E67',
+    borderRadius: 10,
+    textAlign: 'center',
+    marginRight: 31,
+    marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center" ,
+    paddingLeft:15,
+    paddingRight:15,
+  },
+  infoButton2: {
+    width: 'auto',
+    height: 30,
+    backgroundColor: '#68B0AB',
+    borderRadius: 10,
+    textAlign: 'center',
+    marginLeft: 32,
+    marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center" ,
+    paddingLeft:15,
+    paddingRight:15,
+  },
 });

@@ -16,33 +16,75 @@ export default class Members extends Component {
       };
     }
 
-
-  componentDidMount = () => {
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/employerlist';
-      fetch(url,{
-        method: 'GET',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': this.context.token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      }})
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.code === 0) {
-          console.log(json.msg);
-          this.context.action.changedoctors(json.employerlist)
-        } else {
-          console.log(json.msg)
-        }
-      }).catch(error => console.warn(error));
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/employerlist';
+        fetch(url,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'sso-auth-token': this.context.token,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        }})
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.code === 0) {
+            console.log(json.msg);
+            this.context.action.changedoctors(json.employerlist)
+          } else {
+            console.log(json.msg)
+          }
+        }).catch(error => console.warn(error));
+    });
   }
 
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  deleteDoctor(id) {
+    Alert.alert(
+      '提醒',
+      '您确定要删除这位成员吗？',
+      [
+        {text: '确定', onPress: () => {
+          let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/delete'
+          + '?employerId=' + id;
+            fetch(url,{
+              method: 'DELETE',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+              'Accept':       'application/json',
+              'Content-Type': 'application/json',
+              'sso-auth-token': this.context.token,
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+            }})
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code === 0) {
+                console.log(json.msg);
+                this.componentDidMount();
+              } else {
+                console.log(json.msg)
+              }
+            }).catch(error => console.warn(error));}},
+        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
+  }
   render () {
     let docs = [];
     if (this.context.doctors.length >0) {
@@ -57,13 +99,13 @@ export default class Members extends Component {
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>全科医生 - 9年工作经验</Text>
           </View>
-          <TouchableOpacity style={{marginLeft:68, marginRight:10}} onPress={() => {Alert.alert('功能尚未开放')}}>
+          <TouchableOpacity style={{marginLeft:68, marginRight:10}} onPress={() => this.props.navigation.navigate('成员信息', {id: item.employerId})}>
             <Image
               style = {{width: 25, height:25}}
               source = {require('../../images/providerImg/account_icon_edit.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {Alert.alert('功能尚未开放')}}>
+          <TouchableOpacity onPress={() => {this.deleteDoctor(item.employerId)}}>
             <Image
               style = {{width: 25, height:25}}
               source = {require('../../images/providerImg/account_icon_delete.png')}

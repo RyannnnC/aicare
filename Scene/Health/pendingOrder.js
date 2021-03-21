@@ -2,35 +2,54 @@ import React, {Component} from 'react';
 import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
-import {data} from './data';
 import DateSelect from "./dateSelect";
+import DataContext from '../../providerContext';
 
 export default class PendingOrder extends Component {
   constructor(props) {
     super(props);
     this.state={
-      buttons: [],
+      data:[],
       isEnabled: false,
       modalVisible: false,
     };
   }
 
   componentDidMount = () => {
-    console.log("set buttons work")
-    var i=0;
-    let butt=[];
-    while (i < data.length) {
-      butt.push({ backgroundColor: '#68B0AB', pressed: false,id:i});
-      i++;
-    }
-    this.setState({buttons:butt});
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/query';
+        fetch(url,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'sso-auth-token': this.context.token,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        }})
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.code === 0) {
+            console.log(json);
+            this.setState({data:json.page});
+          } else {
+            console.log(json.msg)
+          }
+        }).catch(error => console.warn(error));
+    });
   }
+
   setIsEnabled = (value) => {
     this.setState({isEnabled: value})
   }
   setModalVisible = (value) => {
     this.setState({modalVisible: value})
   }
+
   startAlert(index){
     Alert.alert(
       '提醒',
@@ -47,8 +66,8 @@ export default class PendingOrder extends Component {
 
   render() {
   let orders;
-  if (data.length >0) {
-  orders = data.map((item) => {
+  if (this.state.data.length >0) {
+  orders = this.state.data.map((item) => {
     return (
       <View style={styles.card2} key={item.id}>
         <View style={{flexDirection: 'row', marginTop:16, marginBottom:16, marginLeft:25}}>
@@ -57,8 +76,8 @@ export default class PendingOrder extends Component {
           source = {require('../../images/providerImg/home_img_person.png')}
         />
         <View>
-          <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
-          <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.phone}</Text>
+          <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerName}</Text>
+          <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>+61 4165222222</Text>
         </View>
         </View>
         <View style={{flexDirection: 'row',paddingBottom: 10}}>
@@ -66,24 +85,24 @@ export default class PendingOrder extends Component {
             style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_time.png')}
             />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.time}</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.appointDate}</Text>
           <Image
             style = {{width: 15, height:15,marginLeft:79, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}
           />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.subject}</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>全科</Text>
         </View>
         <View style={{flexDirection: 'row',paddingBottom: 12, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
           <Image
             style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_person.png')}
             />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.doctor}</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>李医生</Text>
           <Image
             style = {{width: 15, height:15,marginLeft:141, marginRight:5}}
             source = {require('../../images/providerImg/order_icon_location.png')}
           />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.treatment}</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地预约</Text>
         </View>
         <View style={{flexDirection: 'row-reverse'}}>
           <TouchableOpacity style={styles.orderButton2} onPress={() => this.startAlert(item.id)}>
@@ -143,3 +162,4 @@ export default class PendingOrder extends Component {
  )};
   }
 }
+PendingOrder.contextType = DataContext;

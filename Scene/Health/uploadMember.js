@@ -6,6 +6,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DataContext from '../../providerContext';
+import { Dropdown } from 'react-native-material-dropdown';
 
 export default class UploadMember extends Component {
     constructor(props) {
@@ -13,6 +14,15 @@ export default class UploadMember extends Component {
       this.state={
         name:"",
         phone:"",
+        data:[{
+          value: '全科',
+        }, {
+          value: '儿科',
+        }, {
+          value: '牙科',
+        },{
+          value: '心理',
+        }],
         checked1: true,
         checked2: false,
         checked3: false,
@@ -74,26 +84,31 @@ export default class UploadMember extends Component {
       body: JSON.stringify({
         name: this.state.name,
         mobile: this.state.phone,
-        Languages: [{
-            "value": "1",
+        languages: [{
+            "value": "2",
             "name": "英文",
             "status": 1
         },
         {
-            "value": "2",
+            "value": "1",
             "name": "中文",
             "status": 1
         }],
         serviceClassList:[
           {
             "value": "1",
-            "name": "心理咨询",
+            "name": "全科问诊",
             "status": -1
           },
           {
             "value": "2",
             "name": "眼科问诊",
             "status": -1
+          },
+          {
+            "value": "3",
+            "name": "心理问诊",
+            "status": 1
           }
         ],
       })
@@ -114,11 +129,14 @@ export default class UploadMember extends Component {
     this.setState({visible:false})
   }
 
+  setSelectedType(itemValue) {
+    this.setState({selectedType:itemValue})
+  }
+
   render() {
-    const { selectedHours, selectedMinutes } = this.state;
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1,width:'90%' }}>
         <View style={{ marginTop:10,marginBottom:20,justifyContent: "center",alignItems: "center" }}>
           <TouchableOpacity onPress={() => {Alert.alert('上传照片尚未开放')}}>
             <Image style={styles.resumeImg}
@@ -126,7 +144,7 @@ export default class UploadMember extends Component {
               />
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start"}}>
           <Image
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/singup_icon_name.png')}
@@ -146,69 +164,20 @@ export default class UploadMember extends Component {
           value={this.state.phone}
           onChangeText={(text) => {this.setState({phone:text})}}/>
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <CheckBox
-            center
-            title='全科'
-            checkedIcon='check-circle-o'
-            uncheckedIcon='circle-o'
-            checkedColor='red'
-            containerStyle={{borderWidth:0,backgroundColor:'white'}}
-            size={this.state.size}
-            checked={this.state.checked1}
-            onPress={() => {
-              this.setState({
-                checked1: !this.state.checked1,
-            })}}
-           />
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>类型</Text>
+          <Dropdown
+          label='请选择类型'
+          data={this.state.data}
+          containerStyle={{width:200}}
+          />
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <CheckBox
-            center
-            title='心理'
-            checkedIcon='check-circle-o'
-            uncheckedIcon='circle-o'
-            containerStyle={{borderWidth:0, backgroundColor:'white'}}
-            checkedColor='red'
-            size={this.state.size}
-            checked={this.state.checked2}
-            onPress={() => {
-              this.setState({
-              checked2: !this.state.checked2,
-            })}}
-           />
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <CheckBox
-            center
-            title='牙科'
-            checkedIcon='check-circle-o'
-            uncheckedIcon='circle-o'
-            containerStyle={{borderWidth:0, backgroundColor:'white'}}
-            checkedColor='red'
-            size={this.state.size}
-            checked={this.state.checked3}
-            onPress={() => {
-              this.setState({
-              checked3: !this.state.checked3,
-            })}}
-           />
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <CheckBox
-            center
-            title='儿科'
-            checkedIcon='check-circle-o'
-            uncheckedIcon='circle-o'
-            containerStyle={{borderWidth:0, backgroundColor:'white'}}
-            checkedColor='red'
-            size={this.state.size}
-            checked={this.state.checked4}
-            onPress={() => {
-              this.setState({
-              checked4: !this.state.checked4,
-            })}}
-           />
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' , color:'#999999'}}>{this.context.intro}</Text>
+          <TouchableOpacity onPress={() => {Alert.alert('功能尚未开放')}}>
+            <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+          </TouchableOpacity>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
@@ -279,6 +248,8 @@ export default class UploadMember extends Component {
                   t[0].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[0].visible2}
@@ -292,6 +263,8 @@ export default class UploadMember extends Component {
                     t[0].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
           </View>
           <View  style={{flexDirection: 'row'}}>
@@ -339,6 +312,8 @@ export default class UploadMember extends Component {
                   t[1].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[1].visible2}
@@ -352,6 +327,8 @@ export default class UploadMember extends Component {
                     t[1].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -399,6 +376,8 @@ export default class UploadMember extends Component {
                   t[2].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[2].visible2}
@@ -412,6 +391,8 @@ export default class UploadMember extends Component {
                     t[2].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View  style={{flexDirection: 'row'}}>
@@ -459,6 +440,8 @@ export default class UploadMember extends Component {
                   t[3].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[3].visible2}
@@ -472,6 +455,8 @@ export default class UploadMember extends Component {
                     t[3].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -519,6 +504,8 @@ export default class UploadMember extends Component {
                   t[4].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[4].visible2}
@@ -532,6 +519,8 @@ export default class UploadMember extends Component {
                     t[4].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -579,6 +568,8 @@ export default class UploadMember extends Component {
                   t[5].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[5].visible2}
@@ -592,6 +583,8 @@ export default class UploadMember extends Component {
                     t[5].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -639,6 +632,8 @@ export default class UploadMember extends Component {
                   t[6].visible1 = false;
                 this.setState({times:t})}}
               mode={'time'}
+              display="spinner"
+              minuteInterval={10}
               />
               <DateTimePicker
                 isVisible={this.state.times[6].visible2}
@@ -652,6 +647,8 @@ export default class UploadMember extends Component {
                     t[6].visible2 = false;
                   this.setState({times:t})}}
                 mode={'time'}
+                display="spinner"
+                minuteInterval={10}
                 />
             </View>
             <Text style={{ fontSize:16, fontWeight: '400' }}>服务种类</Text>

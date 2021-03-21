@@ -7,6 +7,10 @@ import DataContext from "../../providerContext";
 export default class HealthAccountMain extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      name:'',
+      email:'',
+    }
   }
   startAlert(){
     Alert.alert(
@@ -14,15 +18,44 @@ export default class HealthAccountMain extends Component {
       '您确定要退出登录吗？',
       [
         {text: '确定', onPress: () => {
-                this.context.action.changeLogin(false);
-                this.context.action.changetoken(null);
-                this.context.action.changedoctors(null);}},
+                this.context.action.clearstate();}},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
       {
         cancelable: false
       }
     );
+  }
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      let url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/list';
+        fetch(url,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'sso-auth-token': this.context.token,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        }})
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.code === 0) {
+            console.log(json.msg);
+            this.setState({
+              name:json.orginfo.name,
+              email:json.orginfo.email,
+            })
+          } else {
+            console.log(json.msg)
+          }
+        }).catch(error => console.warn(error));
+    });
   }
 
   render() {
@@ -34,8 +67,8 @@ export default class HealthAccountMain extends Component {
           source = {require('../../images/providerImg/account_img_org.png')}
         />
         <View>
-        <Text style={{ fontSize:20, fontWeight: '600' }}>Kingsford Clinic</Text>
-        <Text style={{ fontSize:14, fontWeight: '300' }}>657416708xy@gmail.com</Text>
+        <Text style={{ fontSize:20, fontWeight: '600' }}>{this.state.name}</Text>
+        <Text style={{ fontSize:14, fontWeight: '300' }}>{this.state.email}</Text>
         </View>
       </View>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('机构信息')}>
