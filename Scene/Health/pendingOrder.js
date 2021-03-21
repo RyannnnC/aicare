@@ -50,12 +50,38 @@ export default class PendingOrder extends Component {
     this.setState({modalVisible: value})
   }
 
-  startAlert(index){
+  startAlert(id){
     Alert.alert(
       '提醒',
       '您确定要接受这桩预约吗？',
       [
-        {text: '确定', onPress: () => console.log('yes button clicked')},
+        {text: '确定', onPress: () => {
+          let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/take';
+            fetch(url,{
+              method: 'POST',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+              'Accept':       'application/json',
+              'Content-Type': 'application/json',
+              'sso-auth-token': this.context.token,
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+            },
+            body: JSON.stringify({
+              id: id
+            })})
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code === 0) {
+                Alert.alert('接单成功')
+              } else {
+                Alert.alert('接单失败')
+              }
+            }).catch(error => console.warn(error));
+        }},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
       {
@@ -87,7 +113,7 @@ export default class PendingOrder extends Component {
             />
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.appointDate}</Text>
           <Image
-            style = {{width: 15, height:15,marginLeft:79, marginRight:5}}
+            style = {{width: 15, height:15,marginLeft:5, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}
           />
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>全科</Text>
