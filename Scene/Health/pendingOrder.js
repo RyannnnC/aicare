@@ -56,7 +56,8 @@ export default class PendingOrder extends Component {
       '您确定要接受这桩预约吗？',
       [
         {text: '确定', onPress: () => {
-          let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/take';
+          let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/take?id='
+          +id;
             fetch(url,{
               method: 'POST',
               mode: 'cors',
@@ -69,10 +70,8 @@ export default class PendingOrder extends Component {
               'Access-Control-Allow-Credentials': true,
               'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
               'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-            },
-            body: JSON.stringify({
-              id: id
-            })})
+            }
+            })
             .then((response) => response.json())
             .then((json) => {
               if (json.code === 0) {

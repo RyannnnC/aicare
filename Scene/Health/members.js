@@ -57,7 +57,7 @@ export default class Members extends Component {
           let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/delete'
           + '?employerId=' + id;
             fetch(url,{
-              method: 'DELETE',
+              method: 'POST',
               mode: 'cors',
               credentials: 'include',
               headers: {
@@ -73,9 +73,11 @@ export default class Members extends Component {
             .then((json) => {
               if (json.code === 0) {
                 console.log(json.msg);
+                Alert.alert('删除成功');
                 this.componentDidMount();
               } else {
-                console.log(json.msg)
+                console.log(json.msg);
+                Alert.alert('删除失败');
               }
             }).catch(error => console.warn(error));}},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},

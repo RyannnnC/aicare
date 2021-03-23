@@ -24,9 +24,8 @@ export default class UploadMember extends Component {
           value: '心理',
         }],
         checked1: true,
-        checked2: false,
+        checked2: true,
         checked3: false,
-        checked4: false,
         buttons: [
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -691,7 +690,6 @@ export default class UploadMember extends Component {
                 onPress={() => {
                   this.setState({
                   checked1: true,
-                  checked2: false,
                 })}}
                />
             </View>
@@ -708,7 +706,6 @@ export default class UploadMember extends Component {
                 checked={this.state.checked2}
                 onPress={() => {
                   this.setState({
-                  checked1: false,
                   checked2: true,
                 })}}
                />

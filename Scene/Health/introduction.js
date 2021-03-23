@@ -23,6 +23,7 @@ export default class Introduction extends Component {
         <TextInput style={{width:275,height:60,marginTop:15,marginLeft:20,marginRight:20}}
           placeholder={this.context.intro}
           onChangeText={(text) => {this.setState({ intro: text})}}
+          multiline={true}
         />
       </View>
       <View style={{width:'75%',marginTop:40}}>

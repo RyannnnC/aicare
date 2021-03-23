@@ -232,7 +232,7 @@ export default class Info extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
-          <Text style={{ fontSize:16, fontWeight: '400' , color:'#999999'}}>{this.context.intro}</Text>
+          <Text numberOfLines={1} style={{ fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.intro}</Text>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('介绍')}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>

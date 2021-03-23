@@ -143,6 +143,9 @@ export default class App extends React.Component {
     intro:'',
     state:'',
     token:'',
+    userLanguage:null,
+    cn:true,
+    en:false,
     doctors:[],
     action: {
       changeLogin: this.changeLogin,
@@ -159,6 +162,9 @@ export default class App extends React.Component {
       changedoctors:this.changedoctors,
       clearstate:this.clearstate,
       changeintro:this.changeintro,
+      changelanguage:this.changelanguage,
+      changeen:this.changeen,
+      changecn:this.changecn,
     }
     }
   }
@@ -224,7 +230,21 @@ export default class App extends React.Component {
         intro: value
     });
   }
-
+  changelanguage = (value) => {
+    this.setState({
+        userLanguage: value
+    });
+  }
+  changeen = (value) => {
+    this.setState({
+        en: value
+    });
+  }
+  changecn = (value) => {
+    this.setState({
+        cn: value
+    });
+  }
   clearstate=()=>{
     this.setState({
     authenticate: false,
