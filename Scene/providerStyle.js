@@ -227,8 +227,7 @@ export const styles = StyleSheet.create({
     marginLeft: 5,
     borderBottomWidth:1,
     borderBottomColor:'#EEEEEE',
-  },
-  : {
+  },{
     width: 110,
     height: 22,
     marginLeft: 5,
