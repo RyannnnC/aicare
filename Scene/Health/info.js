@@ -8,7 +8,7 @@ import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
-import { Permissions } from "expo";
+import * as Permissions from "expo-permissions";
 
 export default class Info extends Component {
     constructor(props) {
@@ -186,10 +186,10 @@ export default class Info extends Component {
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1 }}>
         <View style={{ justifyContent: "center",alignItems: "center" }}>
-          <TouchableOpacity onPress={() =>{this.pickImage}}>
+          <TouchableOpacity onPress={this.pickImage}>
           {this.state.image ?
           <Image style={styles.resumeImg}
-                source={{ uri: image }}
+                source={{ uri: this.state.image }}
           />
           :
           <Image style={styles.resumeImg}
