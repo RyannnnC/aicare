@@ -83,14 +83,14 @@ export default class UploadMember extends Component {
       body: JSON.stringify({
         name: this.state.name,
         mobile: this.state.phone,
-        languages: [{
-            "value": "2",
-            "name": "英文",
-            "status": 1
-        },
+        languages: [
         {
             "value": "1",
             "name": "中文",
+            "status": 1
+        },{
+            "value": "2",
+            "name": "英文",
             "status": 1
         }],
         serviceClassList:[

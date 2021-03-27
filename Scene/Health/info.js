@@ -7,6 +7,8 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DataContext from '../../providerContext';
+import ImagePicker from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default class Info extends Component {
     constructor(props) {
@@ -164,15 +166,27 @@ export default class Info extends Component {
   }
 
 
-
   render() {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1 }}>
         <View style={{ justifyContent: "center",alignItems: "center" }}>
+          <TouchableOpacity onPress={() =>
+            ImagePicker.launchCamera(
+              {
+                mediaType: 'photo',
+                includeBase64: false,
+                maxHeight: 200,
+                maxWidth: 200,
+              },
+              (response) => {
+                setResponse(response);
+              },
+            )}>
           <Image style={styles.resumeImg}
             source = {require('../../images/providerImg/account_img_org_3.png')}
           />
+          </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row'}}>
           <Image
@@ -223,7 +237,7 @@ export default class Info extends Component {
             value = {this.context.postcode}
             onChangeText={(text) => {this.context.action.changepostcode(text)}}
           />
-          <Text style={{ fontSize:16, fontWeight: '400' }}>州</Text>
+          <Text style={{marginLeft:20, fontSize:16, fontWeight: '400' }}>州</Text>
           <TextInput
             style={styles.resumeInput1}
             value = {this.context.state}

@@ -6,12 +6,13 @@ import {doctors} from './doctors';
 import {data} from './data';
 import DateSelect from "./dateSelect";
 import Category from "./category";
+import DataContext from '../../providerContext';
 
 export default class ProcessingOrder extends Component {
     constructor(props) {
       super(props);
       this.state={
-        buttons: [],
+        data:[],
         date: new Date(),
         isEnabled: false,
         modalVisible: false,
@@ -21,14 +22,31 @@ export default class ProcessingOrder extends Component {
 
 
   componentDidMount = () => {
-    console.log("set buttons work")
-    var i=0;
-    let butt=[];
-    while (i < data.length) {
-      butt.push({ backgroundColor: '#68B0AB', pressed: false,id:i});
-      i++;
-    }
-    this.setState({buttons:butt});
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/query?status=1';
+        fetch(url,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'sso-auth-token': this.context.token,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        }})
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.code === 0) {
+            console.log(json);
+            this.setState({data:json.page});
+          } else {
+            console.log(json.msg)
+          }
+        }).catch(error => console.warn(error));
+    });
   }
 
   setIsEnabled = (value) => {
@@ -40,12 +58,13 @@ export default class ProcessingOrder extends Component {
   setVisible = (visible) => {
     this.setState({ Visible: visible });
   }
+
   render () {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
-    console.log (this.state);
-    if (data.length >0) {
-    const orders = data.map((item) => {
+    let orders;
+    if (this.state.data.length > 0) {
+    orders = this.state.data.map((item) => {
       return (
         <View style={styles.cardHolder} key={item.id}>
         <View style={{flexDirection: 'row'}}>
@@ -53,17 +72,17 @@ export default class ProcessingOrder extends Component {
           style = {{width: 18, height:18,marginRight:14}}
           source = {require('../../images/providerImg/order_icon_org.png')}
         />
-        <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>{item.period}</Text>
+        <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>{item.startTime}-{item.endTime}</Text>
         </View>
         <View style={styles.card3} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:24, marginBottom:21, marginLeft:33}}>
           <Image
-            style = {styles.pendingImg}
+            style = {{width:40,height:40,marginRight:15}}
             source = {require('../../images/providerImg/home_img_person.png')}
           />
           <View>
-            <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
-            <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.phone}</Text>
+            <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerRealName}</Text>
+            <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>{item.mobile}</Text>
           </View>
             <TouchableOpacity style={styles.orderButton3} >
               <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
@@ -74,17 +93,17 @@ export default class ProcessingOrder extends Component {
               style = {{width: 15, height:15 , marginLeft:33, marginRight:5}}
               source = {require('../../images/providerImg/schedule_icon_person.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.doctor}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
             <Image
-              style = {{width: 15, height:15,marginLeft:42, marginRight:5}}
+              style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
               source = {require('../../images/providerImg/schedule_icon_type.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.subject}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
             <Image
-              style = {{width: 15, height:15,marginLeft:41, marginRight:5}}
+              style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
               source = {require('../../images/providerImg/schedule_icon_location.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.treatment}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地预约</Text>
           </View>
         </View>
         </View>
@@ -229,3 +248,4 @@ elevation: 24,}}>
   }
   }
 }
+ProcessingOrder.contextType = DataContext;

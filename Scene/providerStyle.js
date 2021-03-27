@@ -228,8 +228,8 @@ export const styles = StyleSheet.create({
     borderBottomWidth:1,
     borderBottomColor:'#EEEEEE',
   },
-  resumeInput1: {
-    width: 90,
+  : {
+    width: 110,
     height: 22,
     marginLeft: 5,
     borderBottomWidth:1,

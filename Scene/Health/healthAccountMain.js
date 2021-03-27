@@ -3,7 +3,6 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
-import I18n from '../language';
 
 export default class HealthAccountMain extends Component {
   constructor(props) {
@@ -77,28 +76,28 @@ export default class HealthAccountMain extends Component {
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_medical.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('orginfo')}</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>机构信息</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('成员管理')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/singup_icon_name.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('members')}</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>成员管理</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('修改密码')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/signup_icon_pswd.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('resetPassword')}</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>修改密码</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('我的设置')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_setting.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('settings')}</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>我的设置</Text>
       </TouchableOpacity>
       <TouchableOpacity
       style={styles.profileBar}
@@ -108,7 +107,7 @@ export default class HealthAccountMain extends Component {
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_logout.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('logout')}</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>退出登录</Text>
       </TouchableOpacity>
       <View style={{flexDirection: 'row', alignItems: "center" }}>
         <Image

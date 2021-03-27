@@ -4,20 +4,26 @@ import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
 import DataContext from '../../providerContext';
+import CalendarPicker from 'react-native-calendar-picker';
 
 export default class PendingOrder extends Component {
   constructor(props) {
     super(props);
     this.state={
       data:[],
+      time:[],
       isEnabled: false,
       modalVisible: false,
+      selectedId:'',
+      selectedDoctor:'',
+      selectedStartDate: null,
     };
+    this.onDateChange = this.onDateChange.bind(this);
   }
 
   componentDidMount = () => {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/query';
+      let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/query?status=0';
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -34,13 +40,39 @@ export default class PendingOrder extends Component {
         .then((response) => response.json())
         .then((json) => {
           if (json.code === 0) {
-            console.log(json);
             this.setState({data:json.page});
           } else {
             console.log(json.msg)
           }
         }).catch(error => console.warn(error));
     });
+    let d = new Date();
+    var date = this.formatDate(d);
+    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?'
+    +'date=' + date
+    +'&businessEmployerId=' + this.state.selectedDoctor;
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }})
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          console.log(json.msg);
+          this.setState({time:json.page})
+        } else {
+          console.log(json.msg);
+        }
+      }).catch(error => console.warn(error));
   }
 
   setIsEnabled = (value) => {
@@ -50,6 +82,73 @@ export default class PendingOrder extends Component {
     this.setState({modalVisible: value})
   }
 
+  sendRequest(date){
+    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?date='
+    + date +'&businessEmployerId=' + this.state.selectedDoctor;
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }})
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          console.log(json.msg);
+          alert('查询成功');
+          this.setState({time:json.page})
+        } else {
+          console.log(json.msg);
+          alert('查询失败');
+        }
+      }).catch(error => console.warn(error));
+  }
+  modify(sid) {
+      Alert.alert(
+        '提醒',
+        '您确定要修改预约至这个时间吗？',
+        [
+          {text: '确定', onPress: () => {
+            let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/modify?'
+            +'id=' + this.state.selectedId
+            +'&scheduleDetailedId=' + sid;
+              fetch(url,{
+                method: 'GET',
+                mode: 'cors',
+                credentials: 'include',
+                headers: {
+                'Accept':       'application/json',
+                'Content-Type': 'application/json',
+                'sso-auth-token': this.context.token,
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+                'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+              }
+              })
+              .then((response) => response.json())
+              .then((json) => {
+                if (json.code === 0) {
+                  Alert.alert('修改成功')
+                } else {
+                  Alert.alert('修改失败')
+                }
+              }).catch(error => console.warn(error));
+          }},
+          {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+        ],
+        {
+          cancelable: false
+        }
+      );
+  }
   startAlert(id){
     Alert.alert(
       '提醒',
@@ -59,7 +158,7 @@ export default class PendingOrder extends Component {
           let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/take?id='
           +id;
             fetch(url,{
-              method: 'POST',
+              method: 'GET',
               mode: 'cors',
               credentials: 'include',
               headers: {
@@ -89,7 +188,41 @@ export default class PendingOrder extends Component {
     );
   }
 
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  onDateChange(date) {
+    this.setState({
+      selectedStartDate: date,
+    });
+    this.context.action.changetime(date.toString().substring(0, 15));
+    let fd = this.formatDate(date);
+    this.sendRequest(fd);
+  }
+
   render() {
+  let times=[];
+  if (this.state.time.length >0) {
+  times = this.state.time.map((item) => {
+    return (
+      <View style={styles.timePick} key={item.id}>
+        <TouchableOpacity onPress={() => {this.modify(item.id);}}>
+          <Text>{item.startTime}-{item.endTime}</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  })}
   let orders;
   if (this.state.data.length >0) {
   orders = this.state.data.map((item) => {
@@ -97,12 +230,12 @@ export default class PendingOrder extends Component {
       <View style={styles.card2} key={item.id}>
         <View style={{flexDirection: 'row', marginTop:16, marginBottom:16, marginLeft:25}}>
         <Image
-          style = {styles.pendingImg}
+          style = {{width:40,height:40,marginRight:15}}
           source = {require('../../images/providerImg/home_img_person.png')}
         />
         <View>
-          <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerName}</Text>
-          <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>+61 4165222222</Text>
+          <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerName}</Text>
+          <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>{item.mobile}</Text>
         </View>
         </View>
         <View style={{flexDirection: 'row',paddingBottom: 10}}>
@@ -110,21 +243,21 @@ export default class PendingOrder extends Component {
             style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_time.png')}
             />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.appointDate}</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{new Date(item.appointDate).toLocaleDateString()}</Text>
           <Image
-            style = {{width: 15, height:15,marginLeft:5, marginRight:5}}
+            style = {{width: 15, height:15,marginLeft:120, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}
           />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>全科</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
         </View>
         <View style={{flexDirection: 'row',paddingBottom: 12, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
           <Image
             style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_person.png')}
             />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>李医生</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
           <Image
-            style = {{width: 15, height:15,marginLeft:141, marginRight:5}}
+            style = {{width: 15, height:15,marginLeft:120, marginRight:5}}
             source = {require('../../images/providerImg/order_icon_location.png')}
           />
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地预约</Text>
@@ -133,7 +266,12 @@ export default class PendingOrder extends Component {
           <TouchableOpacity style={styles.orderButton2} onPress={() => this.startAlert(item.id)}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.orderButton} onPress={() => this.setModalVisible(!this.state.modalVisible)}>
+          <TouchableOpacity style={styles.orderButton} onPress={() => {
+            this.setModalVisible(!this.state.modalVisible);
+            this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
+            console.log(this.state.selectedId);
+            console.log(this.state.selectedDoctor);
+          }}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
           </TouchableOpacity>
         </View>
@@ -164,11 +302,27 @@ export default class PendingOrder extends Component {
        />
      </TouchableOpacity>
      <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
-       <DateSelect/>
-     <TouchableOpacity style={styles.next_wrapper}>
+     <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
+       <Text style = {{ color:'#006A71',fontSize:16}}>预约时间</Text>
+       <CalendarPicker
+         onDateChange={this.onDateChange}
+         previousTitle="上一月"
+         nextTitle = "下一月"
+         width = {300}
+         height = {300}
+       />
+       <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
+       <ScrollView style ={{marginTop: 30}}>
+         {this.state.time.length>0 ? times :
+         <View>
+          <Text>这位医生今天没有排班！</Text>
+        </View>}
+       </ScrollView>
+     </View>
+       <TouchableOpacity style={styles.next_wrapper}>
            <Text style={{color:'white'}}>确定</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      </TouchableOpacity>
+     </ScrollView>
       </View>
       <>
       </>

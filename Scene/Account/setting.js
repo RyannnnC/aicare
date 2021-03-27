@@ -3,6 +3,7 @@ import { Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaV
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons,AntDesign } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
+import { CheckBox } from 'react-native-elements';
 
 export default class Setting extends Component {
     constructor() {
@@ -11,6 +12,8 @@ export default class Setting extends Component {
          message: false,
          gps: false,
          pressed:false,
+         cn:true,
+         en:false,
       }
     }
     messageSwitch = (value) => {
@@ -52,37 +55,31 @@ export default class Setting extends Component {
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>语言设置</Text>
           <TouchableOpacity onPress={() => {this.setState({pressed:!this.state.pressed})}}>
-            <AntDesign name="down" size={24} color="black" />
+            <AntDesign name="down" size={18} color="black" />
           </TouchableOpacity>
           {this.state.pressed &&
             <View>
               <CheckBox
                 center
-                title='实地问诊                                '
+                title='中文                                '
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
                 checkedColor='red'
                 containerStyle={{borderWidth:0,backgroundColor:'white'}}
-                checked={this.context.cn}
-                onPress={() => {
-                this.context.action.changelanguage('cn');
-                this.context.action.changeen(false);
-                this.context.action.changecn(true);}}
+                checked={this.state.cn}
+                onPress={() => {this.setState({cn:true,en:false})}}
                />
               <CheckBox
                 center
-                title='远程医疗                                '
+                title='英文                               '
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
                 containerStyle={{borderWidth:0, backgroundColor:'white'}}
                 checkedColor='red'
-                checked={this.context.en}
-                onPress={() => {
-                  this.context.action.changelanguage('en');
-                  this.context.action.changeen(true);
-                  this.context.action.changecn(false);}}
+                checked={this.state.en}
+                onPress={() => {this.setState({cn:false,en:true})}}
                />
             </View>
           }
