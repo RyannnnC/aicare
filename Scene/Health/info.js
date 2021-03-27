@@ -7,12 +7,16 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DataContext from '../../providerContext';
+import * as ImagePicker from 'expo-image-picker';
+import { Permissions } from "expo";
 
 export default class Info extends Component {
     constructor(props) {
       super(props);
       this.state={
       show: false,
+      image:null,
+      hasCameraPermission: null,
       latitude:0,
       longitude:0,
       checked1: true,
@@ -54,7 +58,7 @@ export default class Info extends Component {
     return `${hours}:${minutes}`;
   }
 
-  componentDidMount(){
+  async componentDidMount(){
    navigator.geolocation.getCurrentPosition(
      position=>{
        this.setState({
@@ -62,8 +66,9 @@ export default class Info extends Component {
          longitude:position.coords.longitude
        });
      },
-
-   )
+   );
+   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+   this.setState({ hasCameraPermission: status === "granted" });
   }
   changeColor(index){
     let but = this.state.buttons;
@@ -163,27 +168,33 @@ export default class Info extends Component {
     this.setState({visible:false})
   }
 
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
+    if (!result.cancelled) {
+      this.setState({image:result.uri});
+    }
+  };
 
   render() {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1 }}>
         <View style={{ justifyContent: "center",alignItems: "center" }}>
-          <TouchableOpacity onPress={() =>
-            ImagePicker.launchCamera(
-              {
-                mediaType: 'photo',
-                includeBase64: false,
-                maxHeight: 200,
-                maxWidth: 200,
-              },
-              (response) => {
-                setResponse(response);
-              },
-            )}>
+          <TouchableOpacity onPress={() =>{this.pickImage}}>
+          {this.state.image ?
           <Image style={styles.resumeImg}
-            source = {require('../../images/providerImg/account_img_org_3.png')}
+                source={{ uri: image }}
           />
+          :
+          <Image style={styles.resumeImg}
+              source = {require('../../images/providerImg/account_img_org_3.png')}
+            />}
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row'}}>
