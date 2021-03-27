@@ -7,8 +7,6 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DataContext from '../../providerContext';
-import ImagePicker from 'react-native-image-picker';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default class Info extends Component {
     constructor(props) {
