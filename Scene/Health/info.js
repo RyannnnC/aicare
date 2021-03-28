@@ -197,7 +197,7 @@ export default class Info extends Component {
             />}
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row',marginTop:20}}>
           <Image
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/singup_icon_name.png')}

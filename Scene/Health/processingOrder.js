@@ -237,7 +237,7 @@ elevation: 24,}}>
       </SafeAreaView>
     )} else {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" ,backgroundColor:'white'}}>
       <Image
         style = {styles.finishImg}
         source = {require('../../images/providerImg/order_img_empty_inprogress1.png')}

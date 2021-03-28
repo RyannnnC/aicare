@@ -229,7 +229,7 @@ export const styles = StyleSheet.create({
     borderBottomColor:'#EEEEEE',
   },
   resumeInput1: {
-    width: 110,
+    width: 130,
     height: 22,
     marginLeft: 5,
     borderBottomWidth:1,

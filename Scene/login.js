@@ -41,6 +41,7 @@ export default class Login extends Component {
         if (json.code === 0) {
           this.context.action.changeLogin(true);
           this.context.action.changetoken(json.data);
+          console.log(Platform)
         } else {
           Alert.alert("Invalid username or password");
           return false;

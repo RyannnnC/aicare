@@ -114,7 +114,7 @@ export default class DateSelect extends Component {
       )
     })}
     return (
-      <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center',height:'50%'}}>
+      <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
         <Text style = {{ color:'#006A71',fontSize:16}}>预约时间</Text>
         <CalendarPicker
           onDateChange={this.onDateChange}

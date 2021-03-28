@@ -10,7 +10,7 @@ export default class Introduction extends Component {
   }
   render() {
   return (
-    <SafeAreaView style={{ flex:1, alignItems: "center" }}>
+    <SafeAreaView style={{ flex:1, alignItems: "center",backgroundColor:'white' }}>
       <View style={{flexDirection: 'row', marginTop:30, marginBottom:10}}>
       <Image
         style = {styles.smallIconImg}

@@ -35,8 +35,8 @@ export default class HealthServiceType extends Component {
 
   render() {
   return (
-    <SafeAreaView style={{ flex:1 }}>
-      <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+    <SafeAreaView style={{ flex:1 ,backgroundColor:'white'}}>
+      <View style={{flexDirection: 'row', marginTop:30, marginLeft:30, marginBottom:10}}>
       <Image
         style = {styles.smallIconImg}
         source={require('../../images/providerImg/account_icon_profile_normal.png')}
