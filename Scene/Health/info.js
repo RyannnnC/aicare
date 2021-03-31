@@ -162,6 +162,34 @@ export default class Info extends Component {
           alert('提交失败');
         }
       });
+     let data = new FormData();
+     data.append('filename', 'avatar');
+     data.append('file', {
+       uri: this.state.image,
+       name: this.context.name+ '.jpg',
+       type: 'image/jpg'
+     });
+     data.append('label', '0');
+     url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/upload';
+        fetch(url,{
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Content-Type': 'multipart/form-data',
+          'sso-auth-token': this.context.token,
+        },
+          body: data
+        })
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.code === 500) {
+            alert("照片提交成功");
+            console.log(json.msg);
+          } else {
+            alert('照片提交失败');
+          }
+        });
   }
 
   hidePicker = () => {

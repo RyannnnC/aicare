@@ -84,7 +84,7 @@ export default class PendingOrder extends Component {
 
   sendRequest(date){
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?date='
-    + date +'&businessEmployerId=' + this.state.selectedDoctor;
+    + date +'&businessEmployerId=' + this.state.selectedDoctor + '&status=0';
       fetch(url,{
         method: 'GET',
         mode: 'cors',
@@ -102,11 +102,9 @@ export default class PendingOrder extends Component {
       .then((json) => {
         if (json.code === 0) {
           console.log(json.msg);
-          alert('查询成功');
           this.setState({time:json.page})
         } else {
           console.log(json.msg);
-          alert('查询失败');
         }
       }).catch(error => console.warn(error));
   }
@@ -312,7 +310,7 @@ export default class PendingOrder extends Component {
          height = {300}
        />
        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
-       <ScrollView style ={{marginTop: 30}}>
+       <ScrollView style ={{marginTop: 30,maxHeight:100}}>
          {this.state.time.length>0 ? times :
          <View>
           <Text>这位医生今天没有排班！</Text>
