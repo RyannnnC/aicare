@@ -18,8 +18,7 @@ export default class Login extends Component {
     let s = this.state;
     if (s.info.length === 0) {
         Alert.alert("Enter a valid phone or email");
-    }
-    if (s.password.length === 0) {
+    } else if (s.password.length === 0) {
         Alert.alert("Enter a password");
     }
     if (this.state.mobile) {

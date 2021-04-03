@@ -2,33 +2,27 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import DataContext from '../../providerContext';
 
 export default class HealthServiceType extends Component {
   state={
     buttons: [
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
-        { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
+      { value:'1',name:'全科问诊',status: 1},
+      { value:'2',name:'眼科问诊',status: 1},
+      { value:'3',name:'心理问诊',status: 0},
+      { value:'4',name:'中医问诊',status: 0},
+      { value:'5',name:'少儿问诊',status: 0},
+      { value:'6',name:'康复问诊',status: 0},
     ]
   };
 
   changeColor(index){
     let but = this.state.buttons;
-    if(!but[index].pressed){
-       but[index].pressed = true;
-       but[index].backgroundColor = '#FF7E67';
-       but[index].borderWidth = 0;
-       but[index].fontColor = '#FFFFFF';
+    if(but[index].status == 0){
+       but[index].status= 1
        this.setState({buttons: but});
     } else {
-      but[index].pressed = false;
-      but[index].backgroundColor = 'transparent';
-      but[index].borderWidth = 1;
-      but[index].fontColor = '#999999';
+      but[index].status = 0
       this.setState({buttons: but});
     }
   }
@@ -45,8 +39,9 @@ export default class HealthServiceType extends Component {
       </View>
       <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
       <TouchableOpacity style={{
-        backgroundColor:this.state.buttons[0].backgroundColor,
-        borderWidth: this.state.buttons[0].borderWidth,
+        backgroundColor:this.state.buttons[0].status==1?'#FF7E67':'transparent',
+        borderWidth: 1,
+        borderColor: this.state.buttons[0].status==1?'white':'black',
         height:30,
         width:'auto',
         marginTop:5,
@@ -58,11 +53,12 @@ export default class HealthServiceType extends Component {
         paddingRight:15,
       }}
       onPress={()=>this.changeColor(0)}>
-        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[0].fontColor }}>普通问诊</Text>
+        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[0].status==1?'#FFFFFF': '#999999' }}>全科问诊</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{
-        backgroundColor:this.state.buttons[1].backgroundColor,
-        borderWidth: this.state.buttons[1].borderWidth,
+        backgroundColor:this.state.buttons[1].status==1?'#FF7E67':'transparent',
+        borderWidth: 1,
+        borderColor: this.state.buttons[1].status==1?'white':'black',
         height:30,
         width:'auto',
         marginTop:5,
@@ -74,11 +70,12 @@ export default class HealthServiceType extends Component {
         paddingRight:15,
       }}
       onPress={()=>this.changeColor(1)}>
-        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[1].fontColor }}>眼科问诊</Text>
+        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[1].status==1?'#FFFFFF': '#999999' }}>眼科问诊</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{
-        backgroundColor:this.state.buttons[2].backgroundColor,
-        borderWidth: this.state.buttons[2].borderWidth,
+        backgroundColor:this.state.buttons[2].status==1?'#FF7E67':'transparent',
+        borderWidth: 1,
+        borderColor: this.state.buttons[2].status==1?'white':'black',
         height:30,
         width:'auto',
         marginTop:5,
@@ -90,13 +87,14 @@ export default class HealthServiceType extends Component {
         paddingRight:15,
       }}
       onPress={()=>this.changeColor(2)}>
-        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[2].fontColor }}>骨科咨询</Text>
+        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[2].status==1?'#FFFFFF': '#999999' }}>心理问诊</Text>
       </TouchableOpacity>
       </View>
       <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
       <TouchableOpacity style={{
-        backgroundColor:this.state.buttons[3].backgroundColor,
-        borderWidth: this.state.buttons[3].borderWidth,
+        backgroundColor:this.state.buttons[3].status==1?'#FF7E67':'transparent',
+        borderWidth: 1,
+        borderColor: this.state.buttons[3].status==1?'white':'black',
         height:30,
         width:'auto',
         marginTop:5,
@@ -108,11 +106,12 @@ export default class HealthServiceType extends Component {
         paddingRight:15,
       }}
       onPress={()=>this.changeColor(3)}>
-        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[3].fontColor }}>心理咨询</Text>
+        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[3].status==1?'#FFFFFF': '#999999' }}>中医问诊</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{
-        backgroundColor:this.state.buttons[4].backgroundColor,
-        borderWidth: this.state.buttons[4].borderWidth,
+        backgroundColor:this.state.buttons[4].status==1?'#FF7E67':'transparent',
+        borderWidth: 1,
+        borderColor: this.state.buttons[4].status==1?'white':'black',
         height:30,
         width:'auto',
         marginTop:5,
@@ -124,22 +123,33 @@ export default class HealthServiceType extends Component {
         paddingRight:15,
       }}
       onPress={()=>this.changeColor(4)}>
-        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[4].fontColor }}>牙科问诊</Text>
+        <Text style={{ fontSize:12, fontWeight: '300', color:this.state.buttons[4].status==1?'#FFFFFF': '#999999' }}>少儿问诊</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={{
+        backgroundColor:this.state.buttons[5].status==1?'#FF7E67':'transparent',
+        borderWidth: 1,
+        borderColor: this.state.buttons[5].status==1?'white':'black',
+        height:30,
+        width:'auto',
+        marginTop:5,
+        marginBottom:5,
+        marginLeft: 10,
+        marginRight: 10,
+        borderRadius:10,
+        paddingLeft:15,
+        paddingRight:15,
+      }}
+      onPress={()=>this.changeColor(5)}>
+        <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[5].status==1?'#FFFFFF': '#999999' }}>康复问诊</Text>
       </TouchableOpacity>
       </View>
 
-      <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
-        <TextInput style={styles.resumeInput} placeholder= "请填写需要添加的服务类型"/>
-        <TouchableOpacity>
-          <Image
-            style = {styles.smallIconImg}
-            source={require('../../images/providerImg/account_icon_add.png')}
-          />
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.resumeButton}>
+      <TouchableOpacity style={styles.resumeButton} onPress={() => {
+        this.context.action.changeserviceclass(this.state.buttons);
+        this.props.navigation.navigate('机构信息');}}>
         <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );}
 }
+HealthServiceType.contextType = DataContext;

@@ -1,12 +1,14 @@
 import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons, Ionicons ,AntDesign} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DataContext from '../../providerContext';
 import { Dropdown } from 'react-native-material-dropdown';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from "expo-permissions";
 
 export default class UploadMember extends Component {
     constructor(props) {
@@ -14,18 +16,17 @@ export default class UploadMember extends Component {
       this.state={
         name:"",
         phone:"",
-        data:[{
-          value: '全科',
-        }, {
-          value: '儿科',
-        }, {
-          value: '牙科',
-        },{
-          value: '心理',
-        }],
-        checked1: true,
-        checked2: true,
+        image:null,
+        pressed:false,
+        checked: false,
+        checked1: false,
+        checked2: false,
         checked3: false,
+        checked4: false,
+        checked5: false,
+        checked6: false,
+        checked7: false,
+        checked8: true,
         buttons: [
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -36,16 +37,17 @@ export default class UploadMember extends Component {
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         ],
         times: [
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
         ]
       }
     }
+
 
   changeColor(index){
     let but = this.state.buttons;
@@ -128,19 +130,38 @@ export default class UploadMember extends Component {
     this.setState({visible:false})
   }
 
-  setSelectedType(itemValue) {
-    this.setState({selectedType:itemValue})
-  }
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
+    if (!result.cancelled) {
+      this.setState({image:result.uri});
+    }
+  };
 
   render() {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <ScrollView style={{ flex: 1,width:'90%' }}>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={{flex:1,width:'90%'}}>
         <View style={{ marginTop:10,marginBottom:20,justifyContent: "center",alignItems: "center" }}>
-          <TouchableOpacity onPress={() => {Alert.alert('上传照片尚未开放')}}>
-            <Image style={styles.resumeImg}
-              source = {require('../../images/providerImg/account_icon_add_1.png')}
-              />
+          <TouchableOpacity onPress={this.pickImage}>
+          {this.state.image ?
+          <Image style={styles.resumeImg}
+                source={{ uri: this.state.image }}
+          />
+          : this.context.dimage?
+          <Image style={styles.resumeImg}
+              source = {{ uri: this.context.image }}
+            />
+          :
+          <Image style={styles.resumeImg}
+            source = {require('../../images/providerImg/account_icon_add_1.png')}
+            />}
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start"}}>
@@ -165,514 +186,559 @@ export default class UploadMember extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>类型</Text>
-          <Dropdown
-          label='请选择类型'
-          data={this.state.data}
-          containerStyle={{width:200}}
-          />
+          <TouchableOpacity onPress={() => {this.setState({pressed:!this.state.pressed})}}>
+            <AntDesign name="down" size={18} color="black" />
+          </TouchableOpacity>
+        </View>
+          {this.state.pressed &&
+            <View style={{justifyContent: "flex-start", alignItems: "flex-start"}}>
+              <CheckBox
+                center
+                title='全科'
+                checkedIcon='check-circle-o'
+                uncheckedIcon='circle-o'
+                checkedColor='red'
+                containerStyle={{borderWidth:0,backgroundColor:'white'}}
+                checked={this.state.checked}
+                onPress={() => {this.setState({checked:!this.state.checked})}}
+               />
+              <CheckBox
+                center
+                title='眼科'
+                checkedIcon='check-circle-o'
+                uncheckedIcon='circle-o'
+                containerStyle={{borderWidth:0, backgroundColor:'white'}}
+                checkedColor='red'
+                checked={this.state.checked1}
+                onPress={() => {this.setState({checked1:!this.state.checked1})}}
+               />
+               <CheckBox
+                 center
+                 title='心理'
+                 checkedIcon='check-circle-o'
+                 uncheckedIcon='circle-o'
+                 containerStyle={{borderWidth:0, backgroundColor:'white'}}
+                 checkedColor='red'
+                 checked={this.state.checked2}
+                 onPress={() => {this.setState({checked2:!this.state.checked2})}}
+                />
+                <CheckBox
+                  center
+                  title='中医'
+                  checkedIcon='check-circle-o'
+                  uncheckedIcon='circle-o'
+                  containerStyle={{borderWidth:0, backgroundColor:'white'}}
+                  checkedColor='red'
+                  checked={this.state.checked3}
+                  onPress={() => {this.setState({checked3:!this.state.checked3})}}
+                 />
+                 <CheckBox
+                   center
+                   title='少儿'
+                   checkedIcon='check-circle-o'
+                   uncheckedIcon='circle-o'
+                   containerStyle={{borderWidth:0, backgroundColor:'white'}}
+                   checkedColor='red'
+                   checked={this.state.checked4}
+                   onPress={() => {this.setState({checked4:!this.state.checked4})}}
+                  />
+                  <CheckBox
+                    center
+                    title='康复'
+                    checkedIcon='check-circle-o'
+                    uncheckedIcon='circle-o'
+                    containerStyle={{borderWidth:0, backgroundColor:'white'}}
+                    checkedColor='red'
+                    checked={this.state.checked5}
+                    onPress={() => {this.setState({checked5:!this.state.checked5})}}
+                   />
+            </View>
+          }
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>工作经验</Text>
+          <TextInput style={styles.resumeInput} placeholder= "几年工作经验"
+            value={this.state.we}
+            onChangeText={(text) => {this.setState({we:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
-          <Text style={{ fontSize:16, fontWeight: '400' , color:'#999999'}}>{this.context.intro}</Text>
-          <TouchableOpacity onPress={() => {Alert.alert('功能尚未开放')}}>
+          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.mintro}</Text>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('成员介绍')}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+        <View style={{flexDirection: 'row', marginTop:10}}>
           <Image
             style = {styles.smallIconImg}
-            source={require('../../images/providerImg/account_icon_profile_normal.png')}
+            source={require('../../images/providerImg/account_icon_medical.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>服务信息</Text>
         </View>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>支持语言</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>服务语言</Text>
         </View>
-        <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
+        <View style={{flexDirection: 'row' , marginBottom:10}}>
         <TouchableOpacity style={styles.resumeTag}>
           <Text style={{ fontSize:12, fontWeight: '300' }}>中文</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.resumeTag}>
           <Text style={{ fontSize:12, fontWeight: '300' }}>英语</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('语言')}>
+        <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate('语言')}>
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
         </View>
 
             <Text style={{ fontSize:16, fontWeight: '400' }}>服务时间</Text>
-          <View  style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[0].backgroundColor,
-              borderWidth: this.state.buttons[0].borderWidth,
-              width: 60,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(0)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>周一</Text>
-            </TouchableOpacity>
-            { this.state.buttons[0].pressed &&
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[0].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{this.state.times[0].time1} </Text>
+            <View  style={{flexDirection: 'row'}}>
+              <TouchableOpacity style={{
+                backgroundColor:this.state.buttons[0].backgroundColor,
+                borderWidth: this.state.buttons[0].borderWidth,
+                width: 60,
+                height: 30,
+                borderRadius: 10,
+                marginTop: 5,
+                marginBottom: 5,
+                marginRight: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+                onPress={()=>this.changeColor(0)}>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>周一</Text>
               </TouchableOpacity>
-                <Text> _ </Text>
+              { this.state.buttons[0].pressed &&
+                <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
-                  t[0].visible2 = true;
+                  t[0].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[0].time2} </Text>
+                  <Text>{moment(this.state.times[0].time1).format('LT')} </Text>
                 </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[0].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[0].time1 = moment(time).format('LT');
-                  t[0].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[0].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              minuteInterval={10}
-              />
+                  <Text> _ </Text>
+                  <TouchableOpacity style={styles.timePick} onPress={()=>{
+                    let t = this.state.times;
+                    t[0].visible2 = true;
+                    this.setState({times:t})}}>
+                    <Text>{moment(this.state.times[0].time2).format('LT')} </Text>
+                  </TouchableOpacity>
+                </View>
+              }
               <DateTimePicker
-                isVisible={this.state.times[0].visible2}
+                isVisible={this.state.times[0].visible1}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[0].time2 = moment(time).format('LT');
-                    t[0].visible2 = false;
+                    t[0].time1 = time;
+                    t[0].visible1 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
                     let t = this.state.times;
-                    t[0].visible2 = false;
+                    t[0].visible1 = false;
                   this.setState({times:t})}}
-                mode={'time'}
                 display="spinner"
+                mode={'time'}
                 minuteInterval={10}
                 />
-          </View>
-          <View  style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[1].backgroundColor,
-              borderWidth: this.state.buttons[1].borderWidth,
-              width: 60,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(1)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>周二</Text>
-            </TouchableOpacity>
-            { this.state.buttons[1].pressed &&
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[1].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{this.state.times[1].time1} </Text>
-              </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[0].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{this.state.times[1].time2} </Text>
-                </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[1].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[1].time1 = moment(time).format('LT');
-                  t[1].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[1].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              minuteInterval={10}
-              />
-              <DateTimePicker
-                isVisible={this.state.times[1].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[1].time2 = moment(time).format('LT');
-                    t[1].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[1].visible2 = false;
-                  this.setState({times:t})}}
-                mode={'time'}
-                display="spinner"
-                minuteInterval={10}
-                />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[2].backgroundColor,
-              borderWidth: this.state.buttons[2].borderWidth,
-              width: 60,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(2)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>周三</Text>
-            </TouchableOpacity>
-            { this.state.buttons[2].pressed &&
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[2].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{this.state.times[2].time1} </Text>
-              </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[2].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{this.state.times[2].time2} </Text>
-                </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[2].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[2].time1 = moment(time).format('LT');
-                  t[2].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[2].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              minuteInterval={10}
-              />
-              <DateTimePicker
-                isVisible={this.state.times[2].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[2].time2 = moment(time).format('LT');
-                    t[2].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[2].visible2 = false;
-                  this.setState({times:t})}}
-                mode={'time'}
-                display="spinner"
-                minuteInterval={10}
-                />
+                <DateTimePicker
+                  isVisible={this.state.times[0].visible2}
+                  onConfirm={(time) => {
+                      let t = this.state.times;
+                      t[0].time2 = time;
+                      t[0].visible2 = false;
+                    this.setState({times:t})}}
+                  onCancel={()=> {
+                      let t = this.state.times;
+                      t[0].visible2 = false;
+                    this.setState({times:t})}}
+                  display="spinner"
+                  mode={'time'}
+                  minuteInterval={10}
+                  />
             </View>
             <View  style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[3].backgroundColor,
-              borderWidth: this.state.buttons[3].borderWidth,
-              width: 60,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(3)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>周四</Text>
-            </TouchableOpacity>
-            { this.state.buttons[3].pressed &&
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[3].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{this.state.times[3].time1} </Text>
+              <TouchableOpacity style={{
+                backgroundColor:this.state.buttons[1].backgroundColor,
+                borderWidth: this.state.buttons[1].borderWidth,
+                width: 60,
+                height: 30,
+                borderRadius: 10,
+                marginTop: 5,
+                marginBottom: 5,
+                marginRight: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+                onPress={()=>this.changeColor(1)}>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>周二</Text>
               </TouchableOpacity>
-                <Text> _ </Text>
+              { this.state.buttons[1].pressed &&
+                <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
-                  t[3].visible2 = true;
+                  t[1].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[3].time2} </Text>
+                  <Text>{moment(this.state.times[1].time1).format('LT')} </Text>
                 </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[3].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[3].time1 = moment(time).format('LT');
-                  t[3].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[3].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              minuteInterval={10}
-              />
+                  <Text> _ </Text>
+                  <TouchableOpacity style={styles.timePick} onPress={()=>{
+                    let t = this.state.times;
+                    t[1].visible2 = true;
+                    this.setState({times:t})}}>
+                    <Text>{moment(this.state.times[1].time2).format('LT')} </Text>
+                  </TouchableOpacity>
+                </View>
+              }
               <DateTimePicker
-                isVisible={this.state.times[3].visible2}
+                isVisible={this.state.times[1].visible1}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[3].time2 = moment(time).format('LT');
-                    t[3].visible2 = false;
+                    t[1].time1 = time;
+                    t[1].visible1 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
                     let t = this.state.times;
-                    t[3].visible2 = false;
+                    t[1].visible1 = false;
+                  this.setState({times:t})}}
+                display="spinner"
+                mode={'time'}
+                minuteInterval={10}
+                />
+                <DateTimePicker
+                  isVisible={this.state.times[1].visible2}
+                  onConfirm={(time) => {
+                      let t = this.state.times;
+                      t[1].time2 = time;
+                      t[1].visible2 = false;
+                    this.setState({times:t})}}
+                  onCancel={()=> {
+                      let t = this.state.times;
+                      t[1].visible2 = false;
+                    this.setState({times:t})}}
+                  display="spinner"
+                  mode={'time'}
+                  minuteInterval={10}
+                  />
+              </View>
+              <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity style={{
+                backgroundColor:this.state.buttons[2].backgroundColor,
+                borderWidth: this.state.buttons[2].borderWidth,
+                width: 60,
+                height: 30,
+                borderRadius: 10,
+                marginTop: 5,
+                marginBottom: 5,
+                marginRight: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+                onPress={()=>this.changeColor(2)}>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>周三</Text>
+              </TouchableOpacity>
+              { this.state.buttons[2].pressed &&
+                <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity style={styles.timePick} onPress={()=>{
+                  let t = this.state.times;
+                  t[2].visible1 = true;
+                  this.setState({times:t})}}>
+                  <Text>{moment(this.state.times[2].time1).format('LT')} </Text>
+                </TouchableOpacity>
+                  <Text> _ </Text>
+                  <TouchableOpacity style={styles.timePick} onPress={()=>{
+                    let t = this.state.times;
+                    t[2].visible2 = true;
+                    this.setState({times:t})}}>
+                    <Text>{moment(this.state.times[2].time2).format('LT')} </Text>
+                  </TouchableOpacity>
+                </View>
+              }
+              <DateTimePicker
+                isVisible={this.state.times[2].visible1}
+                onConfirm={(time) => {
+                    let t = this.state.times;
+                    t[2].time1 = time;
+                    t[2].visible1 = false;
+                  this.setState({times:t})}}
+                onCancel={()=> {
+                    let t = this.state.times;
+                    t[2].visible1 = false;
+                  this.setState({times:t})}}
+                display="spinner"
+                mode={'time'}
+                minuteInterval={10}
+                />
+                <DateTimePicker
+                  isVisible={this.state.times[2].visible2}
+                  onConfirm={(time) => {
+                      let t = this.state.times;
+                      t[2].time2 = time;
+                      t[2].visible2 = false;
+                    this.setState({times:t})}}
+                  onCancel={()=> {
+                      let t = this.state.times;
+                      t[2].visible2 = false;
+                    this.setState({times:t})}}
+                  mode={'time'}
+                  display="spinner"
+                  minuteInterval={10}
+                  />
+              </View>
+              <View  style={{flexDirection: 'row'}}>
+              <TouchableOpacity style={{
+                backgroundColor:this.state.buttons[3].backgroundColor,
+                borderWidth: this.state.buttons[3].borderWidth,
+                width: 60,
+                height: 30,
+                borderRadius: 10,
+                marginTop: 5,
+                marginBottom: 5,
+                marginRight: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+                onPress={()=>this.changeColor(3)}>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>周四</Text>
+              </TouchableOpacity>
+              { this.state.buttons[3].pressed &&
+                <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity style={styles.timePick} onPress={()=>{
+                  let t = this.state.times;
+                  t[3].visible1 = true;
+                  this.setState({times:t})}}>
+                  <Text>{moment(this.state.times[3].time1).format('LT')} </Text>
+                </TouchableOpacity>
+                  <Text> _ </Text>
+                  <TouchableOpacity style={styles.timePick} onPress={()=>{
+                    let t = this.state.times;
+                    t[3].visible2 = true;
+                    this.setState({times:t})}}>
+                    <Text>{moment(this.state.times[3].time2).format('LT')} </Text>
+                  </TouchableOpacity>
+                </View>
+              }
+              <DateTimePicker
+                isVisible={this.state.times[3].visible1}
+                onConfirm={(time) => {
+                    let t = this.state.times;
+                    t[3].time1 = time;
+                    t[3].visible1 = false;
+                  this.setState({times:t})}}
+                onCancel={()=> {
+                    let t = this.state.times;
+                    t[3].visible1 = false;
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
                 minuteInterval={10}
                 />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[4].backgroundColor,
-              borderWidth: this.state.buttons[4].borderWidth,
-              width: 60,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(4)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>周五</Text>
-            </TouchableOpacity>
-            { this.state.buttons[4].pressed &&
+                <DateTimePicker
+                  isVisible={this.state.times[3].visible2}
+                  onConfirm={(time) => {
+                      let t = this.state.times;
+                      t[3].time2 = time;
+                      t[3].visible2 = false;
+                    this.setState({times:t})}}
+                  onCancel={()=> {
+                      let t = this.state.times;
+                      t[3].visible2 = false;
+                    this.setState({times:t})}}
+                  mode={'time'}
+                  display="spinner"
+                  minuteInterval={10}
+                  />
+              </View>
               <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[4].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{this.state.times[4].time1} </Text>
+              <TouchableOpacity style={{
+                backgroundColor:this.state.buttons[4].backgroundColor,
+                borderWidth: this.state.buttons[4].borderWidth,
+                width: 60,
+                height: 30,
+                borderRadius: 10,
+                marginTop: 5,
+                marginBottom: 5,
+                marginRight: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+                onPress={()=>this.changeColor(4)}>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>周五</Text>
               </TouchableOpacity>
-                <Text> _ </Text>
+              { this.state.buttons[4].pressed &&
+                <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
-                  t[4].visible2 = true;
+                  t[4].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[4].time2} </Text>
+                  <Text>{moment(this.state.times[4].time1).format('LT')} </Text>
                 </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[4].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[4].time1 = moment(time).format('LT');
-                  t[4].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[4].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              minuteInterval={10}
-              />
+                  <Text> _ </Text>
+                  <TouchableOpacity style={styles.timePick} onPress={()=>{
+                    let t = this.state.times;
+                    t[4].visible2 = true;
+                    this.setState({times:t})}}>
+                    <Text>{moment(this.state.times[4].time2).format('LT')} </Text>
+                  </TouchableOpacity>
+                </View>
+              }
               <DateTimePicker
-                isVisible={this.state.times[4].visible2}
+                isVisible={this.state.times[4].visible1}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[4].time2 = moment(time).format('LT');
-                    t[4].visible2 = false;
+                    t[4].time1 = time;
+                    t[4].visible1 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
                     let t = this.state.times;
-                    t[4].visible2 = false;
+                    t[4].visible1 = false;
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
                 minuteInterval={10}
                 />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[5].backgroundColor,
-              borderWidth: this.state.buttons[5].borderWidth,
-              width: 60,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(5)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>周六</Text>
-            </TouchableOpacity>
-            { this.state.buttons[5].pressed &&
+                <DateTimePicker
+                  isVisible={this.state.times[4].visible2}
+                  onConfirm={(time) => {
+                      let t = this.state.times;
+                      t[4].time2 = time;
+                      t[4].visible2 = false;
+                    this.setState({times:t})}}
+                  onCancel={()=> {
+                      let t = this.state.times;
+                      t[4].visible2 = false;
+                    this.setState({times:t})}}
+                  mode={'time'}
+                  display="spinner"
+                  minuteInterval={10}
+                  />
+              </View>
               <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[5].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{this.state.times[5].time1} </Text>
+              <TouchableOpacity style={{
+                backgroundColor:this.state.buttons[5].backgroundColor,
+                borderWidth: this.state.buttons[5].borderWidth,
+                width: 60,
+                height: 30,
+                borderRadius: 10,
+                marginTop: 5,
+                marginBottom: 5,
+                marginRight: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+                onPress={()=>this.changeColor(5)}>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>周六</Text>
               </TouchableOpacity>
-                <Text> _ </Text>
+              { this.state.buttons[5].pressed &&
+                <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
-                  t[5].visible2 = true;
+                  t[5].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[5].time2} </Text>
+                  <Text>{moment(this.state.times[5].time1).format('LT')} </Text>
                 </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[5].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[5].time1 = moment(time).format('LT');
-                  t[5].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[5].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              minuteInterval={10}
-              />
+                  <Text> _ </Text>
+                  <TouchableOpacity style={styles.timePick} onPress={()=>{
+                    let t = this.state.times;
+                    t[5].visible2 = true;
+                    this.setState({times:t})}}>
+                    <Text>{moment(this.state.times[5].time2).format('LT')} </Text>
+                  </TouchableOpacity>
+                </View>
+              }
               <DateTimePicker
-                isVisible={this.state.times[5].visible2}
+                isVisible={this.state.times[5].visible1}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[5].time2 = moment(time).format('LT');
-                    t[5].visible2 = false;
+                    t[5].time1 = time;
+                    t[5].visible1 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
                     let t = this.state.times;
-                    t[5].visible2 = false;
+                    t[5].visible1 = false;
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
                 minuteInterval={10}
                 />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[6].backgroundColor,
-              borderWidth: this.state.buttons[6].borderWidth,
-              width: 60,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(6)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>周天</Text>
-            </TouchableOpacity>
-            { this.state.buttons[6].pressed &&
+                <DateTimePicker
+                  isVisible={this.state.times[5].visible2}
+                  onConfirm={(time) => {
+                      let t = this.state.times;
+                      t[5].time2 = time;
+                      t[5].visible2 = false;
+                    this.setState({times:t})}}
+                  onCancel={()=> {
+                      let t = this.state.times;
+                      t[5].visible2 = false;
+                    this.setState({times:t})}}
+                  mode={'time'}
+                  display="spinner"
+                  minuteInterval={10}
+                  />
+              </View>
               <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[6].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{this.state.times[6].time1} </Text>
+              <TouchableOpacity style={{
+                backgroundColor:this.state.buttons[6].backgroundColor,
+                borderWidth: this.state.buttons[6].borderWidth,
+                width: 60,
+                height: 30,
+                borderRadius: 10,
+                marginTop: 5,
+                marginBottom: 5,
+                marginRight: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                }}
+                onPress={()=>this.changeColor(6)}>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>周天</Text>
               </TouchableOpacity>
-                <Text> _ </Text>
+              { this.state.buttons[6].pressed &&
+                <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
-                  t[6].visible2 = true;
+                  t[6].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[6].time2} </Text>
+                  <Text>{moment(this.state.times[6].time1).format('LT')}</Text>
                 </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[6].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[6].time1 = moment(time).format('LT');
-                  t[6].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[6].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              minuteInterval={10}
-              />
+                  <Text> _ </Text>
+                  <TouchableOpacity style={styles.timePick} onPress={()=>{
+                    let t = this.state.times;
+                    t[6].visible2 = true;
+                    this.setState({times:t})}}>
+                    <Text>{moment(this.state.times[6].time2).format('LT')} </Text>
+                  </TouchableOpacity>
+                </View>
+              }
               <DateTimePicker
-                isVisible={this.state.times[6].visible2}
+                isVisible={this.state.times[6].visible1}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[6].time2 = moment(time).format('LT');
-                    t[6].visible2 = false;
+                    t[6].time1 =time;
+                    t[6].visible1 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
                     let t = this.state.times;
-                    t[6].visible2 = false;
+                    t[6].visible1 = false;
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
                 minuteInterval={10}
                 />
-            </View>
-            <Text style={{ fontSize:16, fontWeight: '400' }}>服务种类</Text>
-            <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>普通问诊</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>心理咨询</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>牙科问诊</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>儿科问诊</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>神经理疗</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('服务种类')}>
-                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
+                <DateTimePicker
+                  isVisible={this.state.times[6].visible2}
+                  onConfirm={(time) => {
+                      let t = this.state.times;
+                      t[6].time2 = time;
+                      t[6].visible2 = false;
+                    this.setState({times:t})}}
+                  onCancel={()=> {
+                      let t = this.state.times;
+                      t[6].visible2 = false;
+                    this.setState({times:t})}}
+                  mode={'time'}
+                  display="spinner"
+                  minuteInterval={10}
+                  />
+              </View>
             <View style={{ marginTop:10, marginBottom:10}}>
               <Text style={{ fontSize:16, fontWeight: '400' }}>服务类型</Text>
             </View>
@@ -686,10 +752,10 @@ export default class UploadMember extends Component {
                 checkedColor='red'
                 containerStyle={{borderWidth:0,backgroundColor:'white'}}
                 size={this.state.size}
-                checked={this.state.checked1}
+                checked={this.state.checked6}
                 onPress={() => {
                   this.setState({
-                  checked1: true,
+                  checked6: !this.state.checked6,
                 })}}
                />
             </View>
@@ -703,10 +769,10 @@ export default class UploadMember extends Component {
                 containerStyle={{borderWidth:0, backgroundColor:'white'}}
                 checkedColor='red'
                 size={this.state.size}
-                checked={this.state.checked2}
+                checked={this.state.checked7}
                 onPress={() => {
                   this.setState({
-                  checked2: true,
+                  checked7:!this.state.checked7,
                 })}}
                />
             </View>
@@ -723,22 +789,18 @@ export default class UploadMember extends Component {
                 containerStyle={{borderWidth:0,backgroundColor:'white'}}
                 checkedColor='red'
                 size={this.state.size}
-                checked={this.state.checked3}
+                checked={this.state.checked8}
                 onPress={() => {
                   this.setState({
-                  checked3: !this.state.checked3
+                  checked8: !this.state.checked8
                 })}}
                />
             </View>
-            <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-                <Text style={{ fontSize:16, fontWeight: '400' }}>资格证书</Text>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('分支机构')}>
-                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
+
         <TouchableOpacity style={styles.resumeButton} onPress={() => {this.sendRequest()}}>
           <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
         </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );}

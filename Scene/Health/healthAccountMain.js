@@ -3,6 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
+import I18n from '../switchLanguage';
 
 export default class HealthAccountMain extends Component {
   constructor(props) {
@@ -46,11 +47,17 @@ export default class HealthAccountMain extends Component {
         .then((response) => response.json())
         .then((json) => {
           if (json.code === 0) {
-            console.log(json.msg);
-            this.setState({
-              name:json.orginfo.name,
-              email:json.orginfo.email,
-            })
+            console.log(json);
+            this.context.action.changeimg(json.orginfo.orgImg);
+            this.context.action.changename(json.orginfo.name);
+            this.context.action.changeemail(json.orginfo.email);
+            this.context.action.changephone(json.orginfo.mobile);
+            this.context.action.changestreet(json.orginfo.address);
+            this.context.action.changepostcode(json.orginfo.postalCode);
+            this.context.action.changeintro(json.orginfo.introduce);
+            this.context.action.changestate(json.orginfo.city);
+            this.context.action.changelanguage(json.orginfo.languages);
+            this.context.action.changeserviceclass(json.orginfo.serviceClassList);
           } else {
             console.log(json.msg)
           }
@@ -64,11 +71,11 @@ export default class HealthAccountMain extends Component {
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
         <Image
           style = {styles.personIcon}
-          source = {require('../../images/providerImg/account_img_org.png')}
+          source = {{uri:this.context.image}}
         />
         <View>
-        <Text style={{ fontSize:20, fontWeight: '600' }}>{this.state.name}</Text>
-        <Text style={{ fontSize:14, fontWeight: '300' }}>{this.state.email}</Text>
+        <Text style={{ fontSize:20, fontWeight: '600' }}>{this.context.name}</Text>
+        <Text style={{ fontSize:14, fontWeight: '300' }}>{this.context.email}</Text>
         </View>
       </View>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('机构信息')}>
@@ -76,28 +83,28 @@ export default class HealthAccountMain extends Component {
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_medical.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>机构信息</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('orginfo')}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('成员管理')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/singup_icon_name.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>成员管理</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('members')}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('修改密码')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/signup_icon_pswd.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>修改密码</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('resetPassword')}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('我的设置')}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_setting.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>我的设置</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('settings')}</Text>
       </TouchableOpacity>
       <TouchableOpacity
       style={styles.profileBar}
@@ -107,7 +114,7 @@ export default class HealthAccountMain extends Component {
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_logout.png')}
         />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>退出登录</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('logout')}</Text>
       </TouchableOpacity>
       <View style={{flexDirection: 'row', alignItems: "center" }}>
         <Image

@@ -311,10 +311,12 @@ export default class PendingOrder extends Component {
        />
        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
        <ScrollView style ={{marginTop: 30,maxHeight:100}}>
+         <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
          {this.state.time.length>0 ? times :
          <View>
           <Text>这位医生今天没有排班！</Text>
         </View>}
+        </View>
        </ScrollView>
      </View>
        <TouchableOpacity style={styles.next_wrapper}>

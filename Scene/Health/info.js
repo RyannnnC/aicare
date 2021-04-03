@@ -32,17 +32,23 @@ export default class Info extends Component {
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
       ],
       times: [
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
-          { time1: '8:00 AM', time2:'17:00 PM',visible1:false, visible2:false},
+          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
       ]
     }
     }
-
+/*    <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+        <Text style={{ fontSize:16, fontWeight: '400' }}>分支机构（选填）</Text>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('分支机构')}>
+        <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+      </TouchableOpacity>
+    </View>
+*/
   convertTime12to24(time12h) {
     const [time, modifier] = time12h.split(' ');
 
@@ -129,28 +135,79 @@ export default class Info extends Component {
         address: this.context.street,
         postalCode: this.context.postcode,
         introduce:this.context.intro,
-        Languages: [{
-            "value": "1",
-            "name": "英文",
-            "status": 1
-        },
-        {
-            "value": "2",
-            "name": "中文",
-            "status": 1
-        }],
-        serviceClassList:[
-          {
-            "value": "1",
-            "name": "心理咨询",
-            "status": -1
-          },
-          {
-            "value": "2",
-            "name": "眼科问诊",
-            "status": -1
-          }
+        city:this.context.state,
+        languages: this.context.languages,
+        serviceClassList:this.context.serviceclass,
+        serviceTypeList: [
+           {
+               "value": "1",
+               "name": "实地问诊",
+               "status": this.state.checked1? 1 : 0,
+           },
+           {
+               "value": "2",
+               "name": "远程问诊",
+               "status": this.state.checked2? 1 : 0,
+           }
         ],
+        chargingMethodList: [
+            {
+                "value": "1",
+                "name": "bulk billing",
+                "status": this.state.checked3?1:0
+            }
+        ],
+        orgschedulevos:[
+            {
+                "dayOfWeek": 1,
+                "dayOfWeekStr": "星期一",
+                "startTime": moment(this.state.times[0].time1).format(),
+                "endTime": moment(this.state.times[0].time2).format(),
+                "status": this.state.buttons[0].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 2,
+                "dayOfWeekStr": "星期二",
+                "startTime": moment(this.state.times[1].time1).format(),
+                "endTime": moment(this.state.times[1].time2).format(),
+                "status": this.state.buttons[1].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 3,
+                "dayOfWeekStr": "星期三",
+                "startTime": moment(this.state.times[2].time1).format(),
+                "endTime": moment(this.state.times[2].time2).format(),
+                "status": this.state.buttons[2].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 4,
+                "dayOfWeekStr": "星期四",
+                "startTime": moment(this.state.times[3].time1).format(),
+                "endTime": moment(this.state.times[3].time2).format(),
+                "status": this.state.buttons[3].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 5,
+                "dayOfWeekStr": "星期五",
+                "startTime": moment(this.state.times[4].time1).format(),
+                "endTime": moment(this.state.times[4].time2).format(),
+                "status": this.state.buttons[4].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 6,
+                "dayOfWeekStr": "星期六",
+                "startTime": moment(this.state.times[5].time1).format(),
+                "endTime": moment(this.state.times[5].time2).format(),
+                "status": this.state.buttons[5].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 7,
+                "dayOfWeekStr": "星期天",
+                "startTime": moment(this.state.times[6].time1).format(),
+                "endTime": moment(this.state.times[6].time2).format(),
+                "status": this.state.buttons[6].pressed ? 1 : 0
+            },
+        ]
       })
       })
       .then((response) => response.json())
@@ -162,6 +219,7 @@ export default class Info extends Component {
           alert('提交失败');
         }
       });
+     if (this.state.image != null) {
      let data = new FormData();
      data.append('filename', 'avatar');
      data.append('file', {
@@ -183,13 +241,14 @@ export default class Info extends Component {
         })
         .then((response) => response.json())
         .then((json) => {
-          if (json.code === 500) {
+          if (json.code === 0) {
             alert("照片提交成功");
             console.log(json.msg);
           } else {
             alert('照片提交失败');
           }
         });
+      }
   }
 
   hidePicker = () => {
@@ -210,9 +269,32 @@ export default class Info extends Component {
   };
 
   render() {
+    let languages =[];
+    if(this.context.languages.length>0) {
+    languages = this.context.languages.map((item) => {
+      if (item.status == 1) {
+      return (
+        <TouchableOpacity style={styles.resumeTag} key={item.value}>
+          <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
+        </TouchableOpacity>
+      )
+      }
+    })};
+    let service =[];
+    if(this.context.serviceclass.length>0) {
+    service = this.context.serviceclass.map((item) => {
+      if (item.status == 1) {
+      return (
+        <TouchableOpacity style={styles.resumeTag} key={item.value}>
+          <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
+        </TouchableOpacity>
+      )
+      }
+    })};
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, }}>
+        <View style={{flex:1,width:'90%'}}>
         <View style={{ justifyContent: "center",alignItems: "center" }}>
           <TouchableOpacity onPress={this.pickImage}>
           {this.state.image ?
@@ -221,7 +303,7 @@ export default class Info extends Component {
           />
           :
           <Image style={styles.resumeImg}
-              source = {require('../../images/providerImg/account_img_org_3.png')}
+              source = {{ uri: this.context.image }}
             />}
           </TouchableOpacity>
         </View>
@@ -284,7 +366,7 @@ export default class Info extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
           <Text numberOfLines={1} style={{ fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.intro}</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('介绍')}>
+          <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate('介绍')}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -299,13 +381,10 @@ export default class Info extends Component {
         <View style={{marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>支持语言</Text>
         </View>
-        <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
-        <TouchableOpacity style={styles.resumeTag}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>中文</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.resumeTag}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>英语</Text>
-        </TouchableOpacity>
+
+        <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
+        {this.context.languages.length>0 ? languages:
+        <Text>请添加诊所支持的语言</Text>}
         <TouchableOpacity onPress={() => this.props.navigation.navigate('语言')}>
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
@@ -334,14 +413,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[0].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{this.state.times[0].time1} </Text>
+                <Text>{moment(this.state.times[0].time1).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[0].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[0].time2} </Text>
+                  <Text>{moment(this.state.times[0].time2).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -349,7 +428,7 @@ export default class Info extends Component {
               isVisible={this.state.times[0].visible1}
               onConfirm={(time) => {
                   let t = this.state.times;
-                  t[0].time1 = moment(time).format('LT');
+                  t[0].time1 = time;
                   t[0].visible1 = false;
                 this.setState({times:t})}}
               onCancel={()=> {
@@ -364,7 +443,7 @@ export default class Info extends Component {
                 isVisible={this.state.times[0].visible2}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[0].time2 = moment(time).format('LT');
+                    t[0].time2 = time;
                     t[0].visible2 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
@@ -398,14 +477,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[1].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{this.state.times[1].time1} </Text>
+                <Text>{moment(this.state.times[1].time1).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
-                  t[0].visible2 = true;
+                  t[1].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[1].time2} </Text>
+                  <Text>{moment(this.state.times[1].time2).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -413,7 +492,7 @@ export default class Info extends Component {
               isVisible={this.state.times[1].visible1}
               onConfirm={(time) => {
                   let t = this.state.times;
-                  t[1].time1 = moment(time).format('LT');
+                  t[1].time1 = time;
                   t[1].visible1 = false;
                 this.setState({times:t})}}
               onCancel={()=> {
@@ -428,7 +507,7 @@ export default class Info extends Component {
                 isVisible={this.state.times[1].visible2}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[1].time2 = moment(time).format('LT');
+                    t[1].time2 = time;
                     t[1].visible2 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
@@ -462,14 +541,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[2].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{this.state.times[2].time1} </Text>
+                <Text>{moment(this.state.times[2].time1).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[2].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[2].time2} </Text>
+                  <Text>{moment(this.state.times[2].time2).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -477,7 +556,7 @@ export default class Info extends Component {
               isVisible={this.state.times[2].visible1}
               onConfirm={(time) => {
                   let t = this.state.times;
-                  t[2].time1 = moment(time).format('LT');
+                  t[2].time1 = time;
                   t[2].visible1 = false;
                 this.setState({times:t})}}
               onCancel={()=> {
@@ -492,7 +571,7 @@ export default class Info extends Component {
                 isVisible={this.state.times[2].visible2}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[2].time2 = moment(time).format('LT');
+                    t[2].time2 = time;
                     t[2].visible2 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
@@ -526,14 +605,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[3].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{this.state.times[3].time1} </Text>
+                <Text>{moment(this.state.times[3].time1).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[3].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[3].time2} </Text>
+                  <Text>{moment(this.state.times[3].time2).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -541,7 +620,7 @@ export default class Info extends Component {
               isVisible={this.state.times[3].visible1}
               onConfirm={(time) => {
                   let t = this.state.times;
-                  t[3].time1 = moment(time).format('LT');
+                  t[3].time1 = time;
                   t[3].visible1 = false;
                 this.setState({times:t})}}
               onCancel={()=> {
@@ -556,7 +635,7 @@ export default class Info extends Component {
                 isVisible={this.state.times[3].visible2}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[3].time2 = moment(time).format('LT');
+                    t[3].time2 = time;
                     t[3].visible2 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
@@ -590,14 +669,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[4].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{this.state.times[4].time1} </Text>
+                <Text>{moment(this.state.times[4].time1).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[4].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[4].time2} </Text>
+                  <Text>{moment(this.state.times[4].time2).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -605,7 +684,7 @@ export default class Info extends Component {
               isVisible={this.state.times[4].visible1}
               onConfirm={(time) => {
                   let t = this.state.times;
-                  t[4].time1 = moment(time).format('LT');
+                  t[4].time1 = time;
                   t[4].visible1 = false;
                 this.setState({times:t})}}
               onCancel={()=> {
@@ -620,7 +699,7 @@ export default class Info extends Component {
                 isVisible={this.state.times[4].visible2}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[4].time2 = moment(time).format('LT');
+                    t[4].time2 = time;
                     t[4].visible2 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
@@ -654,14 +733,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[5].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{this.state.times[5].time1} </Text>
+                <Text>{moment(this.state.times[5].time1).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[5].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[5].time2} </Text>
+                  <Text>{moment(this.state.times[5].time2).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -669,7 +748,7 @@ export default class Info extends Component {
               isVisible={this.state.times[5].visible1}
               onConfirm={(time) => {
                   let t = this.state.times;
-                  t[5].time1 = moment(time).format('LT');
+                  t[5].time1 = time;
                   t[5].visible1 = false;
                 this.setState({times:t})}}
               onCancel={()=> {
@@ -684,7 +763,7 @@ export default class Info extends Component {
                 isVisible={this.state.times[5].visible2}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[5].time2 = moment(time).format('LT');
+                    t[5].time2 = time;
                     t[5].visible2 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
@@ -718,14 +797,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[6].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{this.state.times[6].time1} </Text>
+                <Text>{moment(this.state.times[6].time1).format('LT')}</Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[6].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{this.state.times[6].time2} </Text>
+                  <Text>{moment(this.state.times[6].time2).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -733,7 +812,7 @@ export default class Info extends Component {
               isVisible={this.state.times[6].visible1}
               onConfirm={(time) => {
                   let t = this.state.times;
-                  t[6].time1 = moment(time).format('LT');
+                  t[6].time1 =time;
                   t[6].visible1 = false;
                 this.setState({times:t})}}
               onCancel={()=> {
@@ -748,7 +827,7 @@ export default class Info extends Component {
                 isVisible={this.state.times[6].visible2}
                 onConfirm={(time) => {
                     let t = this.state.times;
-                    t[6].time2 = moment(time).format('LT');
+                    t[6].time2 = time;
                     t[6].visible2 = false;
                   this.setState({times:t})}}
                 onCancel={()=> {
@@ -761,28 +840,14 @@ export default class Info extends Component {
                 />
             </View>
             <Text style={{ fontSize:16, fontWeight: '400' }}>服务种类</Text>
-            <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>普通问诊</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>心理咨询</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>牙科问诊</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>儿科问诊</Text>
-              </TouchableOpacity>
+            <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
+            {this.context.serviceclass.length>0 ? service:
+            <Text>请添加诊所支持的服务种类</Text>}
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('服务种类')}>
+              <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+            </TouchableOpacity>
             </View>
-            <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-              <TouchableOpacity style={styles.resumeTag}>
-                <Text style={{ fontSize:12, fontWeight: '300' }}>神经理疗</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('服务种类')}>
-                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
+
             <View style={{ marginTop:10, marginBottom:10}}>
               <Text style={{ fontSize:16, fontWeight: '400' }}>服务类型</Text>
             </View>
@@ -799,8 +864,7 @@ export default class Info extends Component {
                 checked={this.state.checked1}
                 onPress={() => {
                   this.setState({
-                  checked1: true,
-                  checked2: false,
+                  checked1: !this.state.checked1,
                 })}}
                />
             </View>
@@ -818,12 +882,11 @@ export default class Info extends Component {
                 checked={this.state.checked2}
                 onPress={() => {
                   this.setState({
-                  checked1: false,
-                  checked2: true,
+                  checked2: !this.state.checked2
                 })}}
                />
             </View>
-            <View style={{ marginTop:10, marginBottom:10}}>
+            <View>
               <Text style={{ fontSize:16, fontWeight: '400' }}>收费方式</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -843,15 +906,18 @@ export default class Info extends Component {
                 })}}
                />
             </View>
-            <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-                <Text style={{ fontSize:16, fontWeight: '400' }}>分支机构（选填）</Text>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('分支机构')}>
-                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-        <TouchableOpacity style={styles.resumeButton} onPress={() => {this.sendRequest()}}>
+        <TouchableOpacity style={{
+          width: '100%',
+          height: 40,
+          marginTop: 10,
+          marginBottom:20,
+        backgroundColor: '#68B0AB',
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: "center",}} onPress={() => {this.sendRequest()}}>
           <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
         </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );}

@@ -39,6 +39,7 @@ import OtherStores from './Scene/Health/otherStores';
 import Members from './Scene/Health/members';
 import UploadMember from './Scene/Health/uploadMember';
 import DoctorInfo from './Scene/Health/doctorInfo';
+import Mintro from './Scene/Health/mintro';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -141,8 +142,13 @@ export default class App extends React.Component {
     suburb:"",
     postcode:"",
     intro:'',
+    mintro:'',
     state:'',
     token:'',
+    image:'',
+    dimage:'',
+    languages:[],
+    serviceclass:[],
     userLanguage:null,
     cn:true,
     en:false,
@@ -162,9 +168,13 @@ export default class App extends React.Component {
       changedoctors:this.changedoctors,
       clearstate:this.clearstate,
       changeintro:this.changeintro,
+      changemintro:this.changemintro,
       changelanguage:this.changelanguage,
       changeen:this.changeen,
       changecn:this.changecn,
+      changeimg:this.changeimg,
+      changedimg:this.changedimg,
+      changeserviceclass:this.changeserviceclass,
     }
     }
   }
@@ -230,9 +240,14 @@ export default class App extends React.Component {
         intro: value
     });
   }
+  changemintro = (value) => {
+    this.setState({
+        mintro: value
+    });
+  }
   changelanguage = (value) => {
     this.setState({
-        userLanguage: value
+        languages: value
     });
   }
   changeen = (value) => {
@@ -243,6 +258,21 @@ export default class App extends React.Component {
   changecn = (value) => {
     this.setState({
         cn: value
+    });
+  }
+  changeimg = (value) => {
+    this.setState({
+        image: value
+    });
+  }
+  changedimg = (value) => {
+    this.setState({
+        dimage: value
+    });
+  }
+  changeserviceclass = (value) => {
+    this.setState({
+        serviceclass: value
     });
   }
   clearstate=()=>{
@@ -276,6 +306,7 @@ export default class App extends React.Component {
           <Stack.Screen name="机构信息" component={Info} />
           <Stack.Screen name="成员管理" component={Members} />
           <Stack.Screen name="介绍" component={Introduction} />
+          <Stack.Screen name="成员介绍" component={Mintro} />
           <Stack.Screen name="语言" component={Languages} />
           <Stack.Screen name="服务种类" component={HealthServiceType} />
           <Stack.Screen name="分支机构" component={OtherStores} />

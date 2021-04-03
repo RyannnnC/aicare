@@ -2,6 +2,7 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
+import moment from 'moment';
 
 export default class DoctorInfo extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ export default class DoctorInfo extends Component {
         class:[],
         type:[],
         charging:[],
+        languages:[],
       }
     }
 
@@ -40,6 +42,7 @@ export default class DoctorInfo extends Component {
             class:json.employerInfo.serviceClassList,
             type:json.employerInfo.serviceTypeList,
             schedulevos:json.employerInfo.employerSchedulevos,
+            languages:json.employerInfo.languages,
           })
           console.log(this.state);
         } else {
@@ -49,6 +52,21 @@ export default class DoctorInfo extends Component {
   }
 
   render() {
+    let times = this.state.schedulevos.map((item) => {
+      return (
+        <View style={{flexDirection:'row'}}>
+          <Text style={{ fontSize:14, fontWeight: '300' }}>{item.dayOfWeekStr}</Text>
+          <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300' }}>{moment(item.startTime).format('LT')}-{moment(item.endTime).format('LT')}</Text>
+        </View>
+      )
+    })
+    let languages = this.state.languages.map((item) => {
+      return (
+        <TouchableOpacity style={styles.resumeTag}>
+          <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
+        </TouchableOpacity>
+      )
+    })
     let classes = this.state.class.map((item) => {
       return (
         <TouchableOpacity style={styles.resumeTag}>
@@ -66,13 +84,15 @@ export default class DoctorInfo extends Component {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1,width:'85%' }}>
-        <View style={{ marginTop:10,justifyContent: "center",alignItems: "center",marginBottom:18 }}>
-          <Image style={styles.resumeImg}
+        <View style={{ width:'90%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,zIndex: 1,}}>
+          <Image style={{width:80,height:80}}
             source = {require('../../images/providerImg/service_doctor_img1.png')}
           />
-        <Text style={{ fontSize:18, fontWeight: '600',marginTop:10 }}>{this.state.name}</Text>
-        <Text style={{ fontSize:12, fontWeight: '400' }}>全科医生 - 9年工作经验</Text>
-        <View style={{flexDirection: 'row-reverse'}}>
+        </View>
+        <View style={{marginTop:-50,width:'90%',height:200,justifyContent: "center",alignItems: "center",marginBottom:18,backgroundColor:'#ECF4F3'}}>
+          <Text style={{ fontSize:18, fontWeight: '600',marginTop:10 }}>{this.state.name}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400' }}>全科医生 - 9年工作经验</Text>
+          <View style={{flexDirection: 'row-reverse'}}>
           <TouchableOpacity style={styles.infoButton2}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>编辑资料</Text>
           </TouchableOpacity>
@@ -93,21 +113,12 @@ export default class DoctorInfo extends Component {
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务语言</Text>
         </View>
         <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
-        <TouchableOpacity style={styles.resumeTag}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>中文</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.resumeTag}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>英语</Text>
-        </TouchableOpacity>
+          {languages}
         </View>
         <View style={{marginTop:15,marginBottom:15}}>
-        <Text style={{ fontSize:18, fontWeight: '500' }}>服务时间</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>服务时间</Text>
         </View>
-        <Text style={{ fontSize:14, fontWeight: '300',marginBottom:10 }}>周一 8：00-19：00</Text>
-        <Text style={{ fontSize:14, fontWeight: '300',marginBottom:10 }}>周三 8：00-19：00</Text>
-        <Text style={{ fontSize:14, fontWeight: '300' ,marginBottom:10}}>周五 8：00-19：00</Text>
-        <Text style={{ fontSize:14, fontWeight: '300' ,marginBottom:10}}>周六 8：00-19：00</Text>
-
+          {times}
         <View style={{marginTop:15,marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务种类</Text>
         </View>
@@ -121,7 +132,12 @@ export default class DoctorInfo extends Component {
         <View style={{ marginTop:15, marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>收费方式</Text>
         </View>
-        <Text style={{ fontSize:14, fontWeight: '300',marginBottom:10 }}>支持bulk billing</Text>
+        <View style={{flexDirection:'row'}}>
+          <Image style={{width:15,height:15,marginBottom:10}}
+            source = {require('../../images/providerImg/account_icon_billing.png')}
+          />
+          <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>支持bulk billing</Text>
+        </View>
         <View style={{ marginTop:15, marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>资格证书</Text>
         </View>

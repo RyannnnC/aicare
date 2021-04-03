@@ -144,11 +144,6 @@ export default class Members extends Component {
           </TouchableOpacity>
         </ScrollView>
         </View>
-        <SearchBar
-        placeholder="搜索医生..."
-        containerStyle= {{width: 315,height: 40,backgroundColor: '#ffffff',borderRadius: 16,marginBottom:20}}
-        inputContainerStyle= {{width: 300,height: 30,backgroundColor: '#ffffff',borderRadius: 16}}
-        inputStyle={{width: 290,height: 30,backgroundColor: '#ffffff',borderRadius: 16}}/>
         <ScrollView style={{flex:1}}>
           {this.context.doctors.length >0 ? docs :
           <View>
