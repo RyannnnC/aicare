@@ -16,16 +16,22 @@ export default class UploadMember extends Component {
       this.state={
         name:"",
         phone:"",
+        schedulevos:[],
         image:null,
         pressed:false,
-        checked: false,
-        checked1: false,
-        checked2: false,
-        checked3: false,
-        checked4: false,
-        checked5: false,
-        checked6: false,
-        checked7: false,
+        we:'',
+        types: [
+          { value:'1',name:'全科问诊',status: 0},
+          { value:'2',name:'眼科问诊',status: 0},
+          { value:'3',name:'心理问诊',status: 0},
+          { value:'4',name:'中医问诊',status: 0},
+          { value:'5',name:'少儿问诊',status: 0},
+          { value:'6',name:'康复问诊',status: 0},
+        ],
+        service:[
+          {value: "1",name: "实地问诊",status: 0},
+          {value: "2",name: "远程问诊",status: 0},
+        ],
         checked8: true,
         buttons: [
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -48,7 +54,82 @@ export default class UploadMember extends Component {
       }
     }
 
+    componentDidMount ()  {
+      console.log(this.props.route.params.id);
+      if(this.props.route.params.id !=null){
+        let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/list'
+        +'?employerId=' + this.props.route.params.id;
+          fetch(url,{
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+            'Accept':       'application/json',
+            'Content-Type': 'application/json',
+            'sso-auth-token': this.context.token,
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+          }})
+          .then((response) => response.json())
+          .then((json) => {
+            if (json.code === 0) {
+              console.log(json.msg);
+              this.setState({
+                name:json.employerInfo.name,
+                phone:json.employerInfo.mobile,
+                we:json.employerInfo.workLong,
+              })
+              let i;
+              if (json.employerInfo.employerSchedulevos.length>0){
+                for (i=0;i<json.employerInfo.employerSchedulevos.length;i++){
+                  if (json.employerInfo.employerSchedulevos[i].status != 0 && json.employerInfo.employerSchedulevos[i].status != null){
+                    let but = this.state.buttons;
+                    but[i].pressed = true;
+                    but[i].backgroundColor = '#FF7E67';
+                    but[i].borderWidth = 0;
+                    but[i].fontColor = '#FFFFFF';
+                    this.setState({buttons: but});
+                    let t = this.state.times;
+                    t[i].time1 = json.employerInfo.employerSchedulevos[i].startTime;
+                    t[i].time2 = json.employerInfo.employerSchedulevos[i].endTime;
+                    this.setState({times:t})
+                  }
+                }
+              }
+              if (json.employerInfo.serviceClassList.length>0){
+                for (i=0;i<json.employerInfo.serviceClassList.length;i++){
+                  let j;
+                  for (j=0;j<this.state.types.length;j++){
+                    if (this.state.types[j].name ==json.employerInfo.serviceClassList[i].name){
+                      let but = this.state.types;
+                      but[j].status = 1;
+                      this.setState({types: but});
+                    }
+                  }
+                }
+              }
+              if (json.employerInfo.serviceTypeList.length>0){
+                for (i=0;i<json.employerInfo.serviceTypeList.length;i++){
+                  let j;
+                  for (j=0;j<this.state.service.length;j++){
+                    if (this.state.service[j].name ==json.employerInfo.serviceTypeList[i].name){
+                      let but = this.state.service;
+                      but[j].status = 1;
+                      this.setState({service: but});
+                    }
+                  }
+                }
+              }
+              this.context.action.changemintro(json.employerInfo.introduce)
+            } else {
+              console.log(json.msg)
+            }
+          }).catch(error => console.warn(error));
+      }
 
+    }
   changeColor(index){
     let but = this.state.buttons;
     if(!but[index].pressed){
@@ -83,34 +164,71 @@ export default class UploadMember extends Component {
         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
       },
       body: JSON.stringify({
+        employerId: this.props.route.params.id,
         name: this.state.name,
         mobile: this.state.phone,
-        languages: [
-        {
-            "value": "1",
-            "name": "中文",
-            "status": 1
-        },{
-            "value": "2",
-            "name": "英文",
-            "status": 1
-        }],
-        serviceClassList:[
-          {
-            "value": "1",
-            "name": "全科问诊",
-            "status": -1
-          },
-          {
-            "value": "2",
-            "name": "眼科问诊",
-            "status": -1
-          },
-          {
-            "value": "3",
-            "name": "心理问诊",
-            "status": 1
-          }
+        languages: this.context.mlan,
+        introduce:this.context.mintro,
+        workLong:this.state.we,
+        employerSchedulevos:[
+            {
+                "dayOfWeek": 1,
+                "dayOfWeekStr": "星期一",
+                "startTime": moment(this.state.times[0].time1).format(),
+                "endTime": moment(this.state.times[0].time2).format(),
+                "status": this.state.buttons[0].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 2,
+                "dayOfWeekStr": "星期二",
+                "startTime": moment(this.state.times[1].time1).format(),
+                "endTime": moment(this.state.times[1].time2).format(),
+                "status": this.state.buttons[1].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 3,
+                "dayOfWeekStr": "星期三",
+                "startTime": moment(this.state.times[2].time1).format(),
+                "endTime": moment(this.state.times[2].time2).format(),
+                "status": this.state.buttons[2].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 4,
+                "dayOfWeekStr": "星期四",
+                "startTime": moment(this.state.times[3].time1).format(),
+                "endTime": moment(this.state.times[3].time2).format(),
+                "status": this.state.buttons[3].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 5,
+                "dayOfWeekStr": "星期五",
+                "startTime": moment(this.state.times[4].time1).format(),
+                "endTime": moment(this.state.times[4].time2).format(),
+                "status": this.state.buttons[4].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 6,
+                "dayOfWeekStr": "星期六",
+                "startTime": moment(this.state.times[5].time1).format(),
+                "endTime": moment(this.state.times[5].time2).format(),
+                "status": this.state.buttons[5].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 7,
+                "dayOfWeekStr": "星期天",
+                "startTime": moment(this.state.times[6].time1).format(),
+                "endTime": moment(this.state.times[6].time2).format(),
+                "status": this.state.buttons[6].pressed ? 1 : 0
+            },
+        ],
+        serviceClassList:this.state.types,
+        serviceTypeList: this.state.service,
+        chargingMethodList: [
+            {
+                "value": "1",
+                "name": "bulk billing",
+                "status": this.state.checked8?1:0
+            }
         ],
       })
       })
@@ -119,11 +237,42 @@ export default class UploadMember extends Component {
         if (json.code === 0) {
           alert("提交成功");
           console.log(json.msg);
+          this.props.navigation.pop();
         } else {
           console.log(json.msg)
           alert('提交失败');
         }
       }).catch(error => console.warn(error));
+      if (this.state.image != null) {
+      let data = new FormData();
+      data.append('filename', 'avatar');
+      data.append('file', {
+        uri: this.state.image,
+        name: this.context.name+ '.jpg',
+        type: 'image/jpg'
+      });
+      data.append('label', '1');
+      url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/upload';
+         fetch(url,{
+           method: 'POST',
+           mode: 'cors',
+           credentials: 'include',
+           headers: {
+           'Content-Type': 'multipart/form-data',
+           'sso-auth-token': this.context.token,
+         },
+           body: data
+         })
+         .then((response) => response.json())
+         .then((json) => {
+           if (json.code === 0) {
+             alert("照片提交成功");
+             console.log(json.msg);
+           } else {
+             alert('照片提交失败');
+           }
+         });
+       }
   }
 
   hidePicker = () => {
@@ -144,6 +293,17 @@ export default class UploadMember extends Component {
   };
 
   render() {
+    let languages =[];
+    if(this.context.mlan.length>0) {
+    languages = this.context.mlan.map((item) => {
+      if (item.status == 1) {
+      return (
+        <TouchableOpacity style={styles.resumeTag} key={item.value}>
+          <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
+        </TouchableOpacity>
+      )
+      }
+    })};
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1 }}>
@@ -199,18 +359,24 @@ export default class UploadMember extends Component {
                 uncheckedIcon='circle-o'
                 checkedColor='red'
                 containerStyle={{borderWidth:0,backgroundColor:'white'}}
-                checked={this.state.checked}
-                onPress={() => {this.setState({checked:!this.state.checked})}}
+                checked={this.state.types[0].status==1?true:false}
+                onPress={() => {
+                  let t = this.state.types;
+                  t[0].status = this.state.types[0].status==1?0:1;
+                  this.setState({types:t})}}
                />
               <CheckBox
                 center
-                title='眼科'
+                title='牙科'
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
                 containerStyle={{borderWidth:0, backgroundColor:'white'}}
                 checkedColor='red'
-                checked={this.state.checked1}
-                onPress={() => {this.setState({checked1:!this.state.checked1})}}
+                checked={this.state.types[1].status==1?true:false}
+                onPress={() => {
+                  let t = this.state.types;
+                  t[1].status = this.state.types[1].status==1?0:1;
+                  this.setState({types:t})}}
                />
                <CheckBox
                  center
@@ -219,8 +385,11 @@ export default class UploadMember extends Component {
                  uncheckedIcon='circle-o'
                  containerStyle={{borderWidth:0, backgroundColor:'white'}}
                  checkedColor='red'
-                 checked={this.state.checked2}
-                 onPress={() => {this.setState({checked2:!this.state.checked2})}}
+                 checked={this.state.types[2].status==1?true:false}
+                 onPress={() => {
+                   let t = this.state.types;
+                 t[2].status = this.state.types[2].status==1?0:1;
+                 this.setState({types:t})}}
                 />
                 <CheckBox
                   center
@@ -229,18 +398,22 @@ export default class UploadMember extends Component {
                   uncheckedIcon='circle-o'
                   containerStyle={{borderWidth:0, backgroundColor:'white'}}
                   checkedColor='red'
-                  checked={this.state.checked3}
-                  onPress={() => {this.setState({checked3:!this.state.checked3})}}
+                  checked={this.state.types[3].status==1?true:false}
+                  onPress={() => {let t = this.state.types;
+                  t[3].status = this.state.types[3].status==1?0:1;
+                  this.setState({types:t})}}
                  />
                  <CheckBox
                    center
-                   title='少儿'
+                   title='儿科'
                    checkedIcon='check-circle-o'
                    uncheckedIcon='circle-o'
                    containerStyle={{borderWidth:0, backgroundColor:'white'}}
                    checkedColor='red'
-                   checked={this.state.checked4}
-                   onPress={() => {this.setState({checked4:!this.state.checked4})}}
+                   checked={this.state.types[4].status==1?true:false}
+                   onPress={() => {let t = this.state.types;
+                   t[4].status = this.state.types[4].status==1?0:1;
+                   this.setState({types:t})}}
                   />
                   <CheckBox
                     center
@@ -249,8 +422,10 @@ export default class UploadMember extends Component {
                     uncheckedIcon='circle-o'
                     containerStyle={{borderWidth:0, backgroundColor:'white'}}
                     checkedColor='red'
-                    checked={this.state.checked5}
-                    onPress={() => {this.setState({checked5:!this.state.checked5})}}
+                    checked={this.state.types[5].status==1?true:false}
+                    onPress={() => {let t = this.state.types;
+                    t[5].status = this.state.types[5].status==1?0:1;
+                    this.setState({types:t})}}
                    />
             </View>
           }
@@ -279,15 +454,11 @@ export default class UploadMember extends Component {
           <Text style={{ fontSize:16, fontWeight: '400' }}>服务语言</Text>
         </View>
         <View style={{flexDirection: 'row' , marginBottom:10}}>
-        <TouchableOpacity style={styles.resumeTag}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>中文</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.resumeTag}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>英语</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate('语言')}>
-          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-        </TouchableOpacity>
+        {this.context.mlan.length>0 ? languages:
+        <Text style={{marginTop:5}}>请添加医生服务的语言</Text>}
+          <TouchableOpacity  onPress={() => this.props.navigation.navigate('成员语言')}>
+            <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+          </TouchableOpacity>
         </View>
 
             <Text style={{ fontSize:16, fontWeight: '400' }}>服务时间</Text>
@@ -337,6 +508,7 @@ export default class UploadMember extends Component {
                   this.setState({times:t})}}
                 display="spinner"
                 mode={'time'}
+                value={this.state.times[0].time1}
                 minuteInterval={10}
                 />
                 <DateTimePicker
@@ -352,6 +524,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   display="spinner"
                   mode={'time'}
+                  value={this.state.times[0].time2}
                   minuteInterval={10}
                   />
             </View>
@@ -401,6 +574,7 @@ export default class UploadMember extends Component {
                   this.setState({times:t})}}
                 display="spinner"
                 mode={'time'}
+                value={this.state.times[1].time1}
                 minuteInterval={10}
                 />
                 <DateTimePicker
@@ -416,6 +590,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   display="spinner"
                   mode={'time'}
+                  value={this.state.times[1].time2}
                   minuteInterval={10}
                   />
               </View>
@@ -465,6 +640,7 @@ export default class UploadMember extends Component {
                   this.setState({times:t})}}
                 display="spinner"
                 mode={'time'}
+                value={this.state.times[2].time1}
                 minuteInterval={10}
                 />
                 <DateTimePicker
@@ -480,6 +656,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   mode={'time'}
                   display="spinner"
+                  value={this.state.times[2].time2}
                   minuteInterval={10}
                   />
               </View>
@@ -529,6 +706,7 @@ export default class UploadMember extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[3].time1}
                 minuteInterval={10}
                 />
                 <DateTimePicker
@@ -544,6 +722,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   mode={'time'}
                   display="spinner"
+                  value={this.state.times[3].time2}
                   minuteInterval={10}
                   />
               </View>
@@ -593,6 +772,7 @@ export default class UploadMember extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[4].time1}
                 minuteInterval={10}
                 />
                 <DateTimePicker
@@ -608,6 +788,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   mode={'time'}
                   display="spinner"
+                  value={this.state.times[4].time2}
                   minuteInterval={10}
                   />
               </View>
@@ -657,6 +838,7 @@ export default class UploadMember extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[5].time1}
                 minuteInterval={10}
                 />
                 <DateTimePicker
@@ -672,6 +854,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   mode={'time'}
                   display="spinner"
+                  value={this.state.times[5].time2}
                   minuteInterval={10}
                   />
               </View>
@@ -721,6 +904,7 @@ export default class UploadMember extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[6].time1}
                 minuteInterval={10}
                 />
                 <DateTimePicker
@@ -736,6 +920,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   mode={'time'}
                   display="spinner"
+                  value={this.state.times[6].time2}
                   minuteInterval={10}
                   />
               </View>
@@ -752,11 +937,11 @@ export default class UploadMember extends Component {
                 checkedColor='red'
                 containerStyle={{borderWidth:0,backgroundColor:'white'}}
                 size={this.state.size}
-                checked={this.state.checked6}
+                checked={this.state.service[0].status==1?true:false}
                 onPress={() => {
-                  this.setState({
-                  checked6: !this.state.checked6,
-                })}}
+                  let t = this.state.service;
+                  t[0].status = this.state.service[0].status==1?0:1;
+                  this.setState({service:t})}}
                />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -769,11 +954,11 @@ export default class UploadMember extends Component {
                 containerStyle={{borderWidth:0, backgroundColor:'white'}}
                 checkedColor='red'
                 size={this.state.size}
-                checked={this.state.checked7}
+                checked={this.state.service[1].status==1?true:false}
                 onPress={() => {
-                  this.setState({
-                  checked7:!this.state.checked7,
-                })}}
+                  let t = this.state.service;
+                  t[1].status = this.state.service[1].status==1?0:1;
+                  this.setState({service:t})}}
                />
             </View>
             <View style={{ marginTop:10, marginBottom:10}}>

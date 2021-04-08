@@ -14,6 +14,7 @@ export default class DoctorInfo extends Component {
         type:[],
         charging:[],
         languages:[],
+        introduce:'',
       }
     }
 
@@ -39,8 +40,10 @@ export default class DoctorInfo extends Component {
           console.log(json.msg);
           this.setState({
             name:json.employerInfo.name,
+            phone:json.employerInfo.mobile,
             class:json.employerInfo.serviceClassList,
             type:json.employerInfo.serviceTypeList,
+            introduce:json.employerInfo.introduce,
             schedulevos:json.employerInfo.employerSchedulevos,
             languages:json.employerInfo.languages,
           })
@@ -51,15 +54,56 @@ export default class DoctorInfo extends Component {
       }).catch(error => console.warn(error));
   }
 
+  deleteDoctor(id) {
+    Alert.alert(
+      '提醒',
+      '您确定要删除这位成员吗？',
+      [
+        {text: '确定', onPress: () => {
+          let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/delete'
+          + '?employerId=' + id;
+            fetch(url,{
+              method: 'POST',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+              'Accept':       'application/json',
+              'Content-Type': 'application/json',
+              'sso-auth-token': this.context.token,
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+            }})
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code === 0) {
+                console.log(json.msg);
+                Alert.alert('删除成功');
+                this.props.navigation.pop();
+              } else {
+                console.log(json.msg);
+                Alert.alert('删除失败');
+              }
+            }).catch(error => console.warn(error));}},
+        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
+  }
+
   render() {
     let times = this.state.schedulevos.map((item) => {
+      if(item.status == 1){
       return (
         <View style={{flexDirection:'row'}}>
           <Text style={{ fontSize:14, fontWeight: '300' }}>{item.dayOfWeekStr}</Text>
           <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300' }}>{moment(item.startTime).format('LT')}-{moment(item.endTime).format('LT')}</Text>
         </View>
       )
-    })
+    }})
     let languages = this.state.languages.map((item) => {
       return (
         <TouchableOpacity style={styles.resumeTag}>
@@ -75,11 +119,12 @@ export default class DoctorInfo extends Component {
       )
     })
     let types = this.state.type.map((item) => {
+      if(item.status == 1){
       return (
         <View style={{marginTop:5,marginBottom:5}}>
           <Text style={{ fontSize:14, fontWeight: '300' }}>{item.name}</Text>
         </View>
-      )
+      )}
     })
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
@@ -89,14 +134,14 @@ export default class DoctorInfo extends Component {
             source = {require('../../images/providerImg/service_doctor_img1.png')}
           />
         </View>
-        <View style={{marginTop:-50,width:'90%',height:200,justifyContent: "center",alignItems: "center",marginBottom:18,backgroundColor:'#ECF4F3'}}>
+        <View style={{borderRadius:15,marginTop:-50,width:'90%',height:180,justifyContent: "center",alignItems: "center",marginBottom:18,backgroundColor:'#ECF4F3'}}>
           <Text style={{ fontSize:18, fontWeight: '600',marginTop:10 }}>{this.state.name}</Text>
           <Text style={{ fontSize:12, fontWeight: '400' }}>全科医生 - 9年工作经验</Text>
           <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity style={styles.infoButton2}>
+          <TouchableOpacity style={styles.infoButton2} onPress={() => this.props.navigation.navigate('成员添加', {id: this.props.route.params.id})}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>编辑资料</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.infoButton1}>
+          <TouchableOpacity style={styles.infoButton1} onPress={() => {this.deleteDoctor(this.props.route.params.id)}}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>删除人员</Text>
           </TouchableOpacity>
         </View>
@@ -106,13 +151,16 @@ export default class DoctorInfo extends Component {
           <Text style={{ fontSize:18, fontWeight: '500' }}>医生简介</Text>
         </View>
         <View style={{flexWrap: 'wrap', alignItems: 'flex-start'}}>
-          <Text style={{ fontSize:14, fontWeight: '300' }}>李医生拥有新南威尔士大学临床医学硕士学位，已在Kingsford Hospital拥有5年工作经验，精通于临床诊断。</Text>
+        {this.state.introduce ?
+        <Text>{this.state.introduce}</Text>
+        :
+        <Text>这位医生暂时没有介绍</Text>}
         </View>
 
         <View style={{marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务语言</Text>
         </View>
-        <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
+        <View style={{flexWrap: 'wrap',flexDirection: 'row' , marginTop:10, marginBottom:10}}>
           {languages}
         </View>
         <View style={{marginTop:15,marginBottom:15}}>
@@ -122,7 +170,7 @@ export default class DoctorInfo extends Component {
         <View style={{marginTop:15,marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务种类</Text>
         </View>
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+        <View style={{flexWrap: 'wrap',flexDirection: 'row', marginTop:10, marginBottom:10}}>
           {classes}
         </View>
         <View style={{ marginTop:15, marginBottom:15}}>

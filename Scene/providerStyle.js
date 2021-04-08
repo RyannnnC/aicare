@@ -411,7 +411,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   doctorHolder: {
-    width:315,
+    width:'100%',
     height:55,
     marginTop:5,
     borderBottomWidth:1,

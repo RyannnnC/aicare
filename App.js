@@ -40,6 +40,7 @@ import Members from './Scene/Health/members';
 import UploadMember from './Scene/Health/uploadMember';
 import DoctorInfo from './Scene/Health/doctorInfo';
 import Mintro from './Scene/Health/mintro';
+import Mlan from './Scene/Health/mlan';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -148,7 +149,10 @@ export default class App extends React.Component {
     image:'',
     dimage:'',
     languages:[],
+    mlan:[],
+    time:[],
     serviceclass:[],
+    typeList:[],
     userLanguage:null,
     cn:true,
     en:false,
@@ -167,14 +171,17 @@ export default class App extends React.Component {
       changetoken:this.changetoken,
       changedoctors:this.changedoctors,
       clearstate:this.clearstate,
+      changetime:this.changetime,
       changeintro:this.changeintro,
       changemintro:this.changemintro,
       changelanguage:this.changelanguage,
+      changemlan:this.changemlan,
       changeen:this.changeen,
       changecn:this.changecn,
       changeimg:this.changeimg,
       changedimg:this.changedimg,
       changeserviceclass:this.changeserviceclass,
+      changetypelist:this.changetypelist,
     }
     }
   }
@@ -199,6 +206,11 @@ export default class App extends React.Component {
         suburb: value
     });
   }
+  changetypelist = (value) => {
+    this.setState({
+      typeList: value
+    });
+  }
   changestreet = (value) => {
     this.setState({
         street: value
@@ -207,6 +219,11 @@ export default class App extends React.Component {
   changestate = (value) => {
     this.setState({
         state: value
+    });
+  }
+  changetime = (value) => {
+    this.setState({
+        time: value
     });
   }
   changephone = (value) => {
@@ -250,6 +267,11 @@ export default class App extends React.Component {
         languages: value
     });
   }
+  changemlan = (value) => {
+    this.setState({
+        mlan: value
+    });
+  }
   changeen = (value) => {
     this.setState({
         en: value
@@ -277,18 +299,29 @@ export default class App extends React.Component {
   }
   clearstate=()=>{
     this.setState({
-    authenticate: false,
-    date: "",
-    name: '',
-    phone: '',
-    email: '',
-    street:"",
-    suburb:"",
-    postcode:"",
-    state:'',
-    token:'',
-    intro:'',
-    doctors:[],
+      authenticate: false,
+      health: true,
+      date: "",
+      name: '',
+      phone: '',
+      email: '',
+      street:"",
+      suburb:"",
+      postcode:"",
+      intro:'',
+      mintro:'',
+      state:'',
+      token:'',
+      image:'',
+      dimage:'',
+      languages:[],
+      mlan:[],
+      time:[],
+      serviceclass:[],
+      userLanguage:null,
+      cn:true,
+      en:false,
+      doctors:[],
     })
   }
 
@@ -307,6 +340,7 @@ export default class App extends React.Component {
           <Stack.Screen name="成员管理" component={Members} />
           <Stack.Screen name="介绍" component={Introduction} />
           <Stack.Screen name="成员介绍" component={Mintro} />
+          <Stack.Screen name="成员语言" component={Mlan} />
           <Stack.Screen name="语言" component={Languages} />
           <Stack.Screen name="服务种类" component={HealthServiceType} />
           <Stack.Screen name="分支机构" component={OtherStores} />

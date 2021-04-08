@@ -19,8 +19,10 @@ export default class Info extends Component {
       hasCameraPermission: null,
       latitude:0,
       longitude:0,
-      checked1: true,
-      checked2: false,
+      service:[
+        {value: "1",name: "实地问诊",status: 0},
+        {value: "2",name: "远程问诊",status: 0},
+      ],
       checked3:true,
       buttons: [
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
@@ -49,22 +51,28 @@ export default class Info extends Component {
       </TouchableOpacity>
     </View>
 */
-  convertTime12to24(time12h) {
-    const [time, modifier] = time12h.split(' ');
-
-    let [hours, minutes] = time.split(':');
-
-    if (hours === '12') {
-      hours = '00';
-    }
-
-    if (modifier === 'PM') {
-      hours = parseInt(hours, 10) + 12;
-    }
-    return `${hours}:${minutes}`;
-  }
 
   async componentDidMount(){
+    if (this.context.time.length>0){
+      let i;
+      for (i=0;i<this.context.time.length;i++){
+        if (this.context.time[i].status != 0){
+          let but = this.state.buttons;
+          but[i].pressed = true;
+          but[i].backgroundColor = '#FF7E67';
+          but[i].borderWidth = 0;
+          but[i].fontColor = '#FFFFFF';
+          this.setState({buttons: but});
+          let t = this.state.times;
+          t[i].time1 = this.context.time[i].startTime;
+          t[i].time2 = this.context.time[i].endTime;
+          this.setState({times:t})
+        }
+      }
+    }
+    if (this.context.typeList.length>0){
+      this.setState({service:this.context.typeList})
+    }
    navigator.geolocation.getCurrentPosition(
      position=>{
        this.setState({
@@ -138,18 +146,7 @@ export default class Info extends Component {
         city:this.context.state,
         languages: this.context.languages,
         serviceClassList:this.context.serviceclass,
-        serviceTypeList: [
-           {
-               "value": "1",
-               "name": "实地问诊",
-               "status": this.state.checked1? 1 : 0,
-           },
-           {
-               "value": "2",
-               "name": "远程问诊",
-               "status": this.state.checked2? 1 : 0,
-           }
-        ],
+        serviceTypeList: this.state.service,
         chargingMethodList: [
             {
                 "value": "1",
@@ -295,15 +292,19 @@ export default class Info extends Component {
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1, }}>
         <View style={{flex:1,width:'90%'}}>
-        <View style={{ justifyContent: "center",alignItems: "center" }}>
+        <View style={{ marginTop:10,justifyContent: "center",alignItems: "center" }}>
           <TouchableOpacity onPress={this.pickImage}>
           {this.state.image ?
-          <Image style={styles.resumeImg}
+          <Image style={{width:80,height:80,borderRadius:40}}
                 source={{ uri: this.state.image }}
           />
+          : this.context.image?
+          <Image style={{width:80,height:80,borderRadius:40}}
+              source = {{ uri: this.context.image }}
+            />
           :
           <Image style={styles.resumeImg}
-              source = {{ uri: this.context.image }}
+            source = {require('../../images/providerImg/account_icon_add_1.png')}
             />}
           </TouchableOpacity>
         </View>
@@ -437,6 +438,7 @@ export default class Info extends Component {
                 this.setState({times:t})}}
               display="spinner"
               mode={'time'}
+              value={this.state.times[0].time1}
               minuteInterval={10}
               />
               <DateTimePicker
@@ -452,6 +454,7 @@ export default class Info extends Component {
                   this.setState({times:t})}}
                 display="spinner"
                 mode={'time'}
+                value={this.state.times[0].time2}
                 minuteInterval={10}
                 />
           </View>
@@ -501,6 +504,7 @@ export default class Info extends Component {
                 this.setState({times:t})}}
               display="spinner"
               mode={'time'}
+              value={this.state.times[1].time1}
               minuteInterval={10}
               />
               <DateTimePicker
@@ -516,6 +520,7 @@ export default class Info extends Component {
                   this.setState({times:t})}}
                 display="spinner"
                 mode={'time'}
+                value={this.state.times[1].time2}
                 minuteInterval={10}
                 />
             </View>
@@ -565,6 +570,7 @@ export default class Info extends Component {
                 this.setState({times:t})}}
               display="spinner"
               mode={'time'}
+              value={this.state.times[2].time1}
               minuteInterval={10}
               />
               <DateTimePicker
@@ -580,6 +586,7 @@ export default class Info extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[2].time2}
                 minuteInterval={10}
                 />
             </View>
@@ -629,6 +636,7 @@ export default class Info extends Component {
                 this.setState({times:t})}}
               mode={'time'}
               display="spinner"
+              value={this.state.times[3].time1}
               minuteInterval={10}
               />
               <DateTimePicker
@@ -644,6 +652,7 @@ export default class Info extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[3].time2}
                 minuteInterval={10}
                 />
             </View>
@@ -693,6 +702,7 @@ export default class Info extends Component {
                 this.setState({times:t})}}
               mode={'time'}
               display="spinner"
+              value={this.state.times[4].time1}
               minuteInterval={10}
               />
               <DateTimePicker
@@ -708,6 +718,7 @@ export default class Info extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[4].time1}
                 minuteInterval={10}
                 />
             </View>
@@ -757,6 +768,7 @@ export default class Info extends Component {
                 this.setState({times:t})}}
               mode={'time'}
               display="spinner"
+              value={this.state.times[5].time1}
               minuteInterval={10}
               />
               <DateTimePicker
@@ -772,6 +784,7 @@ export default class Info extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[5].time2}
                 minuteInterval={10}
                 />
             </View>
@@ -821,6 +834,7 @@ export default class Info extends Component {
                 this.setState({times:t})}}
               mode={'time'}
               display="spinner"
+              value={this.state.times[6].time1}
               minuteInterval={10}
               />
               <DateTimePicker
@@ -836,6 +850,7 @@ export default class Info extends Component {
                   this.setState({times:t})}}
                 mode={'time'}
                 display="spinner"
+                value={this.state.times[6].time2}
                 minuteInterval={10}
                 />
             </View>
@@ -861,11 +876,11 @@ export default class Info extends Component {
                 checkedColor='red'
                 containerStyle={{borderWidth:0,backgroundColor:'white'}}
                 size={this.state.size}
-                checked={this.state.checked1}
+                checked={this.state.service[0].status==1?true:false}
                 onPress={() => {
-                  this.setState({
-                  checked1: !this.state.checked1,
-                })}}
+                  let t = this.state.service;
+                  t[0].status = this.state.service[0].status==1?0:1;
+                  this.setState({service:t})}}
                />
             </View>
 
@@ -879,11 +894,11 @@ export default class Info extends Component {
                 containerStyle={{borderWidth:0, backgroundColor:'white'}}
                 checkedColor='red'
                 size={this.state.size}
-                checked={this.state.checked2}
+                checked={this.state.service[1].status==1?true:false}
                 onPress={() => {
-                  this.setState({
-                  checked2: !this.state.checked2
-                })}}
+                  let t = this.state.service;
+                  t[1].status = this.state.service[1].status==1?0:1;
+                  this.setState({service:t})}}
                />
             </View>
             <View>

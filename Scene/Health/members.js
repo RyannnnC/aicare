@@ -93,10 +93,12 @@ export default class Members extends Component {
     docs = this.context.doctors.map((item) => {
       return (
         <View style={styles.doctorHolder} key={item.employerId}>
+          <TouchableOpacity style={{ marginRight:10}} onPress={() => this.props.navigation.navigate('成员信息', {id: item.employerId})}>
           <Image
             style = {{width: 40, height:40,marginRight:15}}
             source = {require('../../images/providerImg/service_doctor_img1.png')}
           />
+          </TouchableOpacity>
           <View>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>全科医生 - 9年工作经验</Text>
@@ -119,7 +121,7 @@ export default class Members extends Component {
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
         <TouchableOpacity style={{borderRadius:15,marginTop:20,width:315,height:70,marginLeft:30,marginRight:30,justifyContent: "center", alignItems: "center",backgroundColor:'#ECF4F3'}}
-        onPress={() => {this.props.navigation.navigate('成员添加')}}>
+        onPress={() => this.props.navigation.navigate('成员添加', {id: null})}>
           <Text style={{ color: '#68B0AB', fontSize: 18, fontWeight: '400'}}>添加新成员</Text>
         </TouchableOpacity>
         <View style={{flexDirection:'row',marginTop:30,marginBottom:6}}>
@@ -144,7 +146,8 @@ export default class Members extends Component {
           </TouchableOpacity>
         </ScrollView>
         </View>
-        <ScrollView style={{flex:1}}>
+        <ScrollView style={{flex:1,width:'100%'}}>
+          <View style={{flex:1,width:'85%',marginLeft:'8.5%'}}>
           {this.context.doctors.length >0 ? docs :
           <View>
             <Image
@@ -154,6 +157,7 @@ export default class Members extends Component {
             <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您的诊所还没有医生哦，请在上面添加吧！</Text>
           </View>
           }
+          </View>
         </ScrollView>
       </SafeAreaView>
     )

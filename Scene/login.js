@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { SafeAreaView,Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
 import {styles} from '../style';
 import DataContext from "../providerContext";
+import I18n from './switchLanguage';
 
 export default class Login extends Component {
   constructor(props) {
@@ -18,8 +19,10 @@ export default class Login extends Component {
     let s = this.state;
     if (s.info.length === 0) {
         Alert.alert("Enter a valid phone or email");
+        return false;
     } else if (s.password.length === 0) {
         Alert.alert("Enter a password");
+        return false;
     }
     if (this.state.mobile) {
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/login?'
@@ -89,7 +92,7 @@ export default class Login extends Component {
               style = {{width:20,height:20,marginRight:10}}
               source = {require('../images/providerImg/login_icon_account.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>账号</Text>
+            <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
             <TouchableOpacity style={{marginLeft:150}} onPress={() => {this.setState({email:true,mobile:false})}}>
               <Text style={{color:'blue'}}>邮箱登陆</Text>
             </TouchableOpacity>
@@ -107,7 +110,7 @@ export default class Login extends Component {
                 style = {{width:20,height:20,marginRight:10}}
                 source = {require('../images/providerImg/login_icon_account.png')}
               />
-              <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>账号</Text>
+              <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
               <TouchableOpacity style={{marginLeft:150}} onPress={() => {this.setState({email:false,mobile:true})}}>
                 <Text style={{color:'blue'}}>手机登陆</Text>
               </TouchableOpacity>
@@ -124,7 +127,7 @@ export default class Login extends Component {
             style = {{width:20,height:20,marginRight:10}}
             source = {require('../images/providerImg/login_icon_pswd.png')}
           />
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>密码</Text>
+          <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('password')}</Text>
         </View>
         <TextInput
         style = {styles.password}
@@ -135,14 +138,14 @@ export default class Login extends Component {
 
       <View style ={styles.container2}>
         <TouchableOpacity style={styles.f_wrapper} onPress={() => this.props.navigation.navigate('忘记密码')}>
-          <Text style={styles.f_Text}>忘记密码？</Text>
+          <Text style={styles.f_Text}>{I18n.t('forgotPassword')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.z_wrapper} onPress={() => this.props.navigation.navigate('注册')}>
-          <Text style={styles.r_Text}>注册账户</Text>
+          <Text style={styles.r_Text}>{I18n.t('signup')}</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.loginWrapper} onPress = {()=>this.loginRequest()}>
-        <Text style={styles.onsite_Text}>登陆</Text>
+        <Text style={styles.onsite_Text}>{I18n.t('login')}</Text>
       </TouchableOpacity>
       <Image style = {styles.img4}
         source = {require('../images/logo.png')}

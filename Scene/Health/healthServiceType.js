@@ -8,7 +8,7 @@ export default class HealthServiceType extends Component {
   state={
     buttons: [
       { value:'1',name:'全科问诊',status: 1},
-      { value:'2',name:'眼科问诊',status: 1},
+      { value:'2',name:'牙科问诊',status: 1},
       { value:'3',name:'心理问诊',status: 0},
       { value:'4',name:'中医问诊',status: 0},
       { value:'5',name:'少儿问诊',status: 0},

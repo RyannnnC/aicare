@@ -46,33 +46,6 @@ export default class PendingOrder extends Component {
           }
         }).catch(error => console.warn(error));
     });
-    let d = new Date();
-    var date = this.formatDate(d);
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?'
-    +'date=' + date
-    +'&businessEmployerId=' + this.state.selectedDoctor;
-      fetch(url,{
-        method: 'GET',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': this.context.token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      }})
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.code === 0) {
-          console.log(json.msg);
-          this.setState({time:json.page})
-        } else {
-          console.log(json.msg);
-        }
-      }).catch(error => console.warn(error));
   }
 
   setIsEnabled = (value) => {
@@ -102,7 +75,7 @@ export default class PendingOrder extends Component {
       .then((json) => {
         if (json.code === 0) {
           console.log(json.msg);
-          this.setState({time:json.page})
+          this.setState({time:json.data})
         } else {
           console.log(json.msg);
         }

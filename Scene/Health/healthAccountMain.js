@@ -48,16 +48,21 @@ export default class HealthAccountMain extends Component {
         .then((json) => {
           if (json.code === 0) {
             console.log(json);
-            this.context.action.changeimg(json.orginfo.orgImg);
-            this.context.action.changename(json.orginfo.name);
-            this.context.action.changeemail(json.orginfo.email);
-            this.context.action.changephone(json.orginfo.mobile);
-            this.context.action.changestreet(json.orginfo.address);
-            this.context.action.changepostcode(json.orginfo.postalCode);
-            this.context.action.changeintro(json.orginfo.introduce);
-            this.context.action.changestate(json.orginfo.city);
-            this.context.action.changelanguage(json.orginfo.languages);
-            this.context.action.changeserviceclass(json.orginfo.serviceClassList);
+            if(json.orginfo.name!=null){
+              this.context.action.changeimg(json.orginfo.orgImg);
+              this.context.action.changename(json.orginfo.name);
+              this.context.action.changeemail(json.orginfo.email);
+              this.context.action.changephone(json.orginfo.mobile);
+              this.context.action.changestreet(json.orginfo.address);
+              this.context.action.changepostcode(json.orginfo.postalCode);
+              this.context.action.changeintro(json.orginfo.introduce);
+              this.context.action.changestate(json.orginfo.city);
+              this.context.action.changelanguage(json.orginfo.languages);
+              this.context.action.changeserviceclass(json.orginfo.serviceClassList);
+              this.context.action.changetime(json.orginfo.orgschedulevos);
+              this.context.action.changetypelist(json.orginfo.serviceTypeList);
+            }
+            console.log(json.orginfo.orgschedulevos);
           } else {
             console.log(json.msg)
           }
@@ -68,16 +73,23 @@ export default class HealthAccountMain extends Component {
   render() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:'white' }}>
+      {this.context.image ?
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
-        <Image
-          style = {styles.personIcon}
-          source = {{uri:this.context.image}}
-        />
-        <View>
+      <Image
+        style = {{height:60,width:60,borderRadius:30}}
+        source = {{uri:this.context.image}}
+      />
+      <View>
         <Text style={{ fontSize:20, fontWeight: '600' }}>{this.context.name}</Text>
         <Text style={{ fontSize:14, fontWeight: '300' }}>{this.context.email}</Text>
-        </View>
       </View>
+      </View>
+      :
+      <View>
+        <Text>您的诊所还未添加资料，请添加资料！</Text>
+      </View>
+      }
+
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('机构信息')}>
         <Image
           style = {styles.smallIconImg}

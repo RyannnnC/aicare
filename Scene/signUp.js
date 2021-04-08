@@ -18,7 +18,12 @@ export default class Signup extends Component {
   }
   sendRequest() {
     if (this.state.confirm != this.state.password) {
-      Alert.alert("两次密码必须相同")
+      Alert.alert("两次密码必须相同");
+      return false;
+    } else if(this.state.mail==''){
+      Alert.alert('请输入一个邮箱')
+    } else if(this.state.code==''){
+      Alert.alert('请输入一个验证码')
     } else {
     let s = this.state;
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/register?'

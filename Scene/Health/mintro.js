@@ -22,13 +22,13 @@ export default class Mintro extends Component {
       <View style={{width:315, height:120,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
         <TextInput style={{width:275,height:60,marginTop:15,marginLeft:20,marginRight:20}}
           placeholder={this.context.mintro}
-          onChangeText={(text) => {this.setState({ intro: text})}}
+          value={this.context.mintro}
+          onChangeText={(text) => {this.context.action.changemintro(text)}}
           multiline={true}
         />
       </View>
       <View style={{width:'75%',marginTop:40}}>
       <TouchableOpacity style={styles.resumeButton} onPress={() => {
-        this.context.action.changemintro(this.state.intro)
         this.props.navigation.pop()}}>
         <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
       </TouchableOpacity>

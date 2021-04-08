@@ -248,6 +248,7 @@ export const styles = StyleSheet.create({
   welcomeText:{
     width: 220,
     height: 70,
+    justifyContent:'center',
     textAlign: 'center',
   },
   time:{
