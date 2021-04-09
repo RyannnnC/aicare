@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
@@ -11,6 +11,7 @@ export default class HealthAccountMain extends Component {
     this.state={
       name:'',
       email:'',
+      isLoading:true,
     }
   }
   startAlert(){
@@ -29,6 +30,7 @@ export default class HealthAccountMain extends Component {
   }
 
   componentDidMount() {
+    this.setState({isLoading:true})
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       let url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/list';
         fetch(url,{
@@ -46,6 +48,7 @@ export default class HealthAccountMain extends Component {
         }})
         .then((response) => response.json())
         .then((json) => {
+          this.setState({ isLoading: false });
           if (json.code === 0) {
             console.log(json);
             if(json.orginfo.name!=null){
@@ -71,7 +74,14 @@ export default class HealthAccountMain extends Component {
   }
 
   render() {
-  return (
+    if (this.state.isLoading){
+      return(
+     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+         <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    )
+    }else {
+      return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:'white' }}>
       {this.context.image ?
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
@@ -136,6 +146,6 @@ export default class HealthAccountMain extends Component {
         <Text style={{fontSize:12, color:'#68B0AB'}}>+61 0403555432</Text>
        </View>
     </View>
-  );}
+  );}}
 }
 HealthAccountMain.contextType = DataContext;

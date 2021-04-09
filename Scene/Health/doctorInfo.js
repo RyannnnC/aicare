@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
 import moment from 'moment';
@@ -15,10 +15,14 @@ export default class DoctorInfo extends Component {
         charging:[],
         languages:[],
         introduce:'',
+        isLoading:true,
+        imgUrl:null,
       }
     }
 
   componentDidMount(){
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+    this.setState({isLoading:true})
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/list'
     +'?employerId=' + this.props.route.params.id;
       fetch(url,{
@@ -36,6 +40,7 @@ export default class DoctorInfo extends Component {
       }})
       .then((response) => response.json())
       .then((json) => {
+        this.setState({isLoading:false})
         if (json.code === 0) {
           console.log(json.msg);
           this.setState({
@@ -46,12 +51,14 @@ export default class DoctorInfo extends Component {
             introduce:json.employerInfo.introduce,
             schedulevos:json.employerInfo.employerSchedulevos,
             languages:json.employerInfo.languages,
+            imgUrl:json.employerInfo.imgUrl,
           })
           console.log(this.state);
         } else {
           console.log(json.msg)
         }
       }).catch(error => console.warn(error));
+    })
   }
 
   deleteDoctor(id) {
@@ -97,18 +104,25 @@ export default class DoctorInfo extends Component {
   render() {
     let times = this.state.schedulevos.map((item) => {
       if(item.status == 1){
+        let date = new Date(Date.parse(item.startTime));
+        let t1=date.toLocaleTimeString();
+        let dat = new Date(Date.parse(item.endTime));
+        let t2=dat.toLocaleTimeString();
       return (
         <View style={{flexDirection:'row'}}>
           <Text style={{ fontSize:14, fontWeight: '300' }}>{item.dayOfWeekStr}</Text>
-          <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300' }}>{moment(item.startTime).format('LT')}-{moment(item.endTime).format('LT')}</Text>
+          <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300' }}>{t1}-{t2}</Text>
         </View>
       )
     }})
+    console.log(times)
     let languages = this.state.languages.map((item) => {
       return (
+        <View key={item.value}>
         <TouchableOpacity style={styles.resumeTag}>
           <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
         </TouchableOpacity>
+        </View>
       )
     })
     let classes = this.state.class.map((item) => {
@@ -126,12 +140,19 @@ export default class DoctorInfo extends Component {
         </View>
       )}
     })
+    if (this.state.isLoading){
+      return(
+     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+         <ActivityIndicator size="large" color="#00ff00"  />
+      </View>
+    )
+    }else {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1,width:'85%' }}>
         <View style={{ width:'90%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,zIndex: 1,}}>
           <Image style={{width:80,height:80}}
-            source = {require('../../images/providerImg/service_doctor_img1.png')}
+            source = {this.state.imgUrl?{uri:this.state.imgUrl}:require('../../images/providerImg/service_doctor_img1.png')}
           />
         </View>
         <View style={{borderRadius:15,marginTop:-50,width:'90%',height:180,justifyContent: "center",alignItems: "center",marginBottom:18,backgroundColor:'#ECF4F3'}}>
@@ -161,22 +182,34 @@ export default class DoctorInfo extends Component {
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务语言</Text>
         </View>
         <View style={{flexWrap: 'wrap',flexDirection: 'row' , marginTop:10, marginBottom:10}}>
-          {languages}
+        {this.state.languages.length>0 ?
+        <Text>{languages}</Text>
+        :
+        <Text>这位医生暂时没有服务语言</Text>}
         </View>
         <View style={{marginTop:15,marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务时间</Text>
         </View>
-          {times}
+        {times.length>0 ?
+        <Text>{times}</Text>
+        :
+        <Text>这位医生暂时没有服务时间</Text>}
         <View style={{marginTop:15,marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务种类</Text>
         </View>
         <View style={{flexWrap: 'wrap',flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          {classes}
+        {this.state.class.length>0 ?
+        <Text>{classes}</Text>
+        :
+        <Text>这位医生暂时没有服务种类</Text>}
         </View>
         <View style={{ marginTop:15, marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务类型</Text>
         </View>
-          {types}
+        {this.state.type.length>0 ?
+        <Text>{types}</Text>
+        :
+        <Text>这位医生暂时没有服务类型</Text>}
         <View style={{ marginTop:15, marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>收费方式</Text>
         </View>
@@ -199,6 +232,6 @@ export default class DoctorInfo extends Component {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );}
+  );}}
 }
 DoctorInfo.contextType = DataContext;

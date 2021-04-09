@@ -1,8 +1,7 @@
 import React ,{Component}from 'react';
-import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal } from 'react-native';
+import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
-import {doctors} from './doctors';
 import DateSelect from "./dateSelect";
 import Category from "./category";
 import DataContext from '../../providerContext';
@@ -13,10 +12,12 @@ export default class Members extends Component {
       this.state={
         buttons: [],
         doctors:[],
+        isLoading:true,
       };
     }
 
   componentDidMount() {
+    this.setState({isLoading:true})
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/employerlist';
         fetch(url,{
@@ -34,6 +35,7 @@ export default class Members extends Component {
         }})
         .then((response) => response.json())
         .then((json) => {
+          this.setState({isLoading:false})
           if (json.code === 0) {
             console.log(json.msg);
             this.context.action.changedoctors(json.employerlist)
@@ -96,7 +98,7 @@ export default class Members extends Component {
           <TouchableOpacity style={{ marginRight:10}} onPress={() => this.props.navigation.navigate('成员信息', {id: item.employerId})}>
           <Image
             style = {{width: 40, height:40,marginRight:15}}
-            source = {require('../../images/providerImg/service_doctor_img1.png')}
+            source = {item.imgUrl?{uri:item.imgUrl}:require('../../images/providerImg/service_doctor_img1.png')}
           />
           </TouchableOpacity>
           <View>
@@ -118,6 +120,13 @@ export default class Members extends Component {
         </View>
       )
     })}
+    if (this.state.isLoading){
+      return(
+     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+         <ActivityIndicator size="large" color="#00ff00"  />
+      </View>
+    )
+    }else {
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
         <TouchableOpacity style={{borderRadius:15,marginTop:20,width:315,height:70,marginLeft:30,marginRight:30,justifyContent: "center", alignItems: "center",backgroundColor:'#ECF4F3'}}
@@ -161,6 +170,6 @@ export default class Members extends Component {
         </ScrollView>
       </SafeAreaView>
     )
-  }
+  }}
 }
 Members.contextType = DataContext;

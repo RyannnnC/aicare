@@ -205,7 +205,7 @@ export default class PendingOrder extends Component {
           source = {require('../../images/providerImg/home_img_person.png')}
         />
         <View>
-          <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerName}</Text>
+          <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerRealName}</Text>
           <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>{item.mobile}</Text>
         </View>
         </View>

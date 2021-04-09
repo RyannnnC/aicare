@@ -1,13 +1,14 @@
 import React ,{Component}from 'react';
-import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal } from 'react-native';
+import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
-import {doctors} from './doctors';
-import {data} from './data';
 import DateSelect from "./dateSelect";
 import Category from "./category";
 import DataContext from '../../providerContext';
 import CalendarPicker from 'react-native-calendar-picker';
+import { CheckBox } from 'react-native-elements';
+import moment from 'moment';
+
 
 export default class ProcessingOrder extends Component {
     constructor(props) {
@@ -19,15 +20,24 @@ export default class ProcessingOrder extends Component {
         isEnabled: false,
         modalVisible: false,
         mdVisible:false,
+        mds:[],
         Visible:false,
         selectedId:'',
         selectedDoctor:'',
+        timeLoad:false,
+        isLoading:true,
       };
       this.onDateChange = this.onDateChange.bind(this);
     }
 
-
+  /*  {item.insuranceType == 'Medicare' &&
+    <View>
+    <Text style={{marginBottom:10}}>医保序列: {JSON.parse(item.content).serial}</Text>
+    <Text style={{marginBottom:10}}>医保号码: {JSON.parse(item.content).number}</Text>
+    </View>      
+} */
   componentDidMount = () => {
+    this.setState({isLoading:true})
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/query?status=1';
         fetch(url,{
@@ -45,9 +55,19 @@ export default class ProcessingOrder extends Component {
         }})
         .then((response) => response.json())
         .then((json) => {
+          this.setState({isLoading:false})
           if (json.code === 0) {
             console.log(json);
             this.setState({data:json.page});
+            for(let i=0; i<json.page.length;i++){
+              var d= {
+                id:json.page[i].id,
+                visible:false,
+              }
+              let t = this.state.mds;
+              t.push(d);
+              this.setState({mds:t});
+            }         
           } else {
             console.log(json.msg)
           }
@@ -82,6 +102,7 @@ export default class ProcessingOrder extends Component {
   }
 
   sendRequest(date){
+    this.setState({timeLoad:true})
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?date='
     + date +'&businessEmployerId=' + this.state.selectedDoctor + '&status=0';
       fetch(url,{
@@ -99,9 +120,10 @@ export default class ProcessingOrder extends Component {
       }})
       .then((response) => response.json())
       .then((json) => {
+        this.setState({timeLoad:false});
         if (json.code === 0) {
           console.log(json.msg);
-          this.setState({time:json.page})
+          this.setState({time:json.data});
         } else {
           console.log(json.msg);
         }
@@ -134,9 +156,11 @@ export default class ProcessingOrder extends Component {
               .then((response) => response.json())
               .then((json) => {
                 if (json.code === 0) {
+                  console.log(json.msg)
                   Alert.alert('修改成功')
                 } else {
                   Alert.alert('修改失败')
+                  console.log(json.msg)
                 }
               }).catch(error => console.warn(error));
           }},
@@ -155,6 +179,22 @@ export default class ProcessingOrder extends Component {
     this.sendRequest(fd);
   }
 
+  findvis(id) {
+    for (let i=0;i<this.state.mds.length;i++) {
+      if(this.state.mds[i].id == id) {
+        return this.state.mds[i].visible;
+      }
+    }
+  }
+  changevis(id,value){
+    for (let i=0;i<this.state.mds.length;i++) {
+      if(this.state.mds[i].id == id) {
+        let t = this.state.mds;
+        t[i].visible = value;
+        this.setState({mds:t})
+      }
+    }
+  }
   render () {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
@@ -163,30 +203,40 @@ export default class ProcessingOrder extends Component {
     times = this.state.time.map((item) => {
       return (
         <View style={styles.timePick} key={item.id}>
-          <TouchableOpacity onPress={() => {this.modify(item.id);}}>
-            <Text>{item.startTime}-{item.endTime}</Text>
+          <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId);}}>
+            <Text>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
           </TouchableOpacity>
         </View>
       )
     })}
     let orders;
+    if (this.state.isLoading){
+      return(
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#00ff00"  />
+     </View>
+    )
+    }else {
     if (this.state.data.length > 0) {
     orders = this.state.data.map((item) => {
       return (
+        <View>
         <View style={styles.cardHolder} key={item.id}>
         <View style={{flexDirection: 'row'}}>
         <Image
           style = {{width: 18, height:18,marginRight:14}}
           source = {require('../../images/providerImg/order_icon_org.png')}
-        />
-        <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>{item.startTime}-{item.endTime}</Text>
+        />     
+        <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>预约时间 {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
         </View>
         <View style={styles.card3} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:24, marginBottom:21, marginLeft:33}}>
+          <TouchableOpacity onPress={()=>this.changevis(item.id,true)}>
           <Image
             style = {{width:40,height:40,marginRight:15}}
             source = {require('../../images/providerImg/home_img_person.png')}
           />
+          </TouchableOpacity>
           <View>
             <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerRealName}</Text>
             <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>{item.mobile}</Text>
@@ -219,8 +269,54 @@ export default class ProcessingOrder extends Component {
           </View>
         </View>
         </View>
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.findvis(item.id)}
+        onRequestClose={() => {
+          this.changevis(item.id,false)
+        }}
+      >
+      <View style={{marginTop:250,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 12,
+},
+shadowOpacity: 0.58,
+shadowRadius: 16.00,
+
+elevation: 24,}}>
+    <View style={{flexDirection:"row"}}>
+    <TouchableOpacity onPress={() =>{this.changevis(item.id,false)}} style={{marginRight:60,marginLeft:23}}>
+      <Image
+        style = {styles.arrow_image}
+        source={require('../../images/icon/2/Arrow_left.png')}
+      />
+    </TouchableOpacity>
+    </View>
+    <ScrollView style={{backgroundColor:"#F7FAFA"}}>
+      <View style={{marginLeft:115,marginTop:30}}>
+        <Text style={{marginBottom:10}}>患者姓名: {item.customerRealName}</Text>
+        <Text style={{marginBottom:10}}>患者电话: {item.mobile}</Text>
+        <Text style={{marginBottom:10}}>就诊时间: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
+        <Text style={{marginBottom:10}}>就诊医生: {item.businessEmployerName}</Text>
+        <Text style={{marginBottom:10}}>就诊科目: {item.deptName}</Text>
+        <Text style={{marginBottom:10}}>就诊地址: {item.orgAddress}</Text>
+        <Text style={{marginBottom:10}}>就诊方式: 实地会诊</Text>
+        <Text style={{marginBottom:10}}>保险方式: {item.insuranceType}</Text>
+       
+      </View>
+        <TouchableOpacity style={styles.next_wrapper}>
+          <Text style={styles.onsite_text}>确定</Text>
+        </TouchableOpacity>
+    </ScrollView>
+        <View style={{height:20}}/>
+        </View>
+      </Modal>
+        </View>
       )
     })
+    
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
         <View style={{flexDirection: 'row', marginBottom:21,marginTop:30}}>
@@ -268,7 +364,7 @@ export default class ProcessingOrder extends Component {
           </TouchableOpacity>
         </View>
           {orders}
-          <Modal
+         <Modal
            animationType="slide"
            transparent={true}
            visible={this.state.mdVisible}
@@ -300,7 +396,11 @@ export default class ProcessingOrder extends Component {
          <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
          <ScrollView style={{marginTop: 30,maxHeight:100}}>
           <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
-           {this.state.time.length>0 ? times :
+          { this.state.timeLoad?
+          <View>
+            <ActivityIndicator size="large" color="#00ff00"  />
+          </View>
+         :this.state.time.length>0 ? times :
            <View>
             <Text>这位医生今天没有排班！</Text>
           </View>}
@@ -400,6 +500,6 @@ elevation: 24,}}>
      </View>
     )
   }
-  }
+  }}
 }
 ProcessingOrder.contextType = DataContext;

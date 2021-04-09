@@ -1,12 +1,11 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons ,AntDesign} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import DataContext from '../../providerContext';
-import { Dropdown } from 'react-native-material-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
 
@@ -56,6 +55,7 @@ export default class UploadMember extends Component {
 
     componentDidMount ()  {
       console.log(this.props.route.params.id);
+      this.setState({isLoading:true})
       if(this.props.route.params.id !=null){
         let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/list'
         +'?employerId=' + this.props.route.params.id;
@@ -74,6 +74,7 @@ export default class UploadMember extends Component {
           }})
           .then((response) => response.json())
           .then((json) => {
+            this.setState({isLoading:false})
             if (json.code === 0) {
               console.log(json.msg);
               this.setState({
@@ -127,6 +128,8 @@ export default class UploadMember extends Component {
               console.log(json.msg)
             }
           }).catch(error => console.warn(error));
+      } else{
+        this.setState({isLoading:false})
       }
 
     }
@@ -149,6 +152,8 @@ export default class UploadMember extends Component {
 
   sendRequest() {
     let s = this.state;
+    console.log(s.times[0].time1)
+    console.log(moment(this.state.times[0].time1).format())
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/save';
       fetch(url,{
         method: 'POST',
@@ -252,6 +257,7 @@ export default class UploadMember extends Component {
         type: 'image/jpg'
       });
       data.append('label', '1');
+      data.append('employerId',this.props.route.params.id)
       url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/upload';
          fetch(url,{
            method: 'POST',
@@ -304,6 +310,13 @@ export default class UploadMember extends Component {
       )
       }
     })};
+    if (this.state.isLoading){
+      return(
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#00ff00"  />
+     </View>
+    )
+    }else {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1 }}>
@@ -988,6 +1001,6 @@ export default class UploadMember extends Component {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );}
+  );}}
 }
 UploadMember.contextType = DataContext;

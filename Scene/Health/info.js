@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import Geocoder from 'react-native-geocoding';
@@ -16,6 +16,7 @@ export default class Info extends Component {
       this.state={
       show: false,
       image:null,
+      isLoading:false,
       hasCameraPermission: null,
       latitude:0,
       longitude:0,
@@ -122,6 +123,7 @@ export default class Info extends Component {
 
   sendRequest() {
     let s = this.state;
+    this.setState({isLoading:true})
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/save';
       fetch(url,{
         method: 'POST',
@@ -209,6 +211,7 @@ export default class Info extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
+        this.setState({isLoading:false})
         if (json.code === 0) {
           alert("提交成功");
           console.log(json.msg);
@@ -288,6 +291,13 @@ export default class Info extends Component {
       )
       }
     })};
+    if (this.state.isLoading){
+      return(
+     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+         <ActivityIndicator size="large" color="#00ff00"  />
+      </View>
+    )
+    }else {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1, }}>
@@ -935,6 +945,6 @@ export default class Info extends Component {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );}
+  );}}
 }
 Info.contextType = DataContext;

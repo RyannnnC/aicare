@@ -61,7 +61,7 @@ export default class DateSelect extends Component {
         if (json.code === 0) {
           console.log(json.msg);
           alert('查询成功');
-          this.setState({time:json.page})
+          this.setState({time:json.data})
         } else {
           console.log(json.msg);
           alert('查询失败');
@@ -90,7 +90,7 @@ export default class DateSelect extends Component {
         .then((json) => {
           if (json.code === 0) {
             console.log(json.msg);
-            this.setState({time:json.page})
+            this.setState({time:json.data})
           } else {
             console.log(json.msg);
           }
