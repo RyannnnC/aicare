@@ -152,8 +152,9 @@ export default class UploadMember extends Component {
 
   sendRequest() {
     let s = this.state;
-    console.log(s.times[0].time1)
-    console.log(moment(this.state.times[0].time1).format())
+    console.log(this.state)
+    console.log(this.props.route.params.id)
+    if(this.props.route.params.id !=null){
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/save';
       fetch(url,{
         method: 'POST',
@@ -247,7 +248,101 @@ export default class UploadMember extends Component {
           console.log(json.msg)
           alert('提交失败');
         }
+      }).catch(error => console.warn(error));} else {
+        let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/save';
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      },
+      body: JSON.stringify({
+        name: this.state.name,
+        mobile: this.state.phone,
+        languages: this.context.mlan,
+        introduce:this.context.mintro,
+        workLong:this.state.we,
+        employerSchedulevos:[
+            {
+                "dayOfWeek": 1,
+                "dayOfWeekStr": "星期一",
+                "startTime": moment(this.state.times[0].time1).format(),
+                "endTime": moment(this.state.times[0].time2).format(),
+                "status": this.state.buttons[0].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 2,
+                "dayOfWeekStr": "星期二",
+                "startTime": moment(this.state.times[1].time1).format(),
+                "endTime": moment(this.state.times[1].time2).format(),
+                "status": this.state.buttons[1].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 3,
+                "dayOfWeekStr": "星期三",
+                "startTime": moment(this.state.times[2].time1).format(),
+                "endTime": moment(this.state.times[2].time2).format(),
+                "status": this.state.buttons[2].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 4,
+                "dayOfWeekStr": "星期四",
+                "startTime": moment(this.state.times[3].time1).format(),
+                "endTime": moment(this.state.times[3].time2).format(),
+                "status": this.state.buttons[3].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 5,
+                "dayOfWeekStr": "星期五",
+                "startTime": moment(this.state.times[4].time1).format(),
+                "endTime": moment(this.state.times[4].time2).format(),
+                "status": this.state.buttons[4].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 6,
+                "dayOfWeekStr": "星期六",
+                "startTime": moment(this.state.times[5].time1).format(),
+                "endTime": moment(this.state.times[5].time2).format(),
+                "status": this.state.buttons[5].pressed ? 1 : 0
+            },
+            {
+                "dayOfWeek": 7,
+                "dayOfWeekStr": "星期天",
+                "startTime": moment(this.state.times[6].time1).format(),
+                "endTime": moment(this.state.times[6].time2).format(),
+                "status": this.state.buttons[6].pressed ? 1 : 0
+            },
+        ],
+        serviceClassList:this.state.types,
+        serviceTypeList: this.state.service,
+        chargingMethodList: [
+            {
+                "value": "1",
+                "name": "bulk billing",
+                "status": this.state.checked8?1:0
+            }
+        ],
+      })
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          alert("提交成功");
+          console.log(json.msg);
+          this.props.navigation.pop();
+        } else {
+          console.log(json.msg)
+          alert('提交失败');
+        }
       }).catch(error => console.warn(error));
+      }
       if (this.state.image != null) {
       let data = new FormData();
       data.append('filename', 'avatar');
