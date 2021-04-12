@@ -23,6 +23,7 @@
     "i18n-js": "^3.8.0",
     "i18next": "^20.0.0",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-mobile-picker-scroll": "^0.2.14",

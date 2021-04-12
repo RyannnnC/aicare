@@ -44,8 +44,14 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
+        if (json.code == 0) {
+          Alert.alert("注册成功");
+        } else {
+          Alert.alert('注册失败');
+          return false;
+        }
         console.log(json.msg);
-        this.props.navigation.navigate('验证');
+        this.props.navigation.navigate('登陆')
       });}
   //  .then(json => {console.log(json)});
   }
@@ -99,7 +105,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/singup_icon_name.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>姓名</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>姓名 *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -113,7 +119,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_phone.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>电话</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>电话 *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -127,7 +133,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_mail.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>邮箱</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>邮箱 *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -141,7 +147,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/login_icon_pswd.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>密码</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>密码 *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -156,7 +162,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/account_icon_confirm.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>确认</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>确认 *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -171,7 +177,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>绑定方式</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>绑定方式 *</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <CheckBox

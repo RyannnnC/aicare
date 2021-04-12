@@ -127,9 +127,11 @@ export default class DoctorInfo extends Component {
     })
     let classes = this.state.class.map((item) => {
       return (
+        <View key={item.value}>
         <TouchableOpacity style={styles.resumeTag}>
           <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
         </TouchableOpacity>
+        </View>
       )
     })
     let types = this.state.type.map((item) => {
@@ -151,7 +153,7 @@ export default class DoctorInfo extends Component {
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
       <ScrollView style={{ flex: 1,width:'85%' }}>
         <View style={{ width:'90%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,zIndex: 1,}}>
-          <Image style={{width:80,height:80}}
+          <Image style={{width:80,height:80,borderRadius:40}}
             source = {this.state.imgUrl?{uri:this.state.imgUrl}:require('../../images/providerImg/service_doctor_img1.png')}
           />
         </View>
@@ -183,7 +185,7 @@ export default class DoctorInfo extends Component {
         </View>
         <View style={{flexWrap: 'wrap',flexDirection: 'row' , marginTop:10, marginBottom:10}}>
         {this.state.languages.length>0 ?
-        <Text>{languages}</Text>
+        languages
         :
         <Text>这位医生暂时没有服务语言</Text>}
         </View>
@@ -191,7 +193,7 @@ export default class DoctorInfo extends Component {
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务时间</Text>
         </View>
         {times.length>0 ?
-        <Text>{times}</Text>
+        times
         :
         <Text>这位医生暂时没有服务时间</Text>}
         <View style={{marginTop:15,marginBottom:15}}>
@@ -199,7 +201,7 @@ export default class DoctorInfo extends Component {
         </View>
         <View style={{flexWrap: 'wrap',flexDirection: 'row', marginTop:10, marginBottom:10}}>
         {this.state.class.length>0 ?
-        <Text>{classes}</Text>
+        classes
         :
         <Text>这位医生暂时没有服务种类</Text>}
         </View>
@@ -207,7 +209,7 @@ export default class DoctorInfo extends Component {
           <Text style={{ fontSize:18, fontWeight: '500' }}>服务类型</Text>
         </View>
         {this.state.type.length>0 ?
-        <Text>{types}</Text>
+        types
         :
         <Text>这位医生暂时没有服务类型</Text>}
         <View style={{ marginTop:15, marginBottom:15}}>

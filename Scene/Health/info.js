@@ -5,10 +5,11 @@ import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-ic
 import Geocoder from 'react-native-geocoding';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
+import { Localization } from 'expo-localization';
 
 export default class Info extends Component {
     constructor(props) {
@@ -54,6 +55,7 @@ export default class Info extends Component {
 */
 
   async componentDidMount(){
+    console.log(Localization.timezone)
     if (this.context.time.length>0){
       let i;
       for (i=0;i<this.context.time.length;i++){
@@ -124,6 +126,7 @@ export default class Info extends Component {
   sendRequest() {
     let s = this.state;
     this.setState({isLoading:true})
+    console.log(this.state.times[0].time1)
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/save';
       fetch(url,{
         method: 'POST',
@@ -160,8 +163,8 @@ export default class Info extends Component {
             {
                 "dayOfWeek": 1,
                 "dayOfWeekStr": "星期一",
-                "startTime": moment(this.state.times[0].time1).format(),
-                "endTime": moment(this.state.times[0].time2).format(),
+                "startTime": this.state.times[0].time1,
+                "endTime": this.state.times[0].time2,
                 "status": this.state.buttons[0].pressed ? 1 : 0
             },
             {
@@ -424,20 +427,21 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[0].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[0].time1).format('LT')} </Text>
+                <Text>{moment(this.state.times[0].time1).tz('Australia/Sydney').format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[0].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[0].time2).format('LT')} </Text>
+                  <Text>{moment(this.state.times[0].time2).tz('Australia/Sydney').format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
             <DateTimePicker
               isVisible={this.state.times[0].visible1}
               onConfirm={(time) => {
+                  console.log(time)
                   let t = this.state.times;
                   t[0].time1 = time;
                   t[0].visible1 = false;

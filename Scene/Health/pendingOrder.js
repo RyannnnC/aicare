@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal } from 'react-native';
+import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
@@ -14,6 +14,7 @@ export default class PendingOrder extends Component {
       data:[],
       time:[],
       isEnabled: false,
+      timeLoad:false,
       modalVisible: false,
       selectedId:'',
       selectedDoctor:'',
@@ -57,6 +58,7 @@ export default class PendingOrder extends Component {
   }
 
   sendRequest(date){
+    this.setState({timeLoad:true})
     let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?date='
     + date +'&businessEmployerId=' + this.state.selectedDoctor + '&status=0';
       fetch(url,{
@@ -74,6 +76,7 @@ export default class PendingOrder extends Component {
       }})
       .then((response) => response.json())
       .then((json) => {
+        this.setState({timeLoad:false})
         if (json.code === 0) {
           console.log(json.msg);
           this.setState({time:json.data})
@@ -189,8 +192,8 @@ export default class PendingOrder extends Component {
   times = this.state.time.map((item) => {
     return (
       <View style={styles.timePick} key={item.id}>
-        <TouchableOpacity onPress={() => {this.modify(item.id);}}>
-          <Text>{item.startTime}-{item.endTime}</Text>
+        <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId);}}>
+          <Text>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -286,10 +289,14 @@ export default class PendingOrder extends Component {
        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
        <ScrollView style ={{marginTop: 30,maxHeight:100}}>
          <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
-         {this.state.time.length>0 ? times :
+         { this.state.timeLoad?
          <View>
-          <Text>这位医生今天没有排班！</Text>
-        </View>}
+           <ActivityIndicator size="large" color="#00ff00"  />
+         </View>
+        :this.state.time.length>0 ? times :
+          <View>
+           <Text>这位医生今天没有排班！</Text>
+         </View>}
         </View>
        </ScrollView>
      </View>

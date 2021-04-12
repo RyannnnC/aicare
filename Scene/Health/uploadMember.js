@@ -19,6 +19,7 @@ export default class UploadMember extends Component {
         image:null,
         pressed:false,
         we:'',
+        isLoading:false,
         types: [
           { value:'1',name:'全科问诊',status: 0},
           { value:'2',name:'眼科问诊',status: 0},
@@ -152,6 +153,7 @@ export default class UploadMember extends Component {
 
   sendRequest() {
     let s = this.state;
+    this.setState({isLoading:true});
     console.log(this.state)
     console.log(this.props.route.params.id)
     if(this.props.route.params.id !=null){
@@ -240,6 +242,7 @@ export default class UploadMember extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
+        this.setState({isLoading:false})
         if (json.code === 0) {
           alert("提交成功");
           console.log(json.msg);
@@ -419,15 +422,15 @@ export default class UploadMember extends Component {
         <View style={{ marginTop:10,marginBottom:20,justifyContent: "center",alignItems: "center" }}>
           <TouchableOpacity onPress={this.pickImage}>
           {this.state.image ?
-          <Image style={styles.resumeImg}
+          <Image style={{width:80,height:80,borderRadius:40}}
                 source={{ uri: this.state.image }}
           />
           : this.context.dimage?
-          <Image style={styles.resumeImg}
+          <Image style={{width:80,height:80,borderRadius:40}}
               source = {{ uri: this.context.image }}
             />
           :
-          <Image style={styles.resumeImg}
+          <Image style={{width:80,height:80,borderRadius:40}}
             source = {require('../../images/providerImg/account_icon_add_1.png')}
             />}
           </TouchableOpacity>

@@ -34,7 +34,7 @@ export default class ProcessingOrder extends Component {
     <View>
     <Text style={{marginBottom:10}}>医保序列: {JSON.parse(item.content).serial}</Text>
     <Text style={{marginBottom:10}}>医保号码: {JSON.parse(item.content).number}</Text>
-    </View>      
+    </View>
 } */
   componentDidMount = () => {
     this.setState({isLoading:true})
@@ -67,7 +67,7 @@ export default class ProcessingOrder extends Component {
               let t = this.state.mds;
               t.push(d);
               this.setState({mds:t});
-            }         
+            }
           } else {
             console.log(json.msg)
           }
@@ -226,7 +226,7 @@ export default class ProcessingOrder extends Component {
         <Image
           style = {{width: 18, height:18,marginRight:14}}
           source = {require('../../images/providerImg/order_icon_org.png')}
-        />     
+        />
         <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>预约时间 {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
         </View>
         <View style={styles.card3} key={item.id}>
@@ -304,9 +304,9 @@ elevation: 24,}}>
         <Text style={{marginBottom:10}}>就诊地址: {item.orgAddress}</Text>
         <Text style={{marginBottom:10}}>就诊方式: 实地会诊</Text>
         <Text style={{marginBottom:10}}>保险方式: {item.insuranceType}</Text>
-       
+
       </View>
-        <TouchableOpacity style={styles.next_wrapper}>
+        <TouchableOpacity style={styles.next_wrapper} onPress={() =>{this.changevis(item.id,false)}}>
           <Text style={styles.onsite_text}>确定</Text>
         </TouchableOpacity>
     </ScrollView>
@@ -316,7 +316,7 @@ elevation: 24,}}>
         </View>
       )
     })
-    
+
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
         <View style={{flexDirection: 'row', marginBottom:21,marginTop:30}}>
