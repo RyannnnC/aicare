@@ -218,7 +218,7 @@ export default class PendingOrder extends Component {
             style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_time.png')}
             />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{moment(item.appointDate).format('L').substring(0,5)} {item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{moment(item.appointDate).format('L').substring(0,5)} {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
           <Image
             style = {{width: 15, height:15,marginLeft:70, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}

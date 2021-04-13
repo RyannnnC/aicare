@@ -9,7 +9,7 @@ import moment from 'moment-timezone';
 import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
-import { Localization } from 'expo-localization';
+import * as Localization from 'expo-localization';
 
 export default class Info extends Component {
     constructor(props) {
@@ -55,7 +55,6 @@ export default class Info extends Component {
 */
 
   async componentDidMount(){
-    console.log(Localization.timezone)
     if (this.context.time.length>0){
       let i;
       for (i=0;i<this.context.time.length;i++){
@@ -427,14 +426,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[0].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[0].time1).tz('Australia/Sydney').format('LT')} </Text>
+                <Text>{moment(this.state.times[0].time1).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[0].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[0].time2).tz('Australia/Sydney').format('LT')} </Text>
+                  <Text>{moment(this.state.times[0].time2).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -494,14 +493,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[1].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[1].time1).format('LT')} </Text>
+                <Text>{moment(this.state.times[1].time1).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[1].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[1].time2).format('LT')} </Text>
+                  <Text>{moment(this.state.times[1].time2).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -560,14 +559,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[2].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[2].time1).format('LT')} </Text>
+                <Text>{moment(this.state.times[2].time1).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[2].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[2].time2).format('LT')} </Text>
+                  <Text>{moment(this.state.times[2].time2).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -626,14 +625,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[3].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[3].time1).format('LT')} </Text>
+                <Text>{moment(this.state.times[3].time1).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[3].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[3].time2).format('LT')} </Text>
+                  <Text>{moment(this.state.times[3].time2).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -692,14 +691,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[4].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[4].time1).format('LT')} </Text>
+                <Text>{moment(this.state.times[4].time1).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[4].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[4].time2).format('LT')} </Text>
+                  <Text>{moment(this.state.times[4].time2).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -758,14 +757,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[5].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[5].time1).format('LT')} </Text>
+                <Text>{moment(this.state.times[5].time1).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[5].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[5].time2).format('LT')} </Text>
+                  <Text>{moment(this.state.times[5].time2).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }
@@ -824,14 +823,14 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[6].visible1 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[6].time1).format('LT')}</Text>
+                <Text>{moment(this.state.times[6].time1).tz(Localization.timezone).format('LT')}</Text>
               </TouchableOpacity>
                 <Text> _ </Text>
                 <TouchableOpacity style={styles.timePick} onPress={()=>{
                   let t = this.state.times;
                   t[6].visible2 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[6].time2).format('LT')} </Text>
+                  <Text>{moment(this.state.times[6].time2).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
               </View>
             }

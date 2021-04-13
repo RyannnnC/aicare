@@ -30,11 +30,7 @@ export default class ProcessingOrder extends Component {
       this.onDateChange = this.onDateChange.bind(this);
     }
 
-  /*  {item.insuranceType == 'Medicare' &&
-    <View>
-    <Text style={{marginBottom:10}}>医保序列: {JSON.parse(item.content).serial}</Text>
-    <Text style={{marginBottom:10}}>医保号码: {JSON.parse(item.content).number}</Text>
-    </View>
+  /*
 } */
   componentDidMount = () => {
     this.setState({isLoading:true})
@@ -220,14 +216,14 @@ export default class ProcessingOrder extends Component {
     if (this.state.data.length > 0) {
     orders = this.state.data.map((item) => {
       return (
-        <View>
-        <View style={styles.cardHolder} key={item.id}>
+        <View key={item.id}>
+        <View style={styles.cardHolder} >
         <View style={{flexDirection: 'row'}}>
         <Image
           style = {{width: 18, height:18,marginRight:14}}
           source = {require('../../images/providerImg/order_icon_org.png')}
         />
-        <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>预约时间 {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
+        <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>预约时间 {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
         </View>
         <View style={styles.card3} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:24, marginBottom:21, marginLeft:33}}>
@@ -298,13 +294,23 @@ elevation: 24,}}>
       <View style={{marginLeft:115,marginTop:30}}>
         <Text style={{marginBottom:10}}>患者姓名: {item.customerRealName}</Text>
         <Text style={{marginBottom:10}}>患者电话: {item.mobile}</Text>
-        <Text style={{marginBottom:10}}>就诊时间: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
+        <Text style={{marginBottom:10}}>就诊时间: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
         <Text style={{marginBottom:10}}>就诊医生: {item.businessEmployerName}</Text>
         <Text style={{marginBottom:10}}>就诊科目: {item.deptName}</Text>
         <Text style={{marginBottom:10}}>就诊地址: {item.orgAddress}</Text>
         <Text style={{marginBottom:10}}>就诊方式: 实地会诊</Text>
         <Text style={{marginBottom:10}}>保险方式: {item.insuranceType}</Text>
-
+        {item.insuranceType == 'Medicare' &&
+          <View>
+            <Text style={{marginBottom:10}}>医保序列: {item.serialNumber}</Text>
+            <Text style={{marginBottom:10}}>医保卡号: {item.cardNumber}</Text>
+          </View>
+        }
+        {item.insuranceType == '私人保险' &&
+          <View>
+            <Text style={{marginBottom:10}}>医保卡号: {item.cardNumber}</Text>
+          </View>
+        }
       </View>
         <TouchableOpacity style={styles.next_wrapper} onPress={() =>{this.changevis(item.id,false)}}>
           <Text style={styles.onsite_text}>确定</Text>

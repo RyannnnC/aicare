@@ -86,7 +86,7 @@ export default class HealthAccountMain extends Component {
       {this.context.image ?
       <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
       <Image
-        style = {{height:60,width:60,borderRadius:30}}
+        style = {{height:60,width:60,borderRadius:30, marginRight:25}}
         source = {{uri:this.context.image}}
       />
       <View>

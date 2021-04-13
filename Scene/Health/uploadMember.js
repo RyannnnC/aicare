@@ -4,10 +4,11 @@ import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons ,AntDesign} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
+import * as Localization from 'expo-localization';
 
 export default class UploadMember extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ export default class UploadMember extends Component {
         isLoading:false,
         types: [
           { value:'1',name:'全科问诊',status: 0},
-          { value:'2',name:'眼科问诊',status: 0},
+          { value:'2',name:'牙科问诊',status: 0},
           { value:'3',name:'心理问诊',status: 0},
           { value:'4',name:'中医问诊',status: 0},
           { value:'5',name:'少儿问诊',status: 0},
@@ -82,6 +83,7 @@ export default class UploadMember extends Component {
                 name:json.employerInfo.name,
                 phone:json.employerInfo.mobile,
                 we:json.employerInfo.workLong,
+                languages:json.employerInfo.languages,
               })
               let i;
               if (json.employerInfo.employerSchedulevos.length>0){
@@ -427,7 +429,7 @@ export default class UploadMember extends Component {
           />
           : this.context.dimage?
           <Image style={{width:80,height:80,borderRadius:40}}
-              source = {{ uri: this.context.image }}
+              source = {{ uri: this.context.dimage }}
             />
           :
           <Image style={{width:80,height:80,borderRadius:40}}
@@ -457,6 +459,14 @@ export default class UploadMember extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>类型</Text>
+          <View style={{flexDirection: 'row', marginTop:2,marginLeft:10,width:270}}>
+            {this.state.types[0].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>全科</Text>}
+            {this.state.types[1].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>牙科</Text>}
+            {this.state.types[2].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>心理</Text>}
+            {this.state.types[3].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>中医</Text>}
+            {this.state.types[4].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>儿科</Text>}
+            {this.state.types[5].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>康复</Text>}
+          </View>
           <TouchableOpacity onPress={() => {this.setState({pressed:!this.state.pressed})}}>
             <AntDesign name="down" size={18} color="black" />
           </TouchableOpacity>
@@ -595,20 +605,21 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[0].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[0].time1).format('LT')} </Text>
+                  <Text>{moment(this.state.times[0].time1).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[0].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[0].time2).format('LT')} </Text>
+                    <Text>{moment(this.state.times[0].time2).tz(Localization.timezone).format('LT')} </Text>
                   </TouchableOpacity>
                 </View>
               }
               <DateTimePicker
                 isVisible={this.state.times[0].visible1}
                 onConfirm={(time) => {
+                    console.log(time)
                     let t = this.state.times;
                     t[0].time1 = time;
                     t[0].visible1 = false;
@@ -661,14 +672,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[1].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[1].time1).format('LT')} </Text>
+                  <Text>{moment(this.state.times[1].time1).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[1].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[1].time2).format('LT')} </Text>
+                    <Text>{moment(this.state.times[1].time2).tz(Localization.timezone).format('LT')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -727,14 +738,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[2].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[2].time1).format('LT')} </Text>
+                  <Text>{moment(this.state.times[2].time1).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[2].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[2].time2).format('LT')} </Text>
+                    <Text>{moment(this.state.times[2].time2).tz(Localization.timezone).format('LT')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -793,14 +804,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[3].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[3].time1).format('LT')} </Text>
+                  <Text>{moment(this.state.times[3].time1).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[3].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[3].time2).format('LT')} </Text>
+                    <Text>{moment(this.state.times[3].time2).tz(Localization.timezone).format('LT')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -859,14 +870,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[4].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[4].time1).format('LT')} </Text>
+                  <Text>{moment(this.state.times[4].time1).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[4].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[4].time2).format('LT')} </Text>
+                    <Text>{moment(this.state.times[4].time2).tz(Localization.timezone).format('LT')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -899,7 +910,7 @@ export default class UploadMember extends Component {
                     this.setState({times:t})}}
                   mode={'time'}
                   display="spinner"
-                  value={this.state.times[4].time2}
+                  value={this.state.times[4].time1}
                   minuteInterval={10}
                   />
               </View>
@@ -925,14 +936,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[5].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[5].time1).format('LT')} </Text>
+                  <Text>{moment(this.state.times[5].time1).tz(Localization.timezone).format('LT')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[5].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[5].time2).format('LT')} </Text>
+                    <Text>{moment(this.state.times[5].time2).tz(Localization.timezone).format('LT')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -991,14 +1002,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[6].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[6].time1).format('LT')}</Text>
+                  <Text>{moment(this.state.times[6].time1).tz(Localization.timezone).format('LT')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[6].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[6].time2).format('LT')} </Text>
+                    <Text>{moment(this.state.times[6].time2).tz(Localization.timezone).format('LT')} </Text>
                   </TouchableOpacity>
                 </View>
               }

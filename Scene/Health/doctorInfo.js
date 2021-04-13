@@ -2,7 +2,8 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
-import moment from 'moment';
+import moment from 'moment-timezone';
+import * as Localization from 'expo-localization';
 
 export default class DoctorInfo extends Component {
     constructor(props) {
@@ -53,6 +54,8 @@ export default class DoctorInfo extends Component {
             languages:json.employerInfo.languages,
             imgUrl:json.employerInfo.imgUrl,
           })
+          this.context.action.changemlan(json.employerInfo.languages)
+          this.context.action.changedimg(json.employerInfo.imgUrl)
           console.log(this.state);
         } else {
           console.log(json.msg)
@@ -104,10 +107,8 @@ export default class DoctorInfo extends Component {
   render() {
     let times = this.state.schedulevos.map((item) => {
       if(item.status == 1){
-        let date = new Date(Date.parse(item.startTime));
-        let t1=date.toLocaleTimeString();
-        let dat = new Date(Date.parse(item.endTime));
-        let t2=dat.toLocaleTimeString();
+        let t1 = moment(item.startTime).tz(Localization.timezone).format('LT')
+        let t2 = moment(item.endTime).tz(Localization.timezone).format('LT');
       return (
         <View style={{flexDirection:'row'}}>
           <Text style={{ fontSize:14, fontWeight: '300' }}>{item.dayOfWeekStr}</Text>
