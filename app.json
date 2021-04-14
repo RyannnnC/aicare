@@ -3,7 +3,7 @@
     "name": "aicare",
     "slug": "aicare",
     "version": "1.0.1",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/logo.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -17,11 +17,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "app.aicare.provider",
-      "infoPlist": {
-        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets."
-      },
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
