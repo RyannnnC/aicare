@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+import {Platform, Alert,Text, Button, View, Switch,KeyboardAvoidingView, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from '../style';
 //import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
@@ -15,15 +15,21 @@ export default class Signup extends Component {
     mailCode:"",
     checked1: false,
     checked2: true,
+    checked3:false,
   }
   sendRequest() {
+    if (this.state.confirm != this.state.password) {
+      Alert.alert("两次密码必须相同")
+    } else {
     let s = this.state;
-    if (s.userCode === s.mailCode) {
-      let url = 'http://3.104.232.106:8080/aicaredb/register/consumer?'
-      +'name='+ s.name
-      +'&phone=' + s.phone
+    let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/user/register?'
+      +'username='+ s.name
+      +'&password=' + s.password
       +'&email=' + s.mail
-      +'&password=' + s.password;
+      +'&mobile=' + s.phone
+      +'&clientType=3'
+      +'&code=' + s.userCode
+      +'&appType=4'
       fetch(url,{
         method: 'POST',
         headers: {
@@ -31,33 +37,27 @@ export default class Signup extends Component {
         'Content-Type': 'application/json',
         }
       })
-      .then((response) => {
-        console.log(response.status);
-        Alert.alert(
-          "提醒",
-          "您已注册成功",
-          [
-            { text: "OK", onPress: () => console.log("OK Pressed") }
-          ],
-          { cancelable: false }
-        );
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.msg);
+        Alert.alert("注册成功！")
         this.props.navigation.navigate('登陆');
-      })
-    } else {
-      Alert.alert("验证码错误，请重新输入");
-      alert("验证码错误，请重新输入");
-    }
-
+      });}
   //  .then(json => {console.log(json)});
   }
+
+
+  
 
   sendCode() {
     if (this.state.checked1) {
       let p = this.state.phone;
-      let url = 'http://3.104.232.106:8080/aicare-vc/sms?'
-      +'&phone=' + p
+      let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/send?"
+      +'&type=mobile'
+      +'&mobile=' + p;
       console.log(url);
       fetch(url,{
+        method: 'POST',
         headers: {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
@@ -65,15 +65,18 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
-        this.setState({mailCode: json.code});
-        console.log(json.code);
+        //this.setState({mailCode: json.code});
+        //console.log(json.code);
+        console.log(json.msg);
+        Alert.alert("验证码已发送。")
       });
     } else {
       let m = this.state.mail;
-      let url = 'http://3.25.192.210:8080/aicare-vc/smtp?'
-      +'&mail-address=' + m
+      let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/send?"
+      +'&email=' + m+'&type=email';
       console.log(url);
       fetch(url,{
+        method: 'POST',
         headers: {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
@@ -81,14 +84,19 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ mailCode: json.code});
-        console.log(json.code);
+        console.log(json.msg);
+        Alert.alert("验证码已发送。")
       });
     }
   }
 
   render() {
     return (
+      <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}>
+      <ScrollView style={{flex:1}}>
+
       <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
           <View style={{alignItems: 'center' }}>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
@@ -208,12 +216,12 @@ export default class Signup extends Component {
           </View>
           <View style={{flexDirection: 'row'}}>
             <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
-            <TextInput style={styles.resumeInput}
+            <TextInput style={{width:200}}
             placeholder= "请输入您收到的验证码"
             onChangeText={(text) => {this.setState({ userCode: text})}}
             />
             </View>
-            <TouchableOpacity style={styles.codeTab}
+            <TouchableOpacity style={{borderWidth:1,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5}}
               onPress={()=>this.sendCode()}
             >
               <Text style={{ fontSize:14, fontWeight: '300' }}>获取验证码</Text>
@@ -221,9 +229,31 @@ export default class Signup extends Component {
           </View>
 
           </View>
+          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+            <CheckBox
+              center
+              iconRight
+              checkedIcon='check-circle-o'
+              uncheckedIcon='circle-o'
+              checkedColor='red'
+              size={this.state.size}
+              checked={this.state.checked3}
+              onPress={() => {
+                console.log("switch to mail");
+                this.setState({
+                checked3:!this.state.checked3
+              })}}
+             />
+             <Text style={{marginTop:15}}>我已阅读并同意该</Text>
+             <Button   title="用户须知条款" color="red" style={{height:20}} onPress={()=>this.props.navigation.navigate('数据协议')}></Button>
+          </View>
           <TouchableOpacity style={styles.resumeButton} onPress={()=>{this.sendRequest()}}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
           </TouchableOpacity>
+
       </View>
+      </ScrollView>
+
+      </KeyboardAvoidingView>
   );}
 }

@@ -95,20 +95,7 @@ export default function Consumer({navigation}) {
     </TouchableOpacity>
     <Text style={styles.caption2}>日常生活料理等。</Text>
 
-    <View style ={styles.comment_container}>
-      <Image style={styles.comment}
-          source = {require('../images/icon/2/comment.png')}
-        />
-      <TouchableOpacity >
-      <Image style = {styles.comment_image}
-        source= {require('../images/icon/2/Arrow_right.png')}
-      />
-    </TouchableOpacity>
-    </View>
-   
-    <Image style = {styles.comments}
-        source={require('../images/icon/2/comments.png')}
-    />
+    
      <TouchableOpacity onPress={callNumber}>
             <Image
                 style={{width:60,height:60,marginLeft:220,marginBottom:-10

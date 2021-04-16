@@ -21,7 +21,7 @@ const  ConsumerIcon= ({navigation}) => {
     call(args).catch(console.error)
   }
   const alertHandler= () => {
-    Alert.alert('此功能还未完善')
+    Alert.alert('功能将在下一版本更新，敬请期待')
   }
 
   return (
@@ -44,7 +44,7 @@ const  ConsumerIcon= ({navigation}) => {
       />
     </TouchableOpacity>
 
-    <TouchableOpacity onPress = {goToOrder}>
+    <TouchableOpacity onPress = {alertHandler}>
       <Image
         style = {styles.button_image}
         source = {require('../images/icon/1/store_image.png')}

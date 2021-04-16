@@ -32,7 +32,7 @@ export default function TelehealthMV({navigation}){
   return(
     <View style={styles.container}>  
       <View style = {styles.mapcontainer}>
-      <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+      <View style={{flexDirection: 'row', marginTop:0, marginBottom:10}}>
         <TouchableOpacity onPress={() =>{
             navigation.dispatch(StackActions.pop(1))}}>
             <Image

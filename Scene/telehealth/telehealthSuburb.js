@@ -1,32 +1,37 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput,ScrollView} from 'react-native';
-import { Checkbox } from 'react-native-paper';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput,ScrollView,Modal} from 'react-native';
+import { CheckBox } from 'react-native-elements';
 import styles from "../../style"
 import { StackActions } from '@react-navigation/native';
+import RNPickerSelect from 'react-native-picker-select';
 
-export default function teleSuburb({navigation}) {
+export default function teleSuburb({route,navigation}) {
     const alertHandler= () => {
       Alert.alert('function unimplemented')
     }
+    const { doctype} = route.params;
+
     const goToClinic= () => {
-        navigation.navigate("telehealthClinic")
+        navigation.navigate("telehealthClinic",{return:type,type:checked1,doctype:doctype,state:selectedType})
     }
     const goBack= () => {
       navigation.dispatch(StackActions.pop(1))
     }
     const [checked1, setChecked1] = React.useState(false);
+    const [selectedType, setSelectedType] = React.useState(false);
+
     const [checked2, setChecked2] = React.useState(false);
-    
+    const [type,setType]=React.useState("");
     return (
       <ScrollView style={{ flex:1,backgroundColor:"white",}}>
       <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 50,backgroundColor:"white"}}>
         <View style={{flexDirection: 'row',marginTop:120}}>
             <TouchableOpacity onPress={goBack}>
             <Image
-            style = {{width:35,
-                height:35,
+            style = {{width:25,
+                height:25,
                 marginTop:-150,
-                marginLeft:-145,}}
+                marginLeft:-130,}}
             source={require('../../images/icon/2/Arrow_left.png')}
             />
             </TouchableOpacity>
@@ -47,37 +52,78 @@ export default function teleSuburb({navigation}) {
         
         <View style={{flexDirection: 'row', marginBottom: 15}}>
           <Image
-          style={{width:25,height:25,marginTop:40,marginLeft:-135}}
+          style={{width:25,height:25,marginTop:40,marginLeft:-95}}
           source={require('../../images/telehealth_icon/address.png')}
           />
-          <Text style={{marginTop:40,fontSize:18,marginLeft:5}}>地址选择</Text>
+          <Text style={{marginTop:40,fontSize:18,marginLeft:5}}>地址选择(单选)</Text>
           
          
         </View>
-        <View style={{flexDirection: 'row', marginBottom: 5,marginTop:20,marginLeft:-160}}>
+        <View style={{flexDirection: 'row', marginBottom: 5,marginTop:20,marginLeft:40}}>
           <Text>区/Suburb</Text>
-          <Checkbox
-            status={checked1 ? 'checked' : 'unchecked'}
+          <CheckBox
+            checked={checked1 }
+            checkedColor='#FF8570'
+            uncheckedIcon='circle-thin'
+            checkedIcon='check-circle'
+            size={33}
+            containerStyle={{marginTop:-14,marginLeft:170}}
             onPress={() => {
             setChecked1(!checked1);
             setChecked2(false);
+            console.log(doctype);
+
+
             }}
           />
+          
         </View>
-        {checked1?<TextInput placeholder={"请输入区"} style = {{height: 35,
+        {checked1?<View><TextInput placeholder={"请输入区"} style = {{height: 35,
         width: 300,
         borderBottomColor: '#999999',
         borderBottomWidth:1,
         marginLeft:26,
-        borderColor:"#EEEEEE"}}>
-        </TextInput>:null}
-        <View style={{flexDirection: 'row', marginBottom: 5,marginLeft:-115,marginTop:30}}>
+        borderColor:"#EEEEEE"}}
+        onChangeText={(text)=>{setType(text)}}>
+        </TextInput>
+        <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#999999",borderBottomWidth:1,}}>
+        <View style={{marginTop:5}}>
+        <RNPickerSelect
+        //fixAndroidTouchableBug={true}
+        useNativeAndroidPickerStyle={false}
+
+        placeholder={{ label: '请点击选择州', value: '请选择州' }}
+        onValueChange={(value) => {setSelectedType(value);console.log(value)}}
+        defaultValue={""}
+        items={[
+            { label: 'NSW', value: 'NSW' },
+            { label: 'ACT', value: 'ACT' },
+            { label: 'QLD', value: 'QLD' },
+            { label: 'NT', value: 'NT' },
+            { label: 'SA', value: 'SA' },
+            { label: 'TAS', value: 'TAS' },
+            { label: 'VIC', value: 'VIC' },
+            { label: 'WA', value: 'WA' },
+
+
+        ]}
+    />
+    </View>
+    </View></View>:null}
+        <View style={{flexDirection: 'row', marginBottom: 5,marginLeft:40,marginTop:30}}>
           <Text>区编码/Postcode</Text>
-          <Checkbox
-            status={checked2 ? 'checked' : 'unchecked'}
+          <CheckBox
+            checked={checked2 }
+            checkedColor='#FF8570'
+            uncheckedIcon='circle-thin'
+            checkedIcon='check-circle'
+            containerStyle={{marginTop:-14,marginLeft:120}}
+            size={33}
             onPress={() => {
             setChecked1(false);
             setChecked2(!checked2);
+            
+
             }}
           />
         </View>
@@ -88,7 +134,8 @@ export default function teleSuburb({navigation}) {
         borderBottomWidth:1,
         marginLeft:26,
         marginBottom:30,
-        borderColor:"#EEEEEE"}}>
+        borderColor:"#EEEEEE"}}
+        onChangeText={(text)=>{setType(text)}}>
         </TextInput>:null}
         
         <TouchableOpacity style={{

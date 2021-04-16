@@ -19,11 +19,25 @@ class DateFilter extends Component {
     this.onDateChange = this.onDateChange.bind(this);
   }
 
+  formatDate(date){
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+        this.context.action.changetime( [year, month, day].join('-'));
+  }
+
   onDateChange(date) {
     this.setState({
       selectedStartDate: date,
     });
-    this.context.action.changetime(date.toString().substring(0, 15));
+    this.formatDate(date);
   }
   
   
@@ -38,8 +52,7 @@ class DateFilter extends Component {
         backgroundColor: '#F7FAFA',
         alignItems: 'center',
       }}>
-        <View style={{marginTop:-15}}></View>
-        <Text style = {styles.service}>时间筛选</Text>
+        
         <View style={{marginBottom:20}}></View>
         <CalendarPicker
           onDateChange={this.onDateChange}

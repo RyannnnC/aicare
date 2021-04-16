@@ -18,14 +18,71 @@ class DateSelect extends Component {
     };
     this.onDateChange = this.onDateChange.bind(this);
   }
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    this.context.action.changetime([year, month, day].join('-'));
+    return [year, month, day].join('-');
+}
   onDateChange(date) {
     this.setState({
       selectedStartDate: date,
     });
-    this.context.action.changetime(date.toString().substring(0, 15));
+    //console.log(this.formatDate(date));
+    this.sendRequest(date);
   }
-  
+  sendRequest=(date)=>{
+    //console.log(date)
+    this.context.action.changeLoading(true);
+    let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/scheduledetail?"+"orgId="+this.context.orgId.toString()+"&businessEmployerId="+this.context.docId.toString()+"&date="+this.formatDate(date)+"&status=0";
+            fetch(url,{
+              method: 'GET',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+              'Accept':       'application/json',
+              'Content-Type': 'application/json',
+              'sso-auth-token': this.context.token,
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+            }})
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code == 0) {
+                this.context.action.changeSchedule(json.data);
+                //console.log("length");
+                console.log("json.page")
+                console.log(json.data)
+                console.log("schedule start")
+                //console.log(this.context.schedule)
+                console.log("schedule end")
+                this.context.action.changeLoading(false);
+
+                //console.log(json.page);
+                /*if (json.page.length>0){
+                  console.log(json.page[0]);
+                }else{
+                  //console.log(this.context.orgId)
+                  console.log("this page has no schedule")
+                }*/
+                //Alert.alert('查询成功');
+              } else {
+                console.log(json.msg);
+                this.context.action.changeLoading(false);
+
+                Alert.alert('查询失败');
+              }
+            }).catch(error => console.warn(error));
+  }
   
   render() {
     let state = this.context;
@@ -38,8 +95,8 @@ class DateSelect extends Component {
       <View style={{
         backgroundColor: '#F7FAFA',
         alignItems: 'center',
+        marginTop:20,
       }}>
-        <Text style = {styles.service}>预约时间</Text>
         <CalendarPicker
           onDateChange={this.onDateChange}
           previousTitle="上一月"
@@ -47,21 +104,7 @@ class DateSelect extends Component {
           width = {300}
           height = {300}
         />
-        <Image style = {styles.time_image}
-          source= {require('../../images/icon/3/time.png')}
-        />
-        <View style ={styles.comment_container}>
-          <TextInput style = {styles.time} placeholder="24时格式"
-          onChangeText={(text) => {state.action.changestarttime(text)}}/>
-          <Text>至</Text>
-          <TextInput style = {styles.time} placeholder="24时格式"
-          onChangeText={(text) => {state.action.changeendtime(text);
-          }}/>
-        </View>
-        <Image style = {styles.time_image}
-          source= {require('../../images/icon/3/price.png')}
-        />
-        <Text>{40*(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60)}</Text>
+        
         
       </View>
     
