@@ -3,6 +3,8 @@ import { Platform, KeyboardAvoidingView,Alert,Text, Button, View, Switch, Image,
 import {styles} from './providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
+import DataContext from "../providerContext";
+import I18n from './switchLanguage';
 
 export default class Signup extends Component {
   state = {
@@ -26,7 +28,9 @@ export default class Signup extends Component {
       Alert.alert('请输入一个验证码')
     } else {
     let s = this.state;
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/register?'
+    let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/user/register?'
       +'username='+ s.name
       +'&password=' + s.password
       +'&email=' + s.mail
@@ -58,7 +62,9 @@ export default class Signup extends Component {
   sendCode() {
     if (this.state.checked1) {
       let p = this.state.phone;
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/send?'
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/user/send?'
       +'mobile=' + p
       +'&type=mobile';
       console.log(url);
@@ -76,7 +82,9 @@ export default class Signup extends Component {
       });
     } else {
       let m = this.state.mail;
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/send?'
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/user/send?'
       +'email=' + m
       +'&type=email';
       console.log(url);
@@ -105,7 +113,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/singup_icon_name.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>姓名 *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('name')} *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -119,7 +127,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_phone.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>电话 *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('mobile')} *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -133,7 +141,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_mail.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>邮箱 *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('email')} *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -147,7 +155,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/login_icon_pswd.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>密码 *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('password')} *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -162,7 +170,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/account_icon_confirm.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>确认 *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('confirm')} *</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -237,3 +245,4 @@ export default class Signup extends Component {
       </KeyboardAvoidingView>
   );}
 }
+Signup.contextType = DataContext;

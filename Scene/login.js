@@ -25,10 +25,11 @@ export default class Login extends Component {
         return false;
     }
     if (this.state.mobile) {
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/login?'
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/user/login?'
     +'loginName='+ s.info
     +'&passWord=' + s.password
-    +'&clientType=3'
     +'&appType=1'
     +'&loginType=mobile'
     fetch(url,{
@@ -43,16 +44,21 @@ export default class Login extends Component {
         if (json.code === 0) {
           this.context.action.changeLogin(true);
           this.context.action.changetoken(json.data);
+          if (json.roleType == '2') {
+            this.context.action.changeemployerid(json.employerId);
+            console.log(this.context.emplyerId)
+          }
           console.log(Platform)
         } else {
           Alert.alert("Invalid username or password");
           return false;
         }
     })} else {
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/login?'
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/user/login?'
       +'loginName='+ s.info
       +'&passWord=' + s.password
-      +'&clientType=3'
       +'&appType=1'
       +'&loginType=email'
       fetch(url,{
@@ -68,6 +74,11 @@ export default class Login extends Component {
             console.log("login success");
             this.context.action.changeLogin(true);
             this.context.action.changetoken(json.data);
+            if (json.roleType == '2') {
+              this.context.action.changeemployerid(json.employerId);
+              console.log(this.context.emplyerId)
+            }
+            console.log(Platform)
           } else {
             Alert.alert("Invalid username or password");
             return false;

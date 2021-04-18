@@ -24,8 +24,15 @@ export default class PendingOrder extends Component {
   }
 
   componentDidMount = () => {
+    let tp = 1;
+    if (this.context.employerId !=null) {
+      tp = 2;
+    }
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/query?status=0';
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/appointment/query?status=0'
+      + '&type=' + tp;
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -59,7 +66,9 @@ export default class PendingOrder extends Component {
 
   sendRequest(date){
     this.setState({timeLoad:true})
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?date='
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/user/scheduledetail?date='
     + date +'&businessEmployerId=' + this.state.selectedDoctor + '&status=0';
       fetch(url,{
         method: 'GET',
@@ -91,7 +100,9 @@ export default class PendingOrder extends Component {
         '您确定要修改预约至这个时间吗？',
         [
           {text: '确定', onPress: () => {
-            let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/modify?'
+            let url = 'http://'
+            +this.context.url
+            +'/aicare-business-api/business/appointment/modify?'
             +'id=' + this.state.selectedId
             +'&scheduleDetailedId=' + sid;
               fetch(url,{

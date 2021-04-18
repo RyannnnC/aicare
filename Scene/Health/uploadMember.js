@@ -16,6 +16,7 @@ export default class UploadMember extends Component {
       this.state={
         name:"",
         phone:"",
+        email:'',
         schedulevos:[],
         image:null,
         pressed:false,
@@ -59,7 +60,7 @@ export default class UploadMember extends Component {
       console.log(this.props.route.params.id);
       this.setState({isLoading:true})
       if(this.props.route.params.id !=null){
-        let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/list'
+        let url = 'http://3.104.87.14:8084/aicare-business-api/business/employer/list'
         +'?employerId=' + this.props.route.params.id;
           fetch(url,{
             method: 'GET',
@@ -84,6 +85,7 @@ export default class UploadMember extends Component {
                 phone:json.employerInfo.mobile,
                 we:json.employerInfo.workLong,
                 languages:json.employerInfo.languages,
+                email:json.employerInfo.email,
               })
               let i;
               if (json.employerInfo.employerSchedulevos.length>0){
@@ -156,10 +158,8 @@ export default class UploadMember extends Component {
   sendRequest() {
     let s = this.state;
     this.setState({isLoading:true});
-    console.log(this.state)
-    console.log(this.props.route.params.id)
     if(this.props.route.params.id !=null){
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/save';
+    let url = 'http://3.104.87.14:8084/aicare-business-api/business/employer/update';
       fetch(url,{
         method: 'POST',
         mode: 'cors',
@@ -180,6 +180,7 @@ export default class UploadMember extends Component {
         languages: this.context.mlan,
         introduce:this.context.mintro,
         workLong:this.state.we,
+        email:this.state.email,
         employerSchedulevos:[
             {
                 "dayOfWeek": 1,
@@ -254,7 +255,7 @@ export default class UploadMember extends Component {
           alert('提交失败');
         }
       }).catch(error => console.warn(error));} else {
-        let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/save';
+        let url = 'http://3.104.87.14:8084/aicare-business-api/business/employer/save';
       fetch(url,{
         method: 'POST',
         mode: 'cors',
@@ -274,6 +275,7 @@ export default class UploadMember extends Component {
         languages: this.context.mlan,
         introduce:this.context.mintro,
         workLong:this.state.we,
+        email:this.state.email,
         employerSchedulevos:[
             {
                 "dayOfWeek": 1,
@@ -453,9 +455,16 @@ export default class UploadMember extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>电话</Text>
-          <TextInput style={styles.resumeInput} placeholder= "0403571833"
+          <TextInput style={styles.resumeInput} placeholder= "04*******"
           value={this.state.phone}
           onChangeText={(text) => {this.setState({phone:text})}}/>
+        </View>
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>邮箱</Text>
+          <TextInput style={styles.resumeInput} placeholder= "****@gmail.com"
+          value={this.state.email}
+          editable={this.props.route.params.id !=null?false:true}
+          onChangeText={(text) => {this.setState({email:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>类型</Text>

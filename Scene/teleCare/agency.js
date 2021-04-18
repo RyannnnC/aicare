@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,SafeAreaView } from 'react-native';
-import {styles} from '../style';
-import DataContext from "../providerContext";
+import {styles} from '../../style';
+import DataContext from "../../providerContext";
 
 export default class Agency extends Component {
   alertHandler ()  {
@@ -16,7 +16,7 @@ export default class Agency extends Component {
   return (
     <SafeAreaView style={styles.container}>
       <Image
-        source={require('../images/login.png')}
+        source={require('../../images/login.png')}
         style = {styles.img}
       />
       <View style={styles.welcomeText}>
@@ -32,7 +32,7 @@ export default class Agency extends Component {
         </TouchableOpacity>
       </View>
       <Image
-        source={require('../images/logo.png')}
+        source={require('../../images/logo.png')}
         style = {styles.img2}
       />
     </SafeAreaView>

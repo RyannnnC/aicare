@@ -32,7 +32,52 @@ export default class HealthAccountMain extends Component {
   componentDidMount() {
     this.setState({isLoading:true})
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/list';
+      if (this.context.employerId == null) {
+          let url = 'http://'
+          +this.context.url
+          +'/aicare-business-api/business/orginfo/list';
+          fetch(url,{
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+            'Accept':       'application/json',
+            'Content-Type': 'application/json',
+            'sso-auth-token': this.context.token,
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+          }})
+          .then((response) => response.json())
+          .then((json) => {
+            this.setState({ isLoading: false });
+            if (json.code === 0) {
+              console.log(json);
+              if(json.orginfo.name!=null){
+                this.context.action.changeimg(json.orginfo.orgImg);
+                this.context.action.changename(json.orginfo.name);
+                this.context.action.changeemail(json.orginfo.email);
+                this.context.action.changephone(json.orginfo.mobile);
+                this.context.action.changestreet(json.orginfo.address);
+                this.context.action.changepostcode(json.orginfo.postalCode);
+                this.context.action.changeintro(json.orginfo.introduce);
+                this.context.action.changestate(json.orginfo.city);
+                this.context.action.changelanguage(json.orginfo.languages);
+                this.context.action.changeserviceclass(json.orginfo.serviceClassList);
+                this.context.action.changetime(json.orginfo.orgschedulevos);
+                this.context.action.changetypelist(json.orginfo.serviceTypeList);
+              }
+              console.log(json.orginfo.orgschedulevos);
+            } else {
+              console.log(json.msg)
+            }
+          }).catch(error => console.warn(error));
+      } else {
+        let url = 'http://'
+        +this.context.url
+        +'/aicare-business-api/business/employer/list'
+        +'?employerId=' + this.context.employerId;
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -51,25 +96,23 @@ export default class HealthAccountMain extends Component {
           this.setState({ isLoading: false });
           if (json.code === 0) {
             console.log(json);
-            if(json.orginfo.name!=null){
-              this.context.action.changeimg(json.orginfo.orgImg);
-              this.context.action.changename(json.orginfo.name);
-              this.context.action.changeemail(json.orginfo.email);
-              this.context.action.changephone(json.orginfo.mobile);
-              this.context.action.changestreet(json.orginfo.address);
-              this.context.action.changepostcode(json.orginfo.postalCode);
-              this.context.action.changeintro(json.orginfo.introduce);
-              this.context.action.changestate(json.orginfo.city);
-              this.context.action.changelanguage(json.orginfo.languages);
-              this.context.action.changeserviceclass(json.orginfo.serviceClassList);
-              this.context.action.changetime(json.orginfo.orgschedulevos);
-              this.context.action.changetypelist(json.orginfo.serviceTypeList);
+            if(json.employerInfo.name!=null){
+              this.context.action.changeimg(json.employerInfo.imgUrl);
+              this.context.action.changename(json.employerInfo.name);
+              this.context.action.changeemail(json.employerInfo.email);
+              this.context.action.changephone(json.employerInfo.mobile);
+              this.context.action.changeintro(json.employerInfo.introduce);
+              this.context.action.changestate(json.employerInfo.city);
+              this.context.action.changelanguage(json.employerInfo.languages);
+              this.context.action.changeserviceclass(json.employerInfo.serviceClassList);
+              this.context.action.changetime(json.employerInfo.employerSchedulevos);
+              this.context.action.changetypelist(json.employerInfo.serviceTypeList);
             }
-            console.log(json.orginfo.orgschedulevos);
           } else {
             console.log(json.msg)
           }
         }).catch(error => console.warn(error));
+      }
     });
   }
 
@@ -107,13 +150,15 @@ export default class HealthAccountMain extends Component {
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('orginfo')}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('成员管理')}>
-        <Image
-          style = {styles.smallIconImg}
-          source={require('../../images/providerImg/singup_icon_name.png')}
-        />
-        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('members')}</Text>
-      </TouchableOpacity>
+      {this.context.employerId == null &&
+        <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('成员管理')}>
+          <Image
+            style = {styles.smallIconImg}
+            source={require('../../images/providerImg/singup_icon_name.png')}
+          />
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('members')}</Text>
+        </TouchableOpacity>
+      }
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('修改密码')}>
         <Image
           style = {styles.smallIconImg}

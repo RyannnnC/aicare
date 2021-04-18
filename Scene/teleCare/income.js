@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, SafeAreaView } from 'react-native';
-import {styles} from './providerStyle';
+import {styles} from '../providerStyle';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Transfer from './Income/transfer';
-import IncomeMain from './Income/incomeMain';
+import Transfer from '../Income/transfer';
+import IncomeMain from '../Income/incomeMain';
 
 export default function Income() {
   const Tab = createMaterialTopTabNavigator();
@@ -15,7 +15,7 @@ export default function Income() {
       <Text style={{ color: '#333333', fontSize: 18, fontWeight: '600'}}>我的收益</Text>
       <Image
         style = {styles.img4}
-        source = {require('../images/providerImg/money_img.png')}
+        source = {require('../../images/providerImg/money_img.png')}
       />
       </View>
     <View>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import {styles} from './providerStyle';
-import {data} from './Orders/data'
+import {styles} from '../providerStyle';
+import {data} from '../Orders/data'
 
 
 export default function ProviderMain() {
@@ -21,7 +21,7 @@ export default function ProviderMain() {
         </View>
         <Image
           style = {styles.mainImg}
-          source = {require('../images/crayon-1317.png')}
+          source = {require('../../images/crayon-1317.png')}
         />
       </View>
     <View style={styles.searchBar}>
@@ -60,13 +60,13 @@ export default function ProviderMain() {
         </View>
       <Image
         style = {styles.img3}
-        source = {require('../images/crayon-892.png')}
+        source = {require('../../images/crayon-892.png')}
         />
       </View>
       <View style={{flexDirection: 'row', marginTop:10}}>
         <Image
           style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
-          source = {require('../images/providerImg/order_icon_time.png')}
+          source = {require('../../images/providerImg/order_icon_time.png')}
           />
         <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>今日 14：00-17：00</Text>
       </View>

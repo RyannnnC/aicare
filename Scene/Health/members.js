@@ -128,8 +128,9 @@ export default class Members extends Component {
     )
     }else {
     return (
-      <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
-        <TouchableOpacity style={{borderRadius:15,marginTop:20,width:315,height:70,marginLeft:30,marginRight:30,justifyContent: "center", alignItems: "center",backgroundColor:'#ECF4F3'}}
+      <SafeAreaView style={{ flex:1, alignItems: "center",backgroundColor:'white' }}>
+        <View style={{width:'85%'}}>
+        <TouchableOpacity style={{borderRadius:15,marginTop:20,width:'100%',height:70,justifyContent: "center", alignItems: "center",backgroundColor:'#ECF4F3'}}
         onPress={() => this.props.navigation.navigate('成员添加', {id: null})}>
           <Text style={{ color: '#68B0AB', fontSize: 18, fontWeight: '400'}}>添加新成员</Text>
         </TouchableOpacity>
@@ -155,8 +156,8 @@ export default class Members extends Component {
           </TouchableOpacity>
         </ScrollView>
         </View>
-        <ScrollView style={{flex:1,width:'100%'}}>
-          <View style={{flex:1,width:'85%',marginLeft:'8.5%'}}>
+        <ScrollView>
+          <View>
           {this.context.doctors.length >0 ? docs :
           <View>
             <Image
@@ -168,6 +169,7 @@ export default class Members extends Component {
           }
           </View>
         </ScrollView>
+        </View>
       </SafeAreaView>
     )
   }}

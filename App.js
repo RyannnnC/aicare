@@ -4,9 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import ProviderOrder from './Scene/providerOrder.js'
-import ProviderMain from './Scene/providerMain.js'
-import Income from './Scene/income.js'
+import ProviderOrder from './Scene/teleCare/providerOrder.js'
+import ProviderMain from './Scene/teleCare/providerMain.js'
+import Income from './Scene/teleCare/income.js'
 import Welcome from './Scene/welcome';
 import ProviderType from './Scene/providerType';
 import Login from './Scene/login';
@@ -26,7 +26,7 @@ import TransferOut from './Scene/Income/transferOut';
 import Signup from './Scene/signUp';
 import Forget from './Scene/forget';
 import DataContext from './providerContext';
-import Agency from './Scene/agency';
+import Agency from './Scene/teleCare/agency';
 import HealthMain from './Scene/Health/healthMain';
 import HealthAccountMain from './Scene/Health/healthAccountMain';
 import ReservationMain from './Scene/Health/reservationMain';
@@ -135,6 +135,8 @@ export default class App extends React.Component {
   this.state = {
     authenticate: false,
     health: true,
+    employerId:null,
+    url:'3.104.232.106:8084',
     date: "",
     name: '',
     phone: '',
@@ -182,8 +184,12 @@ export default class App extends React.Component {
       changedimg:this.changedimg,
       changeserviceclass:this.changeserviceclass,
       changetypelist:this.changetypelist,
+      changeemployerid:this.changeemployerid,
     }
     }
+  }
+  changeemployerid = (value) => {
+    this.setState({employerId: value});
   }
   changeLogin = (value) => {
     this.setState({authenticate: value});
@@ -301,6 +307,7 @@ export default class App extends React.Component {
     this.setState({
       authenticate: false,
       health: true,
+      employerId:null,
       date: "",
       name: '',
       phone: '',

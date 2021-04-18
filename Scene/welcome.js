@@ -23,9 +23,6 @@ const Welcome = ({ navigation }) => {
       <Text style={{fontWeight: '600', fontSize: 20,marginTop:5}}>您的远程医疗护理好帮手</Text>
      </View>
      <View style={{alignItems: "center",width:'75%' }}>
-     <TouchableOpacity style={styles.consumerWrapper} onPress={alertHandler}>
-       <Text style={styles.buttonText}>{I18n.t('consumer')}</Text>
-     </TouchableOpacity>
      <TouchableOpacity style={styles.providerWrapper} onPress={goToProvider}>
        <Text style={styles.buttonText}>{I18n.t('provider')}</Text>
      </TouchableOpacity>
