@@ -159,7 +159,9 @@ export default class UploadMember extends Component {
     let s = this.state;
     this.setState({isLoading:true});
     if(this.props.route.params.id !=null){
-    let url = 'http://3.104.87.14:8084/aicare-business-api/business/employer/update';
+    let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/employer/update';
       fetch(url,{
         method: 'POST',
         mode: 'cors',
@@ -247,6 +249,38 @@ export default class UploadMember extends Component {
       .then((json) => {
         this.setState({isLoading:false})
         if (json.code === 0) {
+          if (this.state.image != null) {
+            let data = new FormData();
+            data.append('filename', 'avatar');
+            data.append('file', {
+              uri: this.state.image,
+              name: this.context.name+ '.jpg',
+              type: 'image/jpg'
+            });
+            data.append('employerId',this.props.route.params.id)
+            url = 'http://'
+                +this.context.url
+                +'/aicare-business-api/business/employer/uploadimg';
+               fetch(url,{
+                 method: 'POST',
+                 mode: 'cors',
+                 credentials: 'include',
+                 headers: {
+                 'Content-Type': 'multipart/form-data',
+                 'sso-auth-token': this.context.token,
+               },
+                 body: data
+               })
+               .then((response) => response.json())
+               .then((json) => {
+                 if (json.code === 0) {
+                   alert("照片提交成功");
+                   console.log(json.msg);
+                 } else {
+                   alert('照片提交失败');
+                 }
+               });
+             }
           alert("提交成功");
           console.log(json.msg);
           this.props.navigation.pop();
@@ -255,8 +289,10 @@ export default class UploadMember extends Component {
           alert('提交失败');
         }
       }).catch(error => console.warn(error));} else {
-        let url = 'http://3.104.87.14:8084/aicare-business-api/business/employer/save';
-      fetch(url,{
+        let url = 'http://'
+        +this.context.url
+        +'/aicare-business-api/business/employer/save';
+        fetch(url,{
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -341,46 +377,47 @@ export default class UploadMember extends Component {
       .then((response) => response.json())
       .then((json) => {
         if (json.code === 0) {
-          alert("提交成功");
           console.log(json.msg);
-          this.props.navigation.pop();
+          if (this.state.image != null) {
+            let data = new FormData();
+            data.append('filename', 'avatar');
+            data.append('file', {
+              uri: this.state.image,
+              name: this.context.name+ '.jpg',
+              type: 'image/jpg'
+            });
+            data.append('employerId',json.employerId)
+            url = 'http://'
+                +this.context.url
+                +'/aicare-business-api/business/employer/uploadimg';
+               fetch(url,{
+                 method: 'POST',
+                 mode: 'cors',
+                 credentials: 'include',
+                 headers: {
+                 'Content-Type': 'multipart/form-data',
+                 'sso-auth-token': this.context.token,
+               },
+                 body: data
+               })
+               .then((response) => response.json())
+               .then((json) => {
+                 if (json.code === 0) {
+                   alert("照片提交成功");
+                   console.log(json.msg);
+                 } else {
+                   alert('照片提交失败');
+                 }
+               });
+             }
+             alert("提交成功");
+             this.props.navigation.pop();
         } else {
           console.log(json.msg)
           alert('提交失败');
         }
       }).catch(error => console.warn(error));
       }
-      if (this.state.image != null) {
-      let data = new FormData();
-      data.append('filename', 'avatar');
-      data.append('file', {
-        uri: this.state.image,
-        name: this.context.name+ '.jpg',
-        type: 'image/jpg'
-      });
-      data.append('label', '1');
-      data.append('employerId',this.props.route.params.id)
-      url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/upload';
-         fetch(url,{
-           method: 'POST',
-           mode: 'cors',
-           credentials: 'include',
-           headers: {
-           'Content-Type': 'multipart/form-data',
-           'sso-auth-token': this.context.token,
-         },
-           body: data
-         })
-         .then((response) => response.json())
-         .then((json) => {
-           if (json.code === 0) {
-             alert("照片提交成功");
-             console.log(json.msg);
-           } else {
-             alert('照片提交失败');
-           }
-         });
-       }
   }
 
   hidePicker = () => {

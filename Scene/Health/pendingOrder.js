@@ -141,7 +141,9 @@ export default class PendingOrder extends Component {
       '您确定要接受这桩预约吗？',
       [
         {text: '确定', onPress: () => {
-          let url = 'http://3.104.232.106:8084/aicare-business-api/business/appointment/take?id='
+          let url = 'http://'
+          +this.context.url
+          +'/aicare-business-api/business/appointment/take?id='
           +id;
             fetch(url,{
               method: 'GET',

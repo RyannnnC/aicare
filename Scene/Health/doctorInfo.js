@@ -24,7 +24,9 @@ export default class DoctorInfo extends Component {
   componentDidMount(){
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
     this.setState({isLoading:true})
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/list'
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/employer/list'
     +'?employerId=' + this.props.route.params.id;
       fetch(url,{
         method: 'GET',
@@ -70,7 +72,9 @@ export default class DoctorInfo extends Component {
       '您确定要删除这位成员吗？',
       [
         {text: '确定', onPress: () => {
-          let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/delete'
+          let url = 'http://'
+          +this.context.url
+          +'/aicare-business-api/business/employer/delete'
           + '?employerId=' + id;
             fetch(url,{
               method: 'POST',

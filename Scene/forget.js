@@ -3,6 +3,7 @@ import { Platform,KeyboardAvoidingView,Alert,Text, Button, View, Switch, Image,T
 import {styles} from './providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
+import DataContext from "../providerContext";
 
 export default class Forget extends Component {
   state = {
@@ -19,7 +20,9 @@ export default class Forget extends Component {
       Alert.alert("两次密码必须相同")
     } else {
       if (this.state.email) {
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/updatepassword?'
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/user/updatepassword?'
     +'email='+ s.info
     +'&code=' + s.code
     +'&type=email'
@@ -45,7 +48,9 @@ export default class Forget extends Component {
           return false;
         }
     })} else {
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/updatepassword?'
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/user/updatepassword?'
       +'mobile='+ s.info
       +'&code=' + s.code
       +'&type=mobile'
@@ -76,7 +81,9 @@ export default class Forget extends Component {
   sendCode() {
     if (this.state.email) {
     let m = this.state.info;
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/send?'
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/user/send?'
     +'email=' + m
     +'&type=email';
     console.log(url);
@@ -92,7 +99,9 @@ export default class Forget extends Component {
       console.log(json.msg);
     });} else {
       let m = this.state.info;
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/send?'
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/user/send?'
       +'mobile=' + m
       +'&type=mobile';
       console.log(url);
@@ -216,3 +225,4 @@ export default class Forget extends Component {
       </KeyboardAvoidingView>
   );}
 }
+Forget.contextType = DataContext;

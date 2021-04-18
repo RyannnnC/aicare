@@ -126,7 +126,9 @@ export default class Info extends Component {
     let s = this.state;
     this.setState({isLoading:true})
     console.log(this.state.times[0].time1)
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/save';
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/orginfo/save';
       fetch(url,{
         method: 'POST',
         mode: 'cors',
@@ -230,7 +232,9 @@ export default class Info extends Component {
        type: 'image/jpg'
      });
      data.append('label', '0');
-     url = 'http://3.104.232.106:8084/aicare-business-api/business/orginfo/upload';
+     url = 'http://'
+     +this.context.url
+     +'/aicare-business-api/business/orginfo/upload';
         fetch(url,{
           method: 'POST',
           mode: 'cors',

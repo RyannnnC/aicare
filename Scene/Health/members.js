@@ -19,7 +19,9 @@ export default class Members extends Component {
   componentDidMount() {
     this.setState({isLoading:true})
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/employerlist';
+      let url = 'http://'
+        +this.context.url
+        +'/aicare-business-api/business/employer/employerlist';
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -56,7 +58,9 @@ export default class Members extends Component {
       '您确定要删除这位成员吗？',
       [
         {text: '确定', onPress: () => {
-          let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/delete'
+          let url = 'http://'
+          +this.context.url
+          +'/aicare-business-api/business/employer/delete'
           + '?employerId=' + id;
             fetch(url,{
               method: 'POST',

@@ -41,7 +41,9 @@ export default class DateSelect extends Component {
     return [year, month, day].join('-');
   }
   sendRequest(date){
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?date='
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/user/scheduledetail?date='
     + date;
       fetch(url,{
         method: 'GET',
@@ -71,7 +73,9 @@ export default class DateSelect extends Component {
   componentDidMount() {
       let d = new Date();
       var date = this.formatDate(d);
-      let url = 'http://3.104.232.106:8084/aicare-business-api/business/user/scheduledetail?date='
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/user/scheduledetail?date='
       + date;
         fetch(url,{
           method: 'GET',
