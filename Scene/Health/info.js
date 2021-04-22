@@ -2,7 +2,6 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import Geocoder from 'react-native-geocoding';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment-timezone';
@@ -75,14 +74,14 @@ export default class Info extends Component {
     if (this.context.typeList.length>0){
       this.setState({service:this.context.typeList})
     }
-   navigator.geolocation.getCurrentPosition(
+/*   navigator.geolocation.getCurrentPosition(
      position=>{
        this.setState({
          latitude:position.coords.latitude,
          longitude:position.coords.longitude
        });
      },
-   );
+   );*/
    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
    this.setState({ hasCameraPermission: status === "granted" });
   }
@@ -103,7 +102,7 @@ export default class Info extends Component {
     }
   };
 
-  getData(){
+/*  getData(){
     Geocoder.init("AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"); // use a valid API key
     Geocoder.from(this.state.latitude, this.state.longitude)
 		.then(json => {
@@ -120,7 +119,7 @@ export default class Info extends Component {
       }
 		})
 		.catch(error => console.warn(error));
-  }
+  }*/
 
   sendRequest() {
     let s = this.state;
@@ -274,6 +273,12 @@ export default class Info extends Component {
     }
   };
 
+/*  <TouchableOpacity style={{flexDirection: 'row', marginRight: 5}} onPress = {()=>{this.getData()}}>
+    <Image style = {{width:12, height:15}}
+      source= {require('../../images/providerImg/order_icon_location.png')}
+    />
+    <Text>自动定位</Text>
+  </TouchableOpacity>*/
   render() {
     let languages =[];
     if(this.context.languages.length>0) {
@@ -306,7 +311,7 @@ export default class Info extends Component {
     }else {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <ScrollView style={{ flex: 1, }}>
+      <ScrollView style={{ flex: 1}}>
         <View style={{flex:1,width:'90%'}}>
         <View style={{ marginTop:10,justifyContent: "center",alignItems: "center" }}>
           <TouchableOpacity onPress={this.pickImage}>
@@ -330,12 +335,6 @@ export default class Info extends Component {
             source={require('../../images/providerImg/singup_icon_name.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>基本信息</Text>
-          <TouchableOpacity style={{flexDirection: 'row', marginRight: 5}} onPress = {()=>{this.getData()}}>
-            <Image style = {{width:12, height:15}}
-              source= {require('../../images/providerImg/order_icon_location.png')}
-            />
-            <Text>自动定位</Text>
-          </TouchableOpacity>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>

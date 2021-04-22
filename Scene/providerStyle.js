@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
   },
   card2: {
     width: 330,
-    height: 176,
+    height: 185,
     marginTop:15,
     marginBottom:15,
     backgroundColor: '#ffffff',
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
   },
   card3: {
     width: 316,
-    height: 133,
+    height: 175,
     marginTop:15,
     marginLeft: 24,
     backgroundColor: '#f7fafa',
@@ -129,7 +129,7 @@ export const styles = StyleSheet.create({
   },
   cardHolder: {
     width: 340,
-    height: 175,
+    height: 230,
   },
   mainImg:{
     height:120,
@@ -210,6 +210,17 @@ export const styles = StyleSheet.create({
     width: 56,
     height: 25,
     backgroundColor: '#68B0AB',
+    borderRadius: 10,
+    marginRight: 25,
+    marginLeft: 43,
+    marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center" ,
+  },
+  orderButton4: {
+    width: 56,
+    height: 25,
+    backgroundColor: '#FF7E67',
     borderRadius: 10,
     marginRight: 25,
     marginLeft: 43,

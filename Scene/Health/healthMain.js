@@ -2,8 +2,7 @@ import React from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
-import {data} from '../Orders/data'
-
+import DataContext from "../../providerContext";
 
 export default function HealthMain() {
   const alertHandler= () => {
@@ -14,10 +13,11 @@ export default function HealthMain() {
 
   return (
     <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40, backgroundColor:'white'}}>
+
       <View style={{flexDirection: 'row', marginBottom: 15}}>
-        <View style={{marginLeft:30, marginRight:30}}>
+        <View style={{marginTop:30,marginLeft:30, marginRight:30}}>
           <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
-          <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您今日有{data.length}项行程待完成</Text>
+          <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您今日有7项行程待完成</Text>
         </View>
         <Image
           style = {styles.mainImg}
@@ -29,38 +29,76 @@ export default function HealthMain() {
     </View>
 
     <View style={styles.card2}>
-      <View style={{flexDirection: 'row', marginTop:16, marginBottom:16, marginLeft:25}}>
-      <Image
-        style = {styles.pendingImg}
-        source = {require('../../images/providerImg/home_img_person.png')}
-      />
-      <View>
-        <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>林女士</Text>
-        <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>+61 0403555435</Text>
-      </View>
-      </View>
-      <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
+      <View style={{width:'80%',marginLeft:'10%'}}>
+      <TouchableOpacity style={{flexDirection: 'row', marginTop:16, marginBottom:16}}>
         <Image
-          style = {{width: 15, height:15 , marginLeft:25, marginRight:5}}
-          source = {require('../../images/providerImg/order_icon_time.png')}
+          style = {{width:40,height:40,marginRight:15}}
+          source = {require('../../images/providerImg/home_img_person.png')}
+        />
+        <View>
+          <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>林女士</Text>
+          <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>041234567</Text>
+        </View>
+      </TouchableOpacity>
+      <View style={{flexDirection: 'row',paddingBottom: 10}}>
+        <Image
+          style = {{width: 15, height:15 , marginRight:5}}
+          source = {require('../../images/providerImg/schedule_icon_time.png')}
           />
         <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>12/27 17：00-18：00</Text>
         <Image
-          style = {{width: 15, height:15,marginLeft:75, marginRight:5}}
-          source = {require('../../images/providerImg/home_icon_location.png')}
+          style = {{width: 15, height:15,marginLeft:40, marginRight:5}}
+          source = {require('../../images/providerImg/schedule_icon_type.png')}
         />
-        <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地预约</Text>
+        <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>全科问诊</Text>
+      </View>
+      <View style={{flexDirection: 'row',paddingBottom: 12, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
+        <Image
+          style = {{width: 15, height:15 , marginRight:5}}
+          source = {require('../../images/providerImg/schedule_icon_person.png')}
+          />
+        <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>李医生</Text>
+        <View style={{flexDirection: 'row'}}>
+          <Image
+            style = {{width: 15, height:15,marginLeft:100, marginRight:5}}
+            source = {require('../../images/providerImg/account_icon_video.png')}
+          />
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>远程医疗</Text>
+        </View>
       </View>
       <View style={{flexDirection: 'row-reverse'}}>
-        <TouchableOpacity style={styles.orderButton2} >
+        <TouchableOpacity style={{
+          width: 'auto',
+          height: 30,
+          backgroundColor: '#68B0AB',
+          borderRadius: 10,
+          textAlign: 'center',
+          marginTop: 15,
+          justifyContent: "center",
+          alignItems: "center" ,
+          paddingLeft:15,
+          paddingRight:15,
+        }} onPress={() => {Alert.alert('请移步到订单完成操作') }}>
           <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.orderButton}>
+        <TouchableOpacity style={{
+          width: 'auto',
+          height: 30,
+          backgroundColor: '#FF7E67',
+          borderRadius: 10,
+          textAlign: 'center',
+          marginRight: 25,
+          marginTop: 15,
+          justifyContent: "center",
+          alignItems: "center" ,
+          paddingLeft:15,
+          paddingRight:15,
+        }} onPress={() => {Alert.alert('请移步到订单完成操作')  }}>
           <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
         </TouchableOpacity>
       </View>
     </View>
-
+    </View>
 
       <View>
         <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>当日订单</Text>
@@ -92,3 +130,4 @@ export default function HealthMain() {
     </View>
   );
 }
+HealthMain.contextType = DataContext;

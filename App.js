@@ -136,7 +136,7 @@ export default class App extends React.Component {
     authenticate: false,
     health: true,
     employerId:null,
-    url:'3.104.87.14:8084',
+    url:'3.104.232.106:8084',
     date: "",
     name: '',
     phone: '',

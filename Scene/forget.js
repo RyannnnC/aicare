@@ -27,7 +27,6 @@ export default class Forget extends Component {
     +'&code=' + s.code
     +'&type=email'
     +'&appType=1'
-    +'&clientType=3'
     +'&password=' + s.password;
     console.log(url);
     fetch(url,{
@@ -55,7 +54,6 @@ export default class Forget extends Component {
       +'&code=' + s.code
       +'&type=mobile'
       +'&appType=1'
-      +'&clientType=3'
       +'&password=' + s.password;
       console.log(url);
       fetch(url,{

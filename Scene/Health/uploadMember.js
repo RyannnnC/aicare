@@ -19,6 +19,7 @@ export default class UploadMember extends Component {
         email:'',
         schedulevos:[],
         image:null,
+        oimage:null,
         pressed:false,
         we:'',
         isLoading:false,
@@ -33,6 +34,10 @@ export default class UploadMember extends Component {
         service:[
           {value: "1",name: "实地问诊",status: 0},
           {value: "2",name: "远程问诊",status: 0},
+        ],
+        videoChannel:[
+          {value: "1",channel: "facetime",status: 0},
+          {value: "2",channel: "skype",status: 0},
         ],
         checked8: true,
         buttons: [
@@ -60,7 +65,9 @@ export default class UploadMember extends Component {
       console.log(this.props.route.params.id);
       this.setState({isLoading:true})
       if(this.props.route.params.id !=null){
-        let url = 'http://3.104.87.14:8084/aicare-business-api/business/employer/list'
+        let url = 'http://'
+        +this.context.url
+        +'/aicare-business-api/business/employer/list'
         +'?employerId=' + this.props.route.params.id;
           fetch(url,{
             method: 'GET',
@@ -86,6 +93,7 @@ export default class UploadMember extends Component {
                 we:json.employerInfo.workLong,
                 languages:json.employerInfo.languages,
                 email:json.employerInfo.email,
+                oimage:json.employerInfo.imgUrl,
               })
               let i;
               if (json.employerInfo.employerSchedulevos.length>0){
@@ -124,6 +132,18 @@ export default class UploadMember extends Component {
                       let but = this.state.service;
                       but[j].status = 1;
                       this.setState({service: but});
+                    }
+                  }
+                }
+              }
+              if (json.employerInfo.videoChannel.length>0){
+                for (i=0;i<json.employerInfo.videoChannel.length;i++){
+                  let j;
+                  for (j=0;j<this.state.videoChannel.length;j++){
+                    if (this.state.videoChannel[j].channel ==json.employerInfo.videoChannel[i].channel){
+                      let but = this.state.videoChannel;
+                      but[j].status = 1;
+                      this.setState({videoChannel: but});
                     }
                   }
                 }
@@ -236,6 +256,7 @@ export default class UploadMember extends Component {
         ],
         serviceClassList:this.state.types,
         serviceTypeList: this.state.service,
+        videoChannel:this.state.videoChannel,
         chargingMethodList: [
             {
                 "value": "1",
@@ -365,6 +386,7 @@ export default class UploadMember extends Component {
         ],
         serviceClassList:this.state.types,
         serviceTypeList: this.state.service,
+        videoChannel:this.state.videoChannel,
         chargingMethodList: [
             {
                 "value": "1",
@@ -407,6 +429,7 @@ export default class UploadMember extends Component {
                    console.log(json.msg);
                  } else {
                    alert('照片提交失败');
+                   console.log(json.msg);
                  }
                });
              }
@@ -466,10 +489,10 @@ export default class UploadMember extends Component {
           <Image style={{width:80,height:80,borderRadius:40}}
                 source={{ uri: this.state.image }}
           />
-          : this.context.dimage?
+          : this.state.oimage ?
           <Image style={{width:80,height:80,borderRadius:40}}
-              source = {{ uri: this.context.dimage }}
-            />
+                source={{ uri: this.state.oimage }}
+          />
           :
           <Image style={{width:80,height:80,borderRadius:40}}
             source = {require('../../images/providerImg/account_icon_add_1.png')}
@@ -505,6 +528,7 @@ export default class UploadMember extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>类型</Text>
+          <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
           <View style={{flexDirection: 'row', marginTop:2,marginLeft:10,width:270}}>
             {this.state.types[0].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>全科</Text>}
             {this.state.types[1].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>牙科</Text>}
@@ -513,7 +537,6 @@ export default class UploadMember extends Component {
             {this.state.types[4].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>儿科</Text>}
             {this.state.types[5].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>康复</Text>}
           </View>
-          <TouchableOpacity onPress={() => {this.setState({pressed:!this.state.pressed})}}>
             <AntDesign name="down" size={18} color="black" />
           </TouchableOpacity>
         </View>
@@ -1129,6 +1152,49 @@ export default class UploadMember extends Component {
                   this.setState({service:t})}}
                />
             </View>
+
+            {this.state.service[1].status == 1 &&
+              <View>
+              <View style={{ marginTop:10, marginBottom:10}}>
+                <Text style={{ fontSize:16, fontWeight: '400' }}>远程方式</Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <CheckBox
+                  center
+                  title='FaceTime(支持IOS)                                '
+                  iconRight
+                  checkedIcon='check-circle-o'
+                  uncheckedIcon='circle-o'
+                  checkedColor='red'
+                  containerStyle={{borderWidth:0,backgroundColor:'white'}}
+                  size={this.state.size}
+                  checked={this.state.videoChannel[0].status==1?true:false}
+                  onPress={() => {
+                    let t = this.state.videoChannel;
+                    t[0].status = this.state.videoChannel[0].status==1?0:1;
+                    this.setState({videoChannel:t})}}
+                 />
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <CheckBox
+                  center
+                  title='Skype (支持Android)                              '
+                  iconRight
+                  checkedIcon='check-circle-o'
+                  uncheckedIcon='circle-o'
+                  containerStyle={{borderWidth:0, backgroundColor:'white'}}
+                  checkedColor='red'
+                  size={this.state.size}
+                  checked={this.state.videoChannel[1].status==1?true:false}
+                  onPress={() => {
+                    let t = this.state.videoChannel;
+                    t[1].status = this.state.videoChannel[1].status==1?0:1;
+                    this.setState({videoChannel:t})}}
+                 />
+              </View>
+              </View>
+            }
+
             <View style={{ marginTop:10, marginBottom:10}}>
               <Text style={{ fontSize:16, fontWeight: '400' }}>收费方式</Text>
             </View>

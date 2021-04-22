@@ -2,9 +2,8 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
-//import { TimePicker } from 'react-native-simple-time-picker';
 import Geocoder from 'react-native-geocoding';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 export default class Resume extends Component {
    constructor(props) {
@@ -70,7 +69,7 @@ export default class Resume extends Component {
     }
   };
 
-  getData(){
+/*  getData(){
     Geocoder.init("AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"); // use a valid API key
     Geocoder.from(this.state.latitude, this.state.longitude)
 		.then(json => {
@@ -85,7 +84,7 @@ export default class Resume extends Component {
       }
 		})
 		.catch(error => console.warn(error));
-  }
+  }*/
 
   showTimepicker(index) {
     console.log('called');
@@ -253,17 +252,6 @@ export default class Resume extends Component {
                 source={require('../../images/providerImg/account_icon_add.png')}
               />
               </TouchableOpacity>
-              { this.state.show &&
-                (
-                  <DateTimePicker
-                  testID="dateTimePicker"
-                  value={this.state.date}
-                  mode={this.state.mode}
-                  is24Hour={true}
-                  display="default"
-                  onChange={this.onChange}
-                  />
-                )}
               </View>
             }
           </View>

@@ -18,6 +18,7 @@ export default class DoctorInfo extends Component {
         introduce:'',
         isLoading:true,
         imgUrl:null,
+        video:[],
       }
     }
 
@@ -55,6 +56,7 @@ export default class DoctorInfo extends Component {
             schedulevos:json.employerInfo.employerSchedulevos,
             languages:json.employerInfo.languages,
             imgUrl:json.employerInfo.imgUrl,
+            video:json.employerInfo.videoChannel,
           })
           this.context.action.changemlan(json.employerInfo.languages)
           this.context.action.changedimg(json.employerInfo.imgUrl)
@@ -147,6 +149,14 @@ export default class DoctorInfo extends Component {
         </View>
       )}
     })
+    let videos = this.state.video.map((item) => {
+      if(item.status == 1){
+      return (
+        <View style={{marginTop:5,marginBottom:5}}>
+          <Text style={{ fontSize:14, fontWeight: '300' }}>{item.channel}</Text>
+        </View>
+      )}
+    })
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -217,6 +227,13 @@ export default class DoctorInfo extends Component {
         types
         :
         <Text>这位医生暂时没有服务类型</Text>}
+        <View style={{ marginTop:15, marginBottom:15}}>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>远程方式</Text>
+        </View>
+        {this.state.video.length>0 ?
+        videos
+        :
+        <Text>这位医生暂时不提供远程服务</Text>}
         <View style={{ marginTop:15, marginBottom:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>收费方式</Text>
         </View>

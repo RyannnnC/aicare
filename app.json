@@ -2,7 +2,7 @@
   "expo": {
     "name": "aicareProvider",
     "slug": "aicareProvider",
-    "version": "2.0.1",
+    "version": "1.0.3",
     "orientation": "default",
     "icon": "./assets/logo.png",
     "splash": {
@@ -20,6 +20,7 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"

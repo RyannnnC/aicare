@@ -209,9 +209,20 @@ export default class ProcessingOrder extends Component {
     if (this.state.time.length >0) {
     times = this.state.time.map((item) => {
       return (
-        <View style={styles.timePick} key={item.id}>
+        <View style={{height:30,
+        width:'auto',
+        paddingLeft:15,
+        paddingRight:15,
+        marginTop:5,
+        marginBottom:5,
+        marginLeft: 10,
+        marginRight: 10,
+        borderRadius:10,
+        backgroundColor:'#8FD7D3',
+        alignItems: 'center',
+        justifyContent: 'center'}} key={item.id}>
           <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId);}}>
-            <Text>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
+            <Text style={{color:'white'}}>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
           </TouchableOpacity>
         </View>
       )
@@ -226,55 +237,128 @@ export default class ProcessingOrder extends Component {
     }else {
     if (this.state.data.length > 0) {
     orders = this.state.data.map((item) => {
+      let tp = '';
+      if (item.videoChannel == 1) {
+        tp = 'Facetime'
+      } else {
+        tp = 'Skype'
+      }
       return (
         <View key={item.id}>
         <View style={styles.cardHolder} >
-        <View style={{flexDirection: 'row'}}>
-        <Image
-          style = {{width: 18, height:18,marginRight:14}}
-          source = {require('../../images/providerImg/order_icon_org.png')}
-        />
-        <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>预约时间 {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
-        </View>
-        <View style={styles.card3} key={item.id}>
-          <View style={{flexDirection: 'row', marginTop:24, marginBottom:21, marginLeft:33}}>
-          <TouchableOpacity onPress={()=>this.changevis(item.id,true)}>
-          <Image
-            style = {{width:40,height:40,marginRight:15}}
-            source = {require('../../images/providerImg/home_img_person.png')}
-          />
-          </TouchableOpacity>
-          <View>
-            <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerRealName}</Text>
-            <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>{item.mobile}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              style = {{width: 18, height:18,marginRight:14}}
+              source = {require('../../images/providerImg/order_icon_org.png')}
+              />
+            <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>预约时间 {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
           </View>
-            <TouchableOpacity style={styles.orderButton3} onPress={() => {
+          <View style={styles.card3} key={item.id}>
+            <View style={{width:'85%', marginLeft:'10%'}}>
+            <View style={{flexDirection: 'row', marginTop:20, marginBottom:21}}>
+              <TouchableOpacity onPress={()=>this.changevis(item.id,true)}>
+                <Image
+                  style = {{width:40,height:40,marginRight:15}}
+                  source = {require('../../images/providerImg/home_img_person.png')}
+                />
+              </TouchableOpacity>
+              <View>
+                <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerRealName}</Text>
+                <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>{item.mobile}</Text>
+              </View>
+            </View>
+            {item.telehealthFlg ==1?
+            <View>
+            <View style={{flexDirection: 'row',marginBottom:10}}>
+              <Image
+                style = {{width: 15, height:15 , marginRight:5}}
+                source = {require('../../images/providerImg/schedule_icon_person.png')}
+              />
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
+              <Image
+                style = {{width: 15, height:15,marginLeft:70, marginRight:5}}
+                source = {require('../../images/providerImg/schedule_icon_type.png')}
+              />
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+            </View>
+            <View style={{flexDirection: 'row',marginBottom:5}}>
+              <Image
+                style = {{width: 15, height:15, marginRight:5}}
+                source = {require('../../images/providerImg/account_icon_video.png')}
+              />
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>远程问诊</Text>
+              <Image
+                style = {{width: 15, height:15,marginLeft:70, marginRight:5}}
+                source = {require('../../images/providerImg/tp.png')}
+              />
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{tp}</Text>
+            </View>
+            <View style={{flexDirection: 'row-reverse'}}>
+              <TouchableOpacity style={{width: 75,
+              height: 25,
+              backgroundColor: '#FF7E67',
+              borderRadius: 10,
+              marginTop: 15,
+              justifyContent: "center",
+              alignItems: "center" }} onPress={() => {Alert.alert('功能尚未开放')}}>
+                <Text style={{fontSize:14, color:'#FAFAFA'}}>视频</Text>
+              </TouchableOpacity>
+            <TouchableOpacity style={{width: 75,
+            height: 25,
+            backgroundColor: '#68B0AB',
+            borderRadius: 10,
+            marginRight: 25,
+            marginTop: 15,
+            justifyContent: "center",
+            alignItems: "center" ,}} onPress={() => {
               this.setMdVisible(!this.state.mdVisible);
               this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
               console.log(this.state.selectedId);
               console.log(this.state.selectedDoctor);
             }}>
-              <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
-            </TouchableOpacity>
+                <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+            :
+            <View>
+            <View style={{flexDirection: 'row',marginBottom:10}}>
+              <Image
+                style = {{width: 15, height:15 , marginRight:5}}
+                source = {require('../../images/providerImg/schedule_icon_person.png')}
+              />
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
+              <Image
+                style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
+                source = {require('../../images/providerImg/schedule_icon_type.png')}
+              />
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+              <Image
+                style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
+                source = {require('../../images/providerImg/schedule_icon_location.png')}
+              />
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地问诊</Text>
+            </View>
+            <View style={{flexDirection: 'row-reverse'}}>
+            <TouchableOpacity style={{width: 75,
+            height: 25,
+            backgroundColor: '#68B0AB',
+            borderRadius: 10,
+            marginTop: 15,
+            justifyContent: "center",
+            alignItems: "center" ,}} onPress={() => {
+              this.setMdVisible(!this.state.mdVisible);
+              this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
+              console.log(this.state.selectedId);
+              console.log(this.state.selectedDoctor);
+            }}>
+                <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+            }
           </View>
-          <View style={{flexDirection: 'row',marginBottom:33}}>
-            <Image
-              style = {{width: 15, height:15 , marginLeft:33, marginRight:5}}
-              source = {require('../../images/providerImg/schedule_icon_person.png')}
-            />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
-            <Image
-              style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
-              source = {require('../../images/providerImg/schedule_icon_type.png')}
-            />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
-            <Image
-              style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
-              source = {require('../../images/providerImg/schedule_icon_location.png')}
-            />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地预约</Text>
           </View>
-        </View>
         </View>
         <Modal
         animationType="slide"
@@ -309,12 +393,20 @@ elevation: 24,}}>
         <Text style={{marginBottom:10}}>就诊医生: {item.businessEmployerName}</Text>
         <Text style={{marginBottom:10}}>就诊科目: {item.deptName}</Text>
         <Text style={{marginBottom:10}}>就诊地址: {item.orgAddress}</Text>
+        {item.telehealthFlg ==1?
+          <View>
+            <Text style={{marginBottom:10}}>就诊方式: 远程医疗</Text>
+            <Text style={{marginBottom:10}}>远程方式: {tp}</Text>
+          </View>
+        :
         <Text style={{marginBottom:10}}>就诊方式: 实地会诊</Text>
+        }
         <Text style={{marginBottom:10}}>保险方式: {item.insuranceType}</Text>
         {item.insuranceType == 'Medicare' &&
           <View>
             <Text style={{marginBottom:10}}>医保序列: {item.serialNumber}</Text>
             <Text style={{marginBottom:10}}>医保卡号: {item.cardNumber}</Text>
+            <Text style={{marginBottom:10}}>过期时间: {item.expireDate}</Text>
           </View>
         }
         {item.insuranceType == '私人保险' &&

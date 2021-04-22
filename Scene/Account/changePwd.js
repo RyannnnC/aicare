@@ -19,7 +19,9 @@ export default class ChangePwd extends Component {
       Alert.alert('两次输入的密码不一致')
       return false;
     }
-    let url = 'http://3.104.87.14:8084/aicare-business-api/business/user/password?'
+    let url = 'http://'
+    + this.context.url
+    +'/aicare-business-api/business/user/password?'
     +'oldPassword=' + s.op
     +'&newPassword=' +s.np
     console.log(url);

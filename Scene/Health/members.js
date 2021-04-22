@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
+import { Alert,Text, View, ImageBackground,Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
@@ -18,38 +18,36 @@ export default class Members extends Component {
 
   componentDidMount() {
     this.setState({isLoading:true})
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = 'http://'
-        +this.context.url
-        +'/aicare-business-api/business/employer/employerlist';
-        fetch(url,{
-          method: 'GET',
-          mode: 'cors',
-          credentials: 'include',
-          headers: {
-          'Accept':       'application/json',
-          'Content-Type': 'application/json',
-          'sso-auth-token': this.context.token,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-        }})
-        .then((response) => response.json())
-        .then((json) => {
-          this.setState({isLoading:false})
-          if (json.code === 0) {
-            console.log(json.msg);
-            this.context.action.changedoctors(json.employerlist)
-          } else {
-            console.log(json.msg)
-          }
-        }).catch(error => console.warn(error));
-    });
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {this.getData()});
   }
 
-  componentWillUnmount() {
-    this._unsubscribe();
+  getData() {
+    let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/employer/employerlist';
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }})
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({isLoading:false})
+        if (json.code === 0) {
+          console.log(json.msg);
+          this.context.action.changedoctors(json.employerlist)
+        } else {
+          console.log(json.msg)
+        }
+      }).catch(error => console.warn(error));
   }
 
   deleteDoctor(id) {
@@ -80,7 +78,7 @@ export default class Members extends Component {
               if (json.code === 0) {
                 console.log(json.msg);
                 Alert.alert('删除成功');
-                this.componentDidMount();
+                this.getData();
               } else {
                 console.log(json.msg);
                 Alert.alert('删除失败');
@@ -101,7 +99,7 @@ export default class Members extends Component {
         <View style={styles.doctorHolder} key={item.employerId}>
           <TouchableOpacity style={{ marginRight:10}} onPress={() => this.props.navigation.navigate('成员信息', {id: item.employerId})}>
           <Image
-            style = {{width: 40, height:40,marginRight:15}}
+            style = {{width: 40, height:40,marginRight:15,borderRadius:20}}
             source = {item.imgUrl?{uri:item.imgUrl}:require('../../images/providerImg/service_doctor_img1.png')}
           />
           </TouchableOpacity>
@@ -132,12 +130,19 @@ export default class Members extends Component {
     )
     }else {
     return (
-      <SafeAreaView style={{ flex:1, alignItems: "center",backgroundColor:'white' }}>
-        <View style={{width:'85%'}}>
-        <TouchableOpacity style={{borderRadius:15,marginTop:20,width:'100%',height:70,justifyContent: "center", alignItems: "center",backgroundColor:'#ECF4F3'}}
-        onPress={() => this.props.navigation.navigate('成员添加', {id: null})}>
-          <Text style={{ color: '#68B0AB', fontSize: 18, fontWeight: '400'}}>添加新成员</Text>
-        </TouchableOpacity>
+      <SafeAreaView style={{ flex:1,alignItems: "center",backgroundColor:'white' }}>
+        <View style={{flex:1,width:'85%'}}>
+          <TouchableOpacity style={{borderRadius:15,marginTop:20,width:'100%',height:70}}
+          onPress={() => this.props.navigation.navigate('成员添加', {id: null})}>
+            <ImageBackground source={require('../../images/providerImg/account_img_block.png')} style={{flexDirection:'row',width:'100%',height:70,justifyContent: "center", alignItems: "center"}}>
+              <Text style={{ color: '#68B0AB', fontSize: 18, fontWeight: '400'}}>添加新成员</Text>
+              <Image
+                style = {{width:25,height:25,marginLeft:10}}
+                source = {require('../../images/providerImg/account_icon_add_green.png')}
+              />
+            </ImageBackground>
+          </TouchableOpacity>
+
         <View style={{flexDirection:'row',marginTop:30,marginBottom:6}}>
           <Text style={{ color: '#333333', fontSize: 18, fontWeight: '500'}}>我的成员</Text>
         </View>
@@ -160,8 +165,8 @@ export default class Members extends Component {
           </TouchableOpacity>
         </ScrollView>
         </View>
-        <ScrollView>
-          <View>
+        <ScrollView style={{ flex: 1}}>
+          <View style={{ flex: 1}}>
           {this.context.doctors.length >0 ? docs :
           <View>
             <Image
