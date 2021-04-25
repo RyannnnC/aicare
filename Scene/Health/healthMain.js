@@ -124,7 +124,7 @@ export default function HealthMain() {
           style = {{width: 15, height:15 , marginLeft:100, marginRight:5}}
           source = {require('../../images/providerImg/home_icon_mobile.png')}
           />
-        <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>+61 403555435</Text>
+        <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>+61 412345678</Text>
       </View>
     </View>
     </View>

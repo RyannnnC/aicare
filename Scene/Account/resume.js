@@ -99,10 +99,6 @@ export default class Resume extends Component {
     }
   };
 
-   onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || this.state.date;
-    this.setState({date:currentDate});
-  };
 
   render() {
     const { selectedHours, selectedMinutes } = this.state;
