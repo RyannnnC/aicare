@@ -444,11 +444,12 @@ elevation: 24,}}>
            <Text>这位医生今天没有排班！</Text>
          </View>}
         </View>
-       </ScrollView>
-     </View>
-       <TouchableOpacity style={styles.next_wrapper}>
+        <TouchableOpacity style={styles.next_wrapper}>
            <Text style={{color:'white'}}>确定</Text>
       </TouchableOpacity>
+       </ScrollView>
+     </View>
+       
      </ScrollView>
       </View>
       <>

@@ -9,7 +9,7 @@ import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
 import * as Localization from 'expo-localization';
-
+import I18n from '../switchLanguage';
 export default class UploadMember extends Component {
     constructor(props) {
       super(props);
@@ -628,7 +628,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
           <Text numberOfLines={1} style={{ marginLeft:10,fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.mintro}</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('成员介绍')}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('mintro'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -646,7 +646,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row' , marginBottom:10}}>
         {this.context.mlan.length>0 ? languages:
         <Text style={{marginTop:5}}>请添加医生服务的语言</Text>}
-          <TouchableOpacity  onPress={() => this.props.navigation.navigate('成员语言')}>
+          <TouchableOpacity  onPress={() => this.props.navigation.navigate(I18n.t('mlan'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>

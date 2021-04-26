@@ -3,6 +3,7 @@ import { Dimensions, Text, Button, View, Alert, Image,TouchableOpacity,ScrollVie
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from '../../providerContext';
+import I18n from '../switchLanguage';
 
 export default class Languages extends Component {
   state={
@@ -158,7 +159,7 @@ export default class Languages extends Component {
       </View>
       <TouchableOpacity style={styles.resumeButton} onPress={() => {
         this.context.action.changelanguage(this.state.buttons);
-        this.props.navigation.navigate('机构信息');
+        this.props.navigation.navigate(I18n.t('orginfo'));
         console.log(this.context.languages);}}>
         <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
       </TouchableOpacity>

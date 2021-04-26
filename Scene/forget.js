@@ -4,6 +4,7 @@ import {styles} from './providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
 import DataContext from "../providerContext";
+import I18n from './switchLanguage';
 
 export default class Forget extends Component {
   state = {
@@ -13,6 +14,8 @@ export default class Forget extends Component {
     code:"",
     mobile:true,
     email:false,
+    counter:60,
+    timer:null,
   }
   sendRequest() {
     let s = this.state;
@@ -77,6 +80,7 @@ export default class Forget extends Component {
     }}
   }
   sendCode() {
+    this.setTimer();
     if (this.state.email) {
     let m = this.state.info;
     let url = 'http://'
@@ -117,6 +121,29 @@ export default class Forget extends Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+  }
+
+  setTimer() {
+    let timer = setInterval(this.tick.bind(this), 1000);
+    this.setState({timer});
+  }
+
+  tick() {
+    if (this.state.counter == 0) {
+      clearInterval(this.state.timer);
+      this.setState({
+        counter: 60,
+        timer:null
+      });
+    }else {
+      this.setState({
+        counter: this.state.counter - 1
+      });
+    }
+  }
+
   render() {
     return (
       <KeyboardAvoidingView
@@ -129,13 +156,13 @@ export default class Forget extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>绑定方式</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('binding')}</Text>
           </View>
 
           <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
-              title='电话          '
+              title={I18n.t('mobile')}
               iconRight
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
@@ -153,7 +180,7 @@ export default class Forget extends Component {
           <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
-              title='邮箱          '
+              title={I18n.t('email')}
               iconRight
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
@@ -183,11 +210,15 @@ export default class Forget extends Component {
             onChangeText={(text) => {this.setState({ code: text})}}
             />
             </View>
-            <TouchableOpacity style={styles.codeTab}
-              onPress={()=>this.sendCode()}
-            >
-              <Text style={{ fontSize:14, fontWeight: '300' }}>获取验证码</Text>
-            </TouchableOpacity>
+            {this.state.timer ? 
+            <TouchableOpacity style={styles.codeTab2}>
+            <Text style={{ fontSize:14, fontWeight: '300',color:'white' }}>{I18n.t('resend')} {this.state.counter}s</Text>
+          </TouchableOpacity>
+            :
+            <TouchableOpacity style={styles.codeTab} onPress={()=>this.sendCode()}>
+            <Text style={{ fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
+          </TouchableOpacity>
+            }
           </View>
 
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
@@ -195,7 +226,7 @@ export default class Forget extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/login_icon_pswd.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>密码</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('password')}</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -208,7 +239,7 @@ export default class Forget extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/account_icon_confirm.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>确认新密码</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('confirm')}</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
@@ -217,7 +248,7 @@ export default class Forget extends Component {
           />
           </View>
           <TouchableOpacity style={styles.resumeButton} onPress={()=>this.sendRequest()}>
-            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

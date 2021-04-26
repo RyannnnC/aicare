@@ -3,6 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'reac
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DataContext from "../../providerContext";
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function HealthMain() {
   const alertHandler= () => {
@@ -13,7 +14,8 @@ export default function HealthMain() {
 
   return (
     <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40, backgroundColor:'white'}}>
-
+      <LinearGradient
+      colors={['rgba(250,250,247,0.0)', '#ecf4f3']}>
       <View style={{flexDirection: 'row', marginBottom: 15}}>
         <View style={{marginTop:30,marginLeft:30, marginRight:30}}>
           <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
@@ -127,6 +129,7 @@ export default function HealthMain() {
         <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>+61 412345678</Text>
       </View>
     </View>
+    </LinearGradient>
     </View>
   );
 }

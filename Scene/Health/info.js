@@ -9,6 +9,7 @@ import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
 import * as Localization from 'expo-localization';
+import I18n from '../switchLanguage';
 
 export default class Info extends Component {
     constructor(props) {
@@ -382,7 +383,7 @@ export default class Info extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
           <Text numberOfLines={1} style={{ fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.intro}</Text>
-          <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate('介绍')}>
+          <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate(I18n.t('introduction'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -401,7 +402,7 @@ export default class Info extends Component {
         <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
         {this.context.languages.length>0 ? languages:
         <Text>请添加诊所支持的语言</Text>}
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('语言')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('languages'))}>
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
         </View>
@@ -874,7 +875,7 @@ export default class Info extends Component {
             <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
             {this.context.serviceclass.length>0 ? service:
             <Text>请添加诊所支持的服务种类</Text>}
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('服务种类')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('serviceType'))}>
               <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
             </TouchableOpacity>
             </View>

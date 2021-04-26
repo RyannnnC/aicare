@@ -17,6 +17,8 @@ export default class Signup extends Component {
     type:"",
     checked1: false,
     checked2: true,
+    timer:null,
+    counter:60,
   }
   sendRequest() {
     if (this.state.confirm != this.state.password) {
@@ -55,11 +57,12 @@ export default class Signup extends Component {
           return false;
         }
         console.log(json.msg);
-        this.props.navigation.navigate('登陆')
+        this.props.navigation.navigate(I18n.t('login'))
       });}
   //  .then(json => {console.log(json)});
   }
   sendCode() {
+    this.setTimer();
     if (this.state.checked1) {
       let p = this.state.phone;
       let url = 'http://'
@@ -103,11 +106,34 @@ export default class Signup extends Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+  }
+
+  setTimer() {
+    let timer = setInterval(this.tick.bind(this), 1000);
+    this.setState({timer});
+  }
+
+  tick() {
+    if (this.state.counter == 0) {
+      clearInterval(this.state.timer);
+      this.setState({
+        counter: 60,
+        timer:null
+      });
+    }else {
+      this.setState({
+        counter: this.state.counter - 1
+      });
+    }
+  }
   render() {
     return (
       <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}>
           <ScrollView style={{flex:1}}>
+          <View style={{width:'85%',flex:1}}>
           <View style={{marginTop:30, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
@@ -115,7 +141,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('name')} *</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View>
           <TextInput style={styles.resumeInput}
           placeholder="请输入您的名字"
           onChangeText={(text) => {this.setState({ name: text})}}
@@ -129,7 +155,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('mobile')} *</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View>
           <TextInput style={styles.resumeInput}
           placeholder="请输入您的联系方式"
           onChangeText={(text) => {this.setState({ phone: text})}}
@@ -143,7 +169,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('email')} *</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View >
           <TextInput style={styles.resumeInput}
           placeholder="请输入您的邮箱"
           onChangeText={(text) => {this.setState({ mail: text})}}
@@ -157,7 +183,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('password')} *</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View >
           <TextInput style={styles.resumeInput}
           placeholder="请输入您的密码"
           secureTextEntry={true}
@@ -172,7 +198,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('confirm')} *</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View >
           <TextInput style={styles.resumeInput}
           placeholder="请再次输入您的密码"
           secureTextEntry={true}
@@ -185,12 +211,12 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>绑定方式 *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('binding')} *</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
-              title='电话          '
+              title={I18n.t('mobile')}
               iconRight
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
@@ -209,7 +235,7 @@ export default class Signup extends Component {
           <View style={{flexDirection: 'row'}}>
             <CheckBox
               center
-              title='邮箱          '
+              title={I18n.t('email')}
               iconRight
               checkedIcon='check-circle-o'
               uncheckedIcon='circle-o'
@@ -226,21 +252,27 @@ export default class Signup extends Component {
              />
           </View>
           <View style={{flexDirection: 'row'}}>
-            <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+            <View>
             <TextInput style={styles.resumeInput3}
             placeholder= "请输入您收到的验证码"
             onChangeText={(text) => {this.setState({ code: text})}}
             />
             </View>
-            <TouchableOpacity style={styles.codeTab}
-              onPress={()=>this.sendCode()}
-            >
-              <Text style={{ fontSize:14, fontWeight: '300' }}>获取验证码</Text>
-            </TouchableOpacity>
+            {this.state.timer ? 
+            <TouchableOpacity style={styles.codeTab2}>
+            <Text style={{ fontSize:14, fontWeight: '300',color:'white' }}>{I18n.t('resend')} {this.state.counter}s</Text>
+          </TouchableOpacity>
+            :
+            <TouchableOpacity style={styles.codeTab} onPress={()=>this.sendCode()}>
+            <Text style={{ fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
+          </TouchableOpacity>
+            }
+            
           </View>
           <TouchableOpacity style={styles.resumeButton} onPress={()=>this.sendRequest()}>
-            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
           </TouchableOpacity>
+          </View>
           </ScrollView>
       </KeyboardAvoidingView>
   );}

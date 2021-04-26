@@ -105,7 +105,7 @@ export default class Login extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
             <TouchableOpacity style={{marginLeft:150}} onPress={() => {this.setState({email:true,mobile:false})}}>
-              <Text style={{color:'blue'}}>邮箱登陆</Text>
+              <Text style={{color:'blue'}}>{I18n.t('loginEmail')}</Text>
             </TouchableOpacity>
           </View>
           <TextInput
@@ -123,7 +123,7 @@ export default class Login extends Component {
               />
               <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
               <TouchableOpacity style={{marginLeft:150}} onPress={() => {this.setState({email:false,mobile:true})}}>
-                <Text style={{color:'blue'}}>手机登陆</Text>
+                <Text style={{color:'blue'}}>{I18n.t('loginMobile')}</Text>
               </TouchableOpacity>
             </View>
             <TextInput
@@ -148,10 +148,10 @@ export default class Login extends Component {
       </View>
 
       <View style ={styles.container2}>
-        <TouchableOpacity style={styles.f_wrapper} onPress={() => this.props.navigation.navigate('忘记密码')}>
+        <TouchableOpacity style={styles.f_wrapper} onPress={() => this.props.navigation.navigate(I18n.t('forgotPassword'))}>
           <Text style={styles.f_Text}>{I18n.t('forgotPassword')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.z_wrapper} onPress={() => this.props.navigation.navigate('注册')}>
+        <TouchableOpacity style={styles.z_wrapper} onPress={() => this.props.navigation.navigate(I18n.t('signup'))}>
           <Text style={styles.r_Text}>{I18n.t('signup')}</Text>
         </TouchableOpacity>
       </View>

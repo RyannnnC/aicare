@@ -4,6 +4,7 @@ import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
+import I18n from '../switchLanguage';
 
 export default class DoctorInfo extends Component {
     constructor(props) {
@@ -176,7 +177,7 @@ export default class DoctorInfo extends Component {
           <Text style={{ fontSize:18, fontWeight: '600',marginTop:10 }}>{this.state.name}</Text>
           <Text style={{ fontSize:12, fontWeight: '400' }}>全科医生 - 9年工作经验</Text>
           <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity style={styles.infoButton2} onPress={() => this.props.navigation.navigate('成员添加', {id: this.props.route.params.id})}>
+          <TouchableOpacity style={styles.infoButton2} onPress={() => this.props.navigation.navigate(I18n.t('uploadMember'), {id: this.props.route.params.id})}>
             <Text style={{fontSize:14, color:'#FAFAFA'}}>编辑资料</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.infoButton1} onPress={() => {this.deleteDoctor(this.props.route.params.id)}}>

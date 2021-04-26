@@ -41,6 +41,7 @@ import UploadMember from './Scene/Health/uploadMember';
 import DoctorInfo from './Scene/Health/doctorInfo';
 import Mintro from './Scene/Health/mintro';
 import Mlan from './Scene/Health/mlan';
+import I18n from './Scene/switchLanguage';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -341,18 +342,18 @@ export default class App extends React.Component {
         this.state.health ? (
           <>
           <Stack.Screen options={{headerShown: false}} name="healthHome" component={HealthHome} />
-          <Stack.Screen name="修改密码" component={ChangePwd} />
-          <Stack.Screen name="我的设置" component={Setting} />
-          <Stack.Screen name="机构信息" component={Info} />
-          <Stack.Screen name="成员管理" component={Members} />
-          <Stack.Screen name="介绍" component={Introduction} />
-          <Stack.Screen name="成员介绍" component={Mintro} />
-          <Stack.Screen name="成员语言" component={Mlan} />
-          <Stack.Screen name="语言" component={Languages} />
-          <Stack.Screen name="服务种类" component={HealthServiceType} />
-          <Stack.Screen name="分支机构" component={OtherStores} />
-          <Stack.Screen name="成员添加" component={UploadMember} />
-          <Stack.Screen name="成员信息" component={DoctorInfo} />
+          <Stack.Screen name={I18n.t('changePassword')} component={ChangePwd} />
+          <Stack.Screen name={I18n.t('mySetting')} component={Setting} />
+          <Stack.Screen name={I18n.t('orginfo')}component={Info} />
+          <Stack.Screen name={I18n.t('members')} component={Members} />
+          <Stack.Screen name={I18n.t('introduction')} component={Introduction} />
+          <Stack.Screen name={I18n.t('mintro')} component={Mintro} />
+          <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
+          <Stack.Screen name={I18n.t('languages')} component={Languages} />
+          <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
+          <Stack.Screen name={I18n.t('stores')} component={OtherStores} />
+          <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
+          <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
           </>
         ):(
           <>
@@ -376,11 +377,11 @@ export default class App extends React.Component {
         <>
         <Stack.Screen options={{headerShown: false}} name="Welcome" component={Welcome} />
         <Stack.Screen options={{headerShown: false}} name="请选择服务类型" component={ProviderType} />
-        <Stack.Screen options={{headerShown: false}} name="登陆" component={Login} />
+        <Stack.Screen options={{headerShown: false}} name= {I18n.t('login')} component={Login} />
         <Stack.Screen options={{headerShown: false}} name="机构" component={Agency} />
         <Stack.Screen name="验证" component={Verify} />
-        <Stack.Screen name="注册" component={Signup} />
-        <Stack.Screen name="忘记密码" component={Forget}/>
+        <Stack.Screen name={I18n.t('signup')}  component={Signup} />
+        <Stack.Screen name={I18n.t('forgotPassword')}  component={Forget}/>
         </>
       )}
       </Stack.Navigator>

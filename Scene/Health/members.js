@@ -5,6 +5,7 @@ import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
 import Category from "./category";
 import DataContext from '../../providerContext';
+import I18n from '../switchLanguage';
 
 export default class Members extends Component {
     constructor(props) {
@@ -97,7 +98,7 @@ export default class Members extends Component {
     docs = this.context.doctors.map((item) => {
       return (
         <View style={styles.doctorHolder} key={item.employerId}>
-          <TouchableOpacity style={{ marginRight:10}} onPress={() => this.props.navigation.navigate('成员信息', {id: item.employerId})}>
+          <TouchableOpacity style={{ marginRight:10}} onPress={() => this.props.navigation.navigate(I18n.t('doctorInfo'), {id: item.employerId})}>
           <Image
             style = {{width: 40, height:40,marginRight:15,borderRadius:20}}
             source = {item.imgUrl?{uri:item.imgUrl}:require('../../images/providerImg/service_doctor_img1.png')}
@@ -107,7 +108,7 @@ export default class Members extends Component {
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>全科医生 - 9年工作经验</Text>
           </View>
-          <TouchableOpacity style={{marginLeft:68, marginRight:10}} onPress={() => this.props.navigation.navigate('成员信息', {id: item.employerId})}>
+          <TouchableOpacity style={{marginLeft:68, marginRight:10}} onPress={() => this.props.navigation.navigate(I18n.t('doctorInfo'), {id: item.employerId})}>
             <Image
               style = {{width: 25, height:25}}
               source = {require('../../images/providerImg/account_icon_edit.png')}
@@ -133,7 +134,7 @@ export default class Members extends Component {
       <SafeAreaView style={{ flex:1,alignItems: "center",backgroundColor:'white' }}>
         <View style={{flex:1,width:'85%'}}>
           <TouchableOpacity style={{borderRadius:15,marginTop:20,width:'100%',height:70}}
-          onPress={() => this.props.navigation.navigate('成员添加', {id: null})}>
+          onPress={() => this.props.navigation.navigate(I18n.t('uploadMember'), {id: null})}>
             <ImageBackground source={require('../../images/providerImg/account_img_block.png')} style={{flexDirection:'row',width:'100%',height:70,justifyContent: "center", alignItems: "center"}}>
               <Text style={{ color: '#68B0AB', fontSize: 18, fontWeight: '400'}}>添加新成员</Text>
               <Image

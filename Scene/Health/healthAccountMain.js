@@ -143,7 +143,7 @@ export default class HealthAccountMain extends Component {
       </View>
       }
 
-      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('机构信息')}>
+      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('orginfo'))}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_medical.png')}
@@ -151,7 +151,7 @@ export default class HealthAccountMain extends Component {
         <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('orginfo')}</Text>
       </TouchableOpacity>
       {this.context.employerId == null &&
-        <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('成员管理')}>
+        <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('members'))}>
           <Image
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/singup_icon_name.png')}
@@ -159,14 +159,14 @@ export default class HealthAccountMain extends Component {
           <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('members')}</Text>
         </TouchableOpacity>
       }
-      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('修改密码')}>
+      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('changePassword'))}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/signup_icon_pswd.png')}
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('resetPassword')}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate('我的设置')}>
+      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('mySetting'))}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_setting.png')}
