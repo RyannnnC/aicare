@@ -1,11 +1,12 @@
 import React ,{Component}from 'react';
-import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,Alert } from 'react-native';
+import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,Alert,ActivityIndicator } from 'react-native';
 import {styles} from '../../style';
 import {data} from './data';
 import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import DateFilter from "./datefilter";
 import DataContext from "../../consumerContext";
+//import { UserOfflineReason } from 'react-native-agora';
 
 
 //import moment from "moment"
@@ -20,6 +21,7 @@ class changeClinic extends Component {
         search:"",
         candidates:[],
         clinics:[],
+        loading:true,
       };
     }
   setModalVisible = (visible) => {
@@ -29,12 +31,13 @@ class changeClinic extends Component {
     this.setState({ Visible: visible });
   }  
   sendRequest=()=>{
-    let url2 = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-clinic-info?";
-    
+    let url2 = "http://"+this.context.url+"/aicare-customer-api/customer/user/query-clinic-info?";
+
     if (this.props.route.params.type==true){
       url2=url2.concat("areaName=".concat(this.props.route.params.return));
       url2=url2.concat("&state=".concat(this.props.route.params.state));
-      }else{
+      
+    }else{
       url2=url2.concat("postCode=".concat(this.props.route.params.return));
     }
             fetch(url2,{
@@ -55,6 +58,7 @@ class changeClinic extends Component {
               if (json.code == 0) {
                 console.log(json.sysDeptInfo);
                 this.setState({clinics:json.sysDeptInfo})
+                this.setState({loading:false})
                 //Alert.alert('查询成功');
               } else {
                 console.log(json.msg);
@@ -65,7 +69,6 @@ class changeClinic extends Component {
 
   componentDidMount = () => {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      console.log(this.props.route.params.id);
       this.sendRequest();
     })}
     
@@ -73,21 +76,55 @@ class changeClinic extends Component {
 
  
   render () {
-    const { modalVisible,Visible,clinics,} = this.state;
-
+    const { modalVisible,Visible,clinics,loading} = this.state;
+    if (loading){
+      return (
+        <View style={{ flex:1, backgroundColor:"white" }}>
+        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20}}>
+        <TouchableOpacity onPress={() =>{
+            this.props.navigation.dispatch(StackActions.pop(1))}}>
+            <Image
+            style = {styles.arrow_image}
+            source={require('../../images/icon/2/Arrow_left.png')}
+            />
+        </TouchableOpacity>
+        <Text style={{
+        fontSize:16,
+        marginLeft:105,
+        marginTop:20}}>诊所选择</Text>
+        </View>
+        <View style={{marginTop:10}}>
+        <Image
+            style = {styles.topping_image}
+            source={require('../../images/order_img.png')}
+        />
+        </View>
+        <View style={{marginTop:60,alignItems:"center"}}>
+        <Image
+            style = {{height:187,width:326}}
+            source={require('../../images/waiting.png')}
+        />
+        </View>
+        <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>
+          正在搜索相关诊所，请耐心等待..
+        </Text>
+        <ActivityIndicator size="large" style={{marginTop:-90}} color="#FF8570"></ActivityIndicator>
+        </View>
+      )
+    }
     //console.log (this.state);
     if (clinics.length >0) {
     const orders = clinics.map((item) => {
       return (
         <View style={styles.card} key={item.id}>
            <TouchableOpacity onPress={() =>{
-            this.props.navigation.navigate("changeDoc",{orgId:item.orgId,name:item.name,doctype:this.props.route.params.doctype,address:item.name,id:this.props.route.params.id})}}
+            this.props.navigation.navigate("changeDoc",{orgId:item.orgId,name:item.name,doctype:this.props.route.params.doctype,address:item.address,item:item})}}
             >
           <View style={{flexDirection: 'row', marginTop:5, marginBottom:5, marginLeft:25}}>
          
             <Image
             style = {{height:40,width:40,marginRight:15,marginLeft:-10}}
-            source = {require("../../images/telehealth_icon/service_telehealth_select_img_clinic2.png")}
+            source = {item.orgImg?{uri: item.orgImg}:require('../../images/telehealth_icon/service_telehealth_select_img_clinic1.png')}
             />
           <View>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
@@ -111,7 +148,9 @@ class changeClinic extends Component {
         </View>
       )
     })
-    return (
+    return ( 
+
+
       <View style={{ flex:1, backgroundColor:"white" }}>
         <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20}}>
         <TouchableOpacity onPress={() =>{
@@ -124,7 +163,7 @@ class changeClinic extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>诊所更改</Text>
+        marginTop:20}}>诊所选择</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -153,7 +192,7 @@ class changeClinic extends Component {
     </TouchableOpacity>
     </View>
         <View style={{alignItems:'center',marginTop:10}}>
-        <SearchBar
+        {/*<SearchBar
           round
           //searchIcon={{ size: 24 }}
           //onChangeText={(text) => searchFilterFunction(text)}
@@ -174,20 +213,20 @@ class changeClinic extends Component {
           onChangeText={this.setChange}
           
           value={this.state.search}
-        />
+        />*/}
         </View>
         <ScrollView style={{ flex:1,marginTop:30,marginLeft:-30,maxHeight:500}}>
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>
         </ScrollView>
-        <TouchableOpacity onPress={() =>{
+        {/*<TouchableOpacity onPress={() =>{
             this.props.navigation.navigate("TelehealthMV")}}>
             <Image
                 style={{width:70,height:70,marginLeft:300}}
                 source = {require("../../images/map.png")}
             />
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
         <Modal
         animationType="slide"
         transparent={true}
@@ -457,13 +496,14 @@ elevation: 24,}}>
         
       </View>
     )} else {
+      let value = this.context;
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white"}}>
       <Image
         style = {styles.finishImg}
         source = {require('../../images/complete_empty.png')}
       />
-     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>抱歉,该区域目前没有可服务的诊所！</Text>
+     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>抱歉，该区域目前没有可服务的{value.deptType[this.props.route.params.doctype]}诊所。</Text>
      </View>
     )
   }

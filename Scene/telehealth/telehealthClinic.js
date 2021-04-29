@@ -6,6 +6,7 @@ import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import DateFilter from "./datefilter";
 import DataContext from "../../consumerContext";
+//import { UserOfflineReason } from 'react-native-agora';
 
 
 //import moment from "moment"
@@ -30,7 +31,7 @@ class telehealthClinic extends Component {
     this.setState({ Visible: visible });
   }  
   sendRequest=()=>{
-    let url2 = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-clinic-info?";
+    let url2 = "http://"+this.context.url+"/aicare-customer-api/customer/user/query-clinic-info?";
 
     if (this.props.route.params.type==true){
       url2=url2.concat("areaName=".concat(this.props.route.params.return));
@@ -191,7 +192,7 @@ class telehealthClinic extends Component {
     </TouchableOpacity>
     </View>
         <View style={{alignItems:'center',marginTop:10}}>
-        <SearchBar
+        {/*<SearchBar
           round
           //searchIcon={{ size: 24 }}
           //onChangeText={(text) => searchFilterFunction(text)}
@@ -212,20 +213,20 @@ class telehealthClinic extends Component {
           onChangeText={this.setChange}
           
           value={this.state.search}
-        />
+        />*/}
         </View>
         <ScrollView style={{ flex:1,marginTop:30,marginLeft:-30,maxHeight:500}}>
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>
         </ScrollView>
-        <TouchableOpacity onPress={() =>{
+        {/*<TouchableOpacity onPress={() =>{
             this.props.navigation.navigate("TelehealthMV")}}>
             <Image
                 style={{width:70,height:70,marginLeft:300}}
                 source = {require("../../images/map.png")}
             />
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
         <Modal
         animationType="slide"
         transparent={true}

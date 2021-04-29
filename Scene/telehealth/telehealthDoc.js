@@ -6,6 +6,7 @@ import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import DateFilter from "./datefilter";
 import DataContext from "../../consumerContext";
+//import { UserOfflineReason } from 'react-native-agora';
 
 //import moment from "moment"
 
@@ -34,7 +35,7 @@ class telehealthDoc extends Component {
     console.log("start");
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-doctors?"+"orgId=".concat(this.props.route.params.orgId);
+      let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/query-doctors?"+"orgId=".concat(this.props.route.params.orgId);
             fetch(url,{
               method: 'GET',
               mode: 'cors',

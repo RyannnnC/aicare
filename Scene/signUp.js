@@ -151,6 +151,8 @@ export default class Signup extends Component {
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
           placeholder="请输入您的密码"
+          secureTextEntry={true}
+
           onChangeText={(text) => {this.setState({ password: text})}}
           />
           </View>
@@ -165,6 +167,8 @@ export default class Signup extends Component {
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
           placeholder="请再次输入您的密码"
+          secureTextEntry={true}
+
           onChangeText={(text) => {this.setState({ confirm: text})}}
           />
           </View>

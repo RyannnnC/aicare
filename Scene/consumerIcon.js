@@ -30,31 +30,45 @@ const  ConsumerIcon= ({navigation}) => {
     <View style={{ backgroundColor: 'white',
     marginTop: 0,
     alignItems: 'center'}}>
-
+    <View style={{height:10}}></View>
     <Image
       style = {styles.topping_image}
       source={require('../images/order_img.png')}
     />
     <View style={{marginTop:20}}></View>
-    <Text style={styles.service}>服务类型</Text>
+    <Text style={{color:'#006A71',
+    fontSize:17,
+    marginTop:20,
+    marginLeft:25,}}>服务类型</Text>
     <TouchableOpacity onPress = {goToTelehealth}>
       <Image
-        style = {styles.button_image}
-        source = {require('../images/icon/1/booking_image.png')}
+        style = {{marginTop:40,
+          height:120,
+          width:290,
+          marginLeft:30,
+          }}
+        source = {require('../images/telehealth_icon/service_block1.png')}
       />
     </TouchableOpacity>
 
     <TouchableOpacity onPress = {alertHandler}>
       <Image
-        style = {styles.button_image}
-        source = {require('../images/icon/1/store_image.png')}
+        style = {{marginTop:25,
+          height:120,
+          width:290,
+          marginLeft:30,}}
+        source = {require('../images/telehealth_icon/service_block2.png')}
       />
     </TouchableOpacity>
 
-    <TouchableOpacity onPress = {alertHandler}>
+    <TouchableOpacity onPress = {()=>    navigation.navigate("telehealthSub",{docType:7})
+}>
       <Image
-        style = {styles.button_image}
-        source = {require('../images/icon/1/delivery_image.png')}
+        style = {{marginTop:25,
+          height:120,
+          width:290,
+          marginLeft:30,}}
+        source = {require('../images/telehealth_icon/service_block3.png')}
       />
     </TouchableOpacity>
     <TouchableOpacity onPress={makecall}>

@@ -31,7 +31,7 @@ export default function TelehealthrMain({navigation}) {
         navigation.dispatch(StackActions.pop(1))
       }
       useEffect(() => {
-        let url3 = "http://3.104.232.106:8085/aicare-customer-api/customer/user/getServiceClassAndDoctor";
+        let url3 = "http://"+user.url+"/aicare-customer-api/customer/user/getServiceClassAndDoctor";
             fetch(url3,{
               method: 'GET',
               mode: 'cors',
@@ -144,7 +144,7 @@ export default function TelehealthrMain({navigation}) {
             source = {require('../../images/telehealth_icon/service_telehealth_img.png')}
 
         />
-        <SearchBar
+        {/*<SearchBar
           round
           //searchIcon={{ size: 24 }}
           //onChangeText={(text) => searchFilterFunction(text)}
@@ -165,7 +165,7 @@ export default function TelehealthrMain({navigation}) {
           onChangeText={search => setSearch(search)}
           
           value={search}
-        />
+        />*/}
         <View style={{flexDirection: 'row', marginBottom: 15,marginTop:30}}>
           <Text style={{marginLeft:-20,fontSize:18}}>预约种类</Text>
           <TouchableOpacity style={{marginLeft:180,marginTop:5}}  onPress={()=>{

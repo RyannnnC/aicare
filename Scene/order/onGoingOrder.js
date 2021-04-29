@@ -111,7 +111,7 @@ class OngoingingOrder extends Component {
           style: "cancel"
         },
         { text: "更改时间", onPress: () => {this.setModalVisible(true);this.setState({id:id});this.context.action.changeOrgId(orgId);this.context.action.changeDocId(businessEmployerId)}},
-        { text: "更改医生", onPress: () => this.changeAlert(orgId,address,id)} 
+        //{ text: "更改医生", onPress: () => this.changeAlert(orgId,address,id)} 
       ],
       { cancelable: false }
       )
@@ -126,8 +126,8 @@ class OngoingingOrder extends Component {
           onPress: () => console.log("didnt cancel order"),
           style: "cancel"
         },
-        { text: "同一诊所", onPress: () => {this.props.navigation.navigate("changeDoc",{orgId:orgId,docType:"全科",address:address,id:id})}},
-        { text: "不同诊所", onPress: () => {this.props.navigation.navigate("changeSuburb",{docType:"全科",id:id})}} 
+        { text: "同一诊所", onPress: () => {this.props.navigation.navigate("changeDoc",{orgId:orgId,doctype:1,address:address,id:id})}},
+        { text: "不同诊所", onPress: () => {this.props.navigation.navigate("changeSuburb",{doctype:1,id:id})}} 
       ],
       { cancelable: false }
       )
@@ -147,7 +147,7 @@ class OngoingingOrder extends Component {
     var date = today.getFullYear()+'-'+month+'-'+day;
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1"/*"http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment&appointDate=".concat(date).concat("&dateFlg=2")*/;
+      let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1"/*"http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment&appointDate=".concat(date).concat("&dateFlg=2")*/;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -168,6 +168,7 @@ class OngoingingOrder extends Component {
                 //this.setState({query:json.page})
                 this.setState({query: json.page });
                 //Alert.alert('查询成功');
+                console.log(json.page[0].telehealthFlg)
               } else {
                 console.log(json.msg);
                 console.log(json.code);
@@ -179,7 +180,7 @@ class OngoingingOrder extends Component {
     });
   }
   updateAppointment(s_id){
-    let url2 = "http://3.104.232.106:8085/aicare-customer-api/customer/user/update-appointment?scheduleDetailedId=".concat(s_id).concat("&id=").concat(this.state.id).concat("&status=0");
+    let url2 = "http://"+this.context.url+"/aicare-customer-api/customer/user/update-appointment?scheduleDetailedId=".concat(s_id).concat("&id=").concat(this.state.id).concat("&status=0");
             fetch(url2,{
               method: 'GET',
               mode: 'cors',
@@ -207,7 +208,7 @@ class OngoingingOrder extends Component {
 
   cancelAppointment(id){
     
-    let url2 = "http://3.104.232.106:8085/aicare-customer-api/customer/user/delete-appointment?id=".concat(id);
+    let url2 = "http://"+this.context.url+"/aicare-customer-api/customer/user/delete-appointment?id=".concat(id);
             fetch(url2,{
               method: 'GET',
               mode: 'cors',
@@ -225,7 +226,7 @@ class OngoingingOrder extends Component {
             .then((json) => {
               if (json.code == 0) {
                 console.log("ok");
-                /*let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1";
+                /*let url = "http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1";
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -366,13 +367,19 @@ class OngoingingOrder extends Component {
             source = {require('../../images/home_img_person.png')}
           />
           <View>
-            <Text style={{fontSize:16, color:'#333333', fontWeight: '500'}}>{item.businessEmployerName}</Text>
+            <View style={{flexDirection:"row"}}>
+            <Text style={{fontSize:14, color:'#333333', fontWeight: '500',marginTop:5}}>{item.businessEmployerName}</Text>
+            <Image style={{marginTop:6,height:15,width:15,marginLeft:3}} source={item.telehealthFlg?require('../../images/telehealth_icon/order_icon_video.png'):require('../../images/telehealth_icon/service_icon_location.png')}></Image>
+            <Text style={{fontSize:12,color: '#666666',marginTop:5,marginLeft:3}}>{item.telehealthFlg==0?"实地问诊":"远程问诊 - "}</Text>
+            {item.telehealthFlg?<Text style={{fontSize:12,color: '#666666',marginTop:5}}>{item.videoChannel==1?"FaceTime":"Skype"}</Text>:null}
+
+            </View>
             <Text style={{fontSize:12, color:'#333333', }}>{this.context.deptType[item.deptId]+" - "+item.orgName}</Text>
 
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.address}</Text>
           </View>
           </View>
-          <Text>{date+" "+item.startTime+ " - "+item.endTime}</Text>
+          <Text style={{marginLeft:25,marginTop:-10}}>{date+" "+item.startTime+ " - "+item.endTime}</Text>
 
           <View style={{flexDirection: 'row-reverse',borderTopWidth:0.3,borderColor:"#999999"}}>
             

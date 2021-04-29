@@ -16,7 +16,7 @@ export default function TelePay({navigation,route}) {
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
   }
-  const { scheduleId,date,doctype,address,docName,startTime,endTime } = route.params;
+  const { scheduleId,date,doctype,address,docName,startTime,endTime,teleFlg } = route.params;
   const makecall=()=>{
     call(args).catch(console.error)
   }
@@ -31,7 +31,7 @@ export default function TelePay({navigation,route}) {
     }
             console.log(doctype);
 
-    navigation.navigate("teleConfirm",{content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime})
+    navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime})
   }  
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
@@ -129,7 +129,10 @@ export default function TelePay({navigation,route}) {
         <Text style={{color:"#999999"}}> 持有medicare的用户在支持bulk billing</Text>
         </View>
         <Text style={{color:"#999999",marginLeft:-90,marginBottom:20}}> 的诊所看诊可全额报销。</Text>
-
+        <Image
+        style = {{height:125,width:375}}
+        source={require('../../images/telehealth_icon/service_order_img_card.png')}
+      />
         <TextInput style = {styles.account}
           placeholder="持卡人姓名"
           onChangeText={(text)=>content.name=text}

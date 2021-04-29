@@ -2,7 +2,7 @@
   "expo": {
     "name": "aicare",
     "slug": "aicare",
-    "version": "2.0",
+    "version": "1.12",
     "orientation": "portrait",
     "icon": "./assets/aicare.png",
     "splash": {
@@ -18,9 +18,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kim2017.aicare"
+      "bundleIdentifier": "com.jingzhuo.aicare"
     },
     "android": {
+      "versionCode":2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/aicare.png",
         "backgroundColor": "#FFFFFF"
@@ -30,7 +31,7 @@
           "apiKey": "AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"
         }
       },
-      "package": "com.kim2017.aicare"
+      "package": "com.jingzhuo.aicare"
     },
     "web": {
       "favicon": "./assets/favicon.png"

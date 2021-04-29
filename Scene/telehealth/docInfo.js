@@ -27,11 +27,11 @@ export default function DocInfo({route,navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [doc, setDoc] = useState({});
 
-  const goInsurance= (scheduleId,startTime,endTime) => {
+  const goInsurance= (scheduleId,startTime,endTime,teleFlg) => {
     user.action.changeSchedule([]);
     //console.log(doctype);
 
-    navigation.navigate('telehealthPay',{scheduleId:scheduleId,date:"2021.3.25",doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime});
+    navigation.navigate('telehealthPay',{teleFlg:teleFlg,scheduleId:scheduleId,date:"2021.3.25",doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime});
     setModalVisible(modalVisible=>!modalVisible);
     //user.action.changeOrgId(0);user.action.changeDocId(0);
   }
@@ -45,7 +45,7 @@ export default function DocInfo({route,navigation}) {
   
   useEffect(() => {
     console.log(docId);
-    let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-doctors?"+"id="+queryId;
+    let url = "http://"+user.url+"/aicare-customer-api/customer/user/query-doctors?"+"id="+queryId;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -65,7 +65,7 @@ export default function DocInfo({route,navigation}) {
                 //console.log(json);
                 //console.log(json.businessEmployer[0]);
                 setDoc(json.businessEmployer[0]);
-                console.log(json.businessEmployer[0].languages)
+                console.log(json.businessEmployer[0].videoChannel)
                 //console.log(json);
                 console.log(url);
                 //console.log("schedule");
@@ -90,6 +90,17 @@ export default function DocInfo({route,navigation}) {
       </TouchableOpacity>
     )
   }):null;
+  const telehealth = doc.serviceTypeList?doc.serviceTypeList.map((item) => {
+    return (
+        <Text style={{ fontSize:14, fontWeight: '300',marginBottom:13,marginLeft:5 }}>{item.name}</Text>
+    )
+  }):null;
+  const videochannel = doc.videoChannel?doc.videoChannel.map((item) => {
+    return (
+      
+        <Text style={{ fontSize:14, fontWeight: '300',marginBottom:13,marginLeft:5 }}>{item.channel}</Text>
+    )
+  }):null;
   const languages = doc.languages?doc.languages.map((item) => {
     return (
       <TouchableOpacity style={styles.resumeTag}>
@@ -108,18 +119,36 @@ export default function DocInfo({route,navigation}) {
         <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300' }}>{t1}-{t2}</Text>
       </View>
     )
-  }}):null;
+  }} ):null;
 
   const renderItemComponent = (item) => 
-  <TouchableOpacity style={{width: 140,
+  <TouchableOpacity style={{width: 120,
     height: 40,
     backgroundColor: "#8FD7D3",
     borderRadius: 10,
     textAlign: 'center',
     marginRight: 25,
     marginTop: 15,
-    paddingTop:10,paddingLeft:20}}
-    onPress={()=>goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime)}> 
+    paddingTop:10,paddingLeft:10}}
+    onPress={()=>{
+      if (doc.videoChannel.length!=0){
+      Alert.alert(
+      "就诊方式",
+      "您是要选择与医生远程视频问诊还是去诊所就诊呢？",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("didnt cancel order"),
+          style: "cancel"
+        },
+        { text: "远程问诊", onPress: () => {goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,1)}},
+        { text: "实地问诊", onPress: () => {goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,0)}} 
+      ],
+      { cancelable: false }
+      )}else{
+        goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,0)
+      }
+      }}> 
     <Text style={{color:"white"}}>{item.item.startTime.slice(0,5)+" - "+item.item.endTime.slice(0,5)}</Text>
   </TouchableOpacity>
   
@@ -162,10 +191,11 @@ export default function DocInfo({route,navigation}) {
     </View>
 
     <View style={{ width:'90%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,zIndex: 1,marginLeft:13}}>
+      
           <Image style={{width:80,height:80}}
             source = {doc.imgUrl?{uri:doc.imgUrl}:require("../../images/telehealth_icon/service_doctor_img5.png")}
           />
-        </View>
+          </View>
         <View style={{shadowColor:"000000",shadowOffset: {
 	              width: 0,
 	              height: 2,
@@ -173,7 +203,7 @@ export default function DocInfo({route,navigation}) {
                 shadowOpacity: 0.150,
                 shadowRadius: 3.05,
 
-                elevation: 2,marginTop:-50,width:'90%',marginLeft:15,height:200,justifyContent: "center",alignItems: "center",marginBottom:18,backgroundColor:'#F1FAFA',borderRadius:30}}>
+                elevation: 0,marginTop:-50,width:'90%',marginLeft:15,height:200,justifyContent: "center",alignItems: "center",marginBottom:18,backgroundColor:'#F1FAFA',borderRadius:30}}>
           <Text style={{ fontSize:18, fontWeight: '600',marginTop:40 }}>{doc.name}</Text>
           <View style={{flexDirection: 'row',paddingBottom: 15, }}>
             <Image
@@ -222,13 +252,34 @@ export default function DocInfo({route,navigation}) {
         </View>
         
 
-        <View style={{flexDirection:'row'}}>
+        {/*<View style={{flexDirection:'row'}}>
           <Image style={{width:17,height:17,marginBottom:10}}
             source = {require('../../images/telehealth_icon/service_icon_location_green.png')}
           />
         <Text style={{ fontSize:14, fontWeight: '300',marginBottom:13,marginLeft:5 }}>实地问诊</Text>
         </View>
+        <View style={{flexDirection:'row'}}>
+          <Image style={{width:17,height:17,marginBottom:10}}
+            source = {require('../../images/telehealth_icon/service_icon_video.png')}
+          />
+        <Text style={{ fontSize:14, fontWeight: '300',marginBottom:13,marginLeft:5 }}>远程问诊</Text>
         </View>
+              */}
+        {telehealth}
+        </View>
+        <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
+
+        <View style={{ marginTop:15, marginBottom:15}}>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>远程方式</Text>
+        </View>
+        
+        {videochannel}
+        
+        {/*<Text style={{ fontSize:14, fontWeight: '300',marginBottom:13,marginLeft:5 }}>FaceTime(支持苹果)</Text>
+        <Text style={{ fontSize:14, fontWeight: '300',marginBottom:13,marginLeft:5 }}>Skype(支持安卓)</Text>*/}
+
+        </View>
+
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
 
         <View style={{marginTop:10,marginBottom:10}}>
@@ -305,6 +356,7 @@ elevation: 24,}}>
       user.schedule.length!=0?
       <FlatList
         style={{maxHeight:115,}}
+        numColumns={2}
         data={timeSection}
         renderItem={item => renderItemComponent(item)}
         keyExtractor={item => item.scheduleDetailedId.toString()}

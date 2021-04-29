@@ -18,7 +18,7 @@ export default class DoctorInfo extends Component {
     }
 
   componentDidMount(){
-    let url = 'http://3.104.232.106:8084/aicare-business-api/business/employer/list'
+    let url = 'http://3.104.87.14:8084/aicare-business-api/business/employer/list'
     +'?employerId=' + this.props.route.params.id;
       fetch(url,{
         method: 'GET',

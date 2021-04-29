@@ -41,7 +41,7 @@ class DateSelect extends Component {
   sendRequest=(date)=>{
     //console.log(date)
     this.context.action.changeLoading(true);
-    let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/scheduledetail?"+"orgId="+this.context.orgId.toString()+"&businessEmployerId="+this.context.docId.toString()+"&date="+this.formatDate(date)+"&status=0";
+    let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/scheduledetail?"+"orgId="+this.context.orgId.toString()+"&businessEmployerId="+this.context.docId.toString()+"&date="+this.formatDate(date)+"&status=0";
             fetch(url,{
               method: 'GET',
               mode: 'cors',

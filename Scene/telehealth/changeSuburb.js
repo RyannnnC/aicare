@@ -1,24 +1,26 @@
-import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput,ScrollView} from 'react-native';
-import { CheckBox } from 'react-native-elements';
-//import styles from "../../style"
-import { StackActions } from '@react-navigation/native';
-import RNPickerSelect from 'react-native-picker-select';
 
+import React from 'react';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput,ScrollView,Modal} from 'react-native';
+import { CheckBox } from 'react-native-elements';
+import styles from "../../style"
+import { StackActions } from '@react-navigation/native';
+//import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-picker/picker';
 export default function changeSuburb({route,navigation}) {
     const alertHandler= () => {
       Alert.alert('function unimplemented')
     }
-    const { docType,id} = route.params;
-    const [selectedType, setSelectedType] = React.useState();
+    const { doctype} = route.params;
 
     const goToClinic= () => {
-        navigation.navigate("changeClinic",{return:type,type:checked1,doctype:docType,id:id})
+        navigation.navigate("changeClinic",{return:type,type:checked1,doctype:doctype,state:selectedType})
     }
     const goBack= () => {
       navigation.dispatch(StackActions.pop(1))
     }
     const [checked1, setChecked1] = React.useState(false);
+    const [selectedType, setSelectedType] = React.useState(false);
+
     const [checked2, setChecked2] = React.useState(false);
     const [type,setType]=React.useState("");
     return (
@@ -37,7 +39,7 @@ export default function changeSuburb({route,navigation}) {
             <Text style={{
               fontSize:16,
 
-              marginTop:-150}}>区域选择</Text>
+              marginTop:-150}}>远程医疗</Text>
           </View>
 
         <Image
@@ -70,7 +72,7 @@ export default function changeSuburb({route,navigation}) {
             onPress={() => {
             setChecked1(!checked1);
             setChecked2(false);
-            //console.log(doctype);
+            console.log(doctype);
 
 
             }}
@@ -85,9 +87,51 @@ export default function changeSuburb({route,navigation}) {
         borderColor:"#EEEEEE"}}
         onChangeText={(text)=>{setType(text)}}>
         </TextInput>
-        </View>
-        :null}
-      
+        <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#999999",borderBottomWidth:1,}}>
+        <View style={{marginTop:5}}>
+        {/*<RNPickerSelect
+        //fixAndroidTouchableBug={true}
+        useNativeAndroidPickerStyle={false}
+
+        placeholder={{ label: '请点击选择州', value: '请选择州' }}
+        onValueChange={(value) => {setSelectedType(value);console.log(value)}}
+        defaultValue={""}
+        items={[
+            { label: 'NSW', value: 'NSW' },
+            { label: 'ACT', value: 'ACT' },
+            { label: 'QLD', value: 'QLD' },
+            { label: 'NT', value: 'NT' },
+            { label: 'SA', value: 'SA' },
+            { label: 'TAS', value: 'TAS' },
+            { label: 'VIC', value: 'VIC' },
+            { label: 'WA', value: 'WA' },
+
+
+        ]}
+      />*/}
+      <Picker 
+      style={{height: 50,  
+        width: 100,  
+        color: 'white',  
+        justifyContent: 'center',marginLeft:100  }}
+  selectedValue={selectedType}
+  onValueChange={(itemValue, itemIndex) =>
+    setSelectedType(itemValue)
+  }>
+  <Picker.Item label="请选择州" value="请选择州" />
+  <Picker.Item label="NSW" value="NSW" />
+  <Picker.Item label="VIC" value="VIC" />
+  <Picker.Item label="QLD" value="QLD" />
+  <Picker.Item label="ACT" value="ACT" />
+  <Picker.Item label="NT" value="NT" />
+  <Picker.Item label="SA" value="SA" />
+  <Picker.Item label="TAS" value="TAS" />
+  <Picker.Item label="VIC" value="VIC" />
+  <Picker.Item label="WA" value="WA" />
+
+</Picker>
+    </View>
+    </View></View>:null}
         <View style={{flexDirection: 'row', marginBottom: 5,marginLeft:40,marginTop:30}}>
           <Text>区编码/Postcode</Text>
           <CheckBox
@@ -135,4 +179,5 @@ export default function changeSuburb({route,navigation}) {
       </ScrollView>
     );
   }
+
 

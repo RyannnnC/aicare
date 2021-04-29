@@ -22,7 +22,7 @@ const AccountMain = ({navigation}) => {
 
   useEffect(() => {
     
-    let url = "http://3.104.232.106:8085/aicare-customer-api/customer/customer-info/all-info";
+    let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
             fetch(url,{
               method: 'POST',
               mode: 'cors',
@@ -115,7 +115,7 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress = {changePwd}>
+      <TouchableOpacity style={styles.profileBar} onPress = {()=>Alert.alert("修改密码功能即将上线。")}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/signup_icon_pswd.png')}
@@ -126,7 +126,7 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress ={goSetting}>
+      <TouchableOpacity style={styles.profileBar} onPress ={()=>Alert.alert("个性华设置功能即将上线。")}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/account_icon_setting.png')}

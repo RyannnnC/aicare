@@ -23,8 +23,42 @@ export default function ProviderMain({navigation}) {
     const goToTelehealth= () => {
       navigation.navigate("telehealthMain")
   }
+  const askurl=()=>{
+    let url = 'https://linkello.com/rest/link'
+    
+    fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': user.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      },
+      body: JSON.stringify({
+          
+        media:"video",    
+        label:"kim",
+      })
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          //alert("提交成功");
+          console.log(json.msg);
+        } else {
+          //console.log(json.msg)
+          console.log(base);
+          alert('个人信息提交失败');
+        }
+      });
+  }
   const goVaccine= () => {
-    navigation.navigate("telehealthSub",{docType:7})
+    navigation.navigate("telehealthSub",{doctype:7})
 }
   const user = useContext(DataContext);
   useEffect(() => {
@@ -39,7 +73,7 @@ export default function ProviderMain({navigation}) {
 
     }
     var date = today.getFullYear()+'-'+month+'-'+day;
-            let url2 = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1";
+            let url2 = "http://"+user.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1";
             fetch(url2,{
               method: 'GET',
               mode: 'cors',
@@ -68,7 +102,7 @@ export default function ProviderMain({navigation}) {
                 //Alert.alert('查询失败');
               }
             }).catch(error => console.warn(error));
-            url2 = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=0";
+            url2 = "http://"+user.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=0";
             fetch(url2,{
               method: 'GET',
               mode: 'cors',
@@ -94,7 +128,7 @@ export default function ProviderMain({navigation}) {
               }
             }).catch(error => console.warn(error));
             if(user.first_svisit==0){
-            let url = "http://3.104.232.106:8085/aicare-customer-api/customer/customer-info/all-info";
+            let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
             fetch(url,{
               method: 'POST',
               mode: 'cors',
@@ -178,7 +212,7 @@ export default function ProviderMain({navigation}) {
     },[len])
 
     
-    /*let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment";
+    /*let url = "http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment";
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -205,7 +239,7 @@ export default function ProviderMain({navigation}) {
             }).catch(error => console.warn(error));
     */
     /* if (user.first_vist==0){
-        let url2= "http://3.104.232.106:8085/aicare-customer-api/customer/customer-info/all-info";
+        let url2= "http://3.104.87.14:8085/aicare-customer-api/customer/customer-info/all-info";
         fetch(url2,{
           method: 'POST',
           mode: 'cors',

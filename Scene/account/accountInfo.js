@@ -1,8 +1,10 @@
 import React, { useContext,useState,useEffect} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch ,ScrollView} from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch ,ScrollView,Platform} from 'react-native';
 import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
+import {Picker} from '@react-native-picker/picker';
+
 import RNPickerSelect from 'react-native-picker-select';
 import DataContext from "../../consumerContext";
 const AccountInfo = ({navigation}) => {
@@ -27,11 +29,11 @@ const AccountInfo = ({navigation}) => {
     });
 
     const goBack= () => {
-        navigation.dispatch(StackActions.pop(1))
+    navigation.dispatch(StackActions.pop(1))
     console.log(telephone);
     console.log(postcode);
         
-    let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/customer-info/save'
+    let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/save'
     
     fetch(url,{
         method: 'POST',
@@ -69,7 +71,7 @@ const AccountInfo = ({navigation}) => {
         }
       });
       if(selectedType=="Medicare"){
-        let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/customer-info/medical-card'
+        let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/medical-card'
     
     fetch(url,{
         method: 'POST',
@@ -102,7 +104,7 @@ const AccountInfo = ({navigation}) => {
         }
       });
       }else if(selectedType=="私人保险"){
-        let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/customer-info/medical-card'
+        let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/medical-card'
     
     fetch(url,{
         method: 'POST',
@@ -137,7 +139,7 @@ const AccountInfo = ({navigation}) => {
     }
     useEffect(() => {
     
-        let url = "http://3.104.232.106:8085/aicare-customer-api/customer/customer-info/all-info";
+        let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
                 fetch(url,{
                   method: 'POST',
                   mode: 'cors',
@@ -304,13 +306,13 @@ const AccountInfo = ({navigation}) => {
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>保险类型： </Text>
-            <Text>{selectedType} </Text>
+            {Platform.OS == "ios"?null:<Text>{selectedType} </Text>}
             <View style={{marginTop:5}}>
             
         </View>
         
         </View>
-        <View style={{marginTop:2,marginLeft:-160, height: 30,borderBottomColor:"#EEEEEE",borderBottomWidth:1.5}}>
+        {/*<View style={{marginTop:2,marginLeft:-160, height: 30,borderBottomColor:"#EEEEEE",borderBottomWidth:1.5}}>
         <RNPickerSelect
             useNativeAndroidPickerStyle={false}
             style={{width:100}}
@@ -325,7 +327,23 @@ const AccountInfo = ({navigation}) => {
                 { label: '无保险', value: '无保险' },
             ]}
         />
-        </View>
+        </View>*/}
+        <Picker 
+      style={{height: 50,  
+        width: 100,  
+        color: 'white',  
+        marginTop:-50,
+        justifyContent: 'center',marginLeft:50  }}
+  selectedValue={selectedType}
+  onValueChange={(value) => setSelectedType(value)
+  }>
+  <Picker.Item label="请选择更改类型...." value="请选择更改类型" />
+  <Picker.Item label="Medicare" value="Medicare" />
+  <Picker.Item label="私人保险" value="私人保险" />
+  <Picker.Item label="无保险" value="无保险" />
+
+
+</Picker>
         {selectedType=="Medicare"?<View style = {{alignItems:"center"}}>
         <TextInput style = {styles.account}
           placeholder="持卡人姓名" 

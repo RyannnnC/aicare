@@ -177,7 +177,7 @@ export default function ClinicInfo({route,navigation}) {
             />
     </TouchableOpacity>
     <View style={{marginLeft:-15,marginTop:20}}>
-    <TouchableOpacity style={styles.next_wrapper} onPress={gotoDoc}>
+    <TouchableOpacity style={styles.next_wrapper} onPress={goBack}>
       <Text style={styles.onsite_text}>预约医生</Text>
     </TouchableOpacity>
     </View>

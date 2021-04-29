@@ -36,7 +36,7 @@ export default class Login extends Component {
     if (s.password.length === 0) {
         errors.push("Enter a password");
     }
-    let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/user/login?'
+    let url = 'http://'+this.context.url+'/aicare-customer-api/customer/user/login?'
     +'loginName='+ s.name
     +'&passWord=' + s.password
     +"&appType=4" +"&loginType="+s.type;
@@ -49,7 +49,7 @@ export default class Login extends Component {
     })
     .then((response) => response.json())
     .then((json) =>  {
-        console.log(json);
+        console.log(url);
         if (json.code === 0) {
           //this.context.action.changeLogin(true);
           this.context.action.changetoken(json.data);
@@ -120,7 +120,7 @@ export default class Login extends Component {
       <Image style = {styles.img4}
         source = {require('../images/logo.png')}
       />
-      <Text style={{marginTop:95,marginLeft:10,color:"#8FD7D3"}}>1.2</Text>
+      <Text style={{marginTop:95,marginLeft:10,color:"#8FD7D3"}}>1.21</Text>
       </View>
       <View style={{height:90,backgroundColor:'white',padding:30}}></View>
       

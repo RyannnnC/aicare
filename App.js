@@ -1,63 +1,4 @@
-/*import React ,{Component}from 'react';
-import { Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
-//import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 
-export default class Signup extends Component {
-
-  sendRequest() {
-      /*let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/user/scheduledetail?'
-      +'orgId=30'
-      +'&deptId=1' 
-      +'&businessEmployerId=1' 
-      +'&dayOfWeek=7';
-      Alert.alert("hi");
-      fetch(url,{
-        credentials:"include",
-        headers:{"sso-auth-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ3Nzk3MzcsInVzZXJpbmZvIjoie1wiYXBwVHlwZVwiOlwiMVwiLFwiY2xpZW50VHlwZVwiOlwiM1wiLFwiY3JlYXRlQnlcIjpcImtpbVwiLFwiY3JlYXRlVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJkZXB0SWRcIjowLFwiZW1haWxcIjpcImtpbXpob25nMjAxN0BnbWFpbC5jb21cIixcImlkXCI6NSxcImxvZ2luTnVtYmVyXCI6MCxcImxvZ2luVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJtb2JpbGVcIjpcIjA0MjY4MDQ4OThcIixcInBhc3N3b3JkXCI6XCJjYjdkNWFjNTM2ZjAyZjhjNGZkZGJmYjg3MDcwNTMyZDc4NWM5YTk2Mzg5ZjYwNmUyZDEyNmEwZjliNTNlMmZhXCIsXCJzYWx0XCI6XCJSaEhkcnBVMTlqN1Q5MnJrY2tsclwiLFwic3RhdHVzXCI6MSxcInVwZGF0ZUJ5XCI6MTYxNDY3OTY4OTAwMCxcInVwZGF0ZVRpbWVcIjoxNjE0Njc5Njg5MDAwLFwidXNlcm5hbWVcIjpcImtpbVwifSJ9.S1zazA1yMZFvfpfet2iC9DJe43Zg8B0cY-aRDZkwouc"},
-        method: 'GET',
-      })
-      .then((response) => response.json())
-      .then((json)=>console.log(json.page[40]))*/
-      /*let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/create-appointment?scheduleDetailedId=1457&customerId=5&customerName=PeixuanZhong&insuranceType=medicare&clientType=3&appType=1";
-      Alert.alert("sending");
-      fetch(url,{
-        credentials:"include",
-        headers:{"sso-auth-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTU1NDU0MTAsInVzZXJpbmZvIjoie1wiYXBwVHlwZVwiOlwiMVwiLFwiY2xpZW50VHlwZVwiOlwiM1wiLFwiY3JlYXRlQnlcIjpcImtpbVwiLFwiY3JlYXRlVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJkZXB0SWRcIjowLFwiZW1haWxcIjpcImtpbXpob25nMjAxN0BnbWFpbC5jb21cIixcImlkXCI6NSxcImxvZ2luTnVtYmVyXCI6MCxcImxvZ2luVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJtb2JpbGVcIjpcIjA0MjY4MDQ4OThcIixcInBhc3N3b3JkXCI6XCJjYjdkNWFjNTM2ZjAyZjhjNGZkZGJmYjg3MDcwNTMyZDc4NWM5YTk2Mzg5ZjYwNmUyZDEyNmEwZjliNTNlMmZhXCIsXCJzYWx0XCI6XCJSaEhkcnBVMTlqN1Q5MnJrY2tsclwiLFwic3RhdHVzXCI6MSxcInVwZGF0ZUJ5XCI6MTYxNDY3OTY4OTAwMCxcInVwZGF0ZVRpbWVcIjoxNjE0Njc5Njg5MDAwLFwidXNlcm5hbWVcIjpcImtpbVwifSJ9.F1NBwcQi15ce0jUhDmMG-hWI6l4tER4oP1a3wjDaNNo"},
-        method: 'GET',
-      })
-      .then((response) => response.json())
-      .then((json)=>console.log(json))
-      
-     let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment?customerId=5";
-     Alert.alert("sending");
-     fetch(url,{
-       credentials:"include",
-       headers:{"sso-auth-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTU1NDU0MTAsInVzZXJpbmZvIjoie1wiYXBwVHlwZVwiOlwiMVwiLFwiY2xpZW50VHlwZVwiOlwiM1wiLFwiY3JlYXRlQnlcIjpcImtpbVwiLFwiY3JlYXRlVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJkZXB0SWRcIjowLFwiZW1haWxcIjpcImtpbXpob25nMjAxN0BnbWFpbC5jb21cIixcImlkXCI6NSxcImxvZ2luTnVtYmVyXCI6MCxcImxvZ2luVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJtb2JpbGVcIjpcIjA0MjY4MDQ4OThcIixcInBhc3N3b3JkXCI6XCJjYjdkNWFjNTM2ZjAyZjhjNGZkZGJmYjg3MDcwNTMyZDc4NWM5YTk2Mzg5ZjYwNmUyZDEyNmEwZjliNTNlMmZhXCIsXCJzYWx0XCI6XCJSaEhkcnBVMTlqN1Q5MnJrY2tsclwiLFwic3RhdHVzXCI6MSxcInVwZGF0ZUJ5XCI6MTYxNDY3OTY4OTAwMCxcInVwZGF0ZVRpbWVcIjoxNjE0Njc5Njg5MDAwLFwidXNlcm5hbWVcIjpcImtpbVwifSJ9.F1NBwcQi15ce0jUhDmMG-hWI6l4tER4oP1a3wjDaNNo"},
-       method: 'GET',
-     })
-     .then((response) => response.json())
-     .then((json)=>console.log(json))
-    }
-    
-   let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-doctors?customerId=5";
-     Alert.alert("sending");
-     fetch(url,{
-       credentials:"include",
-       headers:{"sso-auth-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTU1NDU0MTAsInVzZXJpbmZvIjoie1wiYXBwVHlwZVwiOlwiMVwiLFwiY2xpZW50VHlwZVwiOlwiM1wiLFwiY3JlYXRlQnlcIjpcImtpbVwiLFwiY3JlYXRlVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJkZXB0SWRcIjowLFwiZW1haWxcIjpcImtpbXpob25nMjAxN0BnbWFpbC5jb21cIixcImlkXCI6NSxcImxvZ2luTnVtYmVyXCI6MCxcImxvZ2luVGltZVwiOjE2MTQ2Nzk2ODkwMDAsXCJtb2JpbGVcIjpcIjA0MjY4MDQ4OThcIixcInBhc3N3b3JkXCI6XCJjYjdkNWFjNTM2ZjAyZjhjNGZkZGJmYjg3MDcwNTMyZDc4NWM5YTk2Mzg5ZjYwNmUyZDEyNmEwZjliNTNlMmZhXCIsXCJzYWx0XCI6XCJSaEhkcnBVMTlqN1Q5MnJrY2tsclwiLFwic3RhdHVzXCI6MSxcInVwZGF0ZUJ5XCI6MTYxNDY3OTY4OTAwMCxcInVwZGF0ZVRpbWVcIjoxNjE0Njc5Njg5MDAwLFwidXNlcm5hbWVcIjpcImtpbVwifSJ9.F1NBwcQi15ce0jUhDmMG-hWI6l4tER4oP1a3wjDaNNo"},
-       method: 'GET',
-     })
-     .then((response) => response.json())
-     .then((json)=>console.log(json))
-    }
-  render() {
-    return (
-      <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
-        <Text>test</Text>
-        <Button onPress={()=>this.sendRequest()} title="Learn More"
-        color="#841584"></Button>
-      </View>
-  );}
-}*/
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
@@ -165,6 +106,7 @@ class App extends React.Component {
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
+      url:"3.104.232.106:8085",
       suburb:"",
       postcode:"",
       state:"",
@@ -371,7 +313,6 @@ render() {
         </>
         ):(
           <>
-          <Stack.Screen options={{headerShown: false}} name="Welcome" component={Welcome} />
           <Stack.Screen options={{headerShown: false}} name="登陆" component={Login} />
           <Stack.Screen name="注册" component={Signup} />
           <Stack.Screen name="数据协议" component={DataPolicy} />

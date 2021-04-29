@@ -25,7 +25,7 @@ export default function ConsumerOrderPage() {
 
     }
     var date = today.getFullYear()+'-'+month+'-'+day;
-    let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1";
+    let url = "http://"+user.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1";
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -54,7 +54,7 @@ export default function ConsumerOrderPage() {
   return (
     <View style={{flex:1,backgroundColor:"white"}}>
       <Image
-        style = {styles.topping_image}
+        style = {{height:90,width:300,marginLeft:50,marginTop:10}}
         source = {require('../images/ordertop.png')}
       />
       <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>

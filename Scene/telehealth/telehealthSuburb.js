@@ -3,8 +3,8 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput,Scr
 import { CheckBox } from 'react-native-elements';
 import styles from "../../style"
 import { StackActions } from '@react-navigation/native';
-import RNPickerSelect from 'react-native-picker-select';
-
+//import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-picker/picker';
 export default function teleSuburb({route,navigation}) {
     const alertHandler= () => {
       Alert.alert('function unimplemented')
@@ -88,7 +88,7 @@ export default function teleSuburb({route,navigation}) {
         </TextInput>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#999999",borderBottomWidth:1,}}>
         <View style={{marginTop:5}}>
-        <RNPickerSelect
+        {/*<RNPickerSelect
         //fixAndroidTouchableBug={true}
         useNativeAndroidPickerStyle={false}
 
@@ -107,7 +107,28 @@ export default function teleSuburb({route,navigation}) {
 
 
         ]}
-    />
+      />*/}
+      <Picker 
+      style={{height: 50,  
+        width: 100,  
+        color: 'white',  
+        justifyContent: 'center',marginLeft:100  }}
+  selectedValue={selectedType}
+  onValueChange={(itemValue, itemIndex) =>
+    setSelectedType(itemValue)
+  }>
+  <Picker.Item label="请选择州" value="请选择州" />
+  <Picker.Item label="NSW" value="NSW" />
+  <Picker.Item label="VIC" value="VIC" />
+  <Picker.Item label="QLD" value="QLD" />
+  <Picker.Item label="ACT" value="ACT" />
+  <Picker.Item label="NT" value="NT" />
+  <Picker.Item label="SA" value="SA" />
+  <Picker.Item label="TAS" value="TAS" />
+  <Picker.Item label="VIC" value="VIC" />
+  <Picker.Item label="WA" value="WA" />
+
+</Picker>
     </View>
     </View></View>:null}
         <View style={{flexDirection: 'row', marginBottom: 5,marginLeft:40,marginTop:30}}>

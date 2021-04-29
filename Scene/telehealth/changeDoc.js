@@ -1,11 +1,12 @@
 import React ,{Component}from 'react';
-import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,Alert} from 'react-native';
+import { Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,Alert,ActivityIndicator} from 'react-native';
 import {styles} from '../../style';
 import {data} from './docdata';
 import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import DateFilter from "./datefilter";
 import DataContext from "../../consumerContext";
+//import { UserOfflineReason } from 'react-native-agora';
 
 //import moment from "moment"
 
@@ -20,6 +21,7 @@ class changeDoc extends Component {
         search:"",
         candidates:[],
         docs:[],
+        loading:true,
       };
     }
   setModalVisible = (visible) => {
@@ -30,10 +32,10 @@ class changeDoc extends Component {
     }  
 
   componentDidMount = () => {
-    console.log(this.props.route.params.address);
+    console.log("start");
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/query-doctors?"+"orgId=".concat(this.props.route.params.orgId);
+      let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/query-doctors?"+"orgId=".concat(this.props.route.params.orgId);
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -50,8 +52,9 @@ class changeDoc extends Component {
             .then((response) => response.json())
             .then((json) => {
               if (json.code == 0) {
-                console.log(json.businessEmployer[0].businessUserId);
+                //console.log(json.businessEmployer[0].businessUserId);
                 this.setState({docs:json.businessEmployer});
+                this.setState({loading:false})
                 //Alert.alert('查询成功');
               } else {
                 console.log(json.msg);
@@ -63,29 +66,75 @@ class changeDoc extends Component {
   setChange(value){
     this.setState({search:value});
   }
- 
+  splitString=(string)=>{
+    let res = string.split(",").map(Number);
+    return res;
+  }
+  
   render () {
     //console.log (this.state);
-    const { modalVisible,Visible,docs } = this.state;
-
+    const { modalVisible,Visible,docs,loading } = this.state;
+    if (loading){
+      return (
+        <View style={{ flex:1, backgroundColor:"white" }}>
+        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20}}>
+        <TouchableOpacity onPress={() =>{
+            this.props.navigation.dispatch(StackActions.pop(1))}}>
+            <Image
+            style = {styles.arrow_image}
+            source={require('../../images/icon/2/Arrow_left.png')}
+            />
+        </TouchableOpacity>
+        <Text style={{
+        fontSize:16,
+        marginLeft:105,
+        marginTop:20}}>诊所选择</Text>
+        </View>
+        <View style={{marginTop:10}}>
+        <Image
+            style = {styles.topping_image}
+            source={require('../../images/order_img.png')}
+        />
+        </View>
+        <View style={{marginTop:60,alignItems:"center"}}>
+        <Image
+            style = {{height:187,width:326}}
+            source={require('../../images/waiting.png')}
+        />
+        </View>
+        <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>
+          正在搜索相关医生，请耐心等待..
+        </Text>
+        <ActivityIndicator size="large" style={{marginTop:-90}} color="#FF8570"></ActivityIndicator>
+        </View>
+      )
+    }
     if (docs.length >0) {
     const orders = docs.map((item) => {
+      const types = item.serviceClass?this.splitString(item.serviceClass).map((item) => {
+        return (
+            <Text style={{ marginTop:2,marginRight:5,fontSize:12, fontWeight: '400',color:'#666666'}}>{this.context.deptType[item]}</Text>
+        )
+      }):null;
       return (
-        <View style={styles.card} key={item.id}> 
+        <View style={styles.card} key={item.employerId}> 
         <TouchableOpacity onPress={() =>{
           //console.log(this.props.route.params.orgId)
           console.log(this.props.route.params.doctype);
 
-          this.props.navigation.navigate("changeDocInfo",{orgId:this.props.route.params.orgId,docId:item.businessUserId,doctype:this.props.route.params.doctype,address:this.props.route.params.address,docName:item.name,id:this.props.route.params.id})}}>
+          this.props.navigation.navigate("changeDocInfo",{orgId:this.props.route.params.orgId,docId:item.employerId,queryId:item.employerId,doctype:this.props.route.params.doctype,address:this.props.route.params.address,docName:item.name})}}>
           <View style={{flexDirection: 'row', marginTop:5,  marginLeft:25}}>
          
             <Image
             style = {{height:50,width:50,marginRight:15,marginLeft:-10}}
-            source = {require("../../images/telehealth_icon/service_doctor_img5.png")}
+            source = {item.imgUrl?{uri:item.imgUrl}:require("../../images/telehealth_icon/service_doctor_img5.png")}
             />
           <View>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
-            <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.serviceClass + " - "+ this.props.route.params.name}</Text>
+            <View style={{flexDirection:"row"}}>
+            {types}
+            <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:-5}}>{ " - "+ this.props.route.params.name}</Text>
+            </View>
           </View>
           </View>
           <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
@@ -126,11 +175,24 @@ class changeDoc extends Component {
 
                 elevation: 2,}}
                 onPress={() =>{
-                  this.props.navigation.navigate("ClinicInfo")}}>
-        <Image
-            style = {{marginLeft:40,height:165,width:340,borderRadius:30}}
-            source={require('../../images/clinic_top.png')}
-        />
+                  this.props.navigation.navigate("ClinicInfo",{item:this.props.route.params.item})}}>
+        <View style={{marginTop:-10,width:'90%',marginLeft:15,height:150,justifyContent: "center",alignItems: "center",marginBottom:18,backgroundColor:'#F1FAFA',borderRadius:30}}>
+          <Text style={{ fontSize:18, fontWeight: '600',marginTop:10 }}>{this.props.route.params.name}</Text>
+          <View style={{flexDirection: 'row',paddingBottom: 15, }}>
+            <Image
+              style = {{width: 20, height:20 , marginLeft:10,marginTop:5, marginRight:1}}
+              source = {require('../../images/telehealth_icon/stars.png')}
+            />
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginTop:5}}>{5.0}</Text>
+          </View>
+          <View style={{borderColor:"#EEEEEE",borderTopWidth:1.5,marginTop:-10,width:280}}>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13,color:"#666666" }}>地址: {this.props.route.params.address}</Text>
+          <View style={{flexDirection:"row"}}>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666"  }}>电话: {this.props.route.params.item.mobile}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666",marginLeft:70  }}>点击查看介绍</Text>
+          </View>
+          </View>
+        </View>
         </TouchableOpacity>
         </View>
         <View style ={{flexDirection:'row',marginTop:15}}>
