@@ -335,29 +335,29 @@ export default class Info extends Component {
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/singup_icon_name.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>基本信息</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('basicInformation')}</Text>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>名称</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('name')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
           value={this.context.name}
           onChangeText={(text) => {this.context.action.changename(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>电话</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "0403571833"
           value={this.context.phone}
           onChangeText={(text) => {this.context.action.changephone(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>邮箱</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('email')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "657416708xy@gmail.com"
           value={this.context.email}
           onChangeText={(text) => {this.context.action.changeemail(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>地址</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('address')}</Text>
           <TextInput
           style={styles.resumeInput}
           placeholder= "1001/1 Mooltan Avanue"
@@ -366,14 +366,14 @@ export default class Info extends Component {
           />
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>编码</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('postcode')}</Text>
           <TextInput
             style={styles.resumeInput1}
             placeholder= "2113"
             value = {this.context.postcode}
             onChangeText={(text) => {this.context.action.changepostcode(text)}}
           />
-          <Text style={{marginLeft:20, fontSize:16, fontWeight: '400' }}>州</Text>
+          <Text style={{marginLeft:20, fontSize:16, fontWeight: '400' }}>{I18n.t('state')}</Text>
           <TextInput
             style={styles.resumeInput1}
             value = {this.context.state}
@@ -381,7 +381,7 @@ export default class Info extends Component {
             placeholder= "NSW"/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
           <Text numberOfLines={1} style={{ fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.intro}</Text>
           <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate(I18n.t('introduction'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
@@ -393,26 +393,27 @@ export default class Info extends Component {
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/account_icon_profile_normal.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>服务信息</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('serviceInformation')}</Text>
         </View>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>支持语言</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('supLanguage')}</Text>
         </View>
 
         <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
         {this.context.languages.length>0 ? languages:
-        <Text>请添加诊所支持的语言</Text>}
+        <Text>{I18n.t('nosupLanguage')}</Text>}
         <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('languages'))}>
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
         </View>
-
-            <Text style={{ fontSize:16, fontWeight: '400' }}>服务时间</Text>
+          <View style={{marginTop:10, marginBottom:10}}>
+            <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceHours')}</Text>
+          </View>
           <View  style={{flexDirection: 'row'}}>
             <TouchableOpacity style={{
               backgroundColor:this.state.buttons[0].backgroundColor,
               borderWidth: this.state.buttons[0].borderWidth,
-              width: 60,
+              width: 100,
               height: 30,
               borderRadius: 10,
               marginTop: 5,
@@ -422,7 +423,7 @@ export default class Info extends Component {
               justifyContent: 'center',
               }}
               onPress={()=>this.changeColor(0)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>周一</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>{I18n.t('monday')}</Text>
             </TouchableOpacity>
             { this.state.buttons[0].pressed &&
               <View style={{flexDirection: 'row'}}>
@@ -479,7 +480,7 @@ export default class Info extends Component {
             <TouchableOpacity style={{
               backgroundColor:this.state.buttons[1].backgroundColor,
               borderWidth: this.state.buttons[1].borderWidth,
-              width: 60,
+              width: 100,
               height: 30,
               borderRadius: 10,
               marginTop: 5,
@@ -489,7 +490,7 @@ export default class Info extends Component {
               justifyContent: 'center',
               }}
               onPress={()=>this.changeColor(1)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>周二</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>{I18n.t('tuesday')}</Text>
             </TouchableOpacity>
             { this.state.buttons[1].pressed &&
               <View style={{flexDirection: 'row'}}>
@@ -545,7 +546,7 @@ export default class Info extends Component {
             <TouchableOpacity style={{
               backgroundColor:this.state.buttons[2].backgroundColor,
               borderWidth: this.state.buttons[2].borderWidth,
-              width: 60,
+              width: 100,
               height: 30,
               borderRadius: 10,
               marginTop: 5,
@@ -555,7 +556,7 @@ export default class Info extends Component {
               justifyContent: 'center',
               }}
               onPress={()=>this.changeColor(2)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>周三</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>{I18n.t('wednesday')}</Text>
             </TouchableOpacity>
             { this.state.buttons[2].pressed &&
               <View style={{flexDirection: 'row'}}>
@@ -611,7 +612,7 @@ export default class Info extends Component {
             <TouchableOpacity style={{
               backgroundColor:this.state.buttons[3].backgroundColor,
               borderWidth: this.state.buttons[3].borderWidth,
-              width: 60,
+              width: 100,
               height: 30,
               borderRadius: 10,
               marginTop: 5,
@@ -621,7 +622,7 @@ export default class Info extends Component {
               justifyContent: 'center',
               }}
               onPress={()=>this.changeColor(3)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>周四</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>{I18n.t('thursday')}</Text>
             </TouchableOpacity>
             { this.state.buttons[3].pressed &&
               <View style={{flexDirection: 'row'}}>
@@ -677,7 +678,7 @@ export default class Info extends Component {
             <TouchableOpacity style={{
               backgroundColor:this.state.buttons[4].backgroundColor,
               borderWidth: this.state.buttons[4].borderWidth,
-              width: 60,
+              width: 100,
               height: 30,
               borderRadius: 10,
               marginTop: 5,
@@ -687,7 +688,7 @@ export default class Info extends Component {
               justifyContent: 'center',
               }}
               onPress={()=>this.changeColor(4)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>周五</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>{I18n.t('friday')}</Text>
             </TouchableOpacity>
             { this.state.buttons[4].pressed &&
               <View style={{flexDirection: 'row'}}>
@@ -743,7 +744,7 @@ export default class Info extends Component {
             <TouchableOpacity style={{
               backgroundColor:this.state.buttons[5].backgroundColor,
               borderWidth: this.state.buttons[5].borderWidth,
-              width: 60,
+              width: 100,
               height: 30,
               borderRadius: 10,
               marginTop: 5,
@@ -753,7 +754,7 @@ export default class Info extends Component {
               justifyContent: 'center',
               }}
               onPress={()=>this.changeColor(5)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>周六</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>{I18n.t('saturday')}</Text>
             </TouchableOpacity>
             { this.state.buttons[5].pressed &&
               <View style={{flexDirection: 'row'}}>
@@ -809,7 +810,7 @@ export default class Info extends Component {
             <TouchableOpacity style={{
               backgroundColor:this.state.buttons[6].backgroundColor,
               borderWidth: this.state.buttons[6].borderWidth,
-              width: 60,
+              width: 100,
               height: 30,
               borderRadius: 10,
               marginTop: 5,
@@ -819,7 +820,7 @@ export default class Info extends Component {
               justifyContent: 'center',
               }}
               onPress={()=>this.changeColor(6)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>周天</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>{I18n.t('sunday')}</Text>
             </TouchableOpacity>
             { this.state.buttons[6].pressed &&
               <View style={{flexDirection: 'row'}}>
@@ -871,22 +872,24 @@ export default class Info extends Component {
                 minuteInterval={10}
                 />
             </View>
-            <Text style={{ fontSize:16, fontWeight: '400' }}>服务种类</Text>
+            <View style={{marginTop:10, marginBottom:10}}>
+              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
+            </View>
             <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
             {this.context.serviceclass.length>0 ? service:
-            <Text>请添加诊所支持的服务种类</Text>}
+            <Text>{I18n.t('enterServiceClass')}</Text>}
             <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('serviceType'))}>
               <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
             </TouchableOpacity>
             </View>
 
             <View style={{ marginTop:10, marginBottom:10}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>服务类型</Text>
+              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceType')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox
                 center
-                title='实地问诊                                '
+                title={I18n.t('onsite')}
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
@@ -904,7 +907,7 @@ export default class Info extends Component {
             <View style={{flexDirection: 'row'}}>
               <CheckBox
                 center
-                title='远程医疗                                '
+                title={I18n.t('telehealth')}
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
@@ -919,7 +922,7 @@ export default class Info extends Component {
                />
             </View>
             <View>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>收费方式</Text>
+              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('chargingMethod')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox
@@ -947,7 +950,7 @@ export default class Info extends Component {
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: "center",}} onPress={() => {this.sendRequest()}}>
-          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>
         </TouchableOpacity>
         </View>
       </ScrollView>

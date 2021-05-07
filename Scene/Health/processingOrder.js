@@ -8,7 +8,7 @@ import DataContext from '../../providerContext';
 import CalendarPicker from 'react-native-calendar-picker';
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
-
+import I18n from '../switchLanguage';
 
 export default class ProcessingOrder extends Component {
     constructor(props) {
@@ -251,7 +251,7 @@ export default class ProcessingOrder extends Component {
               style = {{width: 18, height:18,marginRight:14}}
               source = {require('../../images/providerImg/order_icon_org.png')}
               />
-            <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>预约时间 {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
+            <Text style={{fontSize:16, color:'#333333', fontWeight: '400'}}>{I18n.t('bookingTime')} {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
           </View>
           <View style={styles.card3} key={item.id}>
             <View style={{width:'85%', marginLeft:'10%'}}>
@@ -286,7 +286,7 @@ export default class ProcessingOrder extends Component {
                 style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/account_icon_video.png')}
               />
-              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>远程问诊</Text>
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('telehealth')}</Text>
               <Image
                 style = {{width: 15, height:15,marginLeft:70, marginRight:5}}
                 source = {require('../../images/providerImg/tp.png')}
@@ -301,7 +301,7 @@ export default class ProcessingOrder extends Component {
               marginTop: 15,
               justifyContent: "center",
               alignItems: "center" }} onPress={() => {Alert.alert('功能尚未开放')}}>
-                <Text style={{fontSize:14, color:'#FAFAFA'}}>视频</Text>
+                <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('video')}</Text>
               </TouchableOpacity>
             <TouchableOpacity style={{width: 75,
             height: 25,
@@ -316,7 +316,7 @@ export default class ProcessingOrder extends Component {
               console.log(this.state.selectedId);
               console.log(this.state.selectedDoctor);
             }}>
-                <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
+                <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('modify')}</Text>
               </TouchableOpacity>
             </View>
             </View>
@@ -337,7 +337,7 @@ export default class ProcessingOrder extends Component {
                 style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_location.png')}
               />
-              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>实地问诊</Text>
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('onsite')}</Text>
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
             <TouchableOpacity style={{width: 75,
@@ -352,7 +352,7 @@ export default class ProcessingOrder extends Component {
               console.log(this.state.selectedId);
               console.log(this.state.selectedDoctor);
             }}>
-                <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
+                <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('modify')}</Text>
               </TouchableOpacity>
             </View>
             </View>
@@ -369,14 +369,14 @@ export default class ProcessingOrder extends Component {
         }}
       >
       <View style={{marginTop:250,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 12,
-},
-shadowOpacity: 0.58,
-shadowRadius: 16.00,
+  shadowOffset: {
+  width: 0,
+  height: 12,
+  },
+  shadowOpacity: 0.58,
+  shadowRadius: 16.00,
 
-elevation: 24,}}>
+  elevation: 24,}}>
     <View style={{flexDirection:"row"}}>
     <TouchableOpacity onPress={() =>{this.changevis(item.id,false)}} style={{marginRight:60,marginLeft:23}}>
       <Image
@@ -386,38 +386,40 @@ elevation: 24,}}>
     </TouchableOpacity>
     </View>
     <ScrollView style={{backgroundColor:"#F7FAFA"}}>
-      <View style={{marginLeft:115,marginTop:30}}>
-        <Text style={{marginBottom:10}}>患者姓名: {item.customerRealName}</Text>
-        <Text style={{marginBottom:10}}>患者电话: {item.mobile}</Text>
-        <Text style={{marginBottom:10}}>就诊时间: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
-        <Text style={{marginBottom:10}}>就诊医生: {item.businessEmployerName}</Text>
-        <Text style={{marginBottom:10}}>就诊科目: {item.deptName}</Text>
-        <Text style={{marginBottom:10}}>就诊地址: {item.orgAddress}</Text>
+      <View style={{alignItems:'center'}}>
+      <View style={{marginTop:30}}>
+        <Text style={{marginBottom:10}}>{I18n.t('patientName')}: {item.customerRealName}</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('patientMobile')}: {item.mobile}</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('bookingTime')}: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('bookingDoctor')}: {item.businessEmployerName}</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('bookingDept')}: {item.deptName}</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('bookingAdress')}: {item.orgAddress}</Text>
         {item.telehealthFlg ==1?
           <View>
-            <Text style={{marginBottom:10}}>就诊方式: 远程医疗</Text>
-            <Text style={{marginBottom:10}}>远程方式: {tp}</Text>
+            <Text style={{marginBottom:10}}>{I18n.t('treatmentTypeT')}</Text>
+            <Text style={{marginBottom:10}}>{I18n.t('remoteMethod')}: {tp}</Text>
           </View>
         :
-        <Text style={{marginBottom:10}}>就诊方式: 实地会诊</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('treatmentTypeO')}</Text>
         }
-        <Text style={{marginBottom:10}}>保险方式: {item.insuranceType}</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('insuranceType')}: {item.insuranceType}</Text>
         {item.insuranceType == 'Medicare' &&
           <View>
-            <Text style={{marginBottom:10}}>医保序列: {item.serialNumber}</Text>
-            <Text style={{marginBottom:10}}>医保卡号: {item.cardNumber}</Text>
-            <Text style={{marginBottom:10}}>过期时间: {item.expireDate}</Text>
+            <Text style={{marginBottom:10}}>{I18n.t('serialNumber')}: {item.serialNumber}</Text>
+            <Text style={{marginBottom:10}}>{I18n.t('cardNumber')}: {item.cardNumber}</Text>
+            <Text style={{marginBottom:10}}>{I18n.t('expireDate')}: {item.expireDate}</Text>
           </View>
         }
         {item.insuranceType == '私人保险' &&
           <View>
-            <Text style={{marginBottom:10}}>医保卡号: {item.cardNumber}</Text>
+            <Text style={{marginBottom:10}}>{I18n.t('cardNumber')}: {item.cardNumber}</Text>
           </View>
         }
       </View>
         <TouchableOpacity style={styles.next_wrapper} onPress={() =>{this.changevis(item.id,false)}}>
-          <Text style={styles.onsite_text}>确定</Text>
+          <Text style={styles.onsite_text}>{I18n.t('confirmation')}</Text>
         </TouchableOpacity>
+      </View>
     </ScrollView>
         <View style={{height:20}}/>
         </View>
@@ -431,7 +433,7 @@ elevation: 24,}}>
         <View style={{flexDirection: 'row', marginBottom:21,marginTop:30}}>
           <TouchableOpacity style={{flexDirection: 'row', marginRight:199,marginLeft:30}}
           onPress={()=>{this.setVisible(!this.state.Visible)}}>
-            <Text style={{fontSize:13}}>全部</Text>
+            <Text style={{fontSize:13}}>{I18n.t('all')}</Text>
             <Image
               style = {{width: 13, height:13,marginLeft:5}}
               source = {require('../../images/providerImg/schedule_icon_filter.png')}
@@ -494,34 +496,34 @@ elevation: 24,}}>
        </TouchableOpacity>
        <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
        <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
-         <Text style = {{ color:'#006A71',fontSize:16}}>修改时间</Text>
-         <CalendarPicker
-           onDateChange={this.onDateChange}
-           previousTitle="上一月"
-           nextTitle = "下一月"
-           width = {300}
-           height = {300}
-         />
-         <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
-         <ScrollView style={{marginTop: 30,maxHeight:100}}>
-          <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
-          { this.state.timeLoad?
+       <Text style = {{ color:'#006A71',fontSize:16}}>{I18n.t('orderTime')}</Text>
+       <CalendarPicker
+         onDateChange={this.onDateChange}
+         previousTitle={I18n.t('prevMonth')}
+         nextTitle = {I18n.t('nextMonth')}
+         width = {300}
+         height = {300}
+       />
+       <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>{I18n.t('time')}</Text>
+       <ScrollView style ={{marginTop: 30,maxHeight:100}}>
+         <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
+         { this.state.timeLoad?
+         <View>
+           <ActivityIndicator size="large" color="#00ff00"  />
+         </View>
+        :this.state.time.length>0 ? times :
           <View>
-            <ActivityIndicator size="large" color="#00ff00"  />
-          </View>
-         :this.state.time.length>0 ? times :
-           <View>
-            <Text>这位医生今天没有排班！</Text>
-          </View>}
-          </View>
-          <TouchableOpacity style={styles.next_wrapper}>
-             <Text style={{color:'white'}}>确定</Text>
-        </TouchableOpacity>
-         </ScrollView>
-       </View>
-       
+           <Text>{I18n.t('noSchedule')}</Text>
+         </View>}
+        </View>
+        <TouchableOpacity style={styles.next_wrapper}>
+           <Text style={{color:'white'}}>{I18n.t('confirmation')}</Text>
+      </TouchableOpacity>
        </ScrollView>
-       
+       </View>
+
+       </ScrollView>
+
         </View>
         <>
         </>
@@ -549,7 +551,7 @@ elevation: 24,}}>
          <DateSelect/>
          <View>
          <TouchableOpacity style={styles.next_wrapper}>
-             <Text style={{color:'white'}}>确定</Text>
+             <Text style={{color:'white'}}>{I18n.t('confirmation')}</Text>
           </TouchableOpacity>
          </View>
         </ScrollView>
@@ -592,7 +594,7 @@ elevation: 24,}}>
         <TouchableOpacity style={styles.next_wrapper} onPress={()=>{
           this.setVisible(!this.state.Visible);}
         }>
-      <Text style={styles.onsite_text}>确定</Text>
+      <Text style={styles.onsite_text}>{I18n.t('confirmation')}</Text>
     </TouchableOpacity>
     </ScrollView>
         <View style={{height:20}}/>

@@ -3,6 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaVi
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from '../../providerContext';
+import I18n from '../switchLanguage';
 
 export default class Mintro extends Component {
   state={
@@ -16,7 +17,7 @@ export default class Mintro extends Component {
         style = {styles.smallIconImg}
         source={require('../../images/providerImg/account_icon_profile_normal.png')}
       />
-      <Text style={{ fontSize:16, fontWeight: '400' }}>详情填写</Text>
+      <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('details')}</Text>
       </View>
 
       <View style={{width:315, height:120,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
@@ -30,7 +31,7 @@ export default class Mintro extends Component {
       <View style={{width:'75%',marginTop:40}}>
       <TouchableOpacity style={styles.resumeButton} onPress={() => {
         this.props.navigation.pop()}}>
-        <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+        <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>
       </TouchableOpacity>
       </View>
     </SafeAreaView>

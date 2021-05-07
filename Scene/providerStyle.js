@@ -163,11 +163,12 @@ export const styles = StyleSheet.create({
   },
   profileBar:{
     width: 332,
-    height: 25,
+    height: 42,
     marginTop: 15,
     marginBottom: 15,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    borderBottomWidth:1,
+    borderBottomColor:'#EEEEEE'
   },
   benefit: {
     width: 320,
@@ -448,7 +449,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FF7E67',
     borderRadius: 10,
     textAlign: 'center',
-    marginRight: 31,
+    marginRight: 10,
     marginTop: 15,
     justifyContent: "center",
     alignItems: "center" ,
@@ -461,7 +462,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#68B0AB',
     borderRadius: 10,
     textAlign: 'center',
-    marginLeft: 32,
+    marginLeft: 10,
     marginTop: 15,
     justifyContent: "center",
     alignItems: "center" ,

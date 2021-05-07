@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
+import { SafeAreaView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
+import { LinearGradient } from 'expo-linear-gradient';
 import I18n from '../switchLanguage';
 
 export default class HealthAccountMain extends Component {
@@ -125,9 +126,13 @@ export default class HealthAccountMain extends Component {
     )
     }else {
       return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor:'white' }}>
+    <SafeAreaView style={{ flex: 1,alignItems: "center", backgroundColor:'white' }}>
       {this.context.image ?
-      <View style={{ width: 300, height: 50, marginBottom: 20, alignItems: "center", flexDirection: 'row'}}>
+      <View style={{ width: '100%',height:160}}>
+      <LinearGradient
+      colors={['rgba(250,250,247,0.0)', '#ecf4f3']}
+      style={{width:'100%',height:'100%',alignItems: "center",justifyContent:'center'}}>
+      <View style={{ width: 300, height: 50, alignItems: "center", flexDirection: 'row'}}>
       <Image
         style = {{height:60,width:60,borderRadius:30, marginRight:25}}
         source = {{uri:this.context.image}}
@@ -137,12 +142,20 @@ export default class HealthAccountMain extends Component {
         <Text style={{ fontSize:14, fontWeight: '300' }}>{this.context.email}</Text>
       </View>
       </View>
+      </LinearGradient>
+      </View>
       :
-      <View>
-        <Text>您的诊所还未添加资料，请添加资料！</Text>
+      <View style={{ width: '100%',height:160}}>
+      <LinearGradient
+      colors={['rgba(250,250,247,0.0)', '#ecf4f3']}
+      style={{width:'100%',height:'100%',alignItems: "center",justifyContent:'center'}}>
+      <View style={{ width: 300, height: 50, alignItems: "center", flexDirection: 'row'}}>
+        <Text style={{ fontSize:20, fontWeight: '600' }}>{I18n.t('noInformation')}</Text>
+      </View>
+      </LinearGradient>
       </View>
       }
-
+      <View style={{marginTop:20}}>
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('orginfo'))}>
         <Image
           style = {styles.smallIconImg}
@@ -183,14 +196,15 @@ export default class HealthAccountMain extends Component {
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('logout')}</Text>
       </TouchableOpacity>
-      <View style={{flexDirection: 'row', alignItems: "center" }}>
+      </View>
+      <View style={{marginTop:50,flexDirection: 'row', alignItems: "center" }}>
         <Image
           source={require('../../images/logo.png')}
           style = {{width:85, height:30}}
         />
         <Text style={{fontSize:12, color:'#68B0AB'}}>+61 0403555432</Text>
        </View>
-    </View>
+    </SafeAreaView>
   );}}
 }
 HealthAccountMain.contextType = DataContext;

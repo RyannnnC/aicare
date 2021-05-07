@@ -6,7 +6,7 @@ import CalendarPicker from 'react-native-calendar-picker';
 import {styles} from '../providerStyle';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../../providerContext";
-
+import I18n from '../switchLanguage';
 
 export default class DateSelect extends Component {
   constructor(props) {
@@ -61,12 +61,9 @@ export default class DateSelect extends Component {
       .then((response) => response.json())
       .then((json) => {
         if (json.code === 0) {
-          console.log(json.msg);
-          alert('查询成功');
           this.setState({time:json.data})
         } else {
           console.log(json.msg);
-          alert('查询失败');
         }
       }).catch(error => console.warn(error));
   }
@@ -119,15 +116,15 @@ export default class DateSelect extends Component {
     })}
     return (
       <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
-        <Text style = {{ color:'#006A71',fontSize:16}}>预约时间</Text>
+        <Text style = {{ color:'#006A71',fontSize:16}}>{I18n.t('orderTime')}</Text>
         <CalendarPicker
           onDateChange={this.onDateChange}
-          previousTitle="上一月"
-          nextTitle = "下一月"
+          previousTitle={I18n.t('prevMonth')}
+          nextTitle = {I18n.t('nextMonth')}
           width = {300}
           height = {300}
         />
-        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>时间</Text>
+        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>{I18n.t('time')}</Text>
         <ScrollView style ={{marginTop: 30}}>
           {times}
         </ScrollView>

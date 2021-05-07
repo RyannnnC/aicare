@@ -5,11 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ProcessingOrder from './processingOrder';
 import PendingOrder from './pendingOrder';
+import I18n from '../switchLanguage';
 
 export default function ReservationMain() {
   const Tab = createMaterialTopTabNavigator();
-  let pend = "待接取(7)";
-  let proc = "已预约(8)";
 
   return (
     <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
@@ -20,8 +19,8 @@ export default function ReservationMain() {
       />
       </View>
       <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
-        <Tab.Screen name={pend}  component={PendingOrder} />
-        <Tab.Screen name={proc} component={ProcessingOrder} />
+        <Tab.Screen name={I18n.t('pendingOrder')}  component={PendingOrder} />
+        <Tab.Screen name={I18n.t('processingOrder')} component={ProcessingOrder} />
       </Tab.Navigator>
     </SafeAreaView>
   );

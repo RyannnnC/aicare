@@ -92,6 +92,25 @@ export default class Members extends Component {
       }
     );
   }
+  /*    <View style={{flexDirection:'row',marginBottom:10}}>
+      <ScrollView horizontal={true}>
+        <TouchableOpacity style={{borderWidth:1,borderRadius:10,backgroundColor:'#FF816B',width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
+          <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '400'}}>全部(24)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
+          <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>全科(12)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
+          <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>儿科(4)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
+          <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>牙科(6)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
+          <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>心理(2)</Text>
+        </TouchableOpacity>
+      </ScrollView>
+      </View> */
   render () {
     let docs = [];
     if (this.context.doctors.length >0) {
@@ -106,7 +125,7 @@ export default class Members extends Component {
           </TouchableOpacity>
           <View>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
-            <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>全科医生 - 9年工作经验</Text>
+            <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.personalProfile}</Text>
           </View>
           <TouchableOpacity style={{marginLeft:68, marginRight:10}} onPress={() => this.props.navigation.navigate(I18n.t('doctorInfo'), {id: item.employerId})}>
             <Image
@@ -136,7 +155,7 @@ export default class Members extends Component {
           <TouchableOpacity style={{borderRadius:15,marginTop:20,width:'100%',height:70}}
           onPress={() => this.props.navigation.navigate(I18n.t('uploadMember'), {id: null})}>
             <ImageBackground source={require('../../images/providerImg/account_img_block.png')} style={{flexDirection:'row',width:'100%',height:70,justifyContent: "center", alignItems: "center"}}>
-              <Text style={{ color: '#68B0AB', fontSize: 18, fontWeight: '400'}}>添加新成员</Text>
+              <Text style={{ color: '#68B0AB', fontSize: 18, fontWeight: '400'}}>{I18n.t('addMember')}</Text>
               <Image
                 style = {{width:25,height:25,marginLeft:10}}
                 source = {require('../../images/providerImg/account_icon_add_green.png')}
@@ -145,27 +164,9 @@ export default class Members extends Component {
           </TouchableOpacity>
 
         <View style={{flexDirection:'row',marginTop:30,marginBottom:6}}>
-          <Text style={{ color: '#333333', fontSize: 18, fontWeight: '500'}}>我的成员</Text>
+          <Text style={{ color: '#333333', fontSize: 18, fontWeight: '500'}}>{I18n.t('myMember')}</Text>
         </View>
-        <View style={{flexDirection:'row',marginBottom:10}}>
-        <ScrollView horizontal={true}>
-          <TouchableOpacity style={{borderWidth:1,borderRadius:10,backgroundColor:'#FF816B',width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
-            <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '400'}}>全部(24)</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
-            <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>全科(12)</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
-            <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>儿科(4)</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
-            <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>牙科(6)</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{borderWidth:1,borderRadius:10,width:100,height:35,marginLeft:20,marginRight:20,justifyContent: "center", alignItems: "center"}}>
-            <Text style={{ color: '#333333', fontSize: 18, fontWeight: '400'}}>心理(2)</Text>
-          </TouchableOpacity>
-        </ScrollView>
-        </View>
+
         <ScrollView style={{ flex: 1}}>
           <View style={{ flex: 1}}>
           {this.context.doctors.length >0 ? docs :
@@ -174,7 +175,7 @@ export default class Members extends Component {
               style = {{width:280,height:280}}
               source = {require('../../images/providerImg/splash_img3.png')}
             />
-            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您的诊所还没有医生哦，请在上面添加吧！</Text>
+            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('noMember')}</Text>
           </View>
           }
           </View>

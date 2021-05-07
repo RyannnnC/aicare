@@ -504,38 +504,38 @@ export default class UploadMember extends Component {
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/singup_icon_name.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>基本信息</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('basicInformation')}</Text>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>姓名</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('name')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
           value={this.state.name}
           onChangeText={(text) => {this.setState({name:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>电话</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "04*******"
           value={this.state.phone}
           onChangeText={(text) => {this.setState({phone:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>邮箱</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('email')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "****@gmail.com"
           value={this.state.email}
           editable={this.props.route.params.id !=null?false:true}
           onChangeText={(text) => {this.setState({email:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>类型</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
           <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
-          <View style={{flexDirection: 'row', marginTop:2,marginLeft:10,width:270}}>
-            {this.state.types[0].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>全科</Text>}
-            {this.state.types[1].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>牙科</Text>}
-            {this.state.types[2].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>心理</Text>}
-            {this.state.types[3].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>中医</Text>}
-            {this.state.types[4].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>儿科</Text>}
-            {this.state.types[5].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>康复</Text>}
+          <View style={{flexDirection: 'row', flexWrap:'wrap',marginTop:2,marginLeft:10,width:'65%'}}>
+            {this.state.types[0].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('gpfull')}</Text>}
+            {this.state.types[1].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('denfull')}</Text>}
+            {this.state.types[2].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('phyfull')}</Text>}
+            {this.state.types[3].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('chifull')}</Text>}
+            {this.state.types[4].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('pedfull')}</Text>}
+            {this.state.types[5].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('phyfull')}</Text>}
           </View>
             <AntDesign name="down" size={18} color="black" />
           </TouchableOpacity>
@@ -544,7 +544,7 @@ export default class UploadMember extends Component {
             <View style={{justifyContent: "flex-start", alignItems: "flex-start"}}>
               <CheckBox
                 center
-                title='全科'
+                title={I18n.t('gpfull')}
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
                 checkedColor='red'
@@ -557,7 +557,7 @@ export default class UploadMember extends Component {
                />
               <CheckBox
                 center
-                title='牙科'
+                title={I18n.t('denfull')}
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
                 containerStyle={{borderWidth:0, backgroundColor:'white'}}
@@ -570,7 +570,7 @@ export default class UploadMember extends Component {
                />
                <CheckBox
                  center
-                 title='心理'
+                 title={I18n.t('psyfull')}
                  checkedIcon='check-circle-o'
                  uncheckedIcon='circle-o'
                  containerStyle={{borderWidth:0, backgroundColor:'white'}}
@@ -583,7 +583,7 @@ export default class UploadMember extends Component {
                 />
                 <CheckBox
                   center
-                  title='中医'
+                  title={I18n.t('chifull')}
                   checkedIcon='check-circle-o'
                   uncheckedIcon='circle-o'
                   containerStyle={{borderWidth:0, backgroundColor:'white'}}
@@ -595,7 +595,7 @@ export default class UploadMember extends Component {
                  />
                  <CheckBox
                    center
-                   title='儿科'
+                   title={I18n.t('pedfull')}
                    checkedIcon='check-circle-o'
                    uncheckedIcon='circle-o'
                    containerStyle={{borderWidth:0, backgroundColor:'white'}}
@@ -607,7 +607,7 @@ export default class UploadMember extends Component {
                   />
                   <CheckBox
                     center
-                    title='康复'
+                    title={I18n.t('phyfull')}
                     checkedIcon='check-circle-o'
                     uncheckedIcon='circle-o'
                     containerStyle={{borderWidth:0, backgroundColor:'white'}}
@@ -620,14 +620,14 @@ export default class UploadMember extends Component {
             </View>
           }
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>工作经验</Text>
-          <TextInput style={styles.resumeInput} placeholder= "几年工作经验"
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('experience')}</Text>
+          <TextInput style={styles.resumeInput} placeholder= "Input Only a number"
             value={this.state.we}
             onChangeText={(text) => {this.setState({we:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>介绍</Text>
-          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.mintro}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
+          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:16, fontWeight: '400' , color:'#999999',width:'60%'}}>{this.context.mintro}</Text>
           <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('mintro'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
@@ -638,25 +638,25 @@ export default class UploadMember extends Component {
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/account_icon_medical.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>服务信息</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('serviceInformation')}</Text>
         </View>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>服务语言</Text>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceLanguage')}</Text>
         </View>
         <View style={{flexDirection: 'row' , marginBottom:10}}>
         {this.context.mlan.length>0 ? languages:
-        <Text style={{marginTop:5}}>请添加医生服务的语言</Text>}
+        <Text style={{marginTop:5}}>{I18n.t('nosupLanguage')}</Text>}
           <TouchableOpacity  onPress={() => this.props.navigation.navigate(I18n.t('mlan'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
-            <Text style={{ fontSize:16, fontWeight: '400' }}>服务时间</Text>
+            <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceHours')}</Text>
             <View  style={{flexDirection: 'row'}}>
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[0].backgroundColor,
                 borderWidth: this.state.buttons[0].borderWidth,
-                width: 60,
+                width: 100,
                 height: 30,
                 borderRadius: 10,
                 marginTop: 5,
@@ -666,7 +666,7 @@ export default class UploadMember extends Component {
                 justifyContent: 'center',
                 }}
                 onPress={()=>this.changeColor(0)}>
-                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>周一</Text>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>{I18n.t('monday')}</Text>
               </TouchableOpacity>
               { this.state.buttons[0].pressed &&
                 <View style={{flexDirection: 'row'}}>
@@ -723,7 +723,7 @@ export default class UploadMember extends Component {
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[1].backgroundColor,
                 borderWidth: this.state.buttons[1].borderWidth,
-                width: 60,
+                width: 100,
                 height: 30,
                 borderRadius: 10,
                 marginTop: 5,
@@ -733,7 +733,7 @@ export default class UploadMember extends Component {
                 justifyContent: 'center',
                 }}
                 onPress={()=>this.changeColor(1)}>
-                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>周二</Text>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>{I18n.t('tuesday')}</Text>
               </TouchableOpacity>
               { this.state.buttons[1].pressed &&
                 <View style={{flexDirection: 'row'}}>
@@ -789,7 +789,7 @@ export default class UploadMember extends Component {
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[2].backgroundColor,
                 borderWidth: this.state.buttons[2].borderWidth,
-                width: 60,
+                width: 100,
                 height: 30,
                 borderRadius: 10,
                 marginTop: 5,
@@ -799,7 +799,7 @@ export default class UploadMember extends Component {
                 justifyContent: 'center',
                 }}
                 onPress={()=>this.changeColor(2)}>
-                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>周三</Text>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>{I18n.t('wednesday')}</Text>
               </TouchableOpacity>
               { this.state.buttons[2].pressed &&
                 <View style={{flexDirection: 'row'}}>
@@ -855,7 +855,7 @@ export default class UploadMember extends Component {
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[3].backgroundColor,
                 borderWidth: this.state.buttons[3].borderWidth,
-                width: 60,
+                width: 100,
                 height: 30,
                 borderRadius: 10,
                 marginTop: 5,
@@ -865,7 +865,7 @@ export default class UploadMember extends Component {
                 justifyContent: 'center',
                 }}
                 onPress={()=>this.changeColor(3)}>
-                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>周四</Text>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>{I18n.t('thursday')}</Text>
               </TouchableOpacity>
               { this.state.buttons[3].pressed &&
                 <View style={{flexDirection: 'row'}}>
@@ -921,7 +921,7 @@ export default class UploadMember extends Component {
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[4].backgroundColor,
                 borderWidth: this.state.buttons[4].borderWidth,
-                width: 60,
+                width: 100,
                 height: 30,
                 borderRadius: 10,
                 marginTop: 5,
@@ -931,7 +931,7 @@ export default class UploadMember extends Component {
                 justifyContent: 'center',
                 }}
                 onPress={()=>this.changeColor(4)}>
-                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>周五</Text>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>{I18n.t('friday')}</Text>
               </TouchableOpacity>
               { this.state.buttons[4].pressed &&
                 <View style={{flexDirection: 'row'}}>
@@ -987,7 +987,7 @@ export default class UploadMember extends Component {
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[5].backgroundColor,
                 borderWidth: this.state.buttons[5].borderWidth,
-                width: 60,
+                width: 100,
                 height: 30,
                 borderRadius: 10,
                 marginTop: 5,
@@ -997,7 +997,7 @@ export default class UploadMember extends Component {
                 justifyContent: 'center',
                 }}
                 onPress={()=>this.changeColor(5)}>
-                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>周六</Text>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>{I18n.t('saturday')}</Text>
               </TouchableOpacity>
               { this.state.buttons[5].pressed &&
                 <View style={{flexDirection: 'row'}}>
@@ -1053,7 +1053,7 @@ export default class UploadMember extends Component {
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[6].backgroundColor,
                 borderWidth: this.state.buttons[6].borderWidth,
-                width: 60,
+                width: 100,
                 height: 30,
                 borderRadius: 10,
                 marginTop: 5,
@@ -1063,7 +1063,7 @@ export default class UploadMember extends Component {
                 justifyContent: 'center',
                 }}
                 onPress={()=>this.changeColor(6)}>
-                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>周天</Text>
+                <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>{I18n.t('sunday')}</Text>
               </TouchableOpacity>
               { this.state.buttons[6].pressed &&
                 <View style={{flexDirection: 'row'}}>
@@ -1116,12 +1116,12 @@ export default class UploadMember extends Component {
                   />
               </View>
             <View style={{ marginTop:10, marginBottom:10}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>服务类型</Text>
+              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceType')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox
                 center
-                title='实地问诊                                '
+                title={I18n.t('onsite')}
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
@@ -1138,7 +1138,7 @@ export default class UploadMember extends Component {
             <View style={{flexDirection: 'row'}}>
               <CheckBox
                 center
-                title='远程问诊                                '
+                title={I18n.t('telehealth')}
                 iconRight
                 checkedIcon='check-circle-o'
                 uncheckedIcon='circle-o'
@@ -1156,12 +1156,12 @@ export default class UploadMember extends Component {
             {this.state.service[1].status == 1 &&
               <View>
               <View style={{ marginTop:10, marginBottom:10}}>
-                <Text style={{ fontSize:16, fontWeight: '400' }}>远程方式</Text>
+                <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('remoteMethod')}</Text>
               </View>
               <View style={{flexDirection: 'row'}}>
                 <CheckBox
                   center
-                  title='FaceTime(支持IOS)                                '
+                  title='FaceTime(IOS)                                '
                   iconRight
                   checkedIcon='check-circle-o'
                   uncheckedIcon='circle-o'
@@ -1178,7 +1178,7 @@ export default class UploadMember extends Component {
               <View style={{flexDirection: 'row'}}>
                 <CheckBox
                   center
-                  title='Skype (支持Android)                              '
+                  title='Skype (Android)                              '
                   iconRight
                   checkedIcon='check-circle-o'
                   uncheckedIcon='circle-o'
@@ -1196,7 +1196,7 @@ export default class UploadMember extends Component {
             }
 
             <View style={{ marginTop:10, marginBottom:10}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>收费方式</Text>
+              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('chargingMethod')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox
@@ -1217,7 +1217,7 @@ export default class UploadMember extends Component {
             </View>
 
         <TouchableOpacity style={styles.resumeButton} onPress={() => {this.sendRequest()}}>
-          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>
         </TouchableOpacity>
         </View>
       </ScrollView>

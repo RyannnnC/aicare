@@ -100,7 +100,7 @@ function HealthHome() {
             name="主页"
             component={HealthMain}
             options={{
-              tabBarLabel: '主页',
+              tabBarLabel:I18n.t('homePage'),
               tabBarIcon: ({ color, size }) => (
                 <MaterialIcons name="home" size={size} color={color} />
               ),
@@ -110,7 +110,7 @@ function HealthHome() {
             name="预约"
             component={ReservationMain}
             options={{
-              tabBarLabel: '预约',
+              tabBarLabel: I18n.t('booking'),
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />
               ),
@@ -120,7 +120,7 @@ function HealthHome() {
             name="账号"
             component={HealthAccountMain}
             options={{
-              tabBarLabel: '账号',
+              tabBarLabel: I18n.t('account'),
               tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="account" color={color} size={size} />
             ),

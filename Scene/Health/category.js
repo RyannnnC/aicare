@@ -6,7 +6,7 @@ import CalendarPicker from 'react-native-calendar-picker';
 import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../../providerContext";
-
+import I18n from '../switchLanguage';
 
 export default class Category extends Component {
   constructor(props) {
@@ -55,7 +55,7 @@ export default class Category extends Component {
             style={{width:30,height:30}}
             source = {require('../../images/providerImg/schedule_icon_type_all.png')}
           />
-          <Text style={{color:'#FFFFFF',marginTop:2}}>全部</Text>
+          <Text style={{color:'#FFFFFF',marginTop:2}}>{I18n.t('all')}</Text>
 
           </TouchableOpacity>
           </View>
@@ -81,7 +81,7 @@ export default class Category extends Component {
             style={{width:34,height:30}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>全科</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('gp')}</Text>
 
           </TouchableOpacity>
           </View>
@@ -107,7 +107,7 @@ export default class Category extends Component {
             style={{width:30,height:30}}
             source = {require('../../images/providerImg/schedule_icon_type_mental.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>心理</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('psychology')}</Text>
 
           </TouchableOpacity>
           </View>
@@ -133,7 +133,7 @@ export default class Category extends Component {
             style={{width:30,height:30}}
             source = {require('../../images/providerImg/schedule_icon_type_child.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>儿科</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('pediatrics')}</Text>
 
           </TouchableOpacity>
           </View>
@@ -159,7 +159,7 @@ export default class Category extends Component {
             style={{width:30,height:30}}
             source = {require('../../images/providerImg/schedule_icon_type_dental.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>牙科</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('dentist')}</Text>
           </TouchableOpacity>
           </View>
           </View>

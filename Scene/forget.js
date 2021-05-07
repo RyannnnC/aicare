@@ -170,7 +170,6 @@ export default class Forget extends Component {
               containerStyle={{borderWidth:0, backgroundColor:'white'}}
               checked={this.state.mobile}
               onPress={() => {
-                console.log("电话");
                 this.setState({
                 mobile: true,
                 email: false,
@@ -188,7 +187,6 @@ export default class Forget extends Component {
               containerStyle={{borderWidth:0, backgroundColor:'white'}}
               checked={this.state.email}
               onPress={() => {
-                console.log("switch to mail");
                 this.setState({
                   mobile: false,
                   email: true,
@@ -198,7 +196,7 @@ export default class Forget extends Component {
 
           <View style={{height:30,borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginBottom:10}}>
             <TextInput style={styles.resumeInput}
-            placeholder= "请输入您的邮箱或手机"
+            placeholder= {I18n.t('multipleInput')}
             onChangeText={(text) => {this.setState({ info: text})}}
             />
           </View>
@@ -206,11 +204,11 @@ export default class Forget extends Component {
           <View style={{flexDirection: 'row'}}>
             <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
             <TextInput style={styles.resumeInput3}
-            placeholder= "请输入您收到的验证码"
+            placeholder={I18n.t('verifyInput')}
             onChangeText={(text) => {this.setState({ code: text})}}
             />
             </View>
-            {this.state.timer ? 
+            {this.state.timer ?
             <TouchableOpacity style={styles.codeTab2}>
             <Text style={{ fontSize:14, fontWeight: '300',color:'white' }}>{I18n.t('resend')} {this.state.counter}s</Text>
           </TouchableOpacity>
@@ -230,7 +228,7 @@ export default class Forget extends Component {
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的密码"
+          placeholder={I18n.t('passwordInput')}
           onChangeText={(text) => {this.setState({ password: text})}}
           />
           </View>
@@ -243,7 +241,7 @@ export default class Forget extends Component {
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
           <TextInput style={styles.resumeInput}
-          placeholder="请再次输入您的密码"
+          placeholder={I18n.t('passwordInput2')}
           onChangeText={(text) => {this.setState({ confirm: text})}}
           />
           </View>

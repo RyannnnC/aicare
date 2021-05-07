@@ -143,7 +143,7 @@ export default class Signup extends Component {
           </View>
           <View>
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的名字"
+          placeholder={I18n.t('nameInput')}
           onChangeText={(text) => {this.setState({ name: text})}}
           />
           </View>
@@ -157,7 +157,7 @@ export default class Signup extends Component {
           </View>
           <View>
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的联系方式"
+          placeholder={I18n.t('phoneInput')}
           onChangeText={(text) => {this.setState({ phone: text})}}
           />
           </View>
@@ -171,7 +171,7 @@ export default class Signup extends Component {
           </View>
           <View >
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的邮箱"
+          placeholder={I18n.t('mailInput')}
           onChangeText={(text) => {this.setState({ mail: text})}}
           />
           </View>
@@ -185,7 +185,7 @@ export default class Signup extends Component {
           </View>
           <View >
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的密码"
+          placeholder={I18n.t('passwordInput')}
           secureTextEntry={true}
           onChangeText={(text) => {this.setState({ password: text})}}
           />
@@ -200,7 +200,7 @@ export default class Signup extends Component {
           </View>
           <View >
           <TextInput style={styles.resumeInput}
-          placeholder="请再次输入您的密码"
+          placeholder={I18n.t('passwordInput2')}
           secureTextEntry={true}
           onChangeText={(text) => {this.setState({ confirm: text})}}
           />
@@ -225,7 +225,6 @@ export default class Signup extends Component {
               size={this.state.size}
               checked={this.state.checked1}
               onPress={() => {
-                console.log("电话");
                 this.setState({
                 checked1: true,
                 checked2: false,
@@ -244,7 +243,6 @@ export default class Signup extends Component {
               size={this.state.size}
               checked={this.state.checked2}
               onPress={() => {
-                console.log("switch to mail");
                 this.setState({
                 checked1: false,
                 checked2: true,
@@ -254,11 +252,11 @@ export default class Signup extends Component {
           <View style={{flexDirection: 'row'}}>
             <View>
             <TextInput style={styles.resumeInput3}
-            placeholder= "请输入您收到的验证码"
+            placeholder= {I18n.t('verifyInput')}
             onChangeText={(text) => {this.setState({ code: text})}}
             />
             </View>
-            {this.state.timer ? 
+            {this.state.timer ?
             <TouchableOpacity style={styles.codeTab2}>
             <Text style={{ fontSize:14, fontWeight: '300',color:'white' }}>{I18n.t('resend')} {this.state.counter}s</Text>
           </TouchableOpacity>
@@ -267,7 +265,7 @@ export default class Signup extends Component {
             <Text style={{ fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
           </TouchableOpacity>
             }
-            
+
           </View>
           <TouchableOpacity style={styles.resumeButton} onPress={()=>this.sendRequest()}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
