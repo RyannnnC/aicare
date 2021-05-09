@@ -609,7 +609,7 @@ elevation: 24,}}>
         style = {styles.finishImg}
         source = {require('../../images/providerImg/order_img_empty_inprogress1.png')}
       />
-     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，快去接取吧！</Text>
+     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('noOrder')}</Text>
      </View>
     )
   }

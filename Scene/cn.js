@@ -130,4 +130,6 @@ export default {
   noOrder:'您还没有新订单哦，耐心等待一下吧！',
   video:'视频',
   experience:'工作经验',
+  oldPassword:'旧密码',
+  newPassword:'新密码',
 }

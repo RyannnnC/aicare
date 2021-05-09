@@ -3,6 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaVi
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from '../../providerContext';
+import I18n from '../switchLanguage';
 
 export default class ChangePwd extends Component {
   constructor(props) {
@@ -47,17 +48,17 @@ export default class ChangePwd extends Component {
   render() {
     return (
     <SafeAreaView style={{ flex:1, alignItems: "center" ,backgroundColor:'white'}}>
-        <View style={{alignItems: "flex-start",width:'80%' }}>
+        <View style={{alignItems: "flex-start",width:'85%' }}>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Image
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/signup_icon_pswd.png')}
           />
-          <Text style={{ fontSize:18, fontWeight: '500' }}>旧密码</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('oldPassword')}</Text>
         </View>
         <TextInput
         style={styles.resumeInput}
-        placeholder= "请输入您的密码"
+        placeholder= {I18n.t('passwordInput')}
         value={this.state.op}
         onChangeText={(text) => {this.setState({op:text})}}
         />
@@ -66,11 +67,11 @@ export default class ChangePwd extends Component {
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/signup_icon_pswd.png')}
           />
-          <Text style={{ fontSize:18, fontWeight: '500' }}>新密码</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('newPassword')}</Text>
         </View>
         <TextInput
         style={styles.resumeInput}
-        placeholder= "请输入您的新密码"
+        placeholder= {I18n.t('passwordInput')}
         value={this.state.np}
         onChangeText={(text) => {this.setState({np:text})}}/>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
@@ -78,13 +79,13 @@ export default class ChangePwd extends Component {
             style = {styles.smallIconImg}
             source={require('../../images/providerImg/signup_icon_confirm.png')}
           />
-          <Text style={{ fontSize:18, fontWeight: '500' }}>确认</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('confirm')}</Text>
         </View>
-        <TextInput style={styles.resumeInput} placeholder= "请再次输入您的新密码"
+        <TextInput style={styles.resumeInput} placeholder= {I18n.t('passwordInput2')}
         value={this.state.confirm}
         onChangeText={(text) => {this.setState({confirm:text})}}/>
         <TouchableOpacity style={styles.resumeButton} onPress={() => {this.sendRequest()}}>
-          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>
         </TouchableOpacity>
         </View>
     </SafeAreaView>

@@ -128,4 +128,6 @@ export default {
   noOrder:'You have no new orders currently, please wait!',
   video:'Video Call',
   experience:'Work Experience',
+  oldPassword:"Old Password",
+  newPassword:"New Password",
 }
