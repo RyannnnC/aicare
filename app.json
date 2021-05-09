@@ -17,6 +17,10 @@
       "**/*"
     ],
     "ios": {
+      "infoPlist":{
+        "PhotoUsageDescription": "This app uses the photo to verify personal identity and complete personal information",
+        "LocationUsageDescription": "This app uses the location to complete organisation information of location."
+      },
       "supportsTablet": true,
       "bundleIdentifier": "aicare.provider"
     },
