@@ -1,10 +1,11 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput,Switch,ScrollView } from 'react-native';
 import {styles} from '../../style';
 import { CheckBox } from 'react-native-elements';
 import { StackActions } from '@react-navigation/native';
 //import DataContext from "../consumerContext"
 import call from 'react-native-phone-call'
+import DataContext from "../../consumerContext";
 
 const args = {
   number: '0403555432', // String value with the number to call
@@ -13,6 +14,7 @@ const args = {
 //import { Checkbox } from 'react-native-paper/lib/typescript/components/Checkbox/Checkbox';
 //mport { grey100 } from 'react-native-paper/lib/typescript/styles/colors';
 export default function TelePay({navigation,route}) {
+  const user=useContext(DataContext);
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
   }
@@ -33,10 +35,71 @@ export default function TelePay({navigation,route}) {
 
     navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime})
   }  
+  const sendRequest=()=>{
+    console.log(content);
+    //console.log(date)
+    //this.context.action.changeLoading(true);
+    //http://3.104.87.14:8085/aicare-customer-api/customer/customer-info/medicare-verification
+
+    let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/medicare-verification";
+    fetch(url,{
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'sso-auth-token': user.token,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+    },
+    body: JSON.stringify({
+      "type": "Verify:Medicare",
+      "patient": {
+        "dateOfBirth": content.dob,
+        "medicare": {
+          "number": content.number,
+          "ref": content.serial
+        },
+        "gender": content.gender,
+        "name": {
+          "first": content.first,
+          "family": content.last,
+        }
+      }
+    })
+    })
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code == 0) {
+                if(json.verification.status.medicare.code===0){
+
+                //console.log(json.page);
+                /*if (json.page.length>0){
+                  console.log(json.page[0]);
+                }else{
+                  //console.log(this.context.orgId)
+                  console.log("this page has no schedule")
+                }*/
+                //Alert.alert('查询成功');
+                Alert.alert('医保卡验证成功');
+                gotoSuccess();
+              } else {
+                console.log(json.verification.status);
+                Alert.alert('抱歉，您的医保卡验证失败，请重新验证或咨询客服，客服按钮在页面右下角。');
+              }}else{
+                console.log(json.code);
+                Alert.alert('抱歉，服务器报错了，请联系客服，按钮在页面右下角。');
+              }
+            }).catch(error => console.warn(error));
+  }
+  
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
-  var content ={name:"",mobile:"",number:"",date:"",serial:""};
+  var content ={name:"",mobile:"",number:"",date:"",serial:"",dob:"",first:" ",last:" ",gender:" "};
   return (
 
     <ScrollView style={{backgroundColor:"white"}}>
@@ -128,15 +191,61 @@ export default function TelePay({navigation,route}) {
         source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
         <Text style={{color:"#999999"}}> 持有medicare的用户在支持bulk billing</Text>
         </View>
-        <Text style={{color:"#999999",marginLeft:-90,marginBottom:20}}> 的诊所看诊可全额报销。</Text>
+        <Text style={{color:"#999999",marginLeft:-90,marginBottom:5}}> 的诊所看诊可全额报销。</Text>
+        <View style={{flexDirection:"row"}}>
+        <Image style = {{width:20,
+        height:20,
+        marginTop:2,
+        marginLeft:10,}}
+        source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
+        <Text style={{color:"#999999"}}> 所有医保卡信息(例如姓名，出生日期等)</Text>
+        </View>
+        <Text style={{color:"#999999",marginLeft:40,marginBottom:20}}> 仅用于医保卡验证。性别男填M，女填F。</Text>
         <Image
         style = {{height:125,width:375}}
         source={require('../../images/telehealth_icon/service_order_img_card.png')}
       />
-        <TextInput style = {styles.account}
-          placeholder="持卡人姓名"
-          onChangeText={(text)=>content.name=text}
+        
+        <View style={{flexDirection:"row"}}>
+        <TextInput style = {{height: 35,
+    width: 130,
+    borderBottomColor: '#999999',
+    marginLeft:3,
+    borderBottomWidth:1,}}
+          onChangeText={(text)=>content.last=text}
+
+          placeholder="持卡人姓"
         />
+      <TextInput style = {{height: 35,
+    width: 130,
+    marginLeft:40,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+          placeholder="持卡人名"
+          onChangeText={(text)=>content.first=text}
+
+      />
+      </View>
+      <View style={{flexDirection:"row"}}>
+        <TextInput style = {{height: 35,
+    width: 70,
+    borderBottomColor: '#999999',
+    marginLeft:3,
+    borderBottomWidth:1,}}
+          onChangeText={(text)=>content.gender=text}
+
+          placeholder="性别 M/F"
+        />
+      <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:30,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+          placeholder="出生日期 yyyy-mm-dd"
+          onChangeText={(text)=>content.dob=text}
+
+      />
+      </View>
         <View style={{flexDirection:"row"}}>
         <TextInput style = {{height: 35,
     width: 130,
@@ -165,7 +274,7 @@ export default function TelePay({navigation,route}) {
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:50}}></View>
 
-    <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
+    <TouchableOpacity style={styles.next_wrapper} onPress = {sendRequest}>
       {/*this need to manually calculated */}
       <Text style={styles.onsite_text}>下一步</Text>
     </TouchableOpacity>

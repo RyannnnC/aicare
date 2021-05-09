@@ -383,12 +383,12 @@ export default function ProviderMain({navigation}) {
           source = {require('../images/vaccine/telehealth_consumer_icon/home_service_block1.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={alertHandler}>
+        {/*<TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={alertHandler}>
           <Image
           style = {{width:106,height:106}}
           source = {require('../images/vaccine/telehealth_consumer_icon/home_service_block2.png')}
           />
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
         <View style={{textAlign: "left",marginTop:20,marginBottom:8 }}>
           <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>订单</Text>

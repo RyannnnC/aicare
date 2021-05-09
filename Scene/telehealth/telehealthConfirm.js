@@ -20,7 +20,7 @@ export default function Confirm({route,navigation}) {
   const user = useContext(DataContext);
   const { content,scheduleId,type,date,doctype,address,docName,startTime,endTime,teleFlg} = route.params;
   const[method, setMethod] = useState("");//0 stands for facetime 1 stands for skype
-  const [text, setText] = useState(content.name);
+  const [text, setText] = useState(content.first+content.last);
   const [text1, setText1] = useState('');
   const makecall=()=>{
     call(args).catch(console.error)
@@ -29,7 +29,7 @@ export default function Confirm({route,navigation}) {
   const sendRequest=()=>{
     //let str = JSON.stringify(content);
     //console.log(str)//figure out whats wrong in android stringnify
-    let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+content.name+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
+    let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -49,7 +49,11 @@ export default function Confirm({route,navigation}) {
               if (json.code == 0) {
                 Alert.alert("已预约成功")
                 setModalVisible(!modalVisible)
-                navigation.navigate("teleSuccess")
+                if(teleFlg==1 && content.type!="Medicare"){
+                  navigation.navigate("telehealthPayment")
+                }else{
+                  navigation.navigate("teleSuccess")
+                }
               } else {
                 console.log(json.msg);
                 Alert.alert('预约失败,请重试或者联系客服。');
@@ -102,9 +106,9 @@ export default function Confirm({route,navigation}) {
     width: 250,
     borderBottomColor: '#999999',
     borderBottomWidth:1,
-  }}defaultValue={content.name===""?null:content.name}
+  }}defaultValue={text===""?null:text}
     placeholder='请输入患者姓名'
-    onChangeText={text => {setText(text);content.name=text}}
+    onChangeText={text => {setText(text);}}
     />
     
     {teleFlg==0?<View style={{marginLeft:-180,marginTop:10}}>

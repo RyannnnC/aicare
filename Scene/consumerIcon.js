@@ -40,6 +40,7 @@ const  ConsumerIcon= ({navigation}) => {
     fontSize:17,
     marginTop:20,
     marginLeft:25,}}>服务类型</Text>
+    <View style={{marginTop:20}}></View>
     <TouchableOpacity onPress = {goToTelehealth}>
       <Image
         style = {{marginTop:40,
@@ -50,8 +51,8 @@ const  ConsumerIcon= ({navigation}) => {
         source = {require('../images/telehealth_icon/service_block1.png')}
       />
     </TouchableOpacity>
-
-    <TouchableOpacity onPress = {alertHandler}>
+    <View style={{marginTop:20}}></View>
+    {/*<TouchableOpacity onPress = {alertHandler}>
       <Image
         style = {{marginTop:25,
           height:120,
@@ -59,7 +60,7 @@ const  ConsumerIcon= ({navigation}) => {
           marginLeft:30,}}
         source = {require('../images/telehealth_icon/service_block2.png')}
       />
-    </TouchableOpacity>
+    </TouchableOpacity>*/}
 
     <TouchableOpacity onPress = {()=>    navigation.navigate("telehealthSub",{docType:7})
 }>
@@ -73,16 +74,14 @@ const  ConsumerIcon= ({navigation}) => {
     </TouchableOpacity>
     <TouchableOpacity onPress={makecall}>
             <Image
-                style={{width:60,height:60,position:"absolute",borderRadius:30,bottom:5,right:-170}}
+                style={{marginLeft:-50,marginTop:20,width:60,height:60,borderRadius:30,bottom:5,right:-170}}
                 source = {require("../images/mobile_icon.png")}
             />
     </TouchableOpacity>
     <View style={{marginTop:110}}></View>
     
 
-    <Image style = {styles.contact}
-      source = {require('../images/icon/1/contact.png')}
-    />
+    
   </View>
   </ScrollView>
 

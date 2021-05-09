@@ -48,7 +48,7 @@ import changeSuburb from './Scene/telehealth/changeSuburb';
 import changeClinic from './Scene/telehealth/changeClinic';
 import changeDoc from './Scene/telehealth/changeDoc';
 import changeDocInfo from './Scene/telehealth/changeDocInfo';
-
+import telehealthPayment from "./Scene/telehealth/telehealthPayment";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -106,7 +106,7 @@ class App extends React.Component {
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
-      url:"3.104.232.106:8085",
+      url:"3.104.87.14:8085",
       suburb:"",
       postcode:"",
       state:"",
@@ -306,6 +306,7 @@ render() {
         <Stack.Screen name ="changeClinic" component={changeClinic}/>
         <Stack.Screen name ="changeDoc" component={changeDoc}/>
         <Stack.Screen name ="changeDocInfo" component={changeDocInfo}/>
+        <Stack.Screen name ="telehealthPayment" component={telehealthPayment}/>
 
 
 
