@@ -72,6 +72,7 @@ const  ConsumerIcon= ({navigation}) => {
         source = {require('../images/telehealth_icon/service_block3.png')}
       />
     </TouchableOpacity>
+    
     <TouchableOpacity onPress={makecall}>
             <Image
                 style={{marginLeft:-50,marginTop:20,width:60,height:60,borderRadius:30,bottom:5,right:-170}}

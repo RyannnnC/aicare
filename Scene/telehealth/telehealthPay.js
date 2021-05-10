@@ -293,7 +293,7 @@ export default function TelePay({navigation,route}) {
         
       <TextInput style = {styles.account}
           placeholder="保险人姓名"
-          onChangeText={(text)=>content.name=text}
+          onChangeText={(text)=>content.firstname=text}
 
       />
       <TextInput style = {styles.account}
