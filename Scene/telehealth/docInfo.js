@@ -304,9 +304,9 @@ export default function DocInfo({route,navigation}) {
         }</View>
         </View>
         
-    <TouchableOpacity onPress={makecall}>
+    <TouchableOpacity onPress={()=>user.action.contact()}>
             <Image
-                style={{width:60,height:60,position:"absolute",borderRadius:30,bottom:5,right:10}}
+                style={{width:60,height:60,marginLeft:300,borderRadius:30,bottom:5,right:10}}
                 source = {require("../../images/mobile_icon.png")}
             />
     </TouchableOpacity>

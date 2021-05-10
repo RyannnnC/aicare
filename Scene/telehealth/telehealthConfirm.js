@@ -49,11 +49,11 @@ export default function Confirm({route,navigation}) {
               if (json.code == 0) {
                 Alert.alert("已预约成功")
                 setModalVisible(!modalVisible)
-                if(teleFlg==1 && content.type!="Medicare"){
-                  navigation.navigate("telehealthPayment")
-                }else{
+                //if(teleFlg==1 && content.type!="Medicare"){
+                  //navigation.navigate("telehealthPayment")
+                //}else{
                   navigation.navigate("teleSuccess")
-                }
+                //}
               } else {
                 console.log(json.msg);
                 Alert.alert('预约失败,请重试或者联系客服。');
@@ -173,7 +173,7 @@ export default function Confirm({route,navigation}) {
     <TouchableOpacity style={styles.next_wrapper} onPress={() =>{setModalVisible(!modalVisible);console.log(doctype)}}>
       <Text style={styles.onsite_text}>提交预约</Text>
     </TouchableOpacity>
-    <TouchableOpacity onPress={makecall}>
+    <TouchableOpacity onPress={()=>user.action.contact()}>
             <Image
                 style={{width:60,height:60,borderRadius:30,bottom:-35,right:-300,marginBottom:40}}
                 source = {require("../../images/mobile_icon.png")}

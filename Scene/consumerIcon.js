@@ -1,14 +1,10 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch} from 'react-native';
 import {styles} from '../style';
 import call from 'react-native-phone-call'
 import { ScrollView } from 'react-native-gesture-handler';
+import DataContext from "../consumerContext";
 
-
-const args = {
-  number: '0403555432', // String value with the number to call
-  prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call 
-}
 
 const  ConsumerIcon= ({navigation}) => {
   const goToOrder= () => {
@@ -23,6 +19,7 @@ const  ConsumerIcon= ({navigation}) => {
   const alertHandler= () => {
     Alert.alert('功能将在下一版本更新，敬请期待')
   }
+  const user = useContext(DataContext)
 
   return (
     <ScrollView style={{ flex:1,backgroundColor:"white"}}>
@@ -73,7 +70,7 @@ const  ConsumerIcon= ({navigation}) => {
       />
     </TouchableOpacity>
     
-    <TouchableOpacity onPress={makecall}>
+    <TouchableOpacity onPress={()=>user.action.contact()}>
             <Image
                 style={{marginLeft:-50,marginTop:20,width:60,height:60,borderRadius:30,bottom:5,right:-170}}
                 source = {require("../images/mobile_icon.png")}

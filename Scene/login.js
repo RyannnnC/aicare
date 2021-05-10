@@ -53,8 +53,10 @@ export default class Login extends Component {
         if (json.code === 0) {
           //this.context.action.changeLogin(true);
           this.context.action.changetoken(json.data);
+          console.log(json.code)
         } else {
           Alert.alert("Invalid username or password");  
+          console.log(json.msg)
           //this.context.action.changeLogin(true);//need to remove this
         }
     })

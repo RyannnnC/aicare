@@ -372,15 +372,15 @@ export default function ProviderMain({navigation}) {
         <TouchableOpacity style={{marginTop:14,marginLeft:-2}} onPress={goVaccine}>
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
-          style = {{width:106,height:106}}
-          source = {require('../images/vaccine/telehealth_consumer_icon/home_icon_vaccine.png')}
+          style = {{width:180,height:95}}
+          source = {require('../images/v_icon.png')}
           />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={goToTelehealth}>
           <Image
-          style = {{width:106,height:106}}
-          source = {require('../images/vaccine/telehealth_consumer_icon/home_service_block1.png')}
+          style = {{width:180,height:95}}
+          source = {require('../images/t_icon.png')}
           />
         </TouchableOpacity>
         {/*<TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={alertHandler}>

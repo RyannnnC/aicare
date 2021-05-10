@@ -54,6 +54,7 @@ const AccountMain = ({navigation}) => {
     <DataContext.Consumer>
     {(state)  => (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white",marginTop:150 }}>
+      <TouchableOpacity onPress={goInfo}>
       <View style={{shadowColor:"000000",shadowOffset: {
 	              width: 0,
 	              height: 1,
@@ -76,6 +77,7 @@ const AccountMain = ({navigation}) => {
         <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{info.email?info.email:"邮箱未填写"}</Text>
         </View>
       </View>
+      </TouchableOpacity>
       <ScrollView style={{marginTop:-16,paddingTop:15}}>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
@@ -91,7 +93,9 @@ const AccountMain = ({navigation}) => {
       </TouchableOpacity>
       </View>
       </View>
+      {/*
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+
       <View style={{marginLeft:-70}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>Alert.alert("收藏功能即将上线。")}>
         <Image
@@ -135,6 +139,7 @@ const AccountMain = ({navigation}) => {
       </TouchableOpacity>
       </View>
       </View>
+      */}
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>Alert.alert(

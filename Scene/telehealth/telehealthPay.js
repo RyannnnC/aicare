@@ -274,7 +274,7 @@ export default function TelePay({navigation,route}) {
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:50}}></View>
 
-    <TouchableOpacity style={styles.next_wrapper} onPress = {sendRequest}>
+    <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
       {/*this need to manually calculated */}
       <Text style={styles.onsite_text}>下一步</Text>
     </TouchableOpacity>
@@ -329,7 +329,7 @@ export default function TelePay({navigation,route}) {
     </View>
     </View>: null}
 
-    <TouchableOpacity onPress={makecall}>
+    <TouchableOpacity onPress={()=>user.action.contact()}>
             <Image
                 style={{width:60,height:60,borderRadius:20,marginBottom:20,marginLeft:280,marginTop:50}}
                 source = {require("../../images/mobile_icon.png")}
