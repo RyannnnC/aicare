@@ -2,6 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import {Platform,Alert,Linking} from "react-native";
 import Info from './Scene/consumerInfo';
 import ConsumerOrder from './Scene/consumerOrder';
 import ConsumerIcon from "./Scene/consumerIcon";
@@ -37,6 +38,8 @@ import TelePay from "./Scene/telehealth/telehealthPay";
 import ClinicInfo from "./Scene/telehealth/clinicInfo";
 import telehealthDoc from './Scene/telehealth/telehealthDoc';
 import TelehealthMV from './Scene/telehealth/telehealthMap';
+import Pay from './Scene/telehealth/Pay';
+
 import DataPolicy from './Scene/datapolicy';
 
 import Welcome from './Scene/welcome';
@@ -103,10 +106,11 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      customer_service:"+61 421326182",
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
-      url:"3.104.87.14:8085",
+      url:"3.104.87.14:8085",//develop："3.104.232.106:8085"；test："3.104.87.14:8085"
       suburb:"",
       postcode:"",
       state:"",
@@ -147,9 +151,37 @@ class App extends React.Component {
         changeSchedule:this.changeSchedule,
         changevisit:this.changevisit,
         changeLoading:this.changeLoading,
+        contact:this.contact,
       }
     }
   }
+  contact = () => {
+    //phone='0403555432';
+    //let phoneNumber = phone;
+    if (Platform.OS !== 'android') {
+      Linking.canOpenURL(`telprompt:${"+61 421326182"}`)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(`telprompt:${"+61 421326182"}`);
+      }
+    })
+    .catch(err => console.log(err));
+  }
+    else  {
+     
+      Linking.canOpenURL(`tel:${"+61 421326182"}`)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(`tel:${"+61 421326182"}`);
+      }
+    })
+    .catch(err => console.log(err));
+    }
+  };
   clearstate=()=>{
     this.setState({
     loading:true,
@@ -307,6 +339,7 @@ render() {
         <Stack.Screen name ="changeDoc" component={changeDoc}/>
         <Stack.Screen name ="changeDocInfo" component={changeDocInfo}/>
         <Stack.Screen name ="telehealthPayment" component={telehealthPayment}/>
+        <Stack.Screen name ="pay" component={Pay}/>
 
 
 

@@ -1,5 +1,7 @@
 import React,{useState,useContext} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,Modal } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,Modal,Linking,NativeModules,
+  NativeAppEventEmitter} from 'react-native';
+  
 import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 //import DataContext from '../consumerContext';
@@ -8,6 +10,7 @@ import { format } from 'date-fns';
 import call from 'react-native-phone-call'
 import DataContext from "../../consumerContext";
 import { CheckBox } from 'react-native-elements';
+import { WebView } from 'react-native-webview';
 
 const args = {
   number: '0403555432', // String value with the number to call
@@ -25,11 +28,11 @@ export default function Confirm({route,navigation}) {
   const makecall=()=>{
     call(args).catch(console.error)
   }
-
+  const[paymethod,setPaymethod]=useState("CardPayment")
   const sendRequest=()=>{
     //let str = JSON.stringify(content);
     //console.log(str)//figure out whats wrong in android stringnify
-    let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
+    /*let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -49,17 +52,65 @@ export default function Confirm({route,navigation}) {
               if (json.code == 0) {
                 Alert.alert("已预约成功")
                 setModalVisible(!modalVisible)
-                //if(teleFlg==1 && content.type!="Medicare"){
-                  //navigation.navigate("telehealthPayment")
-                //}else{
-                  navigation.navigate("teleSuccess")
-                //}
+                if(teleFlg==1 && content.type!="Medicare"){
+                  navigation.navigate("telehealthPayment")
+                }else{
+                  navigation.navigate("teleSuccess")ss
+                }
               } else {
                 console.log(json.msg);
                 Alert.alert('预约失败,请重试或者联系客服。');
               }
-            }).catch(error => console.warn(error));
+            }).catch(error => console.warn(error));*/
+            let url = "http://"+user.url+"/aicare-customer-api/customer/pay/create_order?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method+"&currency=AUD&price=4000&channel="+paymethod+"&serviceType="+(teleFlg+1);//+"&content="+str;
+            fetch(url,{
+              method: 'POST',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+              'Accept':       'application/json',
+              'Content-Type': 'application/json',
+              'sso-auth-token': user.token,
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+            }})
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code == 0) {
+                Alert.alert("已预约成功")
+                setModalVisible(!modalVisible)
+                if(json.ispay==1){
+                  //navigation.navigate("telehealthPayment")
+                  console.log(json.ispay)
+                  //Linking.openURL("wechat://")
+                  //Linking.openURL(json.order_url)
+                  navigation.navigate("pay",{url:json.order_url})
+                  //NativeAppEventEmitter.addListener('alipay.mobile.securitypay.pay.onPaymentResult', onPaymentResult)
+
+                }else{
+                  navigation.navigate("teleSuccess")
+                }
+              } else {
+                console.log(json.msg);
+                console.log(json.ispay)
+
+                Alert.alert('预约失败,请重试或者联系客服。');
+              }
+            }).catch(error => console.warn(error));      
   }
+  /*const onPaymentResult = (result) => {
+    //console.log(`result -> `)
+    //console.log(result)
+    console.log(`result.resultStatus = ${result.resultStatus}`)
+    console.log(`result.memo = ${result.memo}`)
+    console.log(`result.result = ${result.result}`)
+    Alert.alert(
+        '',
+        `${result.resultStatus == 9000 ? '支付成功' : '支付失败'} `
+    )
+}*/
   const goBack= () => {
     navigation.navigate("telehealthPay")
   }
@@ -164,11 +215,44 @@ export default function Confirm({route,navigation}) {
           />
     </View>
     </View>:null}
+    {teleFlg==1 && type!="Medicare"?<View style={{marginLeft:-43,marginTop:0}}>
+    <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:45}}
+        source= {require('../../images/telehealth_icon/order_confirm_icon_means.png')}
+      /><Text style={{marginLeft:70,fontSize:16,marginTop:-17}}>支付方式</Text>
+    <View style ={styles.comment_container}>
+      <Text style={{fontSize:16,marginLeft:45}}>卡支付</Text>
+      <CheckBox
+            checked={paymethod=="CardPayment"}
+            checkedColor='#FF8570'
+            uncheckedIcon='circle-thin'
+            checkedIcon='check-circle'
+            size={33}
+            containerStyle={{marginTop:-14,marginLeft:8}}
+            onPress={() => {
+              setPaymethod("CardPayment")
+            }}
+          />
+    </View>
+    <View style ={{flexDirection:"row",marginTop:10}}>
+      <Text style={{fontSize:16,marginLeft:45}}>支付宝</Text>
+      <CheckBox
+            checked={paymethod=="Alipay"}
+            checkedColor='#FF8570'
+            uncheckedIcon='circle-thin'
+            checkedIcon='check-circle'
+            size={33}
+            containerStyle={{marginTop:-14,marginLeft:36}}
+            onPress={() => {
+              setPaymethod("Alipay")
+            }}
+          />
+    </View>
+    </View>:null}
     
 
     
 
-    <View style={{marginLeft:-80,marginTop:50}}> 
+    <View style={{marginLeft:-80,marginTop:40}}> 
 
     <TouchableOpacity style={styles.next_wrapper} onPress={() =>{setModalVisible(!modalVisible);console.log(doctype)}}>
       <Text style={styles.onsite_text}>提交预约</Text>
