@@ -1,5 +1,5 @@
 import React,{useState,useContext} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,Modal } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,Modal,ActivityIndicator } from 'react-native';
 import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 //import DataContext from '../consumerContext';
@@ -22,6 +22,7 @@ export default function Confirm({route,navigation}) {
   const[method, setMethod] = useState("");//0 stands for facetime 1 stands for skype
   const [text, setText] = useState(content.first+content.last);
   const [text1, setText1] = useState('');
+  const [loading,setLoading]=useState(false);
   const makecall=()=>{
     call(args).catch(console.error)
   }
@@ -29,6 +30,7 @@ export default function Confirm({route,navigation}) {
   const sendRequest=()=>{
     //let str = JSON.stringify(content);
     //console.log(str)//figure out whats wrong in android stringnify
+    setLoading(true)
     let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
             fetch(url,{
               method: 'GET',
@@ -46,6 +48,8 @@ export default function Confirm({route,navigation}) {
             .then((response) => response.json())
             
             .then((json) => {
+              setLoading(false)
+
               if (json.code == 0) {
                 Alert.alert("已预约成功")
                 setModalVisible(!modalVisible)
@@ -220,17 +224,20 @@ elevation: 24,}}>
       <Text style={{marginBottom:10}}>就诊方式: {teleFlg==1?"远程就诊":"实地会诊"}</Text>
       {teleFlg==1?<View>
       <Text style={{marginBottom:10}}>远程方式: {method!=""?method==1?"FaceTime(苹果)":"Skype(安卓)":null}</Text>
-
+      
       </View>:null}
+      {loading?
+      <ActivityIndicator size="large" style={{marginTop:20}} color="#00FF00"></ActivityIndicator>:null
+      }
       </View>
 
-
+      {!loading?
       <TouchableOpacity style={styles.next_wrapper} onPress={gotoCP}
             //state.action.changetotal(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60);
             //this.props.navigation.dispatch(StackActions.pop(1))}
           >
           <Text style={styles.onsite_text}>确定</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>:null}
         </ScrollView>
 
         <View style={{height:20}}/>
