@@ -2,7 +2,7 @@
   "expo": {
     "name": "aicare health",
     "slug": "aicare",
-    "version": "1.12",
+    "version": "1.21",
     "orientation": "portrait",
     "icon": "./assets/aicare.png",
     "scheme":"aicarehealthau",
