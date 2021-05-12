@@ -339,7 +339,7 @@ render() {
         <Stack.Screen name ="changeDoc" component={changeDoc}/>
         <Stack.Screen name ="changeDocInfo" component={changeDocInfo}/>
         <Stack.Screen name ="telehealthPayment" component={telehealthPayment}/>
-        <Stack.Screen name ="pay" component={Pay}/>
+        <Stack.Screen name ="pay" component={Pay} options={{headerShown:false}}/>
 
 
 

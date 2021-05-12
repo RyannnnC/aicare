@@ -34,7 +34,7 @@ export default class Pay extends Component {
     /*if (newNavState.url.startsWith("https://mpay.royalpay.com.au/api/v1.0/rpaypmt_svc/deductions/")){
         
         this.webview.stopLoading();
-        Alert.alert("支付失败","账户余额不足请重新支付。",[{ text: "确认", onPress: () => {this.props.navigation.navigate("teleConfirm")}
+        Alert.alert("支付失败","请检查您的账户余额是否足够以及卡信息是否填写正确并重新支付。",[{ text: "确认", onPress: () => {this.props.navigation.navigate("teleConfirm")}
       }]
         )
         //this.props.navigation.navigate("teleconfirm")
