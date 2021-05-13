@@ -32,6 +32,15 @@ class DateSelect extends Component {
     return [year, month, day].join('-');
 }
   onDateChange(date) {
+    const newTime = new Date();
+    newTime.setDate(new Date().getDate()-1)
+    console.log(newTime)
+    //console.log(new Date())
+    const sdate = new Date(date);
+    if(sdate<newTime){
+      Alert.alert("不可以选择过去的日期。")
+      return
+    }
     this.setState({
       selectedStartDate: date,
     });
@@ -60,11 +69,11 @@ class DateSelect extends Component {
               if (json.code == 0) {
                 this.context.action.changeSchedule(json.data);
                 //console.log("length");
-                console.log("json.page")
-                console.log(json.data)
-                console.log("schedule start")
+                //console.log("json.page")
+                //console.log(json.data)
+                //console.log("schedule start")
                 //console.log(this.context.schedule)
-                console.log("schedule end")
+                //console.log("schedule end")
                 this.context.action.changeLoading(false);
 
                 //console.log(json.page);

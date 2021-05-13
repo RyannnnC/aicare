@@ -1,11 +1,63 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
-
-export default class Pay extends Component {
+import DataContext from "../../consumerContext";
+class Pay extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    this.dataPolling = setInterval(
+      () => {
+        this.getAITraining();
+      },
+      3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.dataPolling);
+  }
+
+  getAITraining=()=>{
+    //console.log('轮询测试 '+new Date())
+      let url2 = "http://"+this.context.url+"/aicare-customer-api/customer/pay/checkresult?orderId="+this.props.route.params.orderId;
+      
+              fetch(url2,{
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'include',
+                headers: {
+                'Accept':       'application/json',
+                'Content-Type': 'application/json',
+                'sso-auth-token': this.context.token,
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+                'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+              }})
+              .then((response) => response.json())
+              .then((json) => {
+                if (json.code == 0) {
+                  //console.log(json.sysDeptInfo);
+                  //this.setState({clinics:json.sysDeptInfo})
+                  //this.setState({loading:false})
+                  //Alert.alert('查询成功');
+                  console.log(json.data.payResult);
+                  if(json.data.payResult=="SUCCESS"){
+                    this.props.navigation.navigate("teleSuccess")
+                  }if(json.data.payResult=="PAY_FAIL"){
+                    Alert.alert("支付失败","请检查您的账户余额是否足够以及卡信息是否填写正确并重新支付。",[{ text: "确认", onPress: () => {this.props.navigation.navigate("teleConfirm")}
+                  }]
+                    )                  
+                  }
+                } else {
+                  console.log("network issue")
+                }
+              }).catch(error => console.warn(error));
+
+    //
+  }
+
   render() {
     this.webview = null;
     return <WebView style={{marginTop:0}}
@@ -25,12 +77,12 @@ export default class Pay extends Component {
     }}*/
     onNavigationStateChange={(newNavState) => {
       // Keep track of going back navigation within component
-      console.log(newNavState.url);
-      if (newNavState.url=="http://3.104.87.14:8085/aicare-customer-api/pay.html"){
+      //console.log(newNavState.url);
+      /*if (newNavState.url=="http://3.104.87.14:8085/aicare-customer-api/pay.html"){
         
         this.webview.stopLoading();
         this.props.navigation.navigate("teleSuccess")
-    }
+    }*/
     /*if (newNavState.url.startsWith("https://mpay.royalpay.com.au/api/v1.0/rpaypmt_svc/deductions/")){
         
         this.webview.stopLoading();
@@ -59,3 +111,6 @@ export default class Pay extends Component {
     source={{ uri: this.props.route.params.url }} />;
   }
 }
+Pay.contextType = DataContext;
+
+export default Pay;

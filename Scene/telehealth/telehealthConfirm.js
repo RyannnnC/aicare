@@ -62,7 +62,7 @@ export default function Confirm({route,navigation}) {
                 Alert.alert('预约失败,请重试或者联系客服。');
               }
             }).catch(error => console.warn(error));*/
-            let url = "http://"+user.url+"/aicare-customer-api/customer/pay/create_order?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method+"&currency=AUD&price=1000&channel="+paymethod+"&serviceType="+(teleFlg+1);//+"&content="+str;
+            let url = "http://"+user.url+"/aicare-customer-api/customer/pay/create_order?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method+"&currency=AUD&price=100&channel="+paymethod+"&serviceType="+(teleFlg+1);//+"&content="+str;
             fetch(url,{
               method: 'POST',
               mode: 'cors',
@@ -86,7 +86,7 @@ export default function Confirm({route,navigation}) {
                   console.log(json.ispay)
                   //Linking.openURL("wechat://")
                   //Linking.openURL(json.order_url)
-                  navigation.navigate("pay",{url:json.order_url})
+                  navigation.navigate("pay",{url:json.order_url,orderId:json.partnerOrderId})
                   //NativeAppEventEmitter.addListener('alipay.mobile.securitypay.pay.onPaymentResult', onPaymentResult)
 
                 }else{
