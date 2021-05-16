@@ -2,8 +2,7 @@ import React ,{Component}from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
 import ProviderOrder from './Scene/teleCare/providerOrder.js'
 import ProviderMain from './Scene/teleCare/providerMain.js'
 import Income from './Scene/teleCare/income.js'
@@ -42,6 +41,10 @@ import DoctorInfo from './Scene/Health/doctorInfo';
 import Mintro from './Scene/Health/mintro';
 import Mlan from './Scene/Health/mlan';
 import I18n from './Scene/switchLanguage';
+import Enotes from './Scene/Health/enotes';
+import Enotes2 from './Scene/Health/enotes2';
+import Enotes3 from './Scene/Health/enotes3';
+import CaseRecord from './Scene/Health/caseRecord';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -113,6 +116,16 @@ function HealthHome() {
               tabBarLabel: I18n.t('booking'),
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="病历"
+            component={CaseRecord}
+            options={{
+              tabBarLabel: I18n.t('record'),
+              tabBarIcon: ({ color, size }) => (
+                <FontAwesome5 name="notes-medical" size={24} color="black" />
               ),
             }}
           />
@@ -354,6 +367,9 @@ export default class App extends React.Component {
           <Stack.Screen name={I18n.t('stores')} component={OtherStores} />
           <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
           <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
+          <Stack.Screen name={I18n.t('enote')} component={Enotes} />
+          <Stack.Screen name={I18n.t('enote2')} component={Enotes2} />
+          <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
           </>
         ):(
           <>

@@ -231,7 +231,6 @@ export default class Info extends Component {
        name: this.context.name+ '.jpg',
        type: 'image/jpg'
      });
-     data.append('label', '0');
      url = 'http://'
      +this.context.url
      +'/aicare-business-api/business/orginfo/upload';

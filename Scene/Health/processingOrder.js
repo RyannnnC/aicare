@@ -295,6 +295,15 @@ export default class ProcessingOrder extends Component {
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
               <TouchableOpacity style={{width: 75,
+                height: 25,
+                backgroundColor: '#FF7E67',
+                borderRadius: 10,
+                marginTop: 15,
+                justifyContent: "center",
+                alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
+                <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{width: 75,
               height: 25,
               backgroundColor: '#FF7E67',
               borderRadius: 10,
@@ -341,6 +350,15 @@ export default class ProcessingOrder extends Component {
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
             <TouchableOpacity style={{width: 75,
+              height: 25,
+              backgroundColor: '#FF7E67',
+              borderRadius: 10,
+              marginTop: 15,
+              justifyContent: "center",
+              alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
+              <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{width: 75,
             height: 25,
             backgroundColor: '#68B0AB',
             borderRadius: 10,
@@ -353,7 +371,7 @@ export default class ProcessingOrder extends Component {
               console.log(this.state.selectedDoctor);
             }}>
                 <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('modify')}</Text>
-              </TouchableOpacity>
+            </TouchableOpacity>
             </View>
             </View>
             }
@@ -610,6 +628,15 @@ elevation: 24,}}>
         source = {require('../../images/providerImg/order_img_empty_inprogress1.png')}
       />
      <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，快去接取吧！</Text>
+     <TouchableOpacity style={{width: 75,
+       height: 25,
+       backgroundColor: '#FF7E67',
+       borderRadius: 10,
+       marginTop: 15,
+       justifyContent: "center",
+       alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
+       <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+     </TouchableOpacity>
      </View>
     )
   }

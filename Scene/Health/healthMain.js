@@ -32,6 +32,19 @@ export default class HealthMain extends Component {
           source = {require('../../images/crayon-1317.png')}
         />
       </View>
+
+      <View style={styles.buttons}>
+        <TouchableOpacity style={styles.buttonContainer}>
+          <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{I18n.t('myPatient')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer2}>
+          <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{I18n.t('myAssistant')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer3}>
+          <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{I18n.t('emRecord')}</Text>
+        </TouchableOpacity>
+      </View>
+      
     <View>
       <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>{I18n.t('pOrder')}</Text>
     </View>
@@ -108,9 +121,9 @@ export default class HealthMain extends Component {
     </View>
     </TouchableOpacity>
 
-      <View>
-        <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>{I18n.t('todayOrder')}</Text>
-      </View>
+    <View>
+      <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>{I18n.t('todayOrder')}</Text>
+    </View>
     <TouchableOpacity style={styles.card} onPress = {() => this.props.navigation.navigate('预约')}>
       <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
         <View style={{marginLeft:20 }}>
