@@ -194,7 +194,7 @@ export default class Forget extends Component {
              />
           </View>
 
-          <View style={{height:30,borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginBottom:10}}>
+          <View style={{height:30,marginBottom:10}}>
             <TextInput style={styles.resumeInput}
             placeholder= {I18n.t('multipleInput')}
             onChangeText={(text) => {this.setState({ info: text})}}
@@ -202,12 +202,10 @@ export default class Forget extends Component {
           </View>
 
           <View style={{flexDirection: 'row'}}>
-            <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
             <TextInput style={styles.resumeInput3}
             placeholder={I18n.t('verifyInput')}
             onChangeText={(text) => {this.setState({ code: text})}}
             />
-            </View>
             {this.state.timer ?
             <TouchableOpacity style={styles.codeTab2}>
             <Text style={{ fontSize:14, fontWeight: '300',color:'white' }}>{I18n.t('resend')} {this.state.counter}s</Text>

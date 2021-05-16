@@ -12,7 +12,7 @@ export default class Welcome extends Component  {
           source={require('../images/providerImg/launchpage_img_1.png')}
           style = {styles.img}
         />
-        <View style={{marginTop:33,width:'60%',height: 70,justifyContent:'center',alignItems: "center"}}>
+        <View style={{marginTop:33,width:'65%',height: 70,justifyContent:'center',alignItems: "center"}}>
          <Text style={{ color: '#68B0AB', fontSize: 20, fontWeight: '600'}}>AICare</Text>
          <Text style={{fontWeight: '600', fontSize: 20,marginTop:5}}>您的远程医疗护理好帮手</Text>
         </View>
