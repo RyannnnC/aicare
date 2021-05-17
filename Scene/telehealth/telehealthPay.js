@@ -26,12 +26,21 @@ export default function TelePay({navigation,route}) {
     var type = "";
     if (checked1){
       type = "Medicare"
+
     }else if(checked2){
       type = "私人保险"
+      if (content.first.length==0){
+        Alert.alert("请输入私人保险持有人名字")
+        return
+      }
+      if(content.number.length==0){
+        Alert.alert("请输入私人保险号码")
+        return
+      }
     }else {
       type = "None"
     }
-            console.log(doctype);
+    console.log(doctype);
 
     navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime})
   }  
@@ -273,7 +282,7 @@ export default function TelePay({navigation,route}) {
       />
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:50}}></View>
-
+    
     <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
       {/*this need to manually calculated */}
       <Text style={styles.onsite_text}>下一步</Text>
@@ -293,7 +302,7 @@ export default function TelePay({navigation,route}) {
         
       <TextInput style = {styles.account}
           placeholder="保险人姓名"
-          onChangeText={(text)=>content.firstname=text}
+          onChangeText={(text)=>content.first=text}
 
       />
       <TextInput style = {styles.account}

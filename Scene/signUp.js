@@ -16,11 +16,46 @@ export default class Signup extends Component {
     checked1: false,
     checked2: true,
     checked3:false,
+    press:false,
   }
   sendRequest() {
     if (this.state.confirm != this.state.password) {
       Alert.alert("两次密码必须相同")
     } else {
+
+    if(this.state.name.length==0){
+      Alert.alert("请填写姓名")
+      return
+    }
+
+    if(this.state.phone.length==0){
+      Alert.alert("请填写电话")
+      return
+    }
+    if(this.state.mail.length==0){
+      Alert.alert("请填写邮箱")
+      return
+    }
+    if(this.state.password.length==0){
+      Alert.alert("请填写密码")
+      return
+    }
+    if(this.state.password.length<6){
+      Alert.alert("密码需要至少6位")
+      return
+    }
+    if(this.state.userCode.length==0){
+      Alert.alert("请填写验证码")
+      return
+    }
+    if(!this.state.checked3){
+      Alert.alert("请阅读并同意用户须知")
+      return
+    }
+    if(!this.state.press){
+      Alert.alert("请获取验证码验证绑定方式")
+      return
+    }
     let s = this.state;
     let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/user/register?'
       +'username='+ s.name
@@ -39,9 +74,14 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
+        console.log(json.msg)
+        if(json.code==0){
         console.log(json.msg);
         Alert.alert("注册成功！")
         this.props.navigation.navigate('登陆');
+        }else{
+          Alert.alert("注册失败")
+        }
       });}
   //  .then(json => {console.log(json)});
   }
@@ -67,8 +107,13 @@ export default class Signup extends Component {
       .then((json) => {
         //this.setState({mailCode: json.code});
         //console.log(json.code);
+        if(json.code==0){
         console.log(json.msg);
+        this.setState({press:true})
         Alert.alert("验证码已发送。")
+        }else{
+          Alert.alert("输入号码已注册")
+        }
       });
     } else {
       let m = this.state.mail;
@@ -84,8 +129,12 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json.msg);
-        Alert.alert("验证码已发送。")
+        if(json.code==0){
+          console.log(json.msg);
+          Alert.alert("验证码已发送。")
+          }else{
+            Alert.alert("输入号码已注册")
+          }
       });
     }
   }

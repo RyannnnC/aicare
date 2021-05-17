@@ -84,8 +84,9 @@ export default function Confirm({route,navigation}) {
             }})
             .then((response) => response.json())
             .then((json) => {
+              setLoading(false)
               if (json.code == 0) {
-                Alert.alert("已预约成功")
+                Alert.alert("正在跳转支付")
                 setModalVisible(!modalVisible)
                 if(json.ispay==1){
                   //navigation.navigate("telehealthPayment")
@@ -260,7 +261,16 @@ export default function Confirm({route,navigation}) {
 
     <View style={{marginLeft:-80,marginTop:40}}> 
 
-    <TouchableOpacity style={styles.next_wrapper} onPress={() =>{setModalVisible(!modalVisible);console.log(doctype)}}>
+    <TouchableOpacity style={styles.next_wrapper} onPress={() =>{
+      if(text.length==0){
+        Alert.alert("请填写患者姓名。")
+        return
+      }
+      if(content.mobile.length==0){
+        Alert.alert("请填写联系电话。")
+        return
+      }
+      setModalVisible(!modalVisible);console.log(doctype)}}>
       <Text style={styles.onsite_text}>提交预约</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={()=>user.action.contact()}>

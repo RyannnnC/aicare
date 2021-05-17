@@ -39,6 +39,8 @@ class DateSelect extends Component {
     const sdate = new Date(date);
     if(sdate<newTime){
       Alert.alert("不可以选择过去的日期。")
+      this.context.action.changeSchedule([]);
+
       return
     }
     this.setState({

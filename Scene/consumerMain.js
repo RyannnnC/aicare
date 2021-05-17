@@ -399,7 +399,7 @@ export default function ProviderMain({navigation}) {
         <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
           <View style={{marginLeft:20 }}>
             <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}> {moment(order[0].appointDate).tz(Localization.timezone).format('L')} {order[0].startTime?order[0].startTime.slice(0,5) + " - "+order[0].endTime.slice(0,5):null}</Text>
-            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{order[0].deptName?"您预约了一门"+order[0].deptName:null}。</Text>
+            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{order[0].deptName?"您预约了一门"+user.deptType[order[0].deptId]:null}。</Text>
           </View>
         <Image
           style = {styles.img3}
