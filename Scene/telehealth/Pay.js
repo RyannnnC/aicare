@@ -43,7 +43,7 @@ class Pay extends Component {
                   //this.setState({loading:false})
                   //Alert.alert('查询成功');
                   console.log(json.data.payResult);
-                  if(json.data.payResult=="SUCCESS"){
+                  if(json.data.payResult=="PAY_SUCCESS"){
                     this.props.navigation.navigate("teleSuccess")
                   }if(json.data.payResult=="PAY_FAIL"){
                     Alert.alert("支付失败","请检查您的账户余额是否足够以及卡信息是否填写正确并重新支付。",[{ text: "确认", onPress: () => {this.props.navigation.navigate("teleConfirm")}
