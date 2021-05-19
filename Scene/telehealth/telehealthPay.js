@@ -31,7 +31,7 @@ export default function TelePay({navigation,route}) {
     }else {
       type = "None"
     }
-            console.log(doctype);
+    console.log(doctype);
 
     navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime})
   }  
@@ -99,6 +99,7 @@ export default function TelePay({navigation,route}) {
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
+  const [checked4, setChecked4] = React.useState(false);
   var content ={name:"",mobile:"",number:"",date:"",serial:"",dob:"",first:" ",last:" ",gender:" "};
   return (
 
@@ -206,78 +207,103 @@ export default function TelePay({navigation,route}) {
         source={require('../../images/telehealth_icon/service_order_img_card.png')}
       />
         
-        <View style={{flexDirection:"row"}}>
         <TextInput style = {{height: 35,
-    width: 130,
+    width: 300,
     borderBottomColor: '#999999',
-    marginLeft:3,
+    marginLeft:0,
     borderBottomWidth:1,}}
           onChangeText={(text)=>content.last=text}
 
-          placeholder="持卡人姓"
+          placeholder="持卡人姓(Last Name)"
         />
       <TextInput style = {{height: 35,
-    width: 130,
-    marginLeft:40,
+    width: 300,
+    marginLeft:0,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-          placeholder="持卡人名"
+          placeholder="持卡人名(First Name)"
           onChangeText={(text)=>content.first=text}
 
       />
-      </View>
-      <View style={{flexDirection:"row"}}>
+      <TextInput style = {{height: 35,
+        width: 300,
+        marginLeft:0,
+        borderBottomColor: '#999999',
+        borderBottomWidth:1,}}
+              placeholder="出生日期(DOB) dd-mm-yyyy"
+              onChangeText={(text)=>content.dob=text}
+    
+          />
         <TextInput style = {{height: 35,
-    width: 70,
+    width: 300,
     borderBottomColor: '#999999',
-    marginLeft:3,
+    marginLeft:0,
     borderBottomWidth:1,}}
           onChangeText={(text)=>content.gender=text}
 
-          placeholder="性别 M/F"
+          placeholder="性别(Gender) M/F"
         />
-      <TextInput style = {{height: 35,
-    width: 200,
-    marginLeft:30,
-    borderBottomColor: '#999999',
-    borderBottomWidth:1,}}
-          placeholder="出生日期 yyyy-mm-dd"
-          onChangeText={(text)=>content.dob=text}
-
-      />
-      </View>
-        <View style={{flexDirection:"row"}}>
-        <TextInput style = {{height: 35,
-    width: 130,
-    borderBottomColor: '#999999',
-    marginLeft:3,
-    borderBottomWidth:1,}}
-          onChangeText={(text)=>content.date=text}
-
-          placeholder="到期日期 mm/yy"
-        />
-      <TextInput style = {{height: 35,
-    width: 130,
-    marginLeft:40,
-    borderBottomColor: '#999999',
-    borderBottomWidth:1,}}
-          placeholder="序列号"
-          onChangeText={(text)=>content.serial=text}
-
-      />
-      </View>
-      <TextInput style = {styles.account}
-          placeholder="卡号"
+      
+        
+        <TextInput style = {styles.account}
+          placeholder="卡号(Card Number)"
           onChangeText={(text)=>content.number=text}
 
       />
+      <TextInput style = {{height: 35,
+    width: 300,
+    marginLeft:0,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+          placeholder="序列号(Ref Number)"
+          onChangeText={(text)=>content.serial=text}
+
+      />
+  <TextInput style = {{height: 35,
+    width: 300,
+    borderBottomColor: '#999999',
+    marginLeft:0,
+    borderBottomWidth:1,}}
+          onChangeText={(text)=>content.date=text}
+
+          placeholder="到期日期(Expiration Date) mm-yyyy"
+        />
+      
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:50}}></View>
+    <View style={{flexDirection:"row"}}>
+    <CheckBox
+            checked={checked4 }
+            checkedColor='#FF8570'
+            uncheckedIcon='square-o'
+            checkedIcon='check-square-o'
+            size={23}
+            containerStyle={{marginTop:-52,marginLeft:110}}
+            onPress={() => {
+            setChecked4(!checked4);
+            }}
+          />
+    <Text style={{marginTop:-40,marginLeft:-20}}>我确认我有完整并正确的填写信息。</Text>
+    </View>
+    <View>
+    <Text style={{marginLeft:120,marginTop:-15}}>I certify that I have completed this form completely and accurately to the best of my knowledge.</Text>
+    <Text style={{marginLeft:120,marginTop:5}}>By proceeding I consent to the handling of my personal information as described in the </Text>
+    <TouchableOpacity onPress={()=>navigation.navigate("termofuse")}>
+    <Text style={{marginLeft:120,marginTop:5,color:"#8FD7D3"}}>Collection Notice,</Text>
+    </TouchableOpacity>
+    <Text style={{marginLeft:120,marginTop:5}}>and agree to the Aicare's</Text>
+    <TouchableOpacity onPress={()=>navigation.navigate('数据协议')}>
+    <Text style={{marginLeft:120,marginTop:5,color:"#8FD7D3"}}>Term of Use and Privacy Policy.</Text>
+    </TouchableOpacity>
+    
 
+    </View>
+    <View style={{marginLeft:80}}>
     <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
       {/*this need to manually calculated */}
       <Text style={styles.onsite_text}>下一步</Text>
     </TouchableOpacity>
+    </View>
     </View>
     </View>: null}
     {checked2?<View style = {styles.container}>
@@ -336,9 +362,7 @@ export default function TelePay({navigation,route}) {
             />
     </TouchableOpacity>
     <View style={{marginTop:160}}></View>
-    <Image style = {styles.contact}
-      source = {require('../../images/icon/1/contact.png')}
-    />
+    
   
   </View>
   

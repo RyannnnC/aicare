@@ -38,6 +38,7 @@ import ClinicInfo from "./Scene/telehealth/clinicInfo";
 import telehealthDoc from './Scene/telehealth/telehealthDoc';
 import TelehealthMV from './Scene/telehealth/telehealthMap';
 import DataPolicy from './Scene/datapolicy';
+import TermOfUse from './Scene/termofuse';
 
 import Welcome from './Scene/welcome';
 import Login from './Scene/login';
@@ -106,7 +107,7 @@ class App extends React.Component {
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
-      url:"3.104.232.106:8085",
+      url:"3.104.87.14:8085",
       suburb:"",
       postcode:"",
       state:"",
@@ -307,6 +308,8 @@ render() {
         <Stack.Screen name ="changeDoc" component={changeDoc}/>
         <Stack.Screen name ="changeDocInfo" component={changeDocInfo}/>
         <Stack.Screen name ="telehealthPayment" component={telehealthPayment}/>
+        <Stack.Screen name="数据协议" component={DataPolicy} />
+        <Stack.Screen name="termofuse" component={TermOfUse} />
 
 
 

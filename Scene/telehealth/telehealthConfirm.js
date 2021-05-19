@@ -246,9 +246,7 @@ elevation: 24,}}>
       </Modal>
 
     </View>
-    <Image style = {styles.contact}
-      source = {require('../../images/icon/1/contact.png')}
-    />
+   
   </View>
   </ScrollView>
   )}
