@@ -41,6 +41,7 @@ import TelehealthMV from './Scene/telehealth/telehealthMap';
 import Pay from './Scene/telehealth/Pay';
 
 import DataPolicy from './Scene/datapolicy';
+import TermOfUse from './Scene/termofuse';
 
 import Welcome from './Scene/welcome';
 import Login from './Scene/login';
@@ -340,6 +341,8 @@ render() {
         <Stack.Screen name ="changeDocInfo" component={changeDocInfo}/>
         <Stack.Screen name ="telehealthPayment" component={telehealthPayment}/>
         <Stack.Screen name ="pay" component={Pay} options={{headerShown:false}}/>
+        <Stack.Screen name="数据协议" component={DataPolicy} />
+        <Stack.Screen name="termofuse" component={TermOfUse} />
 
 
 

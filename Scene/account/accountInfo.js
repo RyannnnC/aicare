@@ -259,29 +259,29 @@ const AccountInfo = ({navigation}) => {
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>姓名： </Text>
-            <TextInput defaultValue={base.name}  placeholder="请输入您的姓名" placeholderTextColor="grey" onChangeText={text => setName(text)}></TextInput>
+            <TextInput defaultValue={base.name?base.name:""}  placeholder="请输入您的姓名" placeholderTextColor="grey" onChangeText={text => setName(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>性别： </Text>
-            <TextInput placeholder="请输入您的性别" defaultValue={base.gender}  placeholderTextColor="grey" onChangeText={text => setGender(text)}></TextInput>
+            <TextInput placeholder="请输入您的性别" defaultValue={base.gender?base.gender:""}  placeholderTextColor="grey" onChangeText={text => setGender(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>年龄： </Text>
-            <TextInput placeholder="请输入您的年龄"  defaultValue={base.age.toString()} placeholderTextColor="grey" onChangeText={text => setAge(text)}></TextInput>
+            <TextInput placeholder="请输入您的年龄"  defaultValue={base.age?base.age:""} placeholderTextColor="grey" onChangeText={text => setAge(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>电话： </Text>
-            <TextInput placeholder="请输入您的电话" defaultValue={base.mobile} placeholderTextColor="grey" onChangeText={text => setTelephone(text)}></TextInput>
+            <TextInput placeholder="请输入您的电话" defaultValue={base.mobile?base.mobile:""} placeholderTextColor="grey" onChangeText={text => setTelephone(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>地址： </Text>
-            <TextInput placeholder="请输入您的地址" defaultValue={base.address} placeholderTextColor="grey" onChangeText={text => setAddress(text)}></TextInput>
+            <TextInput placeholder="请输入您的地址" defaultValue={base.address?base.address:""} placeholderTextColor="grey" onChangeText={text => setAddress(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>编码： </Text>
-            <TextInput placeholder="请输入邮编" defaultValue={base.postCode} placeholderTextColor="grey" onChangeText={text => setPostcode(text)}></TextInput>
+            <TextInput placeholder="请输入邮编" defaultValue={base.postCode?base.postCode:""} placeholderTextColor="grey" onChangeText={text => setPostcode(text)}></TextInput>
             <Text style={{marginLeft:50}}>州： </Text>
-            <TextInput placeholder="请输入州" defaultValue={base.state} placeholderTextColor="grey" onChangeText={text => setState(text)}></TextInput>
+            <TextInput placeholder="请输入州" defaultValue={base.state?base.state:""} placeholderTextColor="grey" onChangeText={text => setState(text)}></TextInput>
         </View>
         {/*<View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>邮箱： </Text>
@@ -347,7 +347,7 @@ const AccountInfo = ({navigation}) => {
         {selectedType=="Medicare"?<View style = {{alignItems:"center"}}>
         <TextInput style = {styles.account}
           placeholder="持卡人姓名" 
-          defaultValue= {(medi.category=="Medicare")?medi.name:null}
+          defaultValue= {(medi.category=="Medicare"&&medi.name)?medi.name:""}
           onChangeText={text => setcardName(text)}
         />
         <View style={{flexDirection:"row"}}>
@@ -356,9 +356,9 @@ const AccountInfo = ({navigation}) => {
     borderBottomColor: '#999999',
     marginLeft:3,
     borderBottomWidth:1,}}
-    defaultValue= {(medi.category=="Medicare")?medi.expireDate.slice(0,10):null}
+    defaultValue= {(medi.category=="Medicare"&&medi.expireDate)?medi.expireDate.slice(0,10):""}
 
-          placeholder="yyyy-mm-01"
+          placeholder="yyyy-mm-dd"
           onChangeText={text => setExpire(text)}
         />
       <TextInput style = {{height: 35,
@@ -367,7 +367,7 @@ const AccountInfo = ({navigation}) => {
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
           placeholder="序列号"
-          defaultValue= {(medi.category=="Medicare")?medi.serialNumber:null}
+          defaultValue= {(medi.category=="Medicare"&&medi.serialNumber)?medi.serialNumber:""}
 
           onChangeText={text => setSerial(text)}
       />
@@ -375,7 +375,7 @@ const AccountInfo = ({navigation}) => {
       <TextInput style = {styles.account}
           placeholder="卡号"
           onChangeText={text => setCardNumber(text)}
-          defaultValue= {(medi.category=="Medicare")?medi.number:null}
+          defaultValue= {(medi.category=="Medicare"&&medi.number)?medi.number:""}
 
       />
 
@@ -384,13 +384,13 @@ const AccountInfo = ({navigation}) => {
         
       <TextInput style = {styles.account}
           placeholder="保险人姓名"
-          defaultValue= {(medi.category=="私人保险")?medi.name:null}
+          defaultValue= {(medi.category=="私人保险"&&medi.name)?medi.name:null}
 
           onChangeText={text => setcardName(text)}
       />
       <TextInput style = {styles.account}
           placeholder="保险号码(Policy Number)"
-          defaultValue= {(medi.category=="私人保险")?medi.number:null}
+          defaultValue= {(medi.category=="私人保险"&&medi.number)?medi.number:null}
 
           onChangeText={text => setCardNumber(text)}
       />

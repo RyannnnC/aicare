@@ -65,9 +65,10 @@ export default function DocInfo({route,navigation}) {
                 //console.log(json);
                 //console.log(json.businessEmployer[0]);
                 setDoc(json.businessEmployer[0]);
-                console.log(json.businessEmployer[0].videoChannel)
+                console.log(json.businessEmployer[0].languages);
+                //console.log(json.businessEmployer[0].videoChannel)
                 //console.log(json);
-                console.log(url);
+                //console.log(url);
                 //console.log("schedule");
                 //console.log(timeSection);
                 //console.log(json.code);
@@ -300,7 +301,7 @@ export default function DocInfo({route,navigation}) {
             source = {require('../../images/order_iocn_money.png')}
           />
 
-          {doc.chargingMethod=="1"?<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>支持bulk billing</Text>:<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>不支持bulk billing</Text>
+          {/*doc.chargingMethodList[0].value=="1"*/true?<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>支持bulk billing</Text>:<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>不支持bulk billing</Text>
         }</View>
         </View>
         
