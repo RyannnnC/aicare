@@ -67,7 +67,8 @@ export default class Login extends Component {
     <KeyboardAvoidingView
     style={styles.container}
     behavior={Platform.OS === "ios" ? "padding" : "height"} 
-    keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}>
+    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}>
+    
       <View style={{marginTop:150}}></View>
       <Image style = {{width:150,height:150}}
         source = {require('../images/welcome.png')}

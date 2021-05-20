@@ -2,6 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import {Platform,Linking} from "react-native";
 import Info from './Scene/consumerInfo';
 import ConsumerOrder from './Scene/consumerOrder';
 import ConsumerIcon from "./Scene/consumerIcon";
@@ -104,6 +105,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      customer_service:"+61 421326182",
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
@@ -148,9 +150,38 @@ class App extends React.Component {
         changeSchedule:this.changeSchedule,
         changevisit:this.changevisit,
         changeLoading:this.changeLoading,
+        contact:this.contact,
       }
     }
   }
+  contact = () => {
+    //phone='0403555432';
+    //let phoneNumber = phone;
+    mobile = this.state.customer_service;
+    if (Platform.OS !== 'android') {
+      Linking.canOpenURL(`telprompt:${mobile}`)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(`telprompt:${mobile}`);
+      }
+    })
+    .catch(err => console.log(err));
+  }
+    else  {
+     
+      Linking.canOpenURL(`tel:${mobile}`)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(`tel:${mobile}`);
+      }
+    })
+    .catch(err => console.log(err));
+    }
+  };
   clearstate=()=>{
     this.setState({
     loading:true,
