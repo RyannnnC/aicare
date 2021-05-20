@@ -231,9 +231,10 @@ export default class Info extends Component {
        name: this.context.name+ '.jpg',
        type: 'image/jpg'
      });
+     data.append('orgId',this.context.orgId);
      url = 'http://'
      +this.context.url
-     +'/aicare-business-api/business/orginfo/upload';
+     +'/aicare-business-api/business/orginfo/uploadimg';
         fetch(url,{
           method: 'POST',
           mode: 'cors',
@@ -347,6 +348,7 @@ export default class Info extends Component {
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "0403571833"
           value={this.context.phone}
+          keyboardType="numeric"
           onChangeText={(text) => {this.context.action.changephone(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
@@ -370,6 +372,7 @@ export default class Info extends Component {
             style={styles.resumeInput1}
             placeholder= "2113"
             value = {this.context.postcode}
+            keyboardType="numeric"
             onChangeText={(text) => {this.context.action.changepostcode(text)}}
           />
           <Text style={{marginLeft:20, fontSize:16, fontWeight: '400' }}>{I18n.t('state')}</Text>

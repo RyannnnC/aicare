@@ -623,7 +623,8 @@ export default class UploadMember extends Component {
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('experience')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "Input Only a number"
             value={this.state.we}
-            onChangeText={(text) => {this.setState({we:text})}}/>
+            keyboardType="numeric"
+            onChangeText={(number) => {this.setState({we:number})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('introduction')}</Text>

@@ -26,6 +26,8 @@ export default {
   resend:'重新获取',
   binding:'绑定方式',
   changePassword:'修改密码',
+  oldPassword:'旧密码',
+  newPassword:'新密码',
   mySetting:'我的设置',
   members:'成员管理',
   introduction:'介绍',
@@ -159,4 +161,6 @@ export default {
   myPatient:'我的病人',
   myAssistant:'我的助手',
   record:'病历',
+  videoCall1:'请使用Facetime完成视频诊疗',
+  videoCall2:'请使用Skype完成视频诊疗',
 }

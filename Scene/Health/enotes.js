@@ -73,23 +73,40 @@ export default class Enotes extends Component {
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('name')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
+          <TextInput style={{width:'35%',
+          height: 22,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE'}} placeholder= "Kingsford Clinic"
           value={this.context.name}
           onChangeText={(text) => {this.context.action.changename(text)}}/>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('gender')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "0403571833"
+          <TextInput style={{
+            width: '35%',
+            height: 22,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE'}} placeholder= "0403571833"
           value={this.context.phone}
           onChangeText={(text) => {this.context.action.changephone(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
 
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('age')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "657416708xy@gmail.com"
+          <TextInput style={{width: '35%',
+          height: 22,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE'}} placeholder= "657416708xy@gmail.com"
           value={this.context.email}
           onChangeText={(text) => {this.context.action.changeemail(text)}}/>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('dateofBirth')}</Text>
           <TextInput
-          style={styles.resumeInput}
+          style={{width: '35%',
+          height: 22,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE'}}
           placeholder= "1001/1 Mooltan Avanue"
           value = {this.context.street}
           onChangeText={(text) => {this.context.action.changestreet(text)}}

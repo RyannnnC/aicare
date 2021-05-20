@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
+import { Platform,Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
@@ -294,29 +294,41 @@ export default class ProcessingOrder extends Component {
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{tp}</Text>
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
+              {this.context.employerId &&
               <TouchableOpacity style={{width: 75,
                 height: 25,
                 backgroundColor: '#FF7E67',
                 borderRadius: 10,
                 marginTop: 15,
+                marginLeft:20,
                 justifyContent: "center",
                 alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
                 <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
               </TouchableOpacity>
+            }
+            {this.context.employerId &&
               <TouchableOpacity style={{width: 75,
               height: 25,
               backgroundColor: '#FF7E67',
               borderRadius: 10,
               marginTop: 15,
+              marginLeft:20,
               justifyContent: "center",
-              alignItems: "center" }} onPress={() => {Alert.alert('功能尚未开放')}}>
+              alignItems: "center" }} onPress={() => {
+                if (Platform.OS === "ios") {
+                  Alert.alert(I18n.t('videoCall1'))
+                } else {
+                  Alert.alert(I18n.t('videoCall2'))
+                }
+              }}>
                 <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('video')}</Text>
               </TouchableOpacity>
+            }
             <TouchableOpacity style={{width: 75,
             height: 25,
             backgroundColor: '#68B0AB',
             borderRadius: 10,
-            marginRight: 25,
+            marginLeft: 20,
             marginTop: 15,
             justifyContent: "center",
             alignItems: "center" ,}} onPress={() => {
@@ -349,15 +361,18 @@ export default class ProcessingOrder extends Component {
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('onsite')}</Text>
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
+            {this.context.employerId &&
             <TouchableOpacity style={{width: 75,
               height: 25,
               backgroundColor: '#FF7E67',
               borderRadius: 10,
               marginTop: 15,
+              marginLeft:20,
               justifyContent: "center",
               alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
               <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
             </TouchableOpacity>
+            }
             <TouchableOpacity style={{width: 75,
             height: 25,
             backgroundColor: '#68B0AB',
@@ -609,11 +624,11 @@ elevation: 24,}}>
         <ScrollView horizontal={true} style={{marginLeft:20,maxHeight:210,paddingTop:5,height:130}}>
           <Category/>
         </ScrollView>
-        <TouchableOpacity style={styles.next_wrapper} onPress={()=>{
-          this.setVisible(!this.state.Visible);}
-        }>
+    <View style={{alignItems:'center',justifyContent:'center'}}>
+    <TouchableOpacity style={styles.next_wrapper} onPress={()=>{this.setVisible(!this.state.Visible)}}>
       <Text style={styles.onsite_text}>{I18n.t('confirmation')}</Text>
     </TouchableOpacity>
+    </View>
     </ScrollView>
         <View style={{height:20}}/>
         </View>

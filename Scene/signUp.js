@@ -130,10 +130,9 @@ export default class Signup extends Component {
   }
   render() {
     return (
-      <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}>
-          <ScrollView style={{flex:1}}>
-          <View style={{width:'85%',flex:1}}>
+      <KeyboardAvoidingView style={{ flex:1,backgroundColor:'white' }}
+      behavior="position">
+          <ScrollView style={{width:'90%',marginLeft:'5%'}}>
           <View style={{marginTop:30, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
@@ -141,81 +140,70 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('name')} *</Text>
           </View>
-          <View>
           <TextInput style={styles.resumeInput}
           placeholder={I18n.t('nameInput')}
           onChangeText={(text) => {this.setState({ name: text})}}
           />
-          </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_phone.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('mobile')} *</Text>
           </View>
-          <View>
           <TextInput style={styles.resumeInput}
           placeholder={I18n.t('phoneInput')}
+          keyboardType="numeric"
           onChangeText={(text) => {this.setState({ phone: text})}}
           />
-          </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_mail.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('email')} *</Text>
           </View>
-          <View >
           <TextInput style={styles.resumeInput}
           placeholder={I18n.t('mailInput')}
           onChangeText={(text) => {this.setState({ mail: text})}}
           />
-          </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/providerImg/login_icon_pswd.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('password')} *</Text>
           </View>
-          <View >
           <TextInput style={styles.resumeInput}
           placeholder={I18n.t('passwordInput')}
           secureTextEntry={true}
           onChangeText={(text) => {this.setState({ password: text})}}
           />
-          </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/providerImg/account_icon_confirm.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('confirm')} *</Text>
           </View>
-          <View >
           <TextInput style={styles.resumeInput}
           placeholder={I18n.t('passwordInput2')}
           secureTextEntry={true}
           onChangeText={(text) => {this.setState({ confirm: text})}}
           />
-          </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_link.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('binding')} *</Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
             <CheckBox
-              center
               title={I18n.t('mobile')}
               iconRight
               checkedIcon='check-circle-o'
@@ -230,10 +218,7 @@ export default class Signup extends Component {
                 checked2: false,
               })}}
              />
-          </View>
-          <View style={{flexDirection: 'row'}}>
             <CheckBox
-              center
               title={I18n.t('email')}
               iconRight
               checkedIcon='check-circle-o'
@@ -248,14 +233,11 @@ export default class Signup extends Component {
                 checked2: true,
               })}}
              />
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <View>
+          <View style={{flex:1,flexDirection: 'row'}}>
             <TextInput style={styles.resumeInput3}
             placeholder= {I18n.t('verifyInput')}
             onChangeText={(text) => {this.setState({ code: text})}}
             />
-            </View>
             {this.state.timer ?
             <TouchableOpacity style={styles.codeTab2}>
             <Text style={{ fontSize:14, fontWeight: '300',color:'white' }}>{I18n.t('resend')} {this.state.counter}s</Text>
@@ -265,12 +247,11 @@ export default class Signup extends Component {
             <Text style={{ fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
           </TouchableOpacity>
             }
-
           </View>
+
           <TouchableOpacity style={styles.resumeButton} onPress={()=>this.sendRequest()}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
           </TouchableOpacity>
-          </View>
           </ScrollView>
       </KeyboardAvoidingView>
   );}

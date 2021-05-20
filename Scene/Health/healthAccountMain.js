@@ -56,6 +56,7 @@ export default class HealthAccountMain extends Component {
             if (json.code === 0) {
               console.log(json);
               if(json.orginfo.name!=null){
+                this.context.action.changeorg(json.orginfo.orgId);
                 this.context.action.changeimg(json.orginfo.orgImg);
                 this.context.action.changename(json.orginfo.name);
                 this.context.action.changeemail(json.orginfo.email);
@@ -156,7 +157,13 @@ export default class HealthAccountMain extends Component {
       </View>
       }
       <View style={{marginTop:20}}>
-      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('orginfo'))}>
+      <TouchableOpacity style={styles.profileBar} onPress={() => {
+        if (this.context.employerId != null) {
+          this.props.navigation.navigate(I18n.t('uploadMember'), {id: this.context.employerId})
+        } else {
+          this.props.navigation.navigate(I18n.t('orginfo'));
+        }
+      }}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_medical.png')}

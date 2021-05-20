@@ -32,8 +32,8 @@ export default class HealthMain extends Component {
           source = {require('../../images/crayon-1317.png')}
         />
       </View>
-
-      <View style={styles.buttons}>
+      {this.context.emplyerId != null &&
+        <View style={styles.buttons}>
         <TouchableOpacity style={styles.buttonContainer}>
           <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{I18n.t('myPatient')}</Text>
         </TouchableOpacity>
@@ -44,7 +44,8 @@ export default class HealthMain extends Component {
           <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{I18n.t('emRecord')}</Text>
         </TouchableOpacity>
       </View>
-      
+    }
+
     <View>
       <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>{I18n.t('pOrder')}</Text>
     </View>
@@ -99,7 +100,7 @@ export default class HealthMain extends Component {
           alignItems: "center" ,
           paddingLeft:15,
           paddingRight:15,
-        }} onPress={() => {Alert.alert('请移步到订单完成操作') }}>
+        }}>
           <Text style={{fontSize:14, color:'#FAFAFA'}}>接受</Text>
         </TouchableOpacity>
         <TouchableOpacity style={{
@@ -114,7 +115,7 @@ export default class HealthMain extends Component {
           alignItems: "center" ,
           paddingLeft:15,
           paddingRight:15,
-        }} onPress={() => {Alert.alert('请移步到订单完成操作')  }}>
+        }}>
           <Text style={{fontSize:14, color:'#FAFAFA'}}>修改</Text>
         </TouchableOpacity>
       </View>

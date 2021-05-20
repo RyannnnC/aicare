@@ -96,7 +96,43 @@ function Home() {
         </Tab.Navigator>
   );
 }
-function HealthHome() {
+function OrgHome() {
+  return (
+      <Tab.Navigator>
+          <Tab.Screen
+            name="主页"
+            component={HealthMain}
+            options={{
+              tabBarLabel:I18n.t('homePage'),
+              tabBarIcon: ({ color, size }) => (
+                <MaterialIcons name="home" size={size} color={color} />
+              ),
+            }}
+            />
+          <Tab.Screen
+            name="预约"
+            component={ReservationMain}
+            options={{
+              tabBarLabel: I18n.t('booking'),
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="账号"
+            component={HealthAccountMain}
+            options={{
+              tabBarLabel: I18n.t('account'),
+              tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="account" color={color} size={size} />
+            ),
+          }}
+             />
+        </Tab.Navigator>
+  );
+}
+function DoctorHome() {
   return (
       <Tab.Navigator>
           <Tab.Screen
@@ -150,6 +186,7 @@ export default class App extends React.Component {
     authenticate: false,
     health: true,
     employerId:null,
+    orgId:null,
     url:'3.104.232.106:8084',
     date: "",
     name: '',
@@ -199,11 +236,15 @@ export default class App extends React.Component {
       changeserviceclass:this.changeserviceclass,
       changetypelist:this.changetypelist,
       changeemployerid:this.changeemployerid,
+      changeorg:this.changeorg,
     }
     }
   }
   changeemployerid = (value) => {
     this.setState({employerId: value});
+  }
+  changeorg = (value) => {
+    this.setState({orgId: value});
   }
   changeLogin = (value) => {
     this.setState({authenticate: value});
@@ -322,6 +363,7 @@ export default class App extends React.Component {
       authenticate: false,
       health: true,
       employerId:null,
+      orgId:null,
       date: "",
       name: '',
       phone: '',
@@ -353,24 +395,39 @@ export default class App extends React.Component {
       <Stack.Navigator>
       {this.state.authenticate ? (
         this.state.health ? (
-          <>
-          <Stack.Screen options={{headerShown: false}} name="healthHome" component={HealthHome} />
-          <Stack.Screen name={I18n.t('changePassword')} component={ChangePwd} />
-          <Stack.Screen name={I18n.t('mySetting')} component={Setting} />
-          <Stack.Screen name={I18n.t('orginfo')}component={Info} />
-          <Stack.Screen name={I18n.t('members')} component={Members} />
-          <Stack.Screen name={I18n.t('introduction')} component={Introduction} />
-          <Stack.Screen name={I18n.t('mintro')} component={Mintro} />
-          <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
-          <Stack.Screen name={I18n.t('languages')} component={Languages} />
-          <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
-          <Stack.Screen name={I18n.t('stores')} component={OtherStores} />
-          <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
-          <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
-          <Stack.Screen name={I18n.t('enote')} component={Enotes} />
-          <Stack.Screen name={I18n.t('enote2')} component={Enotes2} />
-          <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
-          </>
+          this.state.employerId == null ? (
+            <>
+            <Stack.Screen options={{headerShown: false}} name="healthHome" component={OrgHome} />
+            <Stack.Screen name={I18n.t('changePassword')} component={ChangePwd} />
+            <Stack.Screen name={I18n.t('mySetting')} component={Setting} />
+            <Stack.Screen name={I18n.t('orginfo')}component={Info} />
+            <Stack.Screen name={I18n.t('members')} component={Members} />
+            <Stack.Screen name={I18n.t('introduction')} component={Introduction} />
+            <Stack.Screen name={I18n.t('mintro')} component={Mintro} />
+            <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
+            <Stack.Screen name={I18n.t('languages')} component={Languages} />
+            <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
+            <Stack.Screen name={I18n.t('stores')} component={OtherStores} />
+            <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
+            <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
+            </>
+          ):(
+            <>
+            <Stack.Screen options={{headerShown: false}} name="healthHome" component={DoctorHome} />
+            <Stack.Screen name={I18n.t('changePassword')} component={ChangePwd} />
+            <Stack.Screen name={I18n.t('mySetting')} component={Setting} />
+            <Stack.Screen name={I18n.t('orginfo')}component={Info} />
+            <Stack.Screen name={I18n.t('members')} component={Members} />
+            <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
+            <Stack.Screen name={I18n.t('languages')} component={Languages} />
+            <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
+            <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
+            <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
+            <Stack.Screen name={I18n.t('enote')} component={Enotes} />
+            <Stack.Screen name={I18n.t('enote2')} component={Enotes2} />
+            <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
+            </>
+          )
         ):(
           <>
           <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />

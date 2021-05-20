@@ -2,7 +2,7 @@
   "expo": {
     "name": "aicareProvider",
     "slug": "aicareProvider",
-    "version": "1.0.3",
+    "version": "1.0.6",
     "orientation": "default",
     "icon": "./assets/logo.png",
     "splash": {
@@ -18,14 +18,13 @@
     ],
     "ios": {
       "infoPlist":{
-        "PhotoUsageDescription": "This app uses the photo to verify personal identity and complete personal information",
-        "LocationUsageDescription": "This app uses the location to complete organisation information of location."
+        "NSPhotoLibraryUsageDescription": "This app uses the photo as avatar only, which would display on your personal information",
       },
       "supportsTablet": true,
       "bundleIdentifier": "aicare.provider"
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"

@@ -123,11 +123,11 @@ export default class Members extends Component {
             source = {item.imgUrl?{uri:item.imgUrl}:require('../../images/providerImg/service_doctor_img1.png')}
           />
           </TouchableOpacity>
-          <View>
+          <View style={{width:'60%'}}>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
-            <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.personalProfile}</Text>
+            <Text numberOfLines={1} style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.personalProfile}</Text>
           </View>
-          <TouchableOpacity style={{marginLeft:68, marginRight:10}} onPress={() => this.props.navigation.navigate(I18n.t('doctorInfo'), {id: item.employerId})}>
+          <TouchableOpacity style={{marginRight:10}} onPress={() => this.props.navigation.navigate(I18n.t('doctorInfo'), {id: item.employerId})}>
             <Image
               style = {{width: 25, height:25}}
               source = {require('../../images/providerImg/account_icon_edit.png')}
