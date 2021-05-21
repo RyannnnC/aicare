@@ -102,18 +102,19 @@ export default function TelehealthrMain({navigation}) {
           <View style={{flexDirection: 'row'}}>
 
           <Image
-            style={{width:75,height:75,marginLeft:20,marginTop:-3}}
+            style={{width:75,height:75,marginLeft:20,marginTop:-3,borderRadius:40}}
             source={item.headPortrait?{uri:item.headPortrait}:require('../../images/telehealth_icon/service_doctor_img1.png')}/>
           </View>
           <Text style={{fontSize:17,marginTop:-78,marginLeft:103}}>{item.employerName}</Text>
           <Text style={{fontSize:12,color:'#999999',marginLeft:102,marginTop:10}}>全科医生-{item.orgName}</Text>
-          <View style={{flexDirection: 'row'}}>
-
+          {/*<View style={{flexDirection: 'row'}}>
+          
           <Image
             style={{width:25,height:25,marginTop:8,marginLeft:98}}
             source={require('../../images/telehealth_icon/stars.png')}/>
           <Text style={{fontSize:12,color:'#999999',marginTop:10}}>5 (1评价)</Text>
-          </View>
+                      </View>*/}
+          <View style={{height:20}}></View>
         </TouchableOpacity>
         
         </View>

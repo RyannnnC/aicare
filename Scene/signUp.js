@@ -98,13 +98,13 @@ export default class Signup extends Component {
       <ScrollView style={{flex:1}}>
 
       <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
-          <View style={{alignItems: 'flex-start' }}>
+          <View style={{alignItems: 'flex-start',marginTop:40 }}>
           <View style={{marginTop:35, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/singup_icon_name.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>姓名</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>姓名</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
@@ -118,11 +118,12 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_phone.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>电话</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>电话</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的联系方式"
+                keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
+          placeholder="请输入您的电话号码"
           onChangeText={(text) => {this.setState({ phone: text})}}
           />
           </View>
@@ -134,7 +135,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_pswd.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>密码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>密码</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
@@ -150,7 +151,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_confirm.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>确认</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>确认</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
@@ -166,7 +167,7 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>验证</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>验证</Text>
           </View>
 
          
@@ -177,10 +178,10 @@ export default class Signup extends Component {
             onChangeText={(text) => {this.setState({ userCode: text})}}
             />
             </View>
-            <TouchableOpacity style={{borderWidth:1,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5}}
+            <TouchableOpacity style={{borderWidth:1,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5,paddingLeft:8,marginLeft:3}}
               onPress={()=>this.sendCode()}
             >
-              <Text style={{ fontSize:14, fontWeight: '300' }}>获取验证码</Text>
+              <Text style={{ fontSize:13, fontWeight: '300' }}>获取验证码</Text>
             </TouchableOpacity>
           </View>
 
@@ -214,7 +215,13 @@ export default class Signup extends Component {
    justifyContent: "center",}} onPress={()=>{this.sendRequest()}}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
           </TouchableOpacity>
-
+          <View style={{flexDirection:"row"}}>
+      <Image style = {{marginTop:90,
+    width:120,
+    height:32,}}
+        source = {require('../images/logo.png')}
+      />
+      </View>
       </View>
       </ScrollView>
 
