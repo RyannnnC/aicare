@@ -139,12 +139,12 @@ export default function TelehealthrMain({navigation}) {
               marginTop:-150}}>远程医疗</Text>
           </View>
 
-        <Image
+        {/*<Image
             style = {{height:150,
               width:150,marginTop:-100,marginBottom:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_img.png')}
 
-        />
+            />*/}
         {/*<SearchBar
           round
           //searchIcon={{ size: 24 }}
@@ -167,7 +167,7 @@ export default function TelehealthrMain({navigation}) {
           
           value={search}
         />*/}
-        <View style={{flexDirection: 'row', marginBottom: 15,marginTop:30}}>
+        <View style={{flexDirection: 'row', marginBottom: 15,marginTop:-100}}>
           <Text style={{marginLeft:-20,fontSize:18}}>预约种类</Text>
           <TouchableOpacity style={{marginLeft:180,marginTop:5}}  onPress={()=>{
           setModalVisible(modalVisible=>!modalVisible)}}>
@@ -345,7 +345,7 @@ export default function TelehealthrMain({navigation}) {
             </View>
           </TouchableOpacity>
         </View>
-        <ScrollView  style={{marginLeft:5,maxHeight:240,paddingTop:5,paddingLeft:5,height:220,width:350}}>
+        <ScrollView  style={{marginLeft:5,maxHeight:480,paddingTop:5,paddingLeft:5,height:480,width:350}}>
         {types}
           </ScrollView>
           <Modal

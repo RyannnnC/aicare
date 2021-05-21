@@ -358,7 +358,7 @@ const AccountInfo = ({navigation}) => {
     borderBottomWidth:1,}}
     defaultValue= {(medi.category=="Medicare"&&medi.expireDate)?medi.expireDate.slice(0,10):""}
 
-          placeholder="yyyy-mm-dd"
+          placeholder="dd-mm-yyyy"
           onChangeText={text => setExpire(text)}
         />
       <TextInput style = {{height: 35,

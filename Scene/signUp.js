@@ -32,10 +32,7 @@ export default class Signup extends Component {
       Alert.alert("请填写电话")
       return
     }
-    if(this.state.mail.length==0){
-      Alert.alert("请填写邮箱")
-      return
-    }
+    
     if(this.state.password.length==0){
       Alert.alert("请填写密码")
       return
@@ -53,7 +50,7 @@ export default class Signup extends Component {
       return
     }
     if(!this.state.press){
-      Alert.alert("请获取验证码验证绑定方式")
+      Alert.alert("请获取验证码验证电话号码")
       return
     }
     let s = this.state;
@@ -64,7 +61,7 @@ export default class Signup extends Component {
       +'&mobile=' + s.phone
       +'&clientType=3'
       +'&code=' + s.userCode
-      +'&appType=4'
+      +'&appType=4'+"&type=mobile"
       fetch(url,{
         method: 'POST',
         headers: {
@@ -76,11 +73,11 @@ export default class Signup extends Component {
       .then((json) => {
         console.log(json.msg)
         if(json.code==0){
-        console.log(json.msg);
-        Alert.alert("注册成功！")
-        this.props.navigation.navigate('登陆');
+           console.log(json.msg);
+           Alert.alert("注册成功！")
+          this.props.navigation.navigate('登陆');
         }else{
-          Alert.alert("注册失败")
+          Alert.alert(json.msg)
         }
       });}
   //  .then(json => {console.log(json)});
@@ -112,7 +109,7 @@ export default class Signup extends Component {
         this.setState({press:true})
         Alert.alert("验证码已发送。")
         }else{
-          Alert.alert("输入号码已注册")
+          Alert.alert("验证码请求失败，请检查网络或者咨询客服。")
         }
       });
     } else {
@@ -133,7 +130,7 @@ export default class Signup extends Component {
           console.log(json.msg);
           Alert.alert("验证码已发送。")
           }else{
-            Alert.alert("输入号码已注册")
+            Alert.alert("验证码请求失败，请检查网络或咨询客服。")
           }
       });
     }

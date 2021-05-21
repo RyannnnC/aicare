@@ -168,7 +168,7 @@ class OngoingingOrder extends Component {
                 //this.setState({query:json.page})
                 this.setState({query: json.page });
                 //Alert.alert('查询成功');
-                console.log(json.page[0].telehealthFlg)
+                //console.log(json.page[0].telehealthFlg)
               } else {
                 console.log(json.msg);
                 console.log(json.code);

@@ -103,7 +103,7 @@ export default class Login extends Component {
         source = {require('../images/telehealth_icon/account_icon_pswd.png')}
       />
       <Text style={{marginTop:25,marginLeft:10}}>账户密码</Text>
-      {/*<TouchableOpacity style={{    borderColor:"#999999",
+      {/*<TouchableOpacity style={{borderColor:"#999999",
       borderWidth:1,
     padding:8,
     width:120,
@@ -134,12 +134,13 @@ export default class Login extends Component {
       </View>
       <View style={{marginTop:0}}></View>
       <TouchableOpacity style={{backgroundColor: '#8FD7D3',
-    padding:10,
-    width:280,
-    marginTop:60,
-    height:45,
-    alignItems: 'center',
-    borderRadius:25,}} onPress = {()=>this.loginRequest()}>
+              padding:10,
+              width:280,
+              marginTop:60,
+              height:45,
+              alignItems: 'center',
+              borderRadius:25,}}
+              onPress = {()=>this.loginRequest()}>
         <Text style={{color:"white"}}>登陆</Text>
       </TouchableOpacity>
       <View style={{flexDirection:"row"}}>

@@ -99,7 +99,14 @@ class Forget extends Component {
       .then((json) => {
         //this.setState({mailCode: json.code});
         //console.log(json.code);
+        
         console.log(json.msg);
+        if (json.code==0){
+          Alert.alert("验证码已发送。")
+
+        }else{
+          Alert.alert("验证码发送失败，请检查网络或联系客服。")
+        }
       });
     } else {
       let m = this.state.mail;
