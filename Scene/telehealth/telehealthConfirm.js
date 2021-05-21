@@ -172,12 +172,12 @@ export default function Confirm({route,navigation}) {
     {teleFlg==0?<View style={{marginLeft:-180,marginTop:10}}>
     <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:10}}
         source= {require('../../images/telehealth_icon/signup_icon_phone.png')}
-      /><Text style={{marginLeft:40,fontSize:16,marginTop:-17}}>电话</Text>
+      /><Text style={{marginLeft:40,fontSize:16,marginTop:-17}}>联系电话</Text>
     
     </View>:<View style={{marginLeft:-180,marginTop:10}}>
     <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:43}}
         source= {require('../../images/telehealth_icon/signup_icon_phone.png')}
-      /><Text style={{marginLeft:68,fontSize:16,marginTop:-17}}>接入电话</Text>
+      /><Text style={{marginLeft:68,fontSize:16,marginTop:-17}}>联系电话</Text>
     
     </View>}
 

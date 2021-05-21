@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class Login extends Component {
   constructor(props) {
@@ -67,16 +68,18 @@ export default class Login extends Component {
     <KeyboardAvoidingView
     style={styles.container}
     behavior={Platform.OS === "ios" ? "padding" : "height"} 
-    keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}>
-      <View style={{marginTop:150}}></View>
-      <Image style = {{width:150,height:150}}
+    /*keyboardVerticalOffset={Platform.OS === "ios" ? 200 : 0}*/>
+      
+      <View style={{marginTop:130}}></View>
+      <Image style = {{width:230,height:230}}
         source = {require('../images/welcome.png')}
       />
-      <View style={{flexDirection:"row"}}>
-          <Image style = {styles.img_ac}
-        source = {require('../images/account.png')}
+      <View style={{flexDirection:"row",marginLeft:-200,marginBottom:10,marginTop:20}}>
+          <Image style = {{height:20,width:20,marginTop:34}}
+        source = {require('../images/telehealth_icon/signup_icon_phone.png')}
       />
-      <TouchableOpacity style={{    borderColor:"#999999",
+      <Text style={{marginTop:35,marginLeft:10}}>手机号码</Text>
+      {/*<TouchableOpacity style={{    borderColor:"#999999",
       borderWidth:1,
     padding:8,
     width:120,
@@ -86,17 +89,32 @@ export default class Login extends Component {
     alignItems: 'center',
     borderRadius:25,}} onPress={()=>this.switch()}>
       <Text style={{fontSize:12}}>{this.state.text}</Text>
-    </TouchableOpacity>
+    </TouchableOpacity>*/}
       </View>
       <TextInput
       style = {styles.account}
       placeholder={this.state.text1}
       defaultValue=""
+      //keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
       onChangeText={(text) => {this.setState({ name: text})}}
       />
-      <Image style = {styles.img_pw}
-        source = {require('../images/password.png')}
+      <View style={{flexDirection:"row",marginLeft:-200,marginBottom:10,marginTop:10}}>
+          <Image style = {{height:20,width:20,marginTop:24}}
+        source = {require('../images/telehealth_icon/account_icon_pswd.png')}
       />
+      <Text style={{marginTop:25,marginLeft:10}}>账户密码</Text>
+      {/*<TouchableOpacity style={{    borderColor:"#999999",
+      borderWidth:1,
+    padding:8,
+    width:120,
+    marginTop:40,
+    height:35,
+    marginLeft:-120,
+    alignItems: 'center',
+    borderRadius:25,}} onPress={()=>this.switch()}>
+      <Text style={{fontSize:12}}>{this.state.text}</Text>
+    </TouchableOpacity>*/}
+      </View>
       <TextInput
       style = {styles.password}
       placeholder="请输入您的密码"
@@ -105,26 +123,34 @@ export default class Login extends Component {
       onChangeText={(text) => {this.setState({ password: text})}}
       />
       <View style ={styles.container2}>
-        <View style={{marginLeft:-10}}>
+        <View style={{marginLeft:0}}>
         <TouchableOpacity style={styles.f_wrapper} onPress={() => this.props.navigation.navigate('忘记密码')}>
           <Text style={styles.f_Text}>忘记密码？</Text>
         </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{marginTop:20,marginLeft:80}} onPress={() => this.props.navigation.navigate('注册')}>
+        <TouchableOpacity style={{marginTop:20,marginLeft:130}} onPress={() => this.props.navigation.navigate('注册')}>
           <Text style={styles.r_Text}>注册账户</Text>
         </TouchableOpacity>
       </View>
-      <View style={{marginTop:20}}></View>
-      <TouchableOpacity style={styles.loginWrapper} onPress = {()=>this.loginRequest()}>
-        <Text style={styles.onsite_Text}>登陆</Text>
+      <View style={{marginTop:0}}></View>
+      <TouchableOpacity style={{backgroundColor: '#8FD7D3',
+    padding:10,
+    width:280,
+    marginTop:60,
+    height:45,
+    alignItems: 'center',
+    borderRadius:25,}} onPress = {()=>this.loginRequest()}>
+        <Text style={{color:"white"}}>登陆</Text>
       </TouchableOpacity>
       <View style={{flexDirection:"row"}}>
-      <Image style = {styles.img4}
+      <Image style = {{marginTop:70,
+    width:120,
+    height:32,}}
         source = {require('../images/logo.png')}
       />
-      <Text style={{marginTop:95,marginLeft:10,color:"#8FD7D3"}}>1.22</Text>
+      <Text style={{marginTop:75,marginLeft:10,color:"#8FD7D3"}}>1.23</Text>
       </View>
-      <View style={{height:90,backgroundColor:'white',padding:30}}></View>
+      <View style={{height:120,backgroundColor:'white',padding:30}}></View>
       
     </KeyboardAvoidingView>
   );}

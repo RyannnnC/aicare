@@ -13,8 +13,8 @@ export default class Signup extends Component {
     confirm: "",
     userCode:"",
     mailCode:"",
-    checked1: false,
-    checked2: true,
+    checked1: true,
+    checked2: false,
     checked3:false,
     press:false,
   }
@@ -147,15 +147,15 @@ export default class Signup extends Component {
       <ScrollView style={{flex:1}}>
 
       <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>
-          <View style={{alignItems: 'center' }}>
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{alignItems: 'flex-start',marginTop:40 }}>
+          <View style={{marginTop:35, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/singup_icon_name.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>姓名</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>姓名</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
           placeholder="请输入您的名字"
           onChangeText={(text) => {this.setState({ name: text})}}
@@ -167,37 +167,26 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_phone.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>电话</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>电话</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的联系方式"
+                keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
+          placeholder="请输入您的电话号码"
           onChangeText={(text) => {this.setState({ phone: text})}}
           />
           </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
-            <Image
-              style = {styles.smallIconImg}
-              source={require('../images/signup_icon_mail.png')}
-            />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>邮箱</Text>
-          </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
-          <TextInput style={styles.resumeInput}
-          placeholder="请输入您的邮箱"
-          onChangeText={(text) => {this.setState({ mail: text})}}
-          />
-          </View>
+          
 
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_pswd.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>密码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>密码</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
           placeholder="请输入您的密码"
           secureTextEntry={true}
@@ -211,9 +200,9 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_confirm.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>确认</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>确认</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
           placeholder="请再次输入您的密码"
           secureTextEntry={true}
@@ -227,67 +216,31 @@ export default class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>绑定方式</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>验证</Text>
           </View>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
-            <CheckBox
-              center
-              title='电话          '
-              iconRight
-              checkedIcon='check-circle-o'
-              uncheckedIcon='circle-o'
-              checkedColor='red'
-              size={this.state.size}
-              checked={this.state.checked1}
-              onPress={() => {
-                console.log("电话");
-                this.setState({
-                checked1: true,
-                checked2: false,
-              })}}
-             />
-          </View>
-
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
-            <CheckBox
-              center
-              title='邮箱          '
-              iconRight
-              checkedIcon='check-circle-o'
-              uncheckedIcon='circle-o'
-              checkedColor='red'
-              size={this.state.size}
-              checked={this.state.checked2}
-              onPress={() => {
-                console.log("switch to mail");
-                this.setState({
-                checked1: false,
-                checked2: true,
-              })}}
-             />
-          </View>
+         
           <View style={{flexDirection: 'row'}}>
-            <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
+            <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10}}>
             <TextInput style={{width:200}}
             placeholder= "请输入您收到的验证码"
             onChangeText={(text) => {this.setState({ userCode: text})}}
             />
             </View>
-            <TouchableOpacity style={{borderWidth:1,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5}}
+            <TouchableOpacity style={{borderWidth:1,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5,paddingLeft:8,marginLeft:3}}
               onPress={()=>this.sendCode()}
             >
-              <Text style={{ fontSize:14, fontWeight: '300' }}>获取验证码</Text>
+              <Text style={{ fontSize:13, fontWeight: '300' }}>获取验证码</Text>
             </TouchableOpacity>
           </View>
 
           </View>
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{marginTop:60, marginBottom:0,flexDirection: 'row',marginLeft:-25}}>
             <CheckBox
               center
               iconRight
-              checkedIcon='check-circle-o'
-              uncheckedIcon='circle-o'
+              uncheckedIcon='square-o'
+              checkedIcon='check-square-o'
               checkedColor='red'
               size={this.state.size}
               checked={this.state.checked3}
@@ -297,13 +250,27 @@ export default class Signup extends Component {
                 checked3:!this.state.checked3
               })}}
              />
-             <Text style={{marginTop:15}}>我已阅读并同意该</Text>
-             <Button   title="用户须知条款" color="red" style={{height:20}} onPress={()=>this.props.navigation.navigate('数据协议')}></Button>
+             <Text style={{marginTop:18,marginLeft:-18}}>我已阅读并同意该</Text>
+             <TouchableOpacity onPress={()=>this.props.navigation.navigate('数据协议')}>
+               <Text style={{marginLeft:2,marginTop:18,color:"#8FD7D3"}}>用户须知条款。</Text>
+             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.resumeButton} onPress={()=>{this.sendRequest()}}>
+          <TouchableOpacity style={{width: 280,
+   height: 40,
+   marginTop: 10,
+   backgroundColor: "#8FD7D3",
+   borderRadius: 20,
+   alignItems: 'center',
+   justifyContent: "center",}} onPress={()=>{this.sendRequest()}}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
           </TouchableOpacity>
-
+          <View style={{flexDirection:"row"}}>
+      <Image style = {{marginTop:90,
+    width:120,
+    height:32,}}
+        source = {require('../images/logo.png')}
+      />
+      </View>
       </View>
       </ScrollView>
 

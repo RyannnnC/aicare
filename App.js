@@ -111,7 +111,7 @@ class App extends React.Component {
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
-      url:"3.104.87.14:8085",//develop："3.104.232.106:8085"；test："3.104.87.14:8085"
+      url:"3.104.232.106:8085",//develop："3.104.232.106:8085"；test："3.104.87.14:8085"
       suburb:"",
       postcode:"",
       state:"",
@@ -159,25 +159,26 @@ class App extends React.Component {
   contact = () => {
     //phone='0403555432';
     //let phoneNumber = phone;
+    mobile = this.state.customer_service;
     if (Platform.OS !== 'android') {
-      Linking.canOpenURL(`telprompt:${"+61 421326182"}`)
+      Linking.canOpenURL(`telprompt:${mobile}`)
     .then(supported => {
       if (!supported) {
         Alert.alert('Phone number is not available');
       } else {
-        return Linking.openURL(`telprompt:${"+61 421326182"}`);
+        return Linking.openURL(`telprompt:${mobile}`);
       }
     })
     .catch(err => console.log(err));
   }
     else  {
      
-      Linking.canOpenURL(`tel:${"+61 421326182"}`)
+      Linking.canOpenURL(`tel:${mobile}`)
     .then(supported => {
       if (!supported) {
         Alert.alert('Phone number is not available');
       } else {
-        return Linking.openURL(`tel:${"+61 421326182"}`);
+        return Linking.openURL(`tel:${mobile}`);
       }
     })
     .catch(err => console.log(err));

@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Alert } from 'react-native';
+import { Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Alert,Platform } from 'react-native';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
 
@@ -126,66 +126,82 @@ class Forget extends Component {
       <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
           <View style={{alignItems: "flex-start" }}>
 
-          <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+          <View style={{marginTop:-80, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
-              source={require('../images/signup_icon_mail.png')}
+              source={require('../images/telehealth_icon/signup_icon_phone.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>验证方式</Text>
-            <TouchableOpacity style={{width:'auto', marginTop: 3, marginLeft: 25, paddingLeft:10, paddingRight:10, height:20,borderRadius:10,borderWidth:1}}
-            onPress={()=>this.switch()}
-            >
-              <Text style={{ fontSize:14, fontWeight: '300' }}>{this.state.text}</Text>
-            </TouchableOpacity>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>电话号码</Text>
+            
           </View>
-          <TextInput style={styles.resumeInput}
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
+
+          <TextInput style={{height:20,width:280}}
           placeholder="请输入您的电话"
+          keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
           onChangeText={(text) => {this.setState({ mail: text})}}
           />
-
+          </View>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_key.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>验证码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>验证码</Text>
             <TouchableOpacity style={{width:'auto', marginTop: 3, marginLeft: 25, paddingLeft:10, paddingRight:10, height:20,borderRadius:10,borderWidth:1}}
               onPress={()=>this.sendCode()}
             >
               <Text style={{ fontSize:14, fontWeight: '300' }}>发送验证码</Text>
             </TouchableOpacity>
           </View>
-          <TextInput style={styles.resumeInput} placeholder= "请输入您邮箱内收到的验证码" onChangeText={(text) => {this.setState({ code: text})}}
-/>
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
 
+          <TextInput style={{height:20,width:280}} placeholder= "请输入您电话收到的验证码" onChangeText={(text) => {this.setState({ code: text})}}
+/>
+          </View>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_pswd.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>密码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>密码</Text>
           </View>
-          <TextInput style={styles.resumeInput}
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
+
+          <TextInput style={{height:20,width:280}}
           placeholder="请输入您的密码"
           onChangeText={(text) => {this.setState({ password: text})}}
           />
-
+          </View>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_confirm.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>确认新密码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>确认新密码</Text>
           </View>
-          <TextInput style={styles.resumeInput}
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
+
+          <TextInput style={{height:20,width:280}}
           placeholder="请再次输入您的密码"
           onChangeText={(text) => {this.setState({ confirm: text})}}
           />
-
           </View>
-          <TouchableOpacity style={styles.resumeButton} onPress={()=>this.sendRequest()}>
+          </View>
+          <TouchableOpacity style={{width: 280,
+   height: 40,
+   marginTop: 50,
+   backgroundColor: "#8FD7D3",
+   borderRadius: 20,
+   alignItems: 'center',
+   justifyContent: "center",}} onPress={()=>this.sendRequest()}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
           </TouchableOpacity>
+          <Image style = {{marginTop:90,
+    width:120,
+    height:32,}}
+        source = {require('../images/logo.png')}
+      />
       </View>
   );}
 }
