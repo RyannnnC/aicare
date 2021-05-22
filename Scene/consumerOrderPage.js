@@ -14,6 +14,13 @@ export default function ConsumerOrderPage() {
   const user = useContext(DataContext)
   const Tab = createMaterialTopTabNavigator();
   useEffect(() => {
+    let polling = setInterval( ()=>updateRequest(), 2000);
+      return ( ()=>{
+         clearInterval(polling);
+      });
+    
+    },[])
+  updateRequest=()=>{
     var today = new Date();
     var month =(today.getMonth()+1);
     if (month<10){
@@ -44,13 +51,13 @@ export default function ConsumerOrderPage() {
               if (json.code == 0) {
                 //this.setState({query:json.page})
                 setNum(json.page.length)
-                Alert.alert('查询成功');
+                //Alert.alert('查询成功');
               } else {
                 console.log(json.msg);
-                Alert.alert('查询失败');
+                //Alert.alert('查询失败');
               }
             }).catch(error => console.warn(error));
-    },[])
+          }
   return (
     <View style={{flex:1,backgroundColor:"white"}}>
       <Image

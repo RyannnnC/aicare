@@ -2,7 +2,7 @@
   "expo": {
     "name": "aicare health",
     "slug": "aicare",
-    "version": "1.22",
+    "version": "1.231",
     "orientation": "portrait",
     "icon": "./assets/aicare.png",
     "scheme":"aicarehealthau",
@@ -22,7 +22,7 @@
       "bundleIdentifier": "com.jingzhuo.aicare"
     },
     "android": {
-      "versionCode":2,
+      "versionCode":3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/aicare.png",
         "backgroundColor": "#FFFFFF"

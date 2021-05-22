@@ -23,7 +23,7 @@ export default function ProviderMain({navigation}) {
     const goToTelehealth= () => {
       navigation.navigate("telehealthMain")
   }
-  const askurl=()=>{
+  /*const askurl=()=>{
     let url = 'https://linkello.com/rest/link'
     
     fetch(url,{
@@ -56,12 +56,35 @@ export default function ProviderMain({navigation}) {
           alert('个人信息提交失败');
         }
       });
-  }
+  }*/
   const goVaccine= () => {
     navigation.navigate("telehealthSub",{doctype:7})
 }
   const user = useContext(DataContext);
+
+  /*componentDidMount() {
+    this.dataPolling = setInterval(
+      () => {
+        this.getAITraining();
+      },
+      3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.dataPolling);
+  }*/
+
+  
   useEffect(() => {
+    let polling = setInterval( ()=>updateRequest(), 2000);
+      return ( ()=>{
+         clearInterval(polling);
+      });
+    
+    },[])
+  
+  updateRequest=()=>{
+    console.log("polling...")
     var today = new Date();
     var month =(today.getMonth()+1);
     if (month<10){
@@ -209,8 +232,7 @@ export default function ProviderMain({navigation}) {
 
             //
             /**/
-    },[len])
-
+  }
     
     /*let url = "http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment";
             fetch(url,{
