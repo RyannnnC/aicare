@@ -2,7 +2,7 @@
   "expo": {
     "name": "aicareProvider",
     "slug": "aicareProvider",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "default",
     "icon": "./assets/logo.png",
     "splash": {
@@ -24,7 +24,7 @@
       "bundleIdentifier": "aicare.provider"
     },
     "android": {
-      "versionCode": 6,
+      "versionCode": 7,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"

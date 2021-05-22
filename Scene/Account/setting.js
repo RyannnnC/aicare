@@ -87,7 +87,7 @@ export default class Setting extends Component {
 
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>联系我们</Text>
-          <Text style={{ fontSize:14, fontWeight: '500', color:'#999999'}}> +61 0403555431</Text>
+          <Text style={{ fontSize:14, fontWeight: '500', color:'#999999'}}> +61 421326182</Text>
         </View>
         <TouchableOpacity style={styles.resumeButton}>
           <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>

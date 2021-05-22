@@ -517,6 +517,7 @@ export default class UploadMember extends Component {
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "04*******"
           value={this.state.phone}
+          keyboardType="numeric"
           onChangeText={(text) => {this.setState({phone:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>

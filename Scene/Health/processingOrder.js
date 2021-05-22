@@ -141,6 +141,7 @@ export default class ProcessingOrder extends Component {
         '您确定要修改预约至这个时间吗？',
         [
           {text: '确定', onPress: () => {
+            this.setState({timeLoad:true})
             let url = 'http://'
             +this.context.url
             +'/aicare-business-api/business/appointment/modify?'
@@ -162,6 +163,7 @@ export default class ProcessingOrder extends Component {
               })
               .then((response) => response.json())
               .then((json) => {
+                this.setState({timeLoad:false})
                 if (json.code === 0) {
                   console.log(json.msg)
                   Alert.alert('修改成功')
@@ -549,9 +551,6 @@ export default class ProcessingOrder extends Component {
            <Text>{I18n.t('noSchedule')}</Text>
          </View>}
         </View>
-        <TouchableOpacity style={styles.next_wrapper}>
-           <Text style={{color:'white'}}>{I18n.t('confirmation')}</Text>
-      </TouchableOpacity>
        </ScrollView>
        </View>
 

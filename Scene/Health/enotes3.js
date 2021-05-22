@@ -64,13 +64,13 @@ export default class Enotes3 extends Component {
     }else {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <ScrollView style={{ flex: 1}}>
-        <View style={{flex:1,width:'90%'}}>
+      <View style={{width:'90%'}}>
+        <ScrollView style={{height:'90%'}}>
 
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('clinicalExam')}</Text>
+        <View style={{flexDirection: 'row', marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('clinicalExam')}</Text>
         </View>
-        <View style={{width:'100%', height:120,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
+        <View style={{width:'100%', height:150,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
           <TextInput style={{width:'90%',height:60,marginTop:15,marginLeft:20,marginRight:20}}
             placeholder={this.context.intro}
             value={this.context.intro}
@@ -79,7 +79,7 @@ export default class Enotes3 extends Component {
           />
         </View>
 
-        <View style={{flexDirection: 'row',marginTop:20}}>
+        <View style={{flexDirection: 'row',marginTop:20,marginBottom:10}}>
             <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('prescription')}</Text>
         </View>
 
@@ -108,22 +108,21 @@ export default class Enotes3 extends Component {
           onChangeText={(text) => {this.context.action.changeemail(text)}}/>
         </View>
 
-        <View  style={{ flex:1, justifyContent: "center", alignItems: "center"}}>
-        <TouchableOpacity style={{
-          width: '100%',
-          height: 40,
-          marginTop: 10,
-          marginBottom:20,
-        backgroundColor: '#68B0AB',
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: "center",}} onPress={() => {this.sendRequest()}}>
-          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
-        </TouchableOpacity>
-        </View>
-
-        </View>
-      </ScrollView>
+        </ScrollView>
+          <View  style={{ height:'10%',flex:1, justifyContent: "center", alignItems: "center"}}>
+            <TouchableOpacity style={{
+              width: '100%',
+              height: 40,
+              marginTop: 10,
+              marginBottom:20,
+              backgroundColor: '#68B0AB',
+              borderRadius: 20,
+              alignItems: 'center',
+              justifyContent: "center",}} onPress={() => {this.props.navigation.navigate(I18n.t('enote2'))}}>
+              <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
+            </TouchableOpacity>
+          </View>
+      </View>
     </SafeAreaView>
   );}}
 }

@@ -150,7 +150,7 @@ export default class Forget extends Component {
         style={{ flex:1 ,justifyContent: "center",backgroundColor:'white'}}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-      <View style={{width:'75%',flex:1, marginLeft:'13%',marginTop:35}}>
+      <View style={{width:'90%',flex:1, marginLeft:'5%',marginTop:35}}>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}

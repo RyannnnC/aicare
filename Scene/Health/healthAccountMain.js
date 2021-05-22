@@ -209,7 +209,7 @@ export default class HealthAccountMain extends Component {
           source={require('../../images/logo.png')}
           style = {{width:85, height:30}}
         />
-        <Text style={{fontSize:12, color:'#68B0AB'}}>+61 0403555432</Text>
+        <Text style={{fontSize:12, color:'#68B0AB'}}>+61 421326182</Text>
        </View>
     </SafeAreaView>
   );}}
