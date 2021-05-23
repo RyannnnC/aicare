@@ -64,7 +64,7 @@ export default function ConsumerOrderPage() {
   return (
     <View style={{flex:1,backgroundColor:"white"}}>
       <Image
-        style = {{height:90,width:300,marginLeft:50,marginTop:10}}
+        style = {{height:90,width:300,marginLeft:50,marginTop:65}}
         source = {require('../images/ordertop.png')}
       />
       <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>

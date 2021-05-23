@@ -24,7 +24,20 @@ export default function ProviderMain({navigation}) {
       navigation.navigate("telehealthMain")
   }
   const goVaccine= () => {
-    navigation.navigate("telehealthSub",{doctype:7})
+    Alert.alert(
+      "疫苗阶段提醒",
+      "根据澳大利亚政府信息，目前(2021.5.17之后)澳大利亚疫苗阶段处于2a阶段，只有符合2a条件(50岁以上或关键高风险工作者)可以注射疫苗，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "确定", onPress :()=>   navigation.navigate("telehealthSub",{docType:7}) } //this should navigate to the login page
+      ],
+      { cancelable: false }
+      )
+    
 }
   const user = useContext(DataContext);
 
@@ -321,7 +334,7 @@ export default function ProviderMain({navigation}) {
       <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white"}}>
         <ScrollView style={{ flex:1}}>
 
-        <View style={{flexDirection: 'row', marginBottom: 15}}>
+        <View style={{flexDirection: 'row', marginBottom: 15,marginTop:85}}>
           <View style={{marginLeft:30, marginRight:30}}>
             <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
             <Text>您今日有{len}项订单</Text>

@@ -58,7 +58,7 @@ const Tab = createBottomTabNavigator();
 
 function Home() {
   return (
-      <Tab.Navigator>
+      <Tab.Navigator tabBarOptions={{activeTintColor:"#FF7E67"}}>
           <Tab.Screen
             name="consumerMain"
             component={ConsumerMain}
@@ -305,7 +305,7 @@ render() {
       <Stack.Navigator >
         {this.state.token!="" ? (
         <>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
         <Stack.Screen name="consumerMain" component={ConsumerMain} />
         <Stack.Screen name="accountMain" component={AccountMain} />
         <Stack.Screen name="consumerIcon" component={ConsumerIcon} />
@@ -315,7 +315,7 @@ render() {
         <Stack.Screen name="consumerAddress" component={ConsumerAddress} />
         <Stack.Screen name="consumerPayInfo" component={ConsumerPayInfo} />
         <Stack.Screen name="consumerPaySuccess" component={ConsumerPaySuccess} />
-        <Stack.Screen name="accountInfo" component ={AccountInfo}/>
+        <Stack.Screen name="accountInfo" component ={AccountInfo} options={{headerShown: false}}/>
         <Stack.Screen name="changeEmail" component ={ChangeEmail}/>
         <Stack.Screen name="changePwd" component ={ChangePwd}/>
         <Stack.Screen name="setting" component ={Setting}/>
@@ -324,15 +324,15 @@ render() {
         <Stack.Screen name="consumerMV" component ={ConsumerMapView}/>
         <Stack.Screen name="consumerRating" component ={consumerRating}/>
         <Stack.Screen name="completedOrder" component ={CompletedOrder}/>
-        <Stack.Screen name="telehealthMain" component ={TelehealthrMain}/>
-        <Stack.Screen name="telehealthSub" component ={teleSuburb}/>
-        <Stack.Screen name="telehealthClinic" component ={telehealthClinic}/>
-        <Stack.Screen name="docInfo" component ={DocInfo}/>
-        <Stack.Screen name="teleSuccess" component ={TeleSuccess}/>
-        <Stack.Screen name="teleConfirm" component ={Confirm}/>
-        <Stack.Screen name="telehealthPay" component ={TelePay}/>
-        <Stack.Screen name="ClinicInfo" component ={ClinicInfo}/>
-        <Stack.Screen name="telehealthDoc" component ={telehealthDoc}/>
+        <Stack.Screen name="telehealthMain" component ={TelehealthrMain} options={{headerShown: false}}/>
+        <Stack.Screen name="telehealthSub" component ={teleSuburb} options={{headerShown: false}}/>
+        <Stack.Screen name="telehealthClinic" component ={telehealthClinic} options={{headerShown: false}}/>
+        <Stack.Screen name="docInfo" component ={DocInfo} options={{headerShown: false}}/>
+        <Stack.Screen name="teleSuccess" component ={TeleSuccess} options={{headerShown: false}}/>
+        <Stack.Screen name="teleConfirm" component ={Confirm} options={{headerShown: false}}/>
+        <Stack.Screen name="telehealthPay" component ={TelePay} options={{headerShown: false}}/>
+        <Stack.Screen name="ClinicInfo" component ={ClinicInfo} options={{headerShown: false}}/>
+        <Stack.Screen name="telehealthDoc" component ={telehealthDoc} options={{headerShown: false}}/>
         <Stack.Screen name="TelehealthMV" component ={TelehealthMV}/>
         <Stack.Screen name="ConsumerOrderPage" component ={ConsumerOrderPage}/>
         <Stack.Screen name ="docRecommend" component={DocRecommend}/>

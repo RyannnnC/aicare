@@ -63,7 +63,7 @@ export default function Confirm({route,navigation}) {
                 }else{
                   navigation.navigate("teleSuccess")
                 }*/
-                navigation.navigate("teleSuccess")
+                navigation.navigate("teleSuccess",{docName:docName,doctype:doctype,startTime:startTime,endTime:endTime,teleFlg:teleFlg,mobile:content.mobile,method:method})
 
               } else {
                 console.log(json.msg);
@@ -139,7 +139,7 @@ export default function Confirm({route,navigation}) {
   }
   return (
     <ScrollView style={{backgroundColor:"white"}}>
-    <View style={{marginTop:-20}}></View>
+    <View style={{marginTop:40}}></View>
     <View style={styles.container}>
     <View style={{flexDirection:'row',marginTop:10,marginLeft:-140}}>
     <TouchableOpacity onPress = {goBack} style={{marginRight:60}}>

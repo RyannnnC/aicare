@@ -57,7 +57,7 @@ export default function ClinicInfo({route,navigation}) {
     marginTop: 0,
     alignItems: 'center',}}>
     <ScrollView stype={{backgroundColor:"white"}}>
-    <View style={{flexDirection:'row',marginTop:0,marginLeft:10}}>
+    <View style={{flexDirection:'row',marginTop:0,marginLeft:10,marginTop:60}}>
     <TouchableOpacity onPress = {goBack} style={{marginRight:30}}>
       <Image
         style = {styles.arrow_image}

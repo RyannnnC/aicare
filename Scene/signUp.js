@@ -224,10 +224,10 @@ export default class Signup extends Component {
             onChangeText={(text) => {this.setState({ userCode: text})}}
             />
             </View>
-            <TouchableOpacity style={{borderWidth:1,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5,paddingLeft:8,marginLeft:3}}
+            <TouchableOpacity style={{borderWidth:0,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5,paddingLeft:8,marginLeft:3,backgroundColor:"#FF7E67"}}
               onPress={()=>this.sendCode()}
             >
-              <Text style={{ fontSize:13, fontWeight: '300' }}>获取验证码</Text>
+              <Text style={{ fontSize:13, fontWeight: '300',color:"white" }}>获取验证码</Text>
             </TouchableOpacity>
           </View>
 

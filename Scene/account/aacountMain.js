@@ -53,7 +53,8 @@ const AccountMain = ({navigation}) => {
   return (
     <DataContext.Consumer>
     {(state)  => (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white",marginTop:150 }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white",marginTop:80 }}>
+      <View style={{height:80}}></View>
       <TouchableOpacity onPress={goInfo}>
       <View style={{shadowColor:"000000",shadowOffset: {
 	              width: 0,
@@ -62,8 +63,8 @@ const AccountMain = ({navigation}) => {
                 shadowOpacity: 0.13,
                 shadowRadius: 1.65,
 
-                elevation: 2, width: 430, height: 200,marginTop:-170,marginBottom: 20, alignItems: "center", flexDirection: 'row',backgroundColor:"#F4FAFA"}}>
-        <View style={{marginLeft:60}}>
+                elevation: 2, width: 430, height: 240,marginTop:-170,marginBottom: 20, alignItems: "center", flexDirection: 'row',backgroundColor:"#F4FAFA"}}>
+        <View style={{marginLeft:60,marginTop:50}}>
         <Image
           style = {{borderRadius: 80 / 2,
             overflow: "hidden",
@@ -72,7 +73,7 @@ const AccountMain = ({navigation}) => {
           source = {require('../../images/home_img_person.png')}
         />
         </View>
-        <View>
+        <View style={{marginTop:50}}>
         <Text style={{ fontSize:20, fontWeight: '600',marginLeft:20, }}>{info.name?info.name:"姓名未填写"}</Text>
         <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{info.email?info.email:"邮箱未填写"}</Text>
         </View>
@@ -142,6 +143,20 @@ const AccountMain = ({navigation}) => {
       */}
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar} onPress = {()=>user.action.contact()} >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/signup_icon_phone.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>联系我们</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>Alert.alert(
       "提醒",
       "您确定要推出登陆吗？",
@@ -163,6 +178,7 @@ const AccountMain = ({navigation}) => {
       </TouchableOpacity>
       </View>
       </View>
+      
       </ScrollView>
     </View>
      )}

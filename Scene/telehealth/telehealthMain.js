@@ -114,7 +114,7 @@ export default function TelehealthrMain({navigation}) {
             source={require('../../images/telehealth_icon/stars.png')}/>
           <Text style={{fontSize:12,color:'#999999',marginTop:10}}>5 (1评价)</Text>
                       </View>*/}
-          <View style={{height:20}}></View>
+          <View style={{height:30}}></View>
         </TouchableOpacity>
         
         </View>
@@ -123,13 +123,13 @@ export default function TelehealthrMain({navigation}) {
     return (
       <ScrollView style={{ flex:1,backgroundColor:"white",}}>
       <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white",marginTop:10}}>
-         <View style={{flexDirection: 'row', marginTop:120, marginBottom:10}}>
+         <View style={{flexDirection: 'row', marginTop:180, marginBottom:10}}>
             <TouchableOpacity onPress={goBack}>
             <Image
             style = {{width:35,
                 height:35,
                 marginTop:-150,
-                marginLeft:-145,}}
+                marginLeft:-131,}}
             source={require('../../images/icon/2/Arrow_left.png')}
             />
             </TouchableOpacity>
@@ -345,7 +345,7 @@ export default function TelehealthrMain({navigation}) {
             </View>
           </TouchableOpacity>
         </View>
-        <ScrollView  style={{marginLeft:5,maxHeight:480,paddingTop:5,paddingLeft:5,height:480,width:350}}>
+        <ScrollView  style={{marginLeft:5,maxHeight:515,paddingTop:5,paddingLeft:5,height:515,width:350}}>
         {types}
           </ScrollView>
           <Modal

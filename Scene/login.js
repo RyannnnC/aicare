@@ -66,13 +66,14 @@ export default class Login extends Component {
   render(){
   return (
     <KeyboardAwareScrollView
+    style={{backgroundColor:"white"}}
     contentContainerStyle={{flex:1,backgroundColor: 'white',
-    marginTop: 20,
+    marginTop: -50,
     alignItems: 'center',}}
     behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <View>
+      <View style={{backgroundColor:"white"}}>
            
-      <View style={{marginTop:130}}></View>
+      <View style={{marginTop:200}}></View>
       <Image style = {{width:230,height:230,marginLeft:35}}
         source = {require('../images/welcome.png')}
       />
@@ -153,8 +154,9 @@ export default class Login extends Component {
       />
       <Text style={{marginTop:75,marginLeft:10,color:"#8FD7D3"}}>1.23</Text>
       </View>
-      <View style={{height:120,backgroundColor:'white',padding:30}}></View>
-    </View> 
+      
+    </View>
+    <View style={{height:100,backgroundColor:'white'}}></View> 
     </KeyboardAwareScrollView>
   );}
 }

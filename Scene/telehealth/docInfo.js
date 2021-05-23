@@ -35,10 +35,7 @@ export default function DocInfo({route,navigation}) {
     setModalVisible(modalVisible=>!modalVisible);
     //user.action.changeOrgId(0);user.action.changeDocId(0);
   }
-  const makecall=()=>{
-    call(args).catch(console.error)
-  }
-
+  
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
   }
@@ -159,7 +156,7 @@ export default function DocInfo({route,navigation}) {
     marginTop: 0,
     alignItems: 'center'}}>
     <ScrollView>
-    <View style={{flexDirection:'row',marginTop:0,marginLeft:10}}>
+    <View style={{flexDirection:'row',marginTop:60,marginLeft:10}}>
     <TouchableOpacity onPress = {goBack} style={{marginRight:30}}>
       <Image
         style = {styles.arrow_image}

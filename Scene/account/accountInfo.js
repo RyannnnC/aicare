@@ -231,6 +231,7 @@ const AccountInfo = ({navigation}) => {
     return (
         <ScrollView style={{marginTop:-20,backgroundColor:"white"}}>
         <View style={styles.container}>
+        <View style={{height:50}}></View>
         <View style={{flexDirection:"row",marginBottom:20}}>
         <TouchableOpacity onPress = {goBack} style={{marginLeft:-135}}>
           <Image
@@ -293,7 +294,7 @@ const AccountInfo = ({navigation}) => {
                 />
             </TouchableOpacity>
             </View>
-          </View>*/}
+          </View>*/}{/* 
         <View style={{ marginTop:10,marginLeft:-20,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row'}}>
             <Image
           style = {{width:22,
@@ -312,22 +313,7 @@ const AccountInfo = ({navigation}) => {
         </View>
         
         </View>
-        {/*<View style={{marginTop:2,marginLeft:-160, height: 30,borderBottomColor:"#EEEEEE",borderBottomWidth:1.5}}>
-        <RNPickerSelect
-            useNativeAndroidPickerStyle={false}
-            style={{width:100}}
-            placeholder={{ label: "请选择更改类型....", value: "请选择更改类型" }}
-            onValueChange={(value) => setSelectedType(value)}
-            defaultValue={selectedType}
-            value={selectedType}
-            
-            items={[
-                { label: 'Medicare', value: 'Medicare' },
-                { label: '私人保险', value: '私人保险' },
-                { label: '无保险', value: '无保险' },
-            ]}
-        />
-        </View>*/}
+        
         <Picker 
       style={{height: 50,  
         width: 100,  
@@ -395,7 +381,7 @@ const AccountInfo = ({navigation}) => {
           onChangeText={text => setCardNumber(text)}
       />
    
-    </View>: null}
+    </View>: null}*/}
     
         <View style={{marginLeft:-75,marginTop:20}}>
         <TouchableOpacity style={styles.next_wrapper} onPress ={goBack}>

@@ -34,14 +34,22 @@ export default function TelePay({navigation,route}) {
     var type = "";
     if (checked1){
       type = "Medicare"
-      if(content.number<10){
-        Alert.alert("Medicare卡号位数为10位")
+      if(content.number<9){
+        Alert.alert("Medicare卡号位数为9位")
+        return
+      }
+      if(content.last.length==0||content.first.length==0){
+        Alert.alert("请输入姓名")
+        return
+      }
+      if(content.serial.length==0){
+        Alert.alert("请输入序列号")
         return
       }
       content.date=moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)
     }else if(checked2){
       type = "私人保险"
-      if (content.first.length==0){
+      if (content.first.length==0||content.last.length==0){
         Alert.alert("请输入私人保险持有人名字")
         return
       }
@@ -121,13 +129,13 @@ export default function TelePay({navigation,route}) {
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
   const [checked4, setChecked4] = React.useState(false);
-  var content ={name:"",mobile:"",number:"",date:"",serial:"",first:" ",last:" ",gender:" "};
+  var content ={name:"",mobile:"",number:"",date:"",serial:"",first:"",last:"",gender:""};
   return (
 
-    <KeyboardAwareScrollView contentContainerStyle={{backgroundColor:"white"}}>
+    <KeyboardAwareScrollView contentContainerStyle={{backgroundColor:"white"}} style={{backgroundColor:"white"}}>
 
     <View style={styles.container}>
-    <View style={{flexDirection:'row',marginTop:-15,marginLeft:-140}}>
+    <View style={{flexDirection:'row',marginTop:45,marginLeft:-140}}>
     <TouchableOpacity onPress = {goBack} style={{marginRight:60}}>
       <Image
         style = {styles.arrow_image}
@@ -315,7 +323,7 @@ export default function TelePay({navigation,route}) {
     marginLeft:0,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-        maxLength={10} 
+        maxLength={9} 
           placeholder="卡号(Card Number)"
           onChangeText={(text)=>content.number=text}
 
@@ -478,7 +486,6 @@ export default function TelePay({navigation,route}) {
             />
     </TouchableOpacity>
     
-    <View style={{marginTop:450,backgroundColor:"white"}}></View>
     
   
   </View>

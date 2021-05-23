@@ -88,7 +88,7 @@ class OngoingingOrder extends Component {
   cancelOrder =(id)=>{
     Alert.alert(
       "提醒",
-      "您确定要取消这单预约吗？",
+      "您确定要取消这单预约吗？请注意仅在预约时间一小时之前可以取消预约。",
       [
         {
           text: "取消",
@@ -103,7 +103,7 @@ class OngoingingOrder extends Component {
   changeOrder =(id,businessEmployerId,orgId,address)=>{
     Alert.alert(
       "更改",
-      "您要更改时间还是更改医生呢？",
+      "您要更改预约时间吗？请注意仅在预约时间一小时之前可以进行更改。",
       [
         {
           text: "取消",
@@ -137,7 +137,7 @@ class OngoingingOrder extends Component {
       () => {
         this.getAITraining();
       },
-      3000);
+      1000);
   }
 
   componentWillUnmount() {
@@ -391,7 +391,7 @@ class OngoingingOrder extends Component {
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.address}</Text>
           </View>
           </View>
-          <Text style={{marginLeft:25,marginTop:-10}}>{date+" "+item.startTime+ " - "+item.endTime}</Text>
+          <Text style={{marginLeft:25,marginTop:-10}}>{date+"     "+item.startTime.substring(0,5)+ " - "+item.endTime.substring(0,5)}</Text>
 
           <View style={{flexDirection: 'row-reverse',borderTopWidth:0.3,borderColor:"#999999"}}>
             

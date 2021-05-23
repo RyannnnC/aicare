@@ -87,29 +87,8 @@ class DocRecommend extends Component {
             source={require('../../images/order_img.png')}
         />
         </View>
-        <View style={{alignItems:'center',marginTop:20}}>
-        <SearchBar
-          round
-          //searchIcon={{ size: 24 }}
-          //onChangeText={(text) => searchFilterFunction(text)}
-          //onClear={(text) => searchFilterFunction('')}
-          containerStyle={{backgroundColor:'white',width:355,height:40,shadowColor:"000000",shadowOffset: {
-            width: 0,
-            height: 3,
-            },
-            shadowOpacity: 0.27,
-            shadowRadius: 4.65,
-
-            elevation: 6,
-            borderRadius:25}}
-          inputStyle={{color:'black',fontSize:14}}
-          inputContainerStyle={{backgroundColor:'white',height:15}}
-          lightTheme={true}
-          placeholder="搜索医生..."
-          onChangeText={this.setChange}
-          
-          value={this.state.search}
-        />
+        <View style={{alignItems:'center',marginTop:0}}>
+        
         </View>
         <ScrollView style={{ flex:1,marginTop:30,marginLeft:-30,maxHeight:500}}>
           <View  style={{alignItems:'center'}}>

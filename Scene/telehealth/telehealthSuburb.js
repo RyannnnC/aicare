@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switcth,TextInput,ScrollView,Modal} from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import {styles} from "../../style"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { StackActions } from '@react-navigation/native';
 //import RNPickerSelect from 'react-native-picker-select';
@@ -24,15 +25,15 @@ export default function teleSuburb({route,navigation}) {
     const [checked2, setChecked2] = React.useState(false);
     const [type,setType]=React.useState("");
     return (
-      <ScrollView style={{ flex:1,backgroundColor:"white",}}>
-      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 50,backgroundColor:"white"}}>
-        <View style={{flexDirection: 'row',marginTop:120}}>
+      <KeyboardAwareScrollView contentContainerStyle={{flex:1,backgroundColor:"white"}} style={{backgroundColor:"white"}}>
+      <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
+        <View style={{flexDirection: 'row',marginTop:-55}}>
             <TouchableOpacity onPress={goBack}>
             <Image
-            style = {{width:25,
-                height:25,
-                marginTop:-150,
-                marginLeft:-130,}}
+            style = {{width:35,
+                height:35,
+                marginTop:-153,
+                marginLeft:-120,}}
             source={require('../../images/icon/2/Arrow_left.png')}
             />
             </TouchableOpacity>
@@ -98,7 +99,7 @@ export default function teleSuburb({route,navigation}) {
           />
         </View>
         {checked1?<View>
-          <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',}}>
+          <View style={{marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',}}>
         <View style={{marginTop:25}}>
         {/*<RNPickerSelect
         //fixAndroidTouchableBug={true}
@@ -176,11 +177,14 @@ elevation: 24,}}>
       />
     </TouchableOpacity>
     <View style={{marginLeft:40}}>
-    <Text style = {styles.service}>州选择</Text>
+    <Text style = {{
+    fontSize:17,
+    marginTop:20,
+    marginLeft:40,}}>州选择</Text>
     </View>
     </View>
     
-    <ScrollView style={{backgroundColor:"#F7FAFA"}}>
+    <View style={{backgroundColor:"#F7FAFA"}}>
     <View style={{flexDirection:"row"}}>
     <Text style={{marginTop:90,marginLeft:70,fontWeight:"500",fontSize:15}}>您所在的州是:</Text>
     <Picker 
@@ -199,16 +203,26 @@ elevation: 24,}}>
   <Picker.Item label="NT" value="NT" />
   <Picker.Item label="SA" value="SA" />
   <Picker.Item label="TAS" value="TAS" />
-  <Picker.Item label="VIC" value="VIC" />
   <Picker.Item label="WA" value="WA" />
 
 </Picker>
 </View>
-        </ScrollView>
+<TouchableOpacity style={{width: 150,
+   height: 40,
+   marginTop: 30,
+   marginLeft:135,
+   borderRadius: 20,
+   borderWidth:0.8,
+   alignItems: 'center',
+   justifyContent: "center",}} onPress={()=>setVisible(false)}>
+            <Text style={{ fontSize:16, fontWeight: '400', }}>确认</Text>
+          </TouchableOpacity>
+        </View>
         
         <View style={{height:20}}/>
         </View>
       </Modal>
+
         </View>:null}
         {checked2?<TextInput placeholder={"请输入区编号"} style = {{height: 35,
         width: 300,
@@ -236,7 +250,7 @@ elevation: 24,}}>
           }}>确定</Text>
         </TouchableOpacity>
       </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 

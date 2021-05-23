@@ -80,7 +80,7 @@ class telehealthClinic extends Component {
     if (loading){
       return (
         <View style={{ flex:1, backgroundColor:"white" }}>
-        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20}}>
+        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20,marginTop:60}}>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}>
             <Image
@@ -152,7 +152,7 @@ class telehealthClinic extends Component {
 
 
       <View style={{ flex:1, backgroundColor:"white" }}>
-        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20}}>
+        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20,marginTop:60}}>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}>
             <Image

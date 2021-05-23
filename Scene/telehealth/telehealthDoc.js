@@ -77,7 +77,7 @@ class telehealthDoc extends Component {
     if (loading){
       return (
         <View style={{ flex:1, backgroundColor:"white" }}>
-        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20}}>
+        <View style={{flexDirection: 'row', marginBottom:10,marginLeft:20,marginTop:60}}>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}>
             <Image
@@ -88,7 +88,7 @@ class telehealthDoc extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>诊所选择</Text>
+        marginTop:20}}>医生选择</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -151,7 +151,7 @@ class telehealthDoc extends Component {
     })
     return (
       <View style={{ flex:1, backgroundColor:"white" }}>
-        <View style={{flexDirection: 'row', marginBottom:10,marginTop:0,marginBottom:20}}>
+        <View style={{flexDirection: 'row', marginBottom:10,marginTop:60,marginBottom:20}}>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}
             style={{marginLeft:20}}>
@@ -189,7 +189,7 @@ class telehealthDoc extends Component {
           <Text style={{ fontSize:12, fontWeight: '400',marginTop:13,color:"#666666" }}>地址: {this.props.route.params.address}</Text>
           <View style={{flexDirection:"row"}}>
           <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666"  }}>电话: {this.props.route.params.item.mobile}</Text>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666",marginLeft:70  }}>点击查看介绍</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666",marginLeft:70  }}>点击查看介绍 {'->'}</Text>
           </View>
           </View>
         </View>
