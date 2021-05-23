@@ -21,7 +21,7 @@ export default function Confirm({route,navigation}) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const user = useContext(DataContext);
-  const { content,scheduleId,type,date,doctype,address,docName,startTime,endTime,teleFlg} = route.params;
+  const { content,scheduleId,type,date,doctype,address,docName,startTime,endTime,teleFlg,dob} = route.params;
   const[method, setMethod] = useState("");//0 stands for facetime 1 stands for skype
   const [text, setText] = useState(content.first+content.last);
   const [text1, setText1] = useState('');

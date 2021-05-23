@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
-import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class Login extends Component {
   constructor(props) {
@@ -65,16 +65,18 @@ export default class Login extends Component {
   }
   render(){
   return (
-    <KeyboardAvoidingView
-    style={styles.container}
-    behavior={Platform.OS === "ios" ? "padding" : "height"} 
-    /*keyboardVerticalOffset={Platform.OS === "ios" ? 200 : 0}*/>
-      
+    <KeyboardAwareScrollView
+    contentContainerStyle={{flex:1,backgroundColor: 'white',
+    marginTop: 20,
+    alignItems: 'center',}}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <View>
+           
       <View style={{marginTop:130}}></View>
-      <Image style = {{width:230,height:230}}
+      <Image style = {{width:230,height:230,marginLeft:35}}
         source = {require('../images/welcome.png')}
       />
-      <View style={{flexDirection:"row",marginLeft:-200,marginBottom:10,marginTop:20}}>
+      <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:20}}>
           <Image style = {{height:20,width:20,marginTop:34}}
         source = {require('../images/telehealth_icon/signup_icon_phone.png')}
       />
@@ -98,7 +100,7 @@ export default class Login extends Component {
       //keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
       onChangeText={(text) => {this.setState({ name: text})}}
       />
-      <View style={{flexDirection:"row",marginLeft:-200,marginBottom:10,marginTop:10}}>
+      <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:10}}>
           <Image style = {{height:20,width:20,marginTop:24}}
         source = {require('../images/telehealth_icon/account_icon_pswd.png')}
       />
@@ -146,14 +148,14 @@ export default class Login extends Component {
       <View style={{flexDirection:"row"}}>
       <Image style = {{marginTop:70,
     width:120,
-    height:32,}}
+    height:32,marginLeft:63}}
         source = {require('../images/logo.png')}
       />
       <Text style={{marginTop:75,marginLeft:10,color:"#8FD7D3"}}>1.23</Text>
       </View>
       <View style={{height:120,backgroundColor:'white',padding:30}}></View>
-      
-    </KeyboardAvoidingView>
+    </View> 
+    </KeyboardAwareScrollView>
   );}
 }
 

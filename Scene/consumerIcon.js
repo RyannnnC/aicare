@@ -45,7 +45,7 @@ const  ConsumerIcon= ({navigation}) => {
           width:290,
           marginLeft:30,
           }}
-        source = {require('../images/telehealth_icon/service_block1.png')}
+        source = {require('../images/new_icon.png')}
       />
     </TouchableOpacity>
     <View style={{marginTop:20}}></View>

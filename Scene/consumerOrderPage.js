@@ -8,16 +8,19 @@ import CompletedOrder from './order/completedOrder';
 import ConsumerPaySuccess from "./consumerPaySuccess"
 import OngoingingOrder from './order/onGoingOrder';
 import DataContext from "../consumerContext";
-
+/*class ConsumerOrderPage(){
+  this.state={
+    num=0;
+  }
+  
+  */
 export default function ConsumerOrderPage() {
   const [num, setNum] = useState(0);
   const user = useContext(DataContext)
   const Tab = createMaterialTopTabNavigator();
   useEffect(() => {
-    let polling = setInterval( ()=>updateRequest(), 2000);
-      return ( ()=>{
-         clearInterval(polling);
-      });
+    
+    updateRequest();
     
     },[])
   updateRequest=()=>{

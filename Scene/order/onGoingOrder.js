@@ -132,8 +132,21 @@ class OngoingingOrder extends Component {
       { cancelable: false }
       )
   }
-  componentDidMount = () => {
+  componentDidMount() {
+    this.dataPolling = setInterval(
+      () => {
+        this.getAITraining();
+      },
+      3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.dataPolling);
+  }
+
+  getAITraining = () => {
     //console.log("set buttons work")
+    console.log("i am polling...")
     var today = new Date();
     var month =(today.getMonth()+1);
     if (month<10){
@@ -146,8 +159,7 @@ class OngoingingOrder extends Component {
     }
     var date = today.getFullYear()+'-'+month+'-'+day;
 
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1"/*"http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment&appointDate=".concat(date).concat("&dateFlg=2")*/;
+    let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1"/*"http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment&appointDate=".concat(date).concat("&dateFlg=2")*/;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -177,7 +189,7 @@ class OngoingingOrder extends Component {
             }).catch(error => console.warn(error));
     
             
-    });
+   
   }
   updateAppointment(s_id){
     let url2 = "http://"+this.context.url+"/aicare-customer-api/customer/user/update-appointment?scheduleDetailedId=".concat(s_id).concat("&id=").concat(this.state.id).concat("&status=0");

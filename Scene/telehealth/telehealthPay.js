@@ -1,11 +1,17 @@
-import React,{useContext} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput,Switch,ScrollView } from 'react-native';
+import React,{useContext, useState} from 'react';
+import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput,Switch,ScrollView,Platform } from 'react-native';
 import {styles} from '../../style';
 import { CheckBox } from 'react-native-elements';
 import { StackActions } from '@react-navigation/native';
 //import DataContext from "../consumerContext"
 import call from 'react-native-phone-call'
 import DataContext from "../../consumerContext";
+import SwitchSelector from "react-native-switch-selector";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from 'moment-timezone';
+import * as Localization from 'expo-localization';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 const args = {
   number: '0403555432', // String value with the number to call
@@ -19,14 +25,20 @@ export default function TelePay({navigation,route}) {
     navigation.dispatch(StackActions.pop(1))
   }
   const { scheduleId,date,doctype,address,docName,startTime,endTime,teleFlg } = route.params;
-  const makecall=()=>{
-    call(args).catch(console.error)
-  }
+  const [visible,setVisible]=useState(false)
+  const [exp,setExp]=useState(new Date())
+  const [expVis,setExpVis]=useState(false)
+
+  const [dob,setDob]=useState(new Date())
   const gotoSuccess= () => {
     var type = "";
     if (checked1){
       type = "Medicare"
-
+      if(content.number<10){
+        Alert.alert("Medicare卡号位数为10位")
+        return
+      }
+      content.date=moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)
     }else if(checked2){
       type = "私人保险"
       if (content.first.length==0){
@@ -42,7 +54,7 @@ export default function TelePay({navigation,route}) {
     }
     console.log(doctype);
 
-    navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime})
+    navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime,dob:dob})
   }  
   const sendRequest=()=>{
     console.log(content);
@@ -109,10 +121,10 @@ export default function TelePay({navigation,route}) {
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
   const [checked4, setChecked4] = React.useState(false);
-  var content ={name:"",mobile:"",number:"",date:"",serial:"",dob:"",first:" ",last:" ",gender:" "};
+  var content ={name:"",mobile:"",number:"",date:"",serial:"",first:" ",last:" ",gender:" "};
   return (
 
-    <ScrollView style={{backgroundColor:"white"}}>
+    <KeyboardAwareScrollView contentContainerStyle={{backgroundColor:"white"}}>
 
     <View style={styles.container}>
     <View style={{flexDirection:'row',marginTop:-15,marginLeft:-140}}>
@@ -138,6 +150,7 @@ export default function TelePay({navigation,route}) {
     </View>
     <View style={{marginTop:-15}}></View>
     <View style ={styles.comment_container}>
+    
       <Text style={{fontSize:16,marginLeft:33}}>Medicare</Text>
 
     <CheckBox
@@ -210,23 +223,28 @@ export default function TelePay({navigation,route}) {
         source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
         <Text style={{color:"#999999"}}> 所有医保卡信息(例如姓名，出生日期等)</Text>
         </View>
-        <Text style={{color:"#999999",marginLeft:40,marginBottom:20}}> 仅用于医保卡验证。性别男填M，女填F。</Text>
+        <Text style={{color:"#999999",marginLeft:40,marginBottom:20}}> 仅用于医保卡验证。</Text>
         <Image
         style = {{height:125,width:375}}
         source={require('../../images/telehealth_icon/service_order_img_card.png')}
       />
-        
+        <View style={{flexDirection:"row",marginTop:10}}>
+        <Text style={{marginTop:7,fontWeight:"500"}}>持卡人姓:</Text>
         <TextInput style = {{height: 35,
-    width: 300,
+    width: 200,
     borderBottomColor: '#999999',
     marginLeft:0,
     borderBottomWidth:1,}}
           onChangeText={(text)=>content.last=text}
 
-          placeholder="持卡人姓(Last Name)"
+          placeholder="  持卡人姓(Last Name)"
         />
+        </View>
+        <View style={{flexDirection:"row",marginTop:10}}>
+        <Text style={{marginTop:7,fontWeight:"500"}}>持卡人名:</Text>
+
       <TextInput style = {{height: 35,
-    width: 300,
+    width: 200,
     marginLeft:0,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
@@ -234,52 +252,116 @@ export default function TelePay({navigation,route}) {
           onChangeText={(text)=>content.first=text}
 
       />
-      <TextInput style = {{height: 35,
-        width: 300,
+      </View>
+      
+      <DateTimePickerModal
+        isVisible={visible}
+        mode="date"
+        headerTextIOS='出生日期'
+        cancelTextIOS="取消"
+        confirmTextIOS='确认'
+        onConfirm={(time)=>{setDob(time);setVisible(false);console.log(moment(dob).tz(Localization.timezone).format('L'))}}
+        onCancel={()=>setVisible(false)}
+      />
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:-48}}>出生日期:</Text>
+
+      {/*<TextInput style = {{height: 35,
+        width: 200,
         marginLeft:0,
         borderBottomColor: '#999999',
         borderBottomWidth:1,}}
               placeholder="出生日期(DOB) dd-mm-yyyy"
               onChangeText={(text)=>content.dob=text}
     
-          />
-        <TextInput style = {{height: 35,
-    width: 300,
-    borderBottomColor: '#999999',
-    marginLeft:0,
-    borderBottomWidth:1,}}
-          onChangeText={(text)=>content.gender=text}
+          />*/}
+          <TouchableOpacity style={{borderColor:"#8FD7D3",
+      borderWidth:1,
+    padding:8,
+    width:120,
+    marginTop:0,
+    height:35,
 
-          placeholder="性别(Gender) M/F"
-        />
-      
+    marginLeft:30,
+    alignItems: 'center',
+    borderRadius:25,}} onPress={()=>setVisible(true)}>
+      <Text style={{fontSize:12}}>{moment(dob).tz(Localization.timezone).format('L')}</Text>
+    </TouchableOpacity>
+        </View>
+        <View style={{flexDirection:"row",marginTop:10}}>
+        <Text style={{marginTop:7,fontWeight:"500"}}>性别:</Text>
+        <SwitchSelector
+  initial={0}
+  onPress={value => {content.gender=value;console.log(moment(dob).tz(Localization.timezone).format('L'))}}
+  buttonColor='#8FD7D3'
+  borderColor='#8FD7D3'
+  hasPadding
+  style={{width:200,marginLeft:30}}
+  height={35}
+  options={[
+    { label: "女性", value: "f",  }, //images.feminino = require('./path_to/assets/img/feminino.png')
+    { label: "男性", value: "m", } //images.masculino = require('./path_to/assets/img/masculino.png')
+  ]}
+  testID="gender-switch-selector"
+  accessibilityLabel="gender-switch-selector"
+/>
         
-        <TextInput style = {styles.account}
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500"}}>医疗卡号:</Text>
+
+        <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:0,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+        maxLength={10} 
           placeholder="卡号(Card Number)"
           onChangeText={(text)=>content.number=text}
 
       />
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500"}}>序列号:</Text>
+
       <TextInput style = {{height: 35,
-    width: 300,
-    marginLeft:0,
+    width: 200,
+    marginLeft:15,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
+    maxLength={5} 
           placeholder="序列号(Ref Number)"
           onChangeText={(text)=>content.serial=text}
 
       />
-  <TextInput style = {{height: 35,
-    width: 300,
-    borderBottomColor: '#999999',
-    marginLeft:0,
-    borderBottomWidth:1,}}
-          onChangeText={(text)=>content.date=text}
+      </View>
+      <DateTimePickerModal
+        isVisible={expVis}
+        mode="date"
+        headerTextIOS='出生日期'
+        cancelTextIOS="取消"
+        confirmTextIOS='确认'
+        onConfirm={(time)=>{setExp(time);setExpVis(false);console.log(moment(exp).tz(Localization.timezone).format('L'))}}
+        onCancel={()=>setExpVis(false)}
+      />
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:-47}}>到期日期:</Text>
+  
+      <TouchableOpacity style={{borderColor:"#8FD7D3",
+      borderWidth:1,
+    padding:8,
+    width:120,
+    marginTop:0,
+    height:35,
 
-          placeholder="到期日期(Expiration Date) mm-yyyy"
-        />
-      
+    marginLeft:30,
+    alignItems: 'center',
+    borderRadius:25,}} onPress={()=>setExpVis(true)}>
+      <Text style={{fontSize:12}}>{moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)}</Text>
+    </TouchableOpacity>
+      </View>
     <View style={{marginLeft:-80}}> 
-    <View style={{marginTop:50}}></View>
+    <View style={{marginTop:60}}></View>
     <View style={{flexDirection:"row"}}>
     <CheckBox
             checked={checked4 }
@@ -325,16 +407,41 @@ export default function TelePay({navigation,route}) {
         <Text style={{color:"#999999"}}> 若持有私人保险，您可以按照正常程序</Text>
         </View>
         <Text style={{color:"#999999",marginLeft:-55,marginBottom:20}}> 向您的医保卡公司申请报销。</Text>
-        
-      <TextInput style = {styles.account}
-          placeholder="保险人姓名"
+        <View style={{flexDirection:"row",marginTop:0}}>
+      <Text style={{marginTop:7,fontWeight:"500"}}>持险人姓:</Text> 
+      <TextInput style = {{height: 35,
+    width: 200,
+    borderBottomColor: '#999999',
+    marginLeft:0,
+    borderBottomWidth:1,}}
+          placeholder="保险人姓"
           onChangeText={(text)=>content.first=text}
 
       />
-      <TextInput style = {styles.account}
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500"}}>持险人名:</Text> 
+      <TextInput style = {{height: 35,
+    width: 200,
+    borderBottomColor: '#999999',
+    marginLeft:0,
+    borderBottomWidth:1,}}
+          placeholder="保险人名"
+          onChangeText={(text)=>content.last=text}
+
+      />
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500"}}>保险号码:</Text> 
+      <TextInput style = {{height: 35,
+    width: 200,
+    borderBottomColor: '#999999',
+    marginLeft:0,
+    borderBottomWidth:1,}}
           placeholder="保险号码(Policy Number)"
           onChangeText={(text)=>content.number=text}
       />
+      </View>
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:50}}></View>
     <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
@@ -370,12 +477,13 @@ export default function TelePay({navigation,route}) {
                 source = {require("../../images/mobile_icon.png")}
             />
     </TouchableOpacity>
-    <View style={{marginTop:160}}></View>
+    
+    <View style={{marginTop:450,backgroundColor:"white"}}></View>
     
   
   </View>
   
-  </ScrollView>
+  </KeyboardAwareScrollView>
 
   )}
 

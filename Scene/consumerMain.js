@@ -23,68 +23,13 @@ export default function ProviderMain({navigation}) {
     const goToTelehealth= () => {
       navigation.navigate("telehealthMain")
   }
-  /*const askurl=()=>{
-    let url = 'https://linkello.com/rest/link'
-    
-    fetch(url,{
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': user.token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      },
-      body: JSON.stringify({
-          
-        media:"video",    
-        label:"kim",
-      })
-      })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.code === 0) {
-          //alert("提交成功");
-          console.log(json.msg);
-        } else {
-          //console.log(json.msg)
-          console.log(base);
-          alert('个人信息提交失败');
-        }
-      });
-  }*/
   const goVaccine= () => {
     navigation.navigate("telehealthSub",{doctype:7})
 }
   const user = useContext(DataContext);
 
-  /*componentDidMount() {
-    this.dataPolling = setInterval(
-      () => {
-        this.getAITraining();
-      },
-      3000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.dataPolling);
-  }*/
-
-  
   useEffect(() => {
-    let polling = setInterval( ()=>updateRequest(), 2000);
-      return ( ()=>{
-         clearInterval(polling);
-      });
     
-    },[])
-  
-  updateRequest=()=>{
-    console.log("polling...")
     var today = new Date();
     var month =(today.getMonth()+1);
     if (month<10){
@@ -232,7 +177,8 @@ export default function ProviderMain({navigation}) {
 
             //
             /**/
-  }
+    },[len])
+
     
     /*let url = "http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment";
             fetch(url,{
@@ -402,7 +348,7 @@ export default function ProviderMain({navigation}) {
         <TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={goToTelehealth}>
           <Image
           style = {{width:180,height:95}}
-          source = {require('../images/t_icon.png')}
+          source = {require('../images/new_small_icon.png')}
           />
         </TouchableOpacity>
         {/*<TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={alertHandler}>
