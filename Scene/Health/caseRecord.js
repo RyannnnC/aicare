@@ -3,7 +3,6 @@ import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
-import Category from "./category";
 import DataContext from '../../providerContext';
 import CalendarPicker from 'react-native-calendar-picker';
 import { CheckBox } from 'react-native-elements';

@@ -21,51 +21,13 @@ export default class PendingOrder extends Component {
       selectedDoctor:'',
       selectedStartDate: null,
       mds:[],
+      isLoading:false,
     };
     this.onDateChange = this.onDateChange.bind(this);
   }
 
   componentDidMount = () => {
-    let tp = 1;
-    if (this.context.employerId !=null) {
-      tp = 2;
-    }
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = 'http://'
-      +this.context.url
-      +'/aicare-business-api/business/appointment/query?status=0'
-      + '&type=' + tp;
-        fetch(url,{
-          method: 'GET',
-          mode: 'cors',
-          credentials: 'include',
-          headers: {
-          'Accept':       'application/json',
-          'Content-Type': 'application/json',
-          'sso-auth-token': this.context.token,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-        }})
-        .then((response) => response.json())
-        .then((json) => {
-          if (json.code === 0) {
-            this.setState({data:json.page});
-            for(let i=0; i<json.page.length;i++){
-              var d= {
-                id:json.page[i].id,
-                visible:false,
-              }
-              let t = this.state.mds;
-              t.push(d);
-              this.setState({mds:t});
-            }
-          } else {
-            console.log(json.msg)
-          }
-        }).catch(error => console.warn(error));
-    });
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {this.queryOrders()});
   }
 
   setIsEnabled = (value) => {
@@ -75,6 +37,48 @@ export default class PendingOrder extends Component {
     this.setState({modalVisible: value})
   }
 
+  queryOrders() {
+    let tp = 1;
+    if (this.context.employerId !=null) {
+      tp = 2;
+    }
+    this.setState({isLoading:true});
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/appointment/query?status=0'
+    + '&type=' + tp;
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }})
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({isLoading:false});
+        if (json.code === 0) {
+          this.setState({data:json.page});
+          for(let i=0; i<json.page.length;i++){
+            var d= {
+              id:json.page[i].id,
+              visible:false,
+            }
+            let t = this.state.mds;
+            t.push(d);
+            this.setState({mds:t});
+          }
+        } else {
+          console.log(json.msg)
+        }
+      }).catch(error => console.warn(error));
+  }
   sendRequest(date){
     this.setState({timeLoad:true})
     let url = 'http://'
@@ -111,6 +115,7 @@ export default class PendingOrder extends Component {
         '您确定要修改预约至这个时间吗？',
         [
           {text: '确定', onPress: () => {
+            this.setState({isLoading:true})
             let url = 'http://'
             +this.context.url
             +'/aicare-business-api/business/appointment/modify?'
@@ -133,9 +138,13 @@ export default class PendingOrder extends Component {
               .then((response) => response.json())
               .then((json) => {
                 if (json.code === 0) {
+                  this.setState({isLoading:true})
                   Alert.alert('修改成功')
+                  this.queryOrders();
                 } else {
+                  this.setState({isLoading:true})
                   Alert.alert('修改失败')
+                  this.queryOrders();
                 }
               }).catch(error => console.warn(error));
           }},
@@ -152,6 +161,7 @@ export default class PendingOrder extends Component {
       '您确定要接受这桩预约吗？',
       [
         {text: '确定', onPress: () => {
+          this.setState({isLoading:true})
           let url = 'http://'
           +this.context.url
           +'/aicare-business-api/business/appointment/take?id='
@@ -173,9 +183,13 @@ export default class PendingOrder extends Component {
             .then((response) => response.json())
             .then((json) => {
               if (json.code === 0) {
+                this.setState({isLoading:true})
                 Alert.alert('接单成功')
+                this.queryOrders();
               } else {
+                this.setState({isLoading:true})
                 Alert.alert('接单失败')
+                this.queryOrders();
               }
             }).catch(error => console.warn(error));
         }},
@@ -241,6 +255,13 @@ export default class PendingOrder extends Component {
     )
   })}
   let orders;
+  if (this.state.isLoading){
+    return(
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator size="large" color="#00ff00"  />
+   </View>
+  )
+  }else {
   if (this.state.data.length >0) {
   orders = this.state.data.map((item) => {
     let tp = '';
@@ -263,35 +284,41 @@ export default class PendingOrder extends Component {
           </View>
         </TouchableOpacity>
         <View style={{flexDirection: 'row',paddingBottom: 10}}>
+          <View style={{flexDirection: 'row',width:'65%'}}>
           <Image
             style = {{width: 15, height:15 , marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_time.png')}
             />
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{moment(item.appointDate).format('L').substring(0,5)} {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
+          </View>
+          <View style={{flexDirection: 'row',width:'35%'}}>
           <Image
-            style = {{width: 15, height:15,marginLeft:40, marginRight:5}}
+            style = {{width: 15, height:15, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}
           />
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+          </View>
         </View>
         <View style={{flexDirection: 'row',paddingBottom: 12, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
+          <View style={{flexDirection: 'row',width:'65%'}}>
           <Image
             style = {{width: 15, height:15 , marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_person.png')}
             />
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
+          </View>
           {item.telehealthFlg ==1?
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row',width:'35%'}}>
             <Image
-              style = {{width: 15, height:15,marginLeft:100, marginRight:5}}
+              style = {{width: 15, height:15,marginRight:5}}
               source = {require('../../images/providerImg/account_icon_video.png')}
             />
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('telehealth')}</Text>
             </View>
           :
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row',width:'35%'}}>
           <Image
-            style = {{width: 15, height:15,marginLeft:100, marginRight:5}}
+            style = {{width: 15, height:15, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_location.png')}
           />
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('onsite')}</Text>
@@ -470,6 +497,6 @@ elevation: 24,}}>
     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('noOrder')}</Text>
     </View>
  )};
-  }
+  }}
 }
 PendingOrder.contextType = DataContext;

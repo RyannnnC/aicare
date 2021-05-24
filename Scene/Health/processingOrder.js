@@ -3,7 +3,6 @@ import { Platform,Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpaci
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
-import Category from "./category";
 import DataContext from '../../providerContext';
 import CalendarPicker from 'react-native-calendar-picker';
 import { CheckBox } from 'react-native-elements';
@@ -16,7 +15,6 @@ export default class ProcessingOrder extends Component {
       this.state={
         data:[],
         time:[],
-        date: new Date(),
         isEnabled: false,
         modalVisible: false,
         mdVisible:false,
@@ -26,6 +24,7 @@ export default class ProcessingOrder extends Component {
         selectedDoctor:'',
         timeLoad:false,
         isLoading:true,
+        selectedDate: new Date(),
       };
       this.onDateChange = this.onDateChange.bind(this);
     }
@@ -181,9 +180,6 @@ export default class ProcessingOrder extends Component {
       );
   }
   onDateChange(date) {
-    this.setState({
-      selectedStartDate: date,
-    });
     let fd = this.formatDate(date);
     this.sendRequest(fd);
   }
@@ -208,6 +204,7 @@ export default class ProcessingOrder extends Component {
     this.setState({
       modalVisible:false,
       isLoading:true,
+      selectedDate: date,
     });
     let tp = 1;
     if (this.context.employerId !=null) {
@@ -218,8 +215,8 @@ export default class ProcessingOrder extends Component {
       +this.context.url
       +'/aicare-business-api/business/appointment/query?status=1'
       + '&type=' + tp
-      + '&appiontDate=' + fd
-      + '&dateFlg=1';
+      + '&appointDate=' + fd
+      + '&dateFlg=2';
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -251,11 +248,83 @@ export default class ProcessingOrder extends Component {
           } else {
             console.log(json.msg)
           }
-        }).catch(error => console.warn(error));      
+        }).catch(error => console.warn(error));
   }
+  queryType(type){
+    this.setState({
+      Visible:false,
+      isLoading:true,
+      selectedType:type,
+    });
+    let tp = 1;
+    if (this.context.employerId !=null) {
+      tp = 2;
+    }
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/appointment/query?status=1'
+      + '&type=' + tp
+      + '&deptId=' + type
+        fetch(url,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'sso-auth-token': this.context.token,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        }})
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({isLoading:false})
+          if (json.code === 0) {
+            console.log(json);
+            this.setState({data:json.page});
+            for(let i=0; i<json.page.length;i++){
+              var d= {
+                id:json.page[i].id,
+                visible:false,
+              }
+              let t = this.state.mds;
+              t.push(d);
+              this.setState({mds:t});
+            }
+          } else {
+            console.log(json.msg)
+          }
+        }).catch(error => console.warn(error));
+  }
+  /*        {this.context.employerId &&
+          <TouchableOpacity style={{width: 75,
+            height: 25,
+            backgroundColor: '#FF7E67',
+            borderRadius: 10,
+            marginTop: 15,
+            marginLeft:20,
+            justifyContent: "center",
+            alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
+            <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+          </TouchableOpacity>
+        }*/
+        /*        {this.context.employerId &&
+                <TouchableOpacity style={{width: 75,
+                  height: 25,
+                  backgroundColor: '#FF7E67',
+                  borderRadius: 10,
+                  marginTop: 15,
+                  marginLeft:20,
+                  justifyContent: "center",
+                  alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
+                  <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+                </TouchableOpacity>
+              }*/
   render () {
-    var date = new Date().getDate();
-    var month = new Date().getMonth() + 1;
+    var date = new Date(this.state.selectedDate).getDate();
+    var month = new Date(this.state.selectedDate).getMonth() + 1;
     let times=[];
     if (this.state.time.length >0) {
     times = this.state.time.map((item) => {
@@ -319,44 +388,40 @@ export default class ProcessingOrder extends Component {
               </View>
             </View>
             {item.telehealthFlg ==1?
-            <View>
-            <View style={{flexDirection: 'row',marginBottom:10}}>
-              <Image
+            <View style={{width:'100%'}}>
+            <View style={{width:'100%',flexDirection: 'row',marginBottom:10}}>
+              <View style={{flexDirection: 'row',width:'50%'}}>
+                <Image
                 style = {{width: 15, height:15 , marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_person.png')}
-              />
-              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
+                />
+                <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
+              </View>
+              <View style={{flexDirection: 'row',width:'50%'}}>
               <Image
-                style = {{width: 15, height:15,marginLeft:70, marginRight:5}}
+                style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_type.png')}
               />
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+              </View>
             </View>
-            <View style={{flexDirection: 'row',marginBottom:5}}>
+            <View style={{width:'100%',flexDirection: 'row',marginBottom:5}}>
+              <View style={{flexDirection: 'row',width:'50%'}}>
               <Image
                 style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/account_icon_video.png')}
               />
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('telehealth')}</Text>
+              </View>
+              <View style={{flexDirection: 'row',width:'50%'}}>
               <Image
-                style = {{width: 15, height:15,marginLeft:70, marginRight:5}}
+                style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/tp.png')}
               />
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{tp}</Text>
+              </View>
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
-              {this.context.employerId &&
-              <TouchableOpacity style={{width: 75,
-                height: 25,
-                backgroundColor: '#FF7E67',
-                borderRadius: 10,
-                marginTop: 15,
-                marginLeft:20,
-                justifyContent: "center",
-                alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
-                <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
-              </TouchableOpacity>
-            }
             {this.context.employerId &&
               <TouchableOpacity style={{width: 75,
               height: 25,
@@ -394,36 +459,31 @@ export default class ProcessingOrder extends Component {
             </View>
             :
             <View>
-            <View style={{flexDirection: 'row',marginBottom:10}}>
+            <View style={{width:'100%',flexDirection: 'row',marginBottom:10}}>
+              <View style={{flexDirection: 'row',width:'33%'}}>
               <Image
                 style = {{width: 15, height:15 , marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_person.png')}
               />
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
+              </View>
+              <View style={{flexDirection: 'row',width:'33%'}}>
               <Image
-                style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
+                style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_type.png')}
               />
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+              </View>
+              <View style={{flexDirection: 'row',width:'33%'}}>
               <Image
-                style = {{width: 15, height:15,marginLeft:15, marginRight:5}}
+                style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_location.png')}
               />
               <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('onsite')}</Text>
+              </View>
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
-            {this.context.employerId &&
-            <TouchableOpacity style={{width: 75,
-              height: 25,
-              backgroundColor: '#FF7E67',
-              borderRadius: 10,
-              marginTop: 15,
-              marginLeft:20,
-              justifyContent: "center",
-              alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
-              <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
-            </TouchableOpacity>
-            }
+
             <TouchableOpacity style={{width: 75,
             height: 25,
             backgroundColor: '#68B0AB',
@@ -674,12 +734,135 @@ elevation: 24,}}>
         <Text style = {styles.service}>类型筛选</Text>
         </View>
         <ScrollView horizontal={true} style={{marginLeft:20,maxHeight:210,paddingTop:5,height:130}}>
-          <Category/>
+        <View style={{flexDirection: 'row', marginBottom: 45}}>
+        <View style={{shadowColor:"000000",shadowOffset: {width: 0,height: 3},shadowOpacity: 0.27,shadowRadius: 4.65,elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FEA495',
+                            padding:20,
+                            width:80,
+                            marginLeft:20,
+                            marginTop:10,
+                            height:80,
+                            alignItems: 'center',
+                            borderRadius:25,}}
+          >
+          <Image
+            style={{width:30,height:30}}
+            source = {require('../../images/providerImg/schedule_icon_type_all.png')}
+          />
+          <Text style={{color:'#FFFFFF',marginTop:2}}>{I18n.t('all')}</Text>
+
+          </TouchableOpacity>
+          </View>
+
+          <View style={{shadowColor:"000000",shadowOffset: {
+                width: 0,
+                height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:80,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:80,
+                            alignItems: 'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(1);}}
+                            >
+          <Image
+            style={{width:34,height:30}}
+            source = {require('../../images/providerImg/schedule_icon_type.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('gp')}</Text>
+
+          </TouchableOpacity>
+          </View>
+          <View style={{shadowColor:"000000",shadowOffset: {
+                width: 0,
+                height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:80,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:80,
+                            alignItems: 'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(3);}}
+                            >
+
+          <Image
+            style={{width:30,height:30}}
+            source = {require('../../images/providerImg/schedule_icon_type_mental.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('psychology')}</Text>
+
+          </TouchableOpacity>
+          </View>
+          <View style={{shadowColor:"000000",shadowOffset: {
+                width: 0,
+                height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:80,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:80,
+                            alignItems: 'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(5);}}
+                            >
+
+          <Image
+            style={{width:30,height:30}}
+            source = {require('../../images/providerImg/schedule_icon_type_child.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('pediatrics')}</Text>
+
+          </TouchableOpacity>
+          </View>
+          <View style={{shadowColor:"000000",shadowOffset: {
+                width: 0,
+                height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:80,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:80,
+                            alignItems: 'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(2);}}
+                            >
+
+          <Image
+            style={{width:30,height:30}}
+            source = {require('../../images/providerImg/schedule_icon_type_dental.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('dentist')}</Text>
+          </TouchableOpacity>
+          </View>
+          </View>
         </ScrollView>
     <View style={{alignItems:'center',justifyContent:'center'}}>
-    <TouchableOpacity style={styles.next_wrapper} onPress={()=>{this.setVisible(!this.state.Visible)}}>
-      <Text style={styles.onsite_text}>{I18n.t('confirmation')}</Text>
-    </TouchableOpacity>
     </View>
     </ScrollView>
         <View style={{height:20}}/>
@@ -695,15 +878,6 @@ elevation: 24,}}>
         source = {require('../../images/providerImg/order_img_empty_inprogress1.png')}
       />
      <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，快去接取吧！</Text>
-     <TouchableOpacity style={{width: 75,
-       height: 25,
-       backgroundColor: '#FF7E67',
-       borderRadius: 10,
-       marginTop: 15,
-       justifyContent: "center",
-       alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
-       <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
-     </TouchableOpacity>
      </View>
     )
   }

@@ -3,7 +3,6 @@ import { Alert,Text, View, ImageBackground,Image,SafeAreaView,ScrollView,Touchab
 import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
 import DateSelect from "./dateSelect";
-import Category from "./category";
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 
