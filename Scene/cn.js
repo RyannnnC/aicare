@@ -163,4 +163,6 @@ export default {
   record:'病历',
   videoCall1:'请使用Facetime完成视频诊疗',
   videoCall2:'请使用Skype完成视频诊疗',
+  personalRecord:'个人病史',
+  personalMedicine:'个人药史',
 }

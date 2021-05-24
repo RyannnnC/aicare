@@ -163,4 +163,6 @@ export default {
   record:'History',
   videoCall1:'Please use Facetime to complete Diagnosis',
   videoCall2:'Please use Skype to complete Diagnosis',
+  personalRecord:'Medical History',
+  personalMedicine:'Medication History',
 }

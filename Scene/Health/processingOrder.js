@@ -42,7 +42,7 @@ export default class ProcessingOrder extends Component {
       let url = 'http://'
       +this.context.url
       +'/aicare-business-api/business/appointment/query?status=1'
-      + '&type=' + tp;;
+      + '&type=' + tp;
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -203,6 +203,55 @@ export default class ProcessingOrder extends Component {
         this.setState({mds:t})
       }
     }
+  }
+  queryDate = (date) =>{
+    this.setState({
+      modalVisible:false,
+      isLoading:true,
+    });
+    let tp = 1;
+    if (this.context.employerId !=null) {
+      tp = 2;
+    }
+    let fd = this.formatDate(date);
+      let url = 'http://'
+      +this.context.url
+      +'/aicare-business-api/business/appointment/query?status=1'
+      + '&type=' + tp
+      + '&appiontDate=' + fd
+      + '&dateFlg=1';
+        fetch(url,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'sso-auth-token': this.context.token,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        }})
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({isLoading:false})
+          if (json.code === 0) {
+            console.log(json);
+            this.setState({data:json.page});
+            for(let i=0; i<json.page.length;i++){
+              var d= {
+                id:json.page[i].id,
+                visible:false,
+              }
+              let t = this.state.mds;
+              t.push(d);
+              this.setState({mds:t});
+            }
+          } else {
+            console.log(json.msg)
+          }
+        }).catch(error => console.warn(error));      
   }
   render () {
     var date = new Date().getDate();
@@ -567,8 +616,8 @@ export default class ProcessingOrder extends Component {
            onRequestClose={() => this.setModalVisible(!this.state.modalVisible)}>
            <View style={{marginTop:200,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
            shadowOffset: {
-     	       width: 0,
-     	       height: 12,
+             width: 0,
+             height: 12,
            },
            shadowOpacity: 0.58,
            shadowRadius: 16.00,
@@ -580,13 +629,17 @@ export default class ProcessingOrder extends Component {
          />
        </TouchableOpacity>
        <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
-         <DateSelect/>
-         <View>
-         <TouchableOpacity style={styles.next_wrapper}>
-             <Text style={{color:'white'}}>{I18n.t('confirmation')}</Text>
-          </TouchableOpacity>
-         </View>
-        </ScrollView>
+       <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
+       <Text style = {{ color:'#006A71',fontSize:16}}>{I18n.t('orderTime')}</Text>
+       <CalendarPicker
+         onDateChange={this.queryDate}
+         previousTitle={I18n.t('prevMonth')}
+         nextTitle = {I18n.t('nextMonth')}
+         width = {300}
+         height = {300}
+       />
+       </View>
+       </ScrollView>
         </View>
         <>
         </>

@@ -1,7 +1,7 @@
 import React ,{Component}from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons, Ionicons, FontAwesome,AntDesign } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment-timezone';
 import DataContext from '../../providerContext';
@@ -15,6 +15,8 @@ export default class Enotes extends Component {
       show: false,
       image:null,
       isLoading:false,
+      pressed:false,
+      pressed1:false,
       hasCameraPermission: null,
       checked3:true,
     }
@@ -139,7 +141,30 @@ export default class Enotes extends Component {
         <View style={{marginTop:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('emRecord')}</Text>
         </View>
-
+        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('basicMedicalHistory')}</Text>
+          <AntDesign name="down" size={18} color="black" />
+        </TouchableOpacity>
+        {this.state.pressed &&
+        <View>
+        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('orginfo')}</Text>
+          <AntDesign name="down" size={18} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('personalRecord')}</Text>
+          <AntDesign name="down" size={18} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('personalMedicine')}</Text>
+          <AntDesign name="down" size={18} color="black" />
+        </TouchableOpacity>
+        </View>
+        }
+        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed1:!this.state.pressed})}}>
+          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('historyRecord')}</Text>
+          <AntDesign name="down" size={18} color="black" />
+        </TouchableOpacity>
 
 
       </ScrollView>
