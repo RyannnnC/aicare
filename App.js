@@ -156,16 +156,6 @@ function DoctorHome() {
             }}
           />
           <Tab.Screen
-            name="病历"
-            component={CaseRecord}
-            options={{
-              tabBarLabel: I18n.t('record'),
-              tabBarIcon: ({ color, size }) => (
-                <FontAwesome5 name="notes-medical" size={24} color="black" />
-              ),
-            }}
-          />
-          <Tab.Screen
             name="账号"
             component={HealthAccountMain}
             options={{
@@ -178,7 +168,16 @@ function DoctorHome() {
         </Tab.Navigator>
   );
 }
-
+/*        <Tab.Screen
+          name="病历"
+          component={CaseRecord}
+          options={{
+            tabBarLabel: I18n.t('record'),
+            tabBarIcon: ({ color, size }) => (
+              <FontAwesome5 name="notes-medical" size={24} color="black" />
+            ),
+          }}
+        />*/
 export default class App extends React.Component {
   constructor(props) {
   super(props);
@@ -198,7 +197,7 @@ export default class App extends React.Component {
     intro:'',
     mintro:'',
     state:'',
-    token:'',
+    token:null,
     image:'',
     dimage:'',
     languages:[],
@@ -374,7 +373,7 @@ export default class App extends React.Component {
       intro:'',
       mintro:'',
       state:'',
-      token:'',
+      token:null,
       image:'',
       dimage:'',
       languages:[],
@@ -393,7 +392,7 @@ export default class App extends React.Component {
     <DataContext.Provider value={ this.state }>
     <NavigationContainer>
       <Stack.Navigator>
-      {this.state.authenticate ? (
+      {this.state.token ? (
         this.state.health ? (
           this.state.employerId == null ? (
             <>

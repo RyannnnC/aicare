@@ -298,30 +298,7 @@ export default class ProcessingOrder extends Component {
           }
         }).catch(error => console.warn(error));
   }
-  /*        {this.context.employerId &&
-          <TouchableOpacity style={{width: 75,
-            height: 25,
-            backgroundColor: '#FF7E67',
-            borderRadius: 10,
-            marginTop: 15,
-            marginLeft:20,
-            justifyContent: "center",
-            alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
-            <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
-          </TouchableOpacity>
-        }*/
-        /*        {this.context.employerId &&
-                <TouchableOpacity style={{width: 75,
-                  height: 25,
-                  backgroundColor: '#FF7E67',
-                  borderRadius: 10,
-                  marginTop: 15,
-                  marginLeft:20,
-                  justifyContent: "center",
-                  alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'))}}>
-                  <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
-                </TouchableOpacity>
-              }*/
+
   render () {
     var date = new Date(this.state.selectedDate).getDate();
     var month = new Date(this.state.selectedDate).getMonth() + 1;
@@ -423,6 +400,18 @@ export default class ProcessingOrder extends Component {
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
             {this.context.employerId &&
+               <TouchableOpacity style={{width: 75,
+                 height: 25,
+                 backgroundColor: '#FF7E67',
+                 borderRadius: 10,
+                 marginTop: 15,
+                 marginLeft:20,
+                 justifyContent: "center",
+                 alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id: item.customerId})}}>
+                 <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+               </TouchableOpacity>
+            }
+            {this.context.employerId &&
               <TouchableOpacity style={{width: 75,
               height: 25,
               backgroundColor: '#FF7E67',
@@ -483,7 +472,18 @@ export default class ProcessingOrder extends Component {
               </View>
             </View>
             <View style={{flexDirection: 'row-reverse'}}>
-
+            {this.context.employerId &&
+             <TouchableOpacity style={{width: 75,
+               height: 25,
+               backgroundColor: '#FF7E67',
+               borderRadius: 10,
+               marginTop: 15,
+               marginLeft:20,
+               justifyContent: "center",
+               alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'), {id: item.customerId})}}>
+               <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+             </TouchableOpacity>
+            }
             <TouchableOpacity style={{width: 75,
             height: 25,
             backgroundColor: '#68B0AB',
@@ -733,20 +733,21 @@ elevation: 24,}}>
         <View style={{marginLeft:130,marginBottom:10,marginTop:-15}}>
         <Text style = {styles.service}>类型筛选</Text>
         </View>
-        <ScrollView horizontal={true} style={{marginLeft:20,maxHeight:210,paddingTop:5,height:130}}>
+        <ScrollView horizontal={true} style={{marginLeft:20,maxHeight:210,paddingTop:5,height:150}}>
         <View style={{flexDirection: 'row', marginBottom: 45}}>
-        <View style={{shadowColor:"000000",shadowOffset: {width: 0,height: 3},shadowOpacity: 0.27,shadowRadius: 4.65,elevation: 6,}}>
+        <View style={{hadowColor:"000000",shadowOffset: {width: 0,height: 3},shadowOpacity: 0.27,shadowRadius: 4.65,elevation: 6,}}>
           <TouchableOpacity style={{backgroundColor:'#FEA495',
                             padding:20,
-                            width:80,
+                            width:120,
                             marginLeft:20,
                             marginTop:10,
-                            height:80,
+                            height:120,
                             alignItems: 'center',
+                            justifyContent:'center',
                             borderRadius:25,}}
           >
           <Image
-            style={{width:30,height:30}}
+            style={{width:40,height:40}}
             source = {require('../../images/providerImg/schedule_icon_type_all.png')}
           />
           <Text style={{color:'#FFFFFF',marginTop:2}}>{I18n.t('all')}</Text>
@@ -764,22 +765,23 @@ elevation: 24,}}>
                 elevation: 6,}}>
           <TouchableOpacity style={{backgroundColor:'#FFFFFF',
                             padding:20,
-                            width:80,
+                            width:120,
                             marginLeft:15,
                             marginTop:10,
-                            height:80,
+                            height:120,
                             alignItems: 'center',
+                            justifyContent:'center',
                             borderRadius:25,}}
                             onPress={() => {this.queryType(1);}}
                             >
           <Image
-            style={{width:34,height:30}}
+            style={{width:40,height:40}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}
           />
           <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('gp')}</Text>
-
           </TouchableOpacity>
           </View>
+
           <View style={{shadowColor:"000000",shadowOffset: {
                 width: 0,
                 height: 3,
@@ -790,74 +792,125 @@ elevation: 24,}}>
                 elevation: 6,}}>
           <TouchableOpacity style={{backgroundColor:'#FFFFFF',
                             padding:20,
-                            width:80,
+                            width:120,
                             marginLeft:15,
                             marginTop:10,
-                            height:80,
+                            height:120,
                             alignItems: 'center',
-                            borderRadius:25,}}
-                            onPress={() => {this.queryType(3);}}
-                            >
-
-          <Image
-            style={{width:30,height:30}}
-            source = {require('../../images/providerImg/schedule_icon_type_mental.png')}
-          />
-          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('psychology')}</Text>
-
-          </TouchableOpacity>
-          </View>
-          <View style={{shadowColor:"000000",shadowOffset: {
-                width: 0,
-                height: 3,
-                },
-                shadowOpacity: 0.27,
-                shadowRadius: 4.65,
-
-                elevation: 6,}}>
-          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
-                            padding:20,
-                            width:80,
-                            marginLeft:15,
-                            marginTop:10,
-                            height:80,
-                            alignItems: 'center',
-                            borderRadius:25,}}
-                            onPress={() => {this.queryType(5);}}
-                            >
-
-          <Image
-            style={{width:30,height:30}}
-            source = {require('../../images/providerImg/schedule_icon_type_child.png')}
-          />
-          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('pediatrics')}</Text>
-
-          </TouchableOpacity>
-          </View>
-          <View style={{shadowColor:"000000",shadowOffset: {
-                width: 0,
-                height: 3,
-                },
-                shadowOpacity: 0.27,
-                shadowRadius: 4.65,
-
-                elevation: 6,}}>
-          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
-                            padding:20,
-                            width:80,
-                            marginLeft:15,
-                            marginTop:10,
-                            height:80,
-                            alignItems: 'center',
+                            justifyContent:'center',
                             borderRadius:25,}}
                             onPress={() => {this.queryType(2);}}
                             >
 
           <Image
-            style={{width:30,height:30}}
+            style={{width:40,height:40}}
             source = {require('../../images/providerImg/schedule_icon_type_dental.png')}
           />
           <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('dentist')}</Text>
+          </TouchableOpacity>
+          </View>
+
+          <View style={{shadowColor:"000000",shadowOffset: {
+                width: 0,
+                height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:120,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:120,
+                            alignItems: 'center',
+                            justifyContent:'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(3);}}
+                            >
+
+          <Image
+            style={{width:40,height:40}}
+            source = {require('../../images/providerImg/schedule_icon_type_mental.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('psychology')}</Text>
+          </TouchableOpacity>
+          </View>
+
+          <View style={{shadowColor:"000000",shadowOffset: {
+	              width: 0,
+	              height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:120,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:120,
+                            alignItems: 'center',
+                            justifyContent:'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(4);}}>
+          <Image
+            style={{width:40,height:40}}
+            source = {require('../../images/providerImg/中医.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('chineseMedicine')}</Text>
+          </TouchableOpacity>
+          </View>
+
+          <View style={{shadowColor:"000000",shadowOffset: {
+                width: 0,
+                height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:120,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:120,
+                            alignItems: 'center',
+                            justifyContent:'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(5);}}
+                            >
+          <Image
+            style={{width:40,height:40}}
+            source = {require('../../images/providerImg/schedule_icon_type_child.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('pediatrics')}</Text>
+          </TouchableOpacity>
+          </View>
+
+          <View style={{shadowColor:"000000",shadowOffset: {
+	              width: 0,
+	              height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 6,}}>
+          <TouchableOpacity style={{backgroundColor:'#FFFFFF',
+                            padding:20,
+                            width:120,
+                            marginLeft:15,
+                            marginTop:10,
+                            height:120,
+                            alignItems: 'center',
+                            justifyContent:'center',
+                            borderRadius:25,}}
+                            onPress={() => {this.queryType(6);}}>
+          <Image
+            style={{width:40,height:40}}
+            source = {require('../../images/providerImg/康复.png')}
+          />
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t('physiotherapy')}</Text>
           </TouchableOpacity>
           </View>
           </View>

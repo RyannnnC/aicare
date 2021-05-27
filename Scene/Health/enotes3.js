@@ -12,49 +12,59 @@ export default class Enotes3 extends Component {
     constructor(props) {
       super(props);
       this.state={
-      show: false,
-      image:null,
-      isLoading:false,
-      hasCameraPermission: null,
-      checked3:true,
-    }
+      pressed:false,
+      pressed1:false,
+      complaint:'',
+      doctorComment:'',
+      id:null,
+      }
     }
   async componentDidMount(){
-    if (this.context.time.length>0){
-      let i;
-      for (i=0;i<this.context.time.length;i++){
-        if (this.context.time[i].status != 0){
-          let but = this.state.buttons;
-          but[i].pressed = true;
-          but[i].backgroundColor = '#FF7E67';
-          but[i].borderWidth = 0;
-          but[i].fontColor = '#FFFFFF';
-          this.setState({buttons: but});
-          let t = this.state.times;
-          t[i].time1 = this.context.time[i].startTime;
-          t[i].time2 = this.context.time[i].endTime;
-          this.setState({times:t})
-        }
-      }
-    }
-    if (this.context.typeList.length>0){
-      this.setState({service:this.context.typeList})
-    }
+    this.setState({
+      id:this.props.route.params.id,
+      complaint:this.props.route.params.patientComplaint});
   }
 
+  saveReport() {
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/medical-report/save';
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      },
+        body: JSON.stringify({
+          customerUserId : this.state.id,
+          customerUserInfoId : 1,
+          diagnosisTitle : "report_001",
+          type : "远程医疗",
+          patientComment : this.state.complaint,
+          doctorComment : this.state.doctorComment,
+          clinicalConditions : "MAD",
+      })
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          console.log(json);
+        } else {
+          console.log(json.msg)
+        }
+      })
+      .then(() => {this.props.navigation.navigate('预约')})
+      .catch(error => console.warn(error));
+  }
 
   render() {
-    let service =[];
-    if(this.context.serviceclass.length>0) {
-    service = this.context.serviceclass.map((item) => {
-      if (item.status == 1) {
-      return (
-        <TouchableOpacity style={styles.resumeTag} key={item.value}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
-        </TouchableOpacity>
-      )
-      }
-    })};
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -68,13 +78,13 @@ export default class Enotes3 extends Component {
         <ScrollView style={{height:'90%'}}>
 
         <View style={{flexDirection: 'row', marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('clinicalExam')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
         </View>
         <View style={{width:'100%', height:150,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
           <TextInput style={{width:'90%',height:60,marginTop:15,marginLeft:20,marginRight:20}}
             placeholder={this.context.intro}
-            value={this.context.intro}
-            onChangeText={(text) => {this.context.action.changeintro(text)}}
+            value={this.state.doctorComment}
+            onChangeText={(text) => {this.setState({doctorComment:text})}}
             multiline={true}
           />
         </View>
@@ -118,7 +128,7 @@ export default class Enotes3 extends Component {
               backgroundColor: '#68B0AB',
               borderRadius: 20,
               alignItems: 'center',
-              justifyContent: "center",}} onPress={() => {this.props.navigation.navigate(I18n.t('enote2'))}}>
+              justifyContent: "center",}} onPress={() => {this.saveReport()}}>
               <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
             </TouchableOpacity>
           </View>

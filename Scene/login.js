@@ -42,12 +42,11 @@ export default class Login extends Component {
     .then((response) => response.json())
     .then((json) =>  {
         if (json.code === 0) {
-          this.context.action.changeLogin(true);
-          this.context.action.changetoken(json.data);
           if (json.roleType == '2') {
             this.context.action.changeemployerid(json.employerId);
             console.log(this.context.emplyerId)
           }
+          this.context.action.changetoken(json.data);
           console.log(Platform)
         } else {
           Alert.alert("Invalid username or password");
@@ -72,12 +71,11 @@ export default class Login extends Component {
       .then((json) =>  {
           if (json.code === 0) {
             console.log("login success");
-            this.context.action.changeLogin(true);
-            this.context.action.changetoken(json.data);
             if (json.roleType == '2') {
               this.context.action.changeemployerid(json.employerId);
               console.log(this.context.emplyerId)
             }
+            this.context.action.changetoken(json.data);
             console.log(Platform)
           } else {
             Alert.alert("Invalid username or password");

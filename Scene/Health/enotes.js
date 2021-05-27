@@ -12,51 +12,18 @@ export default class Enotes extends Component {
     constructor(props) {
       super(props);
       this.state={
-      show: false,
-      image:null,
-      isLoading:false,
       pressed:false,
       pressed1:false,
-      hasCameraPermission: null,
-      checked3:true,
-    }
-    }
-  async componentDidMount(){
-    if (this.context.time.length>0){
-      let i;
-      for (i=0;i<this.context.time.length;i++){
-        if (this.context.time[i].status != 0){
-          let but = this.state.buttons;
-          but[i].pressed = true;
-          but[i].backgroundColor = '#FF7E67';
-          but[i].borderWidth = 0;
-          but[i].fontColor = '#FFFFFF';
-          this.setState({buttons: but});
-          let t = this.state.times;
-          t[i].time1 = this.context.time[i].startTime;
-          t[i].time2 = this.context.time[i].endTime;
-          this.setState({times:t})
-        }
+      complaint:'',
+      id:null,
       }
     }
-    if (this.context.typeList.length>0){
-      this.setState({service:this.context.typeList})
-    }
+  async componentDidMount(){
+      this.setState({id:this.props.route.params.id});
   }
 
 
   render() {
-    let service =[];
-    if(this.context.serviceclass.length>0) {
-    service = this.context.serviceclass.map((item) => {
-      if (item.status == 1) {
-      return (
-        <TouchableOpacity style={styles.resumeTag} key={item.value}>
-          <Text style={{ fontSize:12, fontWeight: '300' }}>{item.name}</Text>
-        </TouchableOpacity>
-      )
-      }
-    })};
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -87,8 +54,7 @@ export default class Enotes extends Component {
           marginLeft: 5,
           borderBottomWidth:1,
           borderBottomColor:'#EEEEEE'}} placeholder= "Kingsford Clinic"
-          value={this.context.name}
-          onChangeText={(text) => {this.context.action.changename(text)}}/>
+          value={this.context.name}/>
           <MaterialCommunityIcons name="gender-male-female" size={20} color="black" style={{marginRight:5}}/>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('gender')}</Text>
           <TextInput style={{
@@ -97,8 +63,7 @@ export default class Enotes extends Component {
             marginLeft: 5,
             borderBottomWidth:1,
             borderBottomColor:'#EEEEEE'}} placeholder= "0403571833"
-          value={this.context.phone}
-          onChangeText={(text) => {this.context.action.changephone(text)}}/>
+          value={this.context.phone}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <MaterialCommunityIcons name="human-male-child" size={20} color="black" style={{marginRight:5}}/>
@@ -108,8 +73,7 @@ export default class Enotes extends Component {
           marginLeft: 5,
           borderBottomWidth:1,
           borderBottomColor:'#EEEEEE'}} placeholder= "657416708xy@gmail.com"
-          value={this.context.email}
-          onChangeText={(text) => {this.context.action.changeemail(text)}}/>
+          value={this.context.email}/>
           <FontAwesome name="calendar-o" size={20} color="black" style={{marginRight:5}}/>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('dateofBirth')}</Text>
           <TextInput
@@ -120,7 +84,6 @@ export default class Enotes extends Component {
           borderBottomColor:'#EEEEEE'}}
           placeholder= "1001/1 Mooltan Avanue"
           value = {this.context.street}
-          onChangeText={(text) => {this.context.action.changestreet(text)}}
           />
         </View>
 
@@ -132,8 +95,8 @@ export default class Enotes extends Component {
         <View style={{width:'100%', height:250,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
           <TextInput style={{width:'90%',height:60,marginTop:15,marginLeft:20,marginRight:20}}
             placeholder={this.context.intro}
-            value={this.context.intro}
-            onChangeText={(text) => {this.context.action.changeintro(text)}}
+            value={this.state.complaint}
+            onChangeText={(text) => {this.setState({complaint:text})}}
             multiline={true}
           />
         </View>
@@ -177,7 +140,7 @@ export default class Enotes extends Component {
       backgroundColor: '#68B0AB',
       borderRadius: 20,
       alignItems: 'center',
-      justifyContent: "center",}} onPress={() => {this.props.navigation.navigate(I18n.t('enote2'))}}>
+      justifyContent: "center",}} onPress={() => {this.props.navigation.navigate(I18n.t('enote3'),{id: this.state.id,patientComplaint:this.state.complaint})}}>
         <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
       </TouchableOpacity>
       </View>
