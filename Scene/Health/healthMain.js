@@ -45,7 +45,6 @@ export default class HealthMain extends Component {
         .then((json) => {
           this.setState({isLoading:false})
           if (json.code === 0) {
-            console.log(json);
             this.setState({data:json.page});
             this.setState({length:json.page.length});
           } else {
@@ -75,7 +74,7 @@ export default class HealthMain extends Component {
   orders = this.state.data.map((item,i) => {
     if (i == 0) {
     return(
-    <TouchableOpacity style={styles.card2} onPress = {() => this.props.navigation.navigate('预约')}>
+    <TouchableOpacity key={item.id} style={styles.card2} onPress = {() => this.props.navigation.navigate('预约')}>
     <View style={{width:'80%',marginLeft:'10%'}}>
     <View style={{flexDirection: 'row', marginTop:16, marginBottom:16}}>
       <Image

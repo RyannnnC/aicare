@@ -1,6 +1,7 @@
 import React ,{Component}from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {AsyncStorage} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
 import ProviderOrder from './Scene/teleCare/providerOrder.js'
@@ -239,6 +240,16 @@ export default class App extends React.Component {
     }
     }
   }
+
+  async getToken(user) {
+    try {
+      let userData = await AsyncStorage.getItem("token");
+      this.setState({token:userData});
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+
   changeemployerid = (value) => {
     this.setState({employerId: value});
   }
@@ -387,6 +398,9 @@ export default class App extends React.Component {
     })
   }
 
+  componentDidMount() {
+   this.getToken();
+  }
   render() {
   return (
     <DataContext.Provider value={ this.state }>

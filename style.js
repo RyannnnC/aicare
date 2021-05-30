@@ -179,13 +179,11 @@ export const styles = StyleSheet.create({
   },
   f_wrapper:{
     marginTop:20,
-    marginLeft:47,
     marginRight:77,
   },
   z_wrapper:{
     marginTop:20,
-    marginLeft:77,
-    marginRight:47,
+    marginLeft:55,
   },
   container2:{
     flexDirection: 'row',
@@ -193,7 +191,7 @@ export const styles = StyleSheet.create({
   loginWrapper: {
     backgroundColor: '#8FD7D3',
     padding:10,
-    width:280,
+    width:'80%',
     marginTop:40,
     height:40,
     alignItems: 'center',

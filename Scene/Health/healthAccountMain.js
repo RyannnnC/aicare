@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { SafeAreaView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
+import { AsyncStorage,SafeAreaView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
@@ -21,7 +21,9 @@ export default class HealthAccountMain extends Component {
       '您确定要退出登录吗？',
       [
         {text: '确定', onPress: () => {
-                this.context.action.clearstate();}},
+                this.context.action.clearstate();
+                this.removeToken();
+        }},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
       {
@@ -29,7 +31,13 @@ export default class HealthAccountMain extends Component {
       }
     );
   }
-
+  async removeToken(user) {
+    try {
+      await AsyncStorage.removeItem("token");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
   componentDidMount() {
     this.setState({isLoading:true})
     this._unsubscribe = this.props.navigation.addListener('focus', () => {

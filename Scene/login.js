@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { SafeAreaView,Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
+import { AsyncStorage,SafeAreaView,Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
 import {styles} from '../style';
 import DataContext from "../providerContext";
 import I18n from './switchLanguage';
@@ -44,10 +44,9 @@ export default class Login extends Component {
         if (json.code === 0) {
           if (json.roleType == '2') {
             this.context.action.changeemployerid(json.employerId);
-            console.log(this.context.emplyerId)
           }
           this.context.action.changetoken(json.data);
-          console.log(Platform)
+          this.storeToken(json.data);
         } else {
           Alert.alert("Invalid username or password");
           return false;
@@ -70,18 +69,24 @@ export default class Login extends Component {
       .then((response) => response.json())
       .then((json) =>  {
           if (json.code === 0) {
-            console.log("login success");
             if (json.roleType == '2') {
               this.context.action.changeemployerid(json.employerId);
-              console.log(this.context.emplyerId)
             }
             this.context.action.changetoken(json.data);
-            console.log(Platform)
+            this.storeToken(json.data);
           } else {
             Alert.alert("Invalid username or password");
             return false;
           }
       })
+    }
+  }
+
+  async storeToken(token) {
+    try {
+       await AsyncStorage.setItem("token", token);
+    } catch (error) {
+      console.log("Something went wrong", error);
     }
   }
 
@@ -95,16 +100,20 @@ export default class Login extends Component {
         source = {require('../images/providerImg/login_img_1.png')}
       />
       {this.state.mobile && (
-        <View style={{marginTop:50,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
+        <View style={{width:'80%',marginTop:50,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
           <View style={{marginBottom:10,flexDirection:'row'}}>
+            <View style={{width:'50%',alignItems:'flex-start',flexDirection:'row'}}>
             <Image
               style = {{width:20,height:20,marginRight:10}}
               source = {require('../images/providerImg/login_icon_account.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
-            <TouchableOpacity style={{marginLeft:150}} onPress={() => {this.setState({email:true,mobile:false})}}>
+            </View>
+            <View style={{width:'50%',alignItems:'flex-end'}}>
+            <TouchableOpacity onPress={() => {this.setState({email:true,mobile:false})}}>
               <Text style={{color:'blue'}}>{I18n.t('loginEmail')}</Text>
             </TouchableOpacity>
+            </View>
           </View>
           <TextInput
             style = {styles.account}
@@ -113,16 +122,20 @@ export default class Login extends Component {
           />
         </View>)}
         {this.state.email && (
-          <View style={{marginTop:50,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
+          <View style={{width:'80%',marginTop:50,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
             <View style={{marginBottom:10,flexDirection:'row'}}>
+              <View style={{width:'50%',alignItems:'flex-start',flexDirection:'row'}}>
               <Image
                 style = {{width:20,height:20,marginRight:10}}
                 source = {require('../images/providerImg/login_icon_account.png')}
               />
               <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
-              <TouchableOpacity style={{marginLeft:150}} onPress={() => {this.setState({email:false,mobile:true})}}>
-                <Text style={{color:'blue'}}>{I18n.t('loginMobile')}</Text>
-              </TouchableOpacity>
+              </View>
+              <View style={{width:'50%',alignItems:'flex-end'}}>
+                <TouchableOpacity onPress={() => {this.setState({email:false,mobile:true})}}>
+                  <Text style={{color:'blue'}}>{I18n.t('loginMobile')}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
             <TextInput
               style = {styles.account}
@@ -130,7 +143,7 @@ export default class Login extends Component {
               onChangeText={(text) => {this.setState({ info: text})}}
             />
           </View>)}
-      <View style={{marginTop:25,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
+      <View style={{width:'80%',marginTop:25,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
         <View style={{marginBottom:10,flexDirection:'row'}}>
           <Image
             style = {{width:20,height:20,marginRight:10}}
@@ -145,13 +158,17 @@ export default class Login extends Component {
         />
       </View>
 
-      <View style ={styles.container2}>
-        <TouchableOpacity style={styles.f_wrapper} onPress={() => this.props.navigation.navigate(I18n.t('forgotPassword'))}>
+      <View style ={{marginTop:20,flexDirection: 'row',width:'80%'}}>
+        <View style={{width:'50%',alignItems:'flex-start'}}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('forgotPassword'))}>
           <Text style={styles.f_Text}>{I18n.t('forgotPassword')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.z_wrapper} onPress={() => this.props.navigation.navigate(I18n.t('signup'))}>
+        </View>
+        <View style={{width:'50%',alignItems:'flex-end'}}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('signup'))}>
           <Text style={styles.r_Text}>{I18n.t('signup')}</Text>
         </TouchableOpacity>
+        </View>
       </View>
       <TouchableOpacity style={styles.loginWrapper} onPress = {()=>this.loginRequest()}>
         <Text style={styles.onsite_Text}>{I18n.t('login')}</Text>
