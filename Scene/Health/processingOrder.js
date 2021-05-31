@@ -454,7 +454,7 @@ export default class ProcessingOrder extends Component {
                 style = {{width: 15, height:15 , marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_person.png')}
               />
-              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
+              <Text numberOfLines={1} style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
               </View>
               <View style={{flexDirection: 'row',width:'33%'}}>
               <Image
@@ -592,7 +592,7 @@ export default class ProcessingOrder extends Component {
             />
           </TouchableOpacity>
         </View>
-        <ScrollView style={{ flex:1}}>
+        <ScrollView style={{ flex:1,width:'100%'}}>
         <View style={{flexDirection: 'row', marginBottom:20}}>
           <Image
             style = {{width: 40, height:40, marginRight:15}}

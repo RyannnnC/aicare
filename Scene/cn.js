@@ -78,7 +78,7 @@ export default {
   processingOrder:'已接取',
   todayOrder:'今日订单',
   pOrder:'待接订单',
-  numOrder:'您今日有%{num}项订单待完成',
+  numOrder:'您有%{num}项订单待完成',
   chooseType:'种类选择',
   gpfull:'全科问诊',
   denfull:'牙科问诊',

@@ -353,7 +353,7 @@ export default class Info extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('email')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "657416708xy@gmail.com"
+          <TextInput style={styles.resumeInput} placeholder= "********@gmail.com"
           value={this.context.email}
           onChangeText={(text) => {this.context.action.changeemail(text)}}/>
         </View>
