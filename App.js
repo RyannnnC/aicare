@@ -241,7 +241,7 @@ export default class App extends React.Component {
     }
   }
 
-  async getToken(user) {
+  async getToken() {
     try {
       let userData = await AsyncStorage.getItem("token");
       this.setState({token:userData});

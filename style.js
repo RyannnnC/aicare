@@ -209,11 +209,11 @@ export const styles = StyleSheet.create({
   },
   account:{
     height: 35,
-    width: 300,
+    width: '100%',
   },
   password:{
     height: 35,
-    width: 300,
+    width: '100%',
   },
   onsite_text:{
     color: 'white',

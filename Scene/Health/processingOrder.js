@@ -930,6 +930,16 @@ elevation: 24,}}>
         style = {styles.finishImg}
         source = {require('../../images/providerImg/order_img_empty_inprogress1.png')}
       />
+      <TouchableOpacity style={{width: 75,
+        height: 25,
+        backgroundColor: '#FF7E67',
+        borderRadius: 10,
+        marginTop: 15,
+        marginLeft:20,
+        justifyContent: "center",
+        alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id: null})}}>
+        <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
+      </TouchableOpacity>
      <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，快去接取吧！</Text>
      </View>
     )

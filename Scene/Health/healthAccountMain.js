@@ -31,7 +31,7 @@ export default class HealthAccountMain extends Component {
       }
     );
   }
-  async removeToken(user) {
+  async removeToken() {
     try {
       await AsyncStorage.removeItem("token");
     } catch (error) {

@@ -7,20 +7,45 @@ import moment from 'moment-timezone';
 import DataContext from '../../providerContext';
 import * as Localization from 'expo-localization';
 import I18n from '../switchLanguage';
+//import Voice from '@react-native-community/voice';
+import * as Permissions from "expo-permissions";
 
 export default class Enotes extends Component {
     constructor(props) {
       super(props);
+  //    Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
+  //    Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
+  //    Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
       this.state={
       pressed:false,
       pressed1:false,
       complaint:'',
       doctorComment:'',
       id:null,
+      talk:false,
+      hasAudioPermission: null,
       }
     }
+  onSpeechStartHandler = (e) => {
+    //Invoked when .start() is called without error
+    console.log('onSpeechStart: ', e);
+  };
+
+  onSpeechResultsHandler = (e) => {
+    //Invoked when SpeechRecognizer is finished recognizing
+    console.log('onSpeechResults: ', e);
+    this.setState({complaint:e.value});
+  };
+
+  onSpeechEndHandler = (e) => {
+    //Invoked when SpeechRecognizer stops recognition
+    console.log('onSpeechEnd: ', e);
+  };
+
   async componentDidMount(){
       this.setState({id:this.props.route.params.id});
+      const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+      this.setState({ hasAudioPermission: status === "granted" });
   }
   saveReport() {
     let url = 'http://'
@@ -60,6 +85,30 @@ export default class Enotes extends Component {
       .then(() => {this.props.navigation.navigate('预约')})
       .catch(error => console.warn(error));
   }
+  async startRecognizing() {
+    //Starts listening for speech for a specific locale
+    try   {
+      await Voice.start('en-US');
+      this.setState({
+        complaint:[],
+        talk:true,
+      });
+    }   catch (e) {
+      //eslint-disable-next-line
+      console.error(e);
+    }
+  };
+  async stopRecognizing()  {
+    //Stops listening for speech
+    try {
+      await Voice.stop();
+      this.setState({
+        talk:false,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
     /*
         <View style={{marginTop:15}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('emRecord')}</Text>
@@ -155,17 +204,26 @@ export default class Enotes extends Component {
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500'}}>{I18n.t('patientComplaint')}</Text>
+          {this.state.talk ?
+            <TouchableOpacity onPress={() => {this.stopRecognizing()}}>
+              <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
+            </TouchableOpacity>
+            :
+            <TouchableOpacity onPress={() => {this.startRecognizing()}}>
+              <FontAwesome name="microphone" size={24} color="black" />
+            </TouchableOpacity>
+          }
         </View>
 
         <View style={{width:'100%', height:250,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
-          <TextInput style={{width:'90%',height:60,marginTop:15,marginLeft:20,marginRight:20}}
+          <TextInput style={{width:'90%',height:'90%',marginTop:15,marginLeft:20,marginRight:20}}
             placeholder={this.context.intro}
             value={this.state.complaint}
             onChangeText={(text) => {this.setState({complaint:text})}}
             multiline={true}
           />
         </View>
-        
+
         <View style={{flexDirection: 'row', marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
         </View>
