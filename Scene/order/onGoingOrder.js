@@ -146,7 +146,7 @@ class OngoingingOrder extends Component {
 
   getAITraining = () => {
     //console.log("set buttons work")
-    console.log("i am polling...")
+    //console.log("i am polling...")
     var today = new Date();
     var month =(today.getMonth()+1);
     if (month<10){
@@ -179,12 +179,13 @@ class OngoingingOrder extends Component {
                 //console.log(json.page[0].appointDate);
                 //this.setState({query:json.page})
                 this.setState({query: json.page });
+                console.log(json.img)
                 //Alert.alert('查询成功');
                 //console.log(json.page[0].telehealthFlg)
               } else {
                 console.log(json.msg);
                 console.log(json.code);
-                Alert.alert('查询失败');
+                //Alert.alert('查询失败');
               }
             }).catch(error => console.warn(error));
     
@@ -375,15 +376,15 @@ class OngoingingOrder extends Component {
          }} key={item.id}>
           <View style={{flexDirection: 'row', marginTop:16, marginBottom:16, marginLeft:25}}>
           <Image
-            style = {styles.pendingImg}
-            source = {require('../../images/home_img_person.png')}
+            style = {{marginTop:5,width:45,height:45,borderRadius:20}}
+            source={item.img?{uri:item.img}:require('../../images/telehealth_icon/service_doctor_img1.png')}
           />
           <View>
             <View style={{flexDirection:"row"}}>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500',marginTop:5}}>{item.businessEmployerName}</Text>
-            <Image style={{marginTop:6,height:15,width:15,marginLeft:3}} source={item.telehealthFlg?require('../../images/telehealth_icon/order_icon_video.png'):require('../../images/telehealth_icon/service_icon_location.png')}></Image>
-            <Text style={{fontSize:12,color: '#666666',marginTop:5,marginLeft:3}}>{item.telehealthFlg==0?"实地问诊":"远程问诊 - "}</Text>
-            {item.telehealthFlg?<Text style={{fontSize:12,color: '#666666',marginTop:5}}>{item.videoChannel==1?"FaceTime":"Skype"}</Text>:null}
+            <Image style={{marginTop:9,height:15,width:15,marginLeft:3}} source={item.telehealthFlg?require('../../images/telehealth_icon/order_icon_video.png'):require('../../images/telehealth_icon/service_icon_location.png')}></Image>
+            <Text style={{fontSize:12,color: '#666666',marginTop:8,marginLeft:3}}>{item.telehealthFlg==0?"实地问诊":"远程问诊 - "}</Text>
+            {item.telehealthFlg?<Text style={{fontSize:12,color: '#666666',marginTop:8}}>{item.videoChannel==1?"FaceTime":"Skype"}</Text>:null}
 
             </View>
             <Text style={{fontSize:12, color:'#333333', }}>{this.context.deptType[item.deptId]+" - "+item.orgName}</Text>

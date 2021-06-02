@@ -21,9 +21,9 @@ export default function Confirm({route,navigation}) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const user = useContext(DataContext);
-  const { content,scheduleId,type,date,doctype,address,docName,startTime,endTime,teleFlg,dob} = route.params;
+  const { content,scheduleId,type,date,doctype,address,docName,startTime,endTime,teleFlg,dob,Date,serial,number,first,last} = route.params;
   const[method, setMethod] = useState("");//0 stands for facetime 1 stands for skype
-  const [text, setText] = useState(content.first+content.last);
+  const [text, setText] = useState(first+last);
   const [text1, setText1] = useState('');
   const [loading,setLoading]=useState(false);
   const makecall=()=>{
@@ -36,7 +36,7 @@ export default function Confirm({route,navigation}) {
     //let str = JSON.stringify(content);
     //console.log(str)//figure out whats wrong in android stringnify
     
-    let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
+    let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+Date+"&serialNumber="+serial+"&cardNumber="+number+"&patientMobile="+text1+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -189,7 +189,7 @@ export default function Confirm({route,navigation}) {
     width: 250,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}} placeholder={teleFlg==0?"请输入患者电话号码":"请输入远程会诊用的电话号码"}
-    onChangeText={text1 => {setText1(text1);content.mobile=text}}
+    onChangeText={text1 => {setText1(text1);}}
     />
     {teleFlg==1?<View style={{marginLeft:-43,marginTop:10}}>
     <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:45}}
@@ -268,7 +268,7 @@ export default function Confirm({route,navigation}) {
         Alert.alert("请填写患者姓名。")
         return
       }
-      if(content.mobile.length==0){
+      if(text1.length==0){
         Alert.alert("请填写联系电话。")
         return
       }

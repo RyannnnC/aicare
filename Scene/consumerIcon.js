@@ -36,19 +36,19 @@ const  ConsumerIcon= ({navigation}) => {
     <Text style={{color:'#006A71',
     fontSize:17,
     marginTop:20,
-    marginLeft:25,}}>服务类型</Text>
+    marginLeft:25,}}>所有服务</Text>
     <View style={{marginTop:20}}></View>
     <TouchableOpacity onPress = {goToTelehealth}>
       <Image
-        style = {{marginTop:40,
+        style = {{marginTop:25,
           height:120,
           width:290,
           marginLeft:30,
           }}
-        source = {require('../images/new_icon.png')}
+        source = {require('../images/large_d_booking.png')}
       />
     </TouchableOpacity>
-    <View style={{marginTop:20}}></View>
+    <View style={{marginTop:0}}></View>
     {/*<TouchableOpacity onPress = {alertHandler}>
       <Image
         style = {{marginTop:25,
@@ -77,7 +77,18 @@ const  ConsumerIcon= ({navigation}) => {
           height:120,
           width:290,
           marginLeft:30,}}
-        source = {require('../images/telehealth_icon/service_block3.png')}
+        source = {require('../images/large_c_booking.png')}
+      />
+    </TouchableOpacity>
+    <View style={{marginTop:0}}></View>
+    <TouchableOpacity >
+      <Image
+        style = {{marginTop:25,
+          height:120,
+          width:290,
+          marginLeft:30,
+          }}
+        source = {require('../images/large_n_booking.png')}
       />
     </TouchableOpacity>
     

@@ -3,8 +3,9 @@ import {Platform, Alert,Text, Button, View, Switch,KeyboardAvoidingView, Image,T
 import {styles} from '../style';
 //import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
+import DataContext from "../consumerContext";
 
-export default class Signup extends Component {
+class Signup extends Component {
   state = {
     name:"",
     phone:"",
@@ -54,7 +55,7 @@ export default class Signup extends Component {
       return
     }
     let s = this.state;
-    let url = 'http://3.104.232.106:8085/aicare-customer-api/customer/user/register?'
+    let url = 'http://'+this.context.url+'/aicare-customer-api/customer/user/register?'
       +'username='+ s.name
       +'&password=' + s.password
       +'&email=' + s.mail
@@ -73,9 +74,12 @@ export default class Signup extends Component {
       .then((json) => {
         console.log(json.msg)
         if(json.code==0){
-           console.log(json.msg);
+           //console.log(json.msg);
            Alert.alert("注册成功！")
-          this.props.navigation.navigate('登陆');
+           console.log(json)
+
+          //this.props.navigation.navigate('登陆');
+          this.context.action.changetoken(json.token);
         }else{
           Alert.alert(json.msg)
         }
@@ -89,7 +93,7 @@ export default class Signup extends Component {
   sendCode() {
     if (this.state.checked1) {
       let p = this.state.phone;
-      let url = "http://3.104.232.106:8085/aicare-customer-api/customer/user/send?"
+      let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/send?"
       +'&type=mobile'
       +'&mobile=' + p;
       console.log(url);
@@ -274,3 +278,5 @@ export default class Signup extends Component {
       </KeyboardAvoidingView>
   );}
 }
+Signup.contextType = DataContext;
+export default Signup;

@@ -83,7 +83,7 @@ function Home() {
             name="订单"
             component={ConsumerOrderPage}
             options={{
-              tabBarLabel: '订单',
+              tabBarLabel: '预约',
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />              ),
             }}
@@ -111,7 +111,7 @@ class App extends React.Component {
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
-      url:"3.104.232.106:8085",//develop："3.104.232.106:8085"；test："3.104.87.14:8085"
+      url:"3.104.87.14:8085",//develop："3.104.232.106:8085"；test："3.104.87.14:8085"
       suburb:"",
       postcode:"",
       state:"",

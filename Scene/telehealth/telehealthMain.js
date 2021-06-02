@@ -1,5 +1,5 @@
 import React,{ useState,setState,useContext,useEffect} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,Modal} from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,Modal,Platform} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StackActions } from '@react-navigation/native';
@@ -13,10 +13,19 @@ export default function TelehealthrMain({navigation}) {
       Alert.alert('功能还未完善')
     }
     const goToSub= (num) => {
+      console.log(user.token);
         setModalVisible(false);
-        navigation.navigate("telehealthSub",{doctype:num});
+        if(Platform.OS==="ios"){
+          //navigation.navigate("telehealthSub",{doctype:num});
+          navigation.navigate("telehealthClinic",{return:"",type:true,doctype:num,state:"NSW"})
+
+        }else{
+          navigation.navigate("telehealthClinic",{return:"",type:true,doctype:num,state:"NSW"})
+        }
+          
         
     }
+    
     const goToRecommend=()=>{
       navigation.navigate("docRecommend",{docList:docList})
 

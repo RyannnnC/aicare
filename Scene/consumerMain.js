@@ -1,6 +1,6 @@
 
 import React,{useContext, useEffect,useState} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList,Platform} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
@@ -25,15 +25,21 @@ export default function ProviderMain({navigation}) {
   }
   const goVaccine= () => {
     Alert.alert(
-      "疫苗阶段提醒",
-      "根据澳大利亚政府信息，目前(2021.5.17之后)澳大利亚疫苗阶段处于2a阶段，只有符合2a条件(50岁以上或关键高风险工作者)可以注射疫苗，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
+      "新冠疫苗阶段提醒",
+      "根据澳大利亚政府信息，目前(2021.5.17之后)澳大利亚新冠疫苗阶段处于2a阶段，只有符合2a条件(50岁以上或关键高风险工作者)可以注射疫苗，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
       [
         {
           text: "取消",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log(user.token),
           style: "cancel"
         },
-        { text: "确定", onPress :()=>   navigation.navigate("telehealthSub",{docType:7}) } //this should navigate to the login page
+        { text: "确定", onPress :()=>{
+        if(Platform.OS==="ios"){
+          navigation.navigate("telehealthClinic",{return:"",type:true,doctype:7,state:"NSW"})//navigation.navigate("telehealthSub",{docType:7})
+        }else{
+          navigation.navigate("telehealthClinic",{return:"",type:true,doctype:7,state:"NSW"})
+        }
+         }} //this should navigate to the login page
       ],
       { cancelable: false }
       )
@@ -345,24 +351,32 @@ export default function ProviderMain({navigation}) {
           />
         </View>
       <View style={{textAlign: "left",marginBottom:8 }}>
-        <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>服务</Text>
+        <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>热门服务</Text>
       </View>
       <View style={styles.buttons}>
         
-        
-        <TouchableOpacity style={{marginTop:14,marginLeft:-2}} onPress={goVaccine}>
+      <TouchableOpacity style={{marginTop:12,marginLeft:-2}} onPress={goToTelehealth}>
+          <Image
+          style = {{width:110,height:110}}
+          source = {require('../images/doctor_booking.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={{marginTop:14,marginLeft:10}} onPress={goVaccine}>
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
-          style = {{width:180,height:95}}
-          source = {require('../images/v_icon.png')}
+          style = {{width:110,height:110}}
+          source = {require('../images/covid_booking.png')}
           />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={goToTelehealth}>
+        
+        <TouchableOpacity style={{marginTop:14,marginLeft:10}} >
+          <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
-          style = {{width:180,height:95}}
-          source = {require('../images/new_small_icon.png')}
+          style = {{width:110,height:110}}
+          source = {require('../images/normal_booking.png')}
           />
+          </View>
         </TouchableOpacity>
         {/*<TouchableOpacity style={{marginTop:12,marginLeft:10}} onPress={alertHandler}>
           <Image
@@ -372,7 +386,7 @@ export default function ProviderMain({navigation}) {
         </TouchableOpacity>*/}
       </View>
         <View style={{textAlign: "left",marginTop:20,marginBottom:8 }}>
-          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>订单</Text>
+          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>最近订单</Text>
         </View>
       <TouchableOpacity onPress ={gotoOrderPage}>
       {order[0]?
@@ -392,7 +406,7 @@ export default function ProviderMain({navigation}) {
         </View>
     </View>:<View style={styles.home}><View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
           <View style={{marginLeft:20,marginTop:15 }}>
-            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}>您目前还没有订单哦。</Text>
+            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}>您目前还没有预约哦。</Text>
           </View>
         <Image
           style = {styles.img3}
@@ -400,8 +414,11 @@ export default function ProviderMain({navigation}) {
           />
         </View>
         <View style={{flexDirection: 'row', marginTop:10}}>
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:20}}>如需预约医生，请点击上方远程医疗:)</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:20}}>如需预约医生，请点击上方医生预约:)</Text>
         </View>
+        {/*<View style={{flexDirection: 'row', marginTop:2}}>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:20}}>如需预约新冠疫苗，请点击上方新冠疫苗:)</Text>
+      </View>*/}
           </View>}
       </TouchableOpacity>
       <View style={{marginBottom:20,marginTop:60,}}>

@@ -25,35 +25,39 @@ export default function TelePay({navigation,route}) {
     navigation.dispatch(StackActions.pop(1))
   }
   const { scheduleId,date,doctype,address,docName,startTime,endTime,teleFlg } = route.params;
+  const [gender,setGender]=useState("")
   const [visible,setVisible]=useState(false)
   const [exp,setExp]=useState(new Date())
   const [expVis,setExpVis]=useState(false)
-
+  const [first,setFirst]=useState("")
+  const [last,setLast]=useState("")
+  const [number,setNumber]=useState("")
+  const [serial,setSerial]=useState("")
   const [dob,setDob]=useState(new Date())
   const gotoSuccess= () => {
     var type = "";
     if (checked1){
       type = "Medicare"
-      if(content.number<9){
+      if(number.length<10){
         Alert.alert("Medicare卡号位数为9位")
         return
       }
-      if(content.last.length==0||content.first.length==0){
+      if(last.length==0||first.length==0){
         Alert.alert("请输入姓名")
         return
       }
-      if(content.serial.length==0){
+      if(serial.length==0){
         Alert.alert("请输入序列号")
         return
       }
       content.date=moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)
     }else if(checked2){
       type = "私人保险"
-      if (content.first.length==0||content.last.length==0){
+      if (first.length==0||last.length==0){
         Alert.alert("请输入私人保险持有人名字")
         return
       }
-      if(content.number.length==0){
+      if(number.length==0){
         Alert.alert("请输入私人保险号码")
         return
       }
@@ -62,7 +66,7 @@ export default function TelePay({navigation,route}) {
     }
     console.log(doctype);
 
-    navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime,dob:dob})
+    navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime,dob:dob,Date:moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,),serial:serial,number:number,first:first,last:last})
   }  
   const sendRequest=()=>{
     console.log(content);
@@ -243,7 +247,7 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     marginLeft:0,
     borderBottomWidth:1,}}
-          onChangeText={(text)=>content.last=text}
+          onChangeText={(text)=>setLast(text)}
 
           placeholder="  持卡人姓(Last Name)"
         />
@@ -257,12 +261,13 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
           placeholder="持卡人名(First Name)"
-          onChangeText={(text)=>content.first=text}
+          onChangeText={(text)=>setFirst(text)}
 
       />
       </View>
       
       <DateTimePickerModal
+        display="spinner"
         isVisible={visible}
         mode="date"
         headerTextIOS='出生日期'
@@ -300,7 +305,7 @@ export default function TelePay({navigation,route}) {
         <Text style={{marginTop:7,fontWeight:"500"}}>性别:</Text>
         <SwitchSelector
   initial={0}
-  onPress={value => {content.gender=value;console.log(moment(dob).tz(Localization.timezone).format('L'))}}
+  onPress={value => {setGender(value);console.log(moment(dob).tz(Localization.timezone).format('L'))}}
   buttonColor='#8FD7D3'
   borderColor='#8FD7D3'
   hasPadding
@@ -323,9 +328,9 @@ export default function TelePay({navigation,route}) {
     marginLeft:0,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-        maxLength={9} 
+        maxLength={10} 
           placeholder="卡号(Card Number)"
-          onChangeText={(text)=>content.number=text}
+          onChangeText={(text)=>setNumber(text)}
 
       />
       </View>
@@ -339,15 +344,16 @@ export default function TelePay({navigation,route}) {
     borderBottomWidth:1,}}
     maxLength={5} 
           placeholder="序列号(Ref Number)"
-          onChangeText={(text)=>content.serial=text}
+          onChangeText={(text)=>setSerial(text)}
 
       />
       </View>
       <DateTimePickerModal
         isVisible={expVis}
         mode="date"
-        headerTextIOS='出生日期'
+        headerTextIOS='到期日期'
         cancelTextIOS="取消"
+        display="spinner"
         confirmTextIOS='确认'
         onConfirm={(time)=>{setExp(time);setExpVis(false);console.log(moment(exp).tz(Localization.timezone).format('L'))}}
         onCancel={()=>setExpVis(false)}

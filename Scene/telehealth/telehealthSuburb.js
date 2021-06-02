@@ -20,7 +20,7 @@ export default function teleSuburb({route,navigation}) {
       navigation.dispatch(StackActions.pop(1))
     }
     const [checked1, setChecked1] = React.useState(false);
-    const [selectedType, setSelectedType] = React.useState('');
+    const [selectedType, setSelectedType] = React.useState('NSW');
     const [visible,setVisible]=useState(false)
     const [checked2, setChecked2] = React.useState(false);
     const [type,setType]=React.useState("");
@@ -142,6 +142,7 @@ export default function teleSuburb({route,navigation}) {
         borderBottomWidth:1,
         marginLeft:26,
         borderColor:"#EEEEEE"}}
+        textAlign={'center'}
         onChangeText={(text)=>{setType(text)}}>
         </TextInput>
 
@@ -222,23 +223,11 @@ elevation: 24,}}>
         <View style={{height:20}}/>
         </View>
       </Modal>
-
-        </View>:null}
-        {checked2?<TextInput placeholder={"请输入区编号"} style = {{height: 35,
-        width: 300,
-        borderBottomColor: '#999999',
-        borderBottomWidth:1,
-        marginLeft:26,
-        marginBottom:30,
-        borderColor:"#EEEEEE"}}
-        onChangeText={(text)=>{setType(text)}}>
-        </TextInput>:null}
-        
-        <TouchableOpacity style={{
+      <TouchableOpacity style={{
         backgroundColor:'#8FD7D3',
         padding:10,
         width:220,
-        marginLeft:35,
+        marginLeft:50,
         marginTop:40,
         height:45,
         alignItems: 'center',
@@ -249,6 +238,50 @@ elevation: 24,}}>
           color: 'white',
           }}>确定</Text>
         </TouchableOpacity>
+        </View>:null}
+        {checked2?<View><TextInput placeholder={"请输入区编号"} style = {{height: 35,
+        width: 300,
+        borderBottomColor: '#999999',
+        borderBottomWidth:1,
+        marginLeft:26,
+        marginBottom:30,
+        borderColor:"#EEEEEE"}}
+        onChangeText={(text)=>{setType(text)}}>
+        </TextInput>
+        <TouchableOpacity style={{
+          backgroundColor:'#8FD7D3',
+          padding:10,
+          width:220,
+          marginLeft:50,
+          marginTop:40,
+          height:45,
+          alignItems: 'center',
+          borderRadius:25,
+          }}
+          onPress={goToClinic}>
+          <Text style={{
+            color: 'white',
+            }}>确定</Text>
+          </TouchableOpacity></View>
+        :null}
+        {checked1||checked2?null:
+        <TouchableOpacity style={{
+        backgroundColor:'#8FD7D3',
+        padding:10,
+        width:220,
+        marginLeft:35,
+        marginTop:40,
+        height:45,
+        alignItems: 'center',
+        borderRadius:25,
+        }}
+        onPress={()=>navigation.navigate("telehealthClinic",{return:"",type:true,doctype:doctype,state:"NSW"})}>
+
+        <Text style={{
+          color: 'white',
+          }}>查看全部诊所</Text>
+        </TouchableOpacity>
+        }
       </View>
       </KeyboardAwareScrollView>
     );
