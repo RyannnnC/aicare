@@ -77,20 +77,17 @@ export default class Enotes3 extends Component {
       <View style={{width:'90%'}}>
         <ScrollView style={{height:'90%'}}>
 
-        <View style={{flexDirection: 'row', marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
-        </View>
-        <View style={{width:'100%', height:150,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
-          <TextInput style={{width:'90%',height:60,marginTop:15,marginLeft:20,marginRight:20}}
-            placeholder={this.context.intro}
-            value={this.state.doctorComment}
-            onChangeText={(text) => {this.setState({doctorComment:text})}}
-            multiline={true}
-          />
-        </View>
-
         <View style={{flexDirection: 'row',marginTop:20,marginBottom:10}}>
+          <View style={{flexDirection: 'row',width:'50%'}}>
             <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('prescription')}</Text>
+          </View>
+          <View style={{flexDirection: 'row',width:'50%',justifyContent:'flex-end'}}>
+            <TouchableOpacity onPress={this.addMedicine}>
+              <Image style={{width:20,height:20,borderRadius:40}}
+                source = {require('../../images/providerImg/account_icon_add_1.png')}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>

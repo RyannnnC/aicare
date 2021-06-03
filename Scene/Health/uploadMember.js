@@ -10,6 +10,8 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
 import * as Localization from 'expo-localization';
 import I18n from '../switchLanguage';
+import SwitchSelector from "react-native-switch-selector";
+
 export default class UploadMember extends Component {
     constructor(props) {
       super(props);
@@ -21,7 +23,8 @@ export default class UploadMember extends Component {
         image:null,
         oimage:null,
         pressed:false,
-        we:'',
+        we:0,
+        gender:'f',
         isLoading:false,
         types: [
           { value:'1',name:'全科问诊',status: 0},
@@ -512,6 +515,24 @@ export default class UploadMember extends Component {
           <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
           value={this.state.name}
           onChangeText={(text) => {this.setState({name:text})}}/>
+        </View>
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:16, fontWeight: '400'}}>{I18n.t('gender')}</Text>
+       <SwitchSelector
+        initial={0}
+        onPress={value => this.setState({ gender: value })}
+        buttonColor='#8FD7D3'
+        borderColor='#8FD7D3'
+        hasPadding
+        style={{width:200,marginLeft:30}}
+        height={35}
+        options={[
+          { label: I18n.t('female'), value: "f",}, //images.feminino = require('./path_to/assets/img/feminino.png')
+          { label: I18n.t('male'), value: "m", } //images.masculino = require('./path_to/assets/img/masculino.png')
+        ]}
+        testID="gender-switch-selector"
+        accessibilityLabel="gender-switch-selector"
+        />
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>

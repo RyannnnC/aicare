@@ -244,7 +244,15 @@ export default class App extends React.Component {
   async getToken() {
     try {
       let userData = await AsyncStorage.getItem("token");
-      this.setState({token:userData});
+      let id = await AsyncStorage.getItem("id");
+      if(id) {
+        this.setState({employerId:JSON.parse(id)});
+        console.log("Get id success");
+      }
+      if(userData){
+        this.setState({token:userData})
+        console.log("Get token success");
+      }
     } catch (error) {
       console.log("Something went wrong", error);
     }

@@ -1,10 +1,11 @@
 import React,{Component} from 'react';
-import { AsyncStorage,SafeAreaView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
+import {SafeAreaView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
 import { LinearGradient } from 'expo-linear-gradient';
 import I18n from '../switchLanguage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class HealthAccountMain extends Component {
   constructor(props) {
@@ -21,8 +22,11 @@ export default class HealthAccountMain extends Component {
       '您确定要退出登录吗？',
       [
         {text: '确定', onPress: () => {
-                this.context.action.clearstate();
+                if (this.context.employerId != null) {
+                  this.removeId();
+                }
                 this.removeToken();
+                this.context.action.clearstate();
         }},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
@@ -34,6 +38,15 @@ export default class HealthAccountMain extends Component {
   async removeToken() {
     try {
       await AsyncStorage.removeItem("token");
+      console.log("Remove token success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+  async removeId() {
+    try {
+      await AsyncStorage.removeItem("id");
+      console.log("Remove id success");
     } catch (error) {
       console.log("Something went wrong", error);
     }
@@ -62,7 +75,7 @@ export default class HealthAccountMain extends Component {
           .then((json) => {
             this.setState({ isLoading: false });
             if (json.code === 0) {
-              console.log(json);
+
               if(json.orginfo.name!=null){
                 this.context.action.changeorg(json.orginfo.orgId);
                 this.context.action.changeimg(json.orginfo.orgImg);
@@ -105,7 +118,7 @@ export default class HealthAccountMain extends Component {
         .then((json) => {
           this.setState({ isLoading: false });
           if (json.code === 0) {
-            console.log(json);
+
             if(json.employerInfo.name!=null){
               this.context.action.changeimg(json.employerInfo.imgUrl);
               this.context.action.changename(json.employerInfo.name);

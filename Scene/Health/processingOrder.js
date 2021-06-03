@@ -574,8 +574,9 @@ export default class ProcessingOrder extends Component {
 
     return (
       <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
-        <View style={{flexDirection: 'row', marginBottom:21,marginTop:30}}>
-          <TouchableOpacity style={{flexDirection: 'row', marginRight:199,marginLeft:30}}
+        <View style={{flexDirection: 'row', width:'80%',marginBottom:21,marginTop:30}}>
+          <View style={{flexDirection: 'row', width:'50%'}}>
+          <TouchableOpacity style={{flexDirection: 'row'}}
           onPress={()=>{this.setVisible(!this.state.Visible)}}>
             <Text style={{fontSize:13}}>{I18n.t('all')}</Text>
             <Image
@@ -583,7 +584,9 @@ export default class ProcessingOrder extends Component {
               source = {require('../../images/providerImg/schedule_icon_filter.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={{flexDirection: 'row', marginRight:30}}
+          </View>
+          <View style={{ width:'50%',justifyContent:'flex-end',flexDirection: 'row'}}>
+          <TouchableOpacity style={{flexDirection: 'row'}}
           onPress={() => this.setModalVisible(!this.state.modalVisible)}>
             <Text style={{fontSize:13}}>{month}/{date}</Text>
             <Image
@@ -591,8 +594,9 @@ export default class ProcessingOrder extends Component {
               source = {require('../../images/providerImg/schedule_icon_calender.png')}
             />
           </TouchableOpacity>
+          </View>
         </View>
-        <ScrollView style={{ flex:1,width:'100%'}}>
+        <ScrollView style={{ flex:1}}>
         <View style={{flexDirection: 'row', marginBottom:20}}>
           <Image
             style = {{width: 40, height:40, marginRight:15}}

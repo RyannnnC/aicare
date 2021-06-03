@@ -133,7 +133,7 @@ export default {
   noOrder:'You do not have any orders, please wait!',
   video:'Video Call',
   experience:'Work Experience',
-  diagnose:'diagnose',
+  diagnose:'Diagnose',
   enote:'Medical Report',
   enote2:' Medical Report',
   enote3:'  Medical Report',
@@ -168,4 +168,6 @@ export default {
   videoCall2:'Please use Skype to complete Diagnosis',
   personalRecord:'Medical History',
   personalMedicine:'Medication History',
+  male:'Male',
+  female:'Female',
 }

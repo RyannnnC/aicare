@@ -168,4 +168,6 @@ export default {
   videoCall2:'请使用Skype完成视频诊疗',
   personalRecord:'个人病史',
   personalMedicine:'个人药史',
+  male:'男',
+  female:'女',
 }

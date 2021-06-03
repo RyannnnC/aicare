@@ -43,10 +43,11 @@ export default class Login extends Component {
     .then((json) =>  {
         if (json.code === 0) {
           if (json.roleType == '2') {
+            this.storeId(json.employerId);
             this.context.action.changeemployerid(json.employerId);
           }
-          this.context.action.changetoken(json.data);
           this.storeToken(json.data);
+          this.context.action.changetoken(json.data);
         } else {
           Alert.alert("Invalid username or password");
           return false;
@@ -70,10 +71,11 @@ export default class Login extends Component {
       .then((json) =>  {
           if (json.code === 0) {
             if (json.roleType == '2') {
+              this.storeId(json.employerId);
               this.context.action.changeemployerid(json.employerId);
             }
-            this.context.action.changetoken(json.data);
             this.storeToken(json.data);
+            this.context.action.changetoken(json.data);
           } else {
             Alert.alert("Invalid username or password");
             return false;
@@ -82,14 +84,22 @@ export default class Login extends Component {
     }
   }
 
-  async storeToken(token) {
+  storeToken = async (token) => {
     try {
        await AsyncStorage.setItem("token", token);
+       console.log("Store token success");
     } catch (error) {
       console.log("Something went wrong", error);
     }
   }
-
+  storeId = async (token) => {
+   try {
+      await AsyncStorage.setItem("id", JSON.stringify(token));
+      console.log("Store id success");
+   } catch (error) {
+     console.log("Something went wrong", error);
+   }
+ }
   render(){
   return (
     <KeyboardAvoidingView

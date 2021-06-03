@@ -41,6 +41,7 @@
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
     "react-native-simple-time-picker": "^1.1.2",
+    "react-native-switch-selector": "^2.1.4",
     "react-native-tab-navigator": "^0.3.4",
     "react-native-tab-view": "^2.16.0",
     "react-native-web": "^0.16.3",
