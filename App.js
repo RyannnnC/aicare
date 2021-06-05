@@ -470,10 +470,7 @@ export default class App extends React.Component {
       ): (
         <>
         <Stack.Screen options={{headerShown: false}} name="Welcome" component={Welcome} />
-        <Stack.Screen options={{headerShown: false}} name="请选择服务类型" component={ProviderType} />
         <Stack.Screen options={{headerShown: false}} name= {I18n.t('login')} component={Login} />
-        <Stack.Screen options={{headerShown: false}} name="机构" component={Agency} />
-        <Stack.Screen name="验证" component={Verify} />
         <Stack.Screen name={I18n.t('signup')}  component={Signup} />
         <Stack.Screen name={I18n.t('forgotPassword')}  component={Forget}/>
         </>
