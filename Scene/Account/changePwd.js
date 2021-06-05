@@ -32,6 +32,7 @@ export default class ChangePwd extends Component {
       'Accept':       'application/json',
       'Content-Type': 'application/json',
       'sso-auth-token': this.context.token,
+      'sso-refresh-token': this.context.refresh_token,
       }
     })
     .then((response) => response.json())

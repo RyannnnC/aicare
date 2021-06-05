@@ -46,8 +46,8 @@ export default class Login extends Component {
             this.storeId(json.employerId);
             this.context.action.changeemployerid(json.employerId);
           }
-          this.storeToken(json.data);
-          this.context.action.changetoken(json.data);
+          this.storeToken(json.data,json.refresh_token);
+          this.context.action.changetoken(json.data,json.refresh_token);
         } else {
           Alert.alert("Invalid username or password");
           return false;
@@ -74,8 +74,8 @@ export default class Login extends Component {
               this.storeId(json.employerId);
               this.context.action.changeemployerid(json.employerId);
             }
-            this.storeToken(json.data);
-            this.context.action.changetoken(json.data);
+            this.storeToken(json.data,json.refresh_token);
+            this.context.action.changetoken(json.data,json.refresh_token);
           } else {
             Alert.alert("Invalid username or password");
             return false;
@@ -84,9 +84,10 @@ export default class Login extends Component {
     }
   }
 
-  storeToken = async (token) => {
+  storeToken = async (token,rtoken) => {
     try {
        await AsyncStorage.setItem("token", token);
+       await AsyncStorage.setItem("rtoken", rtoken);
        console.log("Store token success");
     } catch (error) {
       console.log("Something went wrong", error);

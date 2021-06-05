@@ -65,6 +65,7 @@ export default class Enotes extends Component {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -105,6 +106,7 @@ export default class Enotes extends Component {
       'Accept':       'application/json',
       'Content-Type': 'application/json',
       'sso-auth-token': this.context.token,
+      'sso-refresh-token': this.context.refresh_token,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
       'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -309,7 +311,6 @@ export default class Enotes extends Component {
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: "center",}} onPress={() => {
-        this.saveReport();
         this.props.navigation.navigate(I18n.t('enote3'),{id: this.state.id,patientComplaint:this.state.complaint})
         }}>
         <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>

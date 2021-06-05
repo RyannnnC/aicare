@@ -38,6 +38,7 @@ export default class DoctorInfo extends Component {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -87,6 +88,7 @@ export default class DoctorInfo extends Component {
               'Accept':       'application/json',
               'Content-Type': 'application/json',
               'sso-auth-token': this.context.token,
+              'sso-refresh-token': this.context.refresh_token,
               'Access-Control-Allow-Origin': '*',
               'Access-Control-Allow-Credentials': true,
               'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -244,7 +246,7 @@ export default class DoctorInfo extends Component {
           />
           <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>{I18n.t('bulkBilling')}</Text>
         </View>
-      
+
       </ScrollView>
     </SafeAreaView>
   );}}

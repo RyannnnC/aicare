@@ -4,33 +4,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {AsyncStorage} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
-import ProviderOrder from './Scene/teleCare/providerOrder.js'
-import ProviderMain from './Scene/teleCare/providerMain.js'
-import Income from './Scene/teleCare/income.js'
 import Welcome from './Scene/welcome';
-import ProviderType from './Scene/providerType';
 import Login from './Scene/login';
-import AccountMain from './Scene/Account/accountMain';
-import Resume from './Scene/Account/resume';
-import Comment from './Scene/Account/comment';
-import AccountInfo from './Scene/Account/accountInfo';
 import ChangePwd from './Scene/Account/changePwd';
 import Setting from './Scene/Account/setting';
-import WorkExperience from './Scene/Account/workExperience';
-import License from './Scene/Account/license';
-import PersonalTag from './Scene/Account/personalTag';
-import Certificate from './Scene/Account/certificate';
-import ServiceType from './Scene/Account/serviceType';
-import ChangeMail from './Scene/Account/changeMail';
-import TransferOut from './Scene/Income/transferOut';
 import Signup from './Scene/signUp';
 import Forget from './Scene/forget';
 import DataContext from './providerContext';
-import Agency from './Scene/teleCare/agency';
 import HealthMain from './Scene/Health/healthMain';
 import HealthAccountMain from './Scene/Health/healthAccountMain';
 import ReservationMain from './Scene/Health/reservationMain';
-import Verify from './Scene/verification';
 import Info from './Scene/Health/info';
 import Introduction from './Scene/Health/introduction';
 import Languages from './Scene/Health/languages';
@@ -43,9 +26,9 @@ import Mintro from './Scene/Health/mintro';
 import Mlan from './Scene/Health/mlan';
 import I18n from './Scene/switchLanguage';
 import Enotes from './Scene/Health/enotes';
-import Enotes2 from './Scene/Health/enotes2';
 import Enotes3 from './Scene/Health/enotes3';
 import CaseRecord from './Scene/Health/caseRecord';
+import MyAccount from './Scene/Health/myAccount'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -199,6 +182,7 @@ export default class App extends React.Component {
     mintro:'',
     state:'',
     token:null,
+    refresh_token:null,
     image:'',
     dimage:'',
     languages:[],
@@ -243,14 +227,19 @@ export default class App extends React.Component {
 
   async getToken() {
     try {
-      let userData = await AsyncStorage.getItem("token");
+      let token = await AsyncStorage.getItem("token");
+      let rtoken = await AsyncStorage.getItem("rtoken");
       let id = await AsyncStorage.getItem("id");
       if(id) {
         this.setState({employerId:JSON.parse(id)});
         console.log("Get id success");
       }
-      if(userData){
-        this.setState({token:userData})
+      if(token){
+        this.setState({token:token})
+        console.log("Get token success");
+      }
+      if(rtoken){
+        this.setState({refresh_token:rtoken})
         console.log("Get token success");
       }
     } catch (error) {
@@ -320,9 +309,10 @@ export default class App extends React.Component {
         name: value
     });
   }
-  changetoken = (value) => {
+  changetoken = (value1,value2) => {
     this.setState({
-        token: value
+        token: value1,
+        refresh_token:value2
     });
   }
 
@@ -393,6 +383,7 @@ export default class App extends React.Component {
       mintro:'',
       state:'',
       token:null,
+      refresh_token:null,
       image:'',
       dimage:'',
       languages:[],
@@ -415,7 +406,6 @@ export default class App extends React.Component {
     <NavigationContainer>
       <Stack.Navigator>
       {this.state.token ? (
-        this.state.health ? (
           this.state.employerId == null ? (
             <>
             <Stack.Screen options={{headerShown: false}} name="healthHome" component={OrgHome} />
@@ -437,36 +427,15 @@ export default class App extends React.Component {
             <Stack.Screen options={{headerShown: false}} name="healthHome" component={DoctorHome} />
             <Stack.Screen name={I18n.t('changePassword')} component={ChangePwd} />
             <Stack.Screen name={I18n.t('mySetting')} component={Setting} />
-            <Stack.Screen name={I18n.t('orginfo')}component={Info} />
-            <Stack.Screen name={I18n.t('members')} component={Members} />
             <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
-            <Stack.Screen name={I18n.t('languages')} component={Languages} />
             <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
             <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
             <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
+            <Stack.Screen name={I18n.t('myAccount')} component={MyAccount} />
             <Stack.Screen name={I18n.t('enote')} component={Enotes} />
-            <Stack.Screen name={I18n.t('enote2')} component={Enotes2} />
             <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
             </>
           )
-        ):(
-          <>
-          <Stack.Screen options={{headerShown: false}} name="Home" component={Home} />
-          <Stack.Screen options={{headerShown: false}} name="accountMain" component={AccountMain}/>
-          <Stack.Screen name="简历" component={Resume} />
-          <Stack.Screen name="评价" component={Comment} />
-          <Stack.Screen name="账户信息" component={AccountInfo} />
-          <Stack.Screen name="修改密码" component={ChangePwd} />
-          <Stack.Screen name="我的设置" component={Setting} />
-          <Stack.Screen name="工作经历" component={WorkExperience} />
-          <Stack.Screen name="证书执照" component={License} />
-          <Stack.Screen name="个人简介" component={PersonalTag} />
-          <Stack.Screen name="证件上传" component={Certificate} />
-          <Stack.Screen name="服务类型" component={ServiceType} />
-          <Stack.Screen name="修改邮箱" component={ChangeMail} />
-          <Stack.Screen name="资金转出" component={TransferOut} />
-          </>
-        )
       ): (
         <>
         <Stack.Screen options={{headerShown: false}} name="Welcome" component={Welcome} />

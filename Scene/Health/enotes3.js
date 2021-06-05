@@ -16,6 +16,7 @@ export default class Enotes3 extends Component {
       pressed1:false,
       complaint:'',
       doctorComment:'',
+      medicine:[],
       id:null,
       }
     }
@@ -37,6 +38,7 @@ export default class Enotes3 extends Component {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -64,7 +66,21 @@ export default class Enotes3 extends Component {
       .catch(error => console.warn(error));
   }
 
+  addMedicine() {
+
+  }
+
   render() {
+    if (this.state.medicine.length >0) {
+    times = this.state.time.map((item) => {
+      return (
+        <View style={styles.timePick} key={item.id}>
+          <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId);}}>
+            <Text>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    })}
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

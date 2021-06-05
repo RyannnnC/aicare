@@ -38,6 +38,7 @@ export default class HealthAccountMain extends Component {
   async removeToken() {
     try {
       await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("rtoken");
       console.log("Remove token success");
     } catch (error) {
       console.log("Something went wrong", error);
@@ -66,6 +67,7 @@ export default class HealthAccountMain extends Component {
             'Accept':       'application/json',
             'Content-Type': 'application/json',
             'sso-auth-token': this.context.token,
+            'sso-refresh-token': this.context.refresh_token,
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Credentials': true,
             'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -109,6 +111,7 @@ export default class HealthAccountMain extends Component {
           'Accept':       'application/json',
           'Content-Type': 'application/json',
           'sso-auth-token': this.context.token,
+          'sso-refresh-token': this.context.refresh_token,
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Credentials': true,
           'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -201,7 +204,7 @@ export default class HealthAccountMain extends Component {
         </TouchableOpacity>
       }
       {this.context.employerId != null &&
-      <TouchableOpacity style={styles.profileBar}>
+      <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('myAccount'))}>
         <Image
           style = {styles.smallIconImg}
           source={require('../../images/providerImg/account_icon_card.png')}

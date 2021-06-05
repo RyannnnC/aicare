@@ -137,6 +137,7 @@ export default class Info extends Component {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -242,6 +243,7 @@ export default class Info extends Component {
           headers: {
           'Content-Type': 'multipart/form-data',
           'sso-auth-token': this.context.token,
+          'sso-refresh-token': this.context.refresh_token,
         },
           body: data
         })
