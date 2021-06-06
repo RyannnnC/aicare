@@ -42,6 +42,7 @@ export default class ChangePwd extends Component {
           Alert.alert("修改成功");
         } else {
           Alert.alert("Unknown Error");
+          console.log(json)
           return false;
         }
     })

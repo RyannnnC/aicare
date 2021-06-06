@@ -316,6 +316,7 @@ export default class UploadMember extends Component {
           alert('提交失败');
         }
       }).catch(error => console.warn(error));} else {
+        this.setState({isLoading:false})
         let url = 'http://'
         +this.context.url
         +'/aicare-business-api/business/employer/save';
@@ -517,7 +518,7 @@ export default class UploadMember extends Component {
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('name')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
+          <TextInput style={styles.resumeInput} placeholder= "Dr Lee"
           value={this.state.name}
           onChangeText={(text) => {this.setState({name:text})}}/>
         </View>
@@ -559,7 +560,7 @@ export default class UploadMember extends Component {
           <View style={{flexDirection: 'row', flexWrap:'wrap',marginTop:2,marginLeft:10,width:'65%'}}>
             {this.state.types[0].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('gpfull')}</Text>}
             {this.state.types[1].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('denfull')}</Text>}
-            {this.state.types[2].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('phyfull')}</Text>}
+            {this.state.types[2].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('psyfull')}</Text>}
             {this.state.types[3].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('chifull')}</Text>}
             {this.state.types[4].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('pedfull')}</Text>}
             {this.state.types[5].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('phyfull')}</Text>}

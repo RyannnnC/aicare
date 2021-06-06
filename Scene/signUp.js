@@ -131,7 +131,7 @@ export default class Signup extends Component {
   render() {
     return (
       <KeyboardAvoidingView style={{ flex:1,backgroundColor:'white' }}
-      behavior="position">
+      behavior={Platform.OS === "ios" ? "padding" : "height"}>
           <ScrollView style={{width:'90%',marginLeft:'5%'}}>
           <View style={{marginTop:30, marginBottom:15,flexDirection: 'row'}}>
             <Image

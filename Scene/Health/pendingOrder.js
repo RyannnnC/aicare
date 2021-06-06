@@ -111,10 +111,10 @@ export default class PendingOrder extends Component {
         }
       }).catch(error => console.warn(error));
   }
-  modify(sid) {
+  modify(sid,stime,etime) {
       Alert.alert(
         '提醒',
-        '您确定要修改预约至这个时间吗？',
+        '您确定要修改预约至'+stime+' - ' +etime+'吗？',
         [
           {text: '确定', onPress: () => {
             this.setState({isLoading:true})
@@ -235,7 +235,7 @@ export default class PendingOrder extends Component {
       }
     }
   }
-
+  
   changevis(id,value){
     for (let i=0;i<this.state.mds.length;i++) {
       if(this.state.mds[i].id == id) {
@@ -251,8 +251,19 @@ export default class PendingOrder extends Component {
   if (this.state.time.length >0) {
   times = this.state.time.map((item) => {
     return (
-      <View style={styles.timePick} key={item.id}>
-        <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId);}}>
+      <View style={{height:30,
+        width:'auto',
+        paddingLeft:15,
+        paddingRight:15,
+        marginTop:5,
+        marginBottom:5,
+        marginLeft: 10,
+        marginRight: 10,
+        borderRadius:10,
+        backgroundColor:'#8FD7D3',
+        alignItems: 'center',
+        justifyContent: 'center'}} key={item.id}>
+        <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId,item.startTime.substring(0,5),item.endTime.substring(0,5));}}>
           <Text>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
         </TouchableOpacity>
       </View>
@@ -478,9 +489,6 @@ elevation: 24,}}>
            <Text>{I18n.t('noSchedule')}</Text>
          </View>}
         </View>
-        <TouchableOpacity style={styles.next_wrapper}>
-           <Text style={{color:'white'}}>{I18n.t('confirmation')}</Text>
-      </TouchableOpacity>
        </ScrollView>
      </View>
 

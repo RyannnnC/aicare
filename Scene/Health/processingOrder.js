@@ -136,52 +136,53 @@ export default class ProcessingOrder extends Component {
       }).catch(error => console.warn(error));
   }
 
-  modify(sid) {
-      Alert.alert(
-        '提醒',
-        '您确定要修改预约至这个时间吗？',
-        [
-          {text: '确定', onPress: () => {
-            this.setState({timeLoad:true})
-            let url = 'http://'
-            +this.context.url
-            +'/aicare-business-api/business/appointment/modify?'
-            +'id=' + this.state.selectedId
-            +'&scheduleDetailedId=' + sid;
-              fetch(url,{
-                method: 'GET',
-                mode: 'cors',
-                credentials: 'include',
-                headers: {
-                'Accept':       'application/json',
-                'Content-Type': 'application/json',
-                'sso-auth-token': this.context.token,
-                'sso-refresh-token': this.context.refresh_token,
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-                'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+  modify(sid,stime,etime) {
+    Alert.alert(
+      '提醒',
+      '您确定要修改预约至'+stime+' - ' +etime+'吗？',
+      [
+        {text: '确定', onPress: () => {
+          this.setState({isLoading:true})
+          let url = 'http://'
+          +this.context.url
+          +'/aicare-business-api/business/appointment/modify?'
+          +'id=' + this.state.selectedId
+          +'&scheduleDetailedId=' + sid;
+            fetch(url,{
+              method: 'GET',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+              'Accept':       'application/json',
+              'Content-Type': 'application/json',
+              'sso-auth-token': this.context.token,
+              'sso-refresh-token': this.context.refresh_token,
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+            }
+            })
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code === 0) {
+                this.setState({isLoading:true})
+                Alert.alert('修改成功')
+                this.queryOrders();
+              } else {
+                this.setState({isLoading:true})
+                Alert.alert('修改失败')
+                this.queryOrders();
               }
-              })
-              .then((response) => response.json())
-              .then((json) => {
-                this.setState({timeLoad:false})
-                if (json.code === 0) {
-                  console.log(json.msg)
-                  Alert.alert('修改成功')
-                } else {
-                  Alert.alert('修改失败')
-                  console.log(json.msg)
-                }
-              }).catch(error => console.warn(error));
-          }},
-          {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
-        ],
-        {
-          cancelable: false
-        }
-      );
-  }
+            }).catch(error => console.warn(error));
+        }},
+        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
+}
   onDateChange(date) {
     let fd = this.formatDate(date);
     this.sendRequest(fd);
@@ -219,7 +220,7 @@ export default class ProcessingOrder extends Component {
       +'/aicare-business-api/business/appointment/query?status=1'
       + '&type=' + tp
       + '&appointDate=' + fd
-      + '&dateFlg=2';
+      + '&dateFlg=1';
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -323,7 +324,7 @@ export default class ProcessingOrder extends Component {
         backgroundColor:'#8FD7D3',
         alignItems: 'center',
         justifyContent: 'center'}} key={item.id}>
-          <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId);}}>
+          <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId,item.startTime.substring(0,5),item.endTime.substring(0,5));}}>
             <Text style={{color:'white'}}>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
           </TouchableOpacity>
         </View>
