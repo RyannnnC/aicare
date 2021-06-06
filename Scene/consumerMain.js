@@ -1,6 +1,6 @@
 
 import React,{useContext, useEffect,useState} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList,Platform} from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList,Platform,AsyncStorage} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
@@ -21,9 +21,66 @@ export default function ProviderMain({navigation}) {
       navigation.navigate("ConsumerOrderPage")
     }
     const goToTelehealth= () => {
+      console.log(user.token);
+      if(checkToken()){
+        Alert.alert(
+          "登陆提醒",
+          "您还没登陆，如需使用此功能请移步注册登录",
+          [
+            {text:"取消",
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:"注册登陆",
+            onPress:()=>removeToken()
+
+          }
+          
+        ]
+        )
+        return;
+      }
       navigation.navigate("telehealthMain")
   }
+    const checkToken=()=>{
+      if (user.token==-1){
+        return true
+      }else{
+        return false
+      }
+    }
+    const removeToken=async() =>{
+      try {
+        await AsyncStorage.removeItem("token");
+        //await AsyncStorage.removeItem("firsttime");
+    
+        console.log("Remove token success");
+        user.action.clearstate();
+      } catch (error) {
+        console.log("Something went wrong", error);
+    
+      }
+    }
   const goVaccine= () => {
+    console.log(user.token)
+    if(checkToken()){
+      Alert.alert(
+        "登陆提醒",
+        "您还没登陆，如需使用此功能请移步注册登录",
+        [
+          {text:"取消",
+            onPress:()=>console.log("cancel redirect"),
+            style:"cancel"
+        },{
+          text:"注册登陆",
+          onPress:()=>removeToken()
+
+        }
+        
+      ]
+      )
+      return;
+    }
     Alert.alert(
       "新冠疫苗阶段提醒",
       "根据澳大利亚政府信息，目前(2021.5.17之后)澳大利亚新冠疫苗阶段处于2a阶段，只有符合2a条件(50岁以上或关键高风险工作者)可以注射疫苗，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
@@ -45,11 +102,42 @@ export default function ProviderMain({navigation}) {
       )
     
 }
+  const goSomewhere=(index)=>{
+    if(checkToken()){
+      Alert.alert(
+        "登陆提醒",
+        "您还没登陆，如需使用此功能请移步注册登录",
+        [
+          {text:"取消",
+            onPress:()=>console.log("cancel redirect"),
+            style:"cancel"
+        },{
+          text:"注册登陆",
+          onPress:()=>removeToken()//navigation.navigate("登陆")
+
+        }
+        
+      ]
+      )
+      return;
+    }
+    navigation.navigate("telehealthClinic",{return:"",type:true,doctype:index,state:"NSW"})
+  }
   const user = useContext(DataContext);
 
   useEffect(() => {
-    
-    var today = new Date();
+    getting();
+    let poll = setInterval(() => {
+      getting();
+    }, 5000);
+    return()=>clearInterval(poll)
+
+            //
+            /**/
+    },[])
+  
+    const getting=()=>{
+      var today = new Date();
     var month =(today.getMonth()+1);
     if (month<10){
       month = ('0' + month).slice(-2)
@@ -194,9 +282,7 @@ export default function ProviderMain({navigation}) {
               }
             }).catch(error => console.warn(error));}
 
-            //
-            /**/
-    },[len])
+    }
 
     
     /*let url = "http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment";
@@ -358,23 +444,23 @@ export default function ProviderMain({navigation}) {
       <TouchableOpacity style={{marginTop:12,marginLeft:-2}} onPress={goToTelehealth}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/doctor_booking.png')}
+          source = {require('../images/appointment.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{marginTop:14,marginLeft:10}} onPress={goVaccine}>
+        <TouchableOpacity style={{marginTop:14,marginLeft:5}} onPress={goVaccine}>
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/covid_booking.png')}
+          source = {require('../images/vaccine.png')}
           />
           </View>
         </TouchableOpacity>
         
-        <TouchableOpacity style={{marginTop:14,marginLeft:10}} >
+        <TouchableOpacity style={{marginTop:14,marginLeft:5}} onPress={()=>goSomewhere(9)}>
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/normal_booking.png')}
+          source = {require('../images/bodycheck.png')}
           />
           </View>
         </TouchableOpacity>
@@ -384,9 +470,22 @@ export default function ProviderMain({navigation}) {
           source = {require('../images/vaccine/telehealth_consumer_icon/home_service_block2.png')}
           />
         </TouchableOpacity>*/}
+        
       </View>
-        <View style={{textAlign: "left",marginTop:20,marginBottom:8 }}>
-          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>最近订单</Text>
+      {/*<View style={styles.buttons}>
+        
+      <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>goSomewhere(4)}>
+          <Image
+          style = {{width:110,height:110}}
+          source = {require('../images/chineseDoc.png')}
+          />
+        </TouchableOpacity>
+        
+        
+        
+      </View>*/}
+        <View style={{textAlign: "left",marginTop:15,marginBottom:8 }}>
+          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>最近预约</Text>
         </View>
       <TouchableOpacity onPress ={gotoOrderPage}>
       {order[0]?

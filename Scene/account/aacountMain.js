@@ -1,5 +1,5 @@
 import React,{useEffect,useContext,useState} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch } from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,AsyncStorage } from 'react-native';
 import {styles} from '../../style';
 import DataContext from '../../consumerContext';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,7 +10,33 @@ import { ScrollView } from 'react-native-gesture-handler';
 const AccountMain = ({navigation}) => {
   const [info,setInfo] = React.useState({});
   const goInfo= () => {
+    if(checkToken()){
+      Alert.alert(
+        "登陆提醒",
+        "您还没登陆，如需使用此功能请移步注册登录",
+        [
+          {text:"取消",
+            onPress:()=>console.log("cancel redirect"),
+            style:"cancel"
+        },{
+          text:"注册登陆",
+          onPress:()=>{removeToken(); user.action.clearstate()}
+
+        }
+        
+      ]
+      )
+      return;
+    }
     navigation.navigate("accountInfo");
+    
+  }
+  const checkToken=()=>{
+    if (user.token==-1){
+      return true
+    }else{
+      return false
+    }
   }
   const changePwd= () => {
     navigation.navigate("changePwd");
@@ -19,7 +45,17 @@ const AccountMain = ({navigation}) => {
     navigation.navigate("setting");
   }
   user=useContext(DataContext);
+  
+  const removeToken=async() =>{
+    try {
+      await AsyncStorage.removeItem("token");
+      //await AsyncStorage.removeItem("firsttime");
 
+      console.log("Remove token success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
   useEffect(() => {
     
     let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
@@ -166,7 +202,7 @@ const AccountMain = ({navigation}) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "确定", onPress: () => state.action.clearstate() } //this should navigate to the login page
+        { text: "确定", onPress: () =>{removeToken(); state.action.clearstate()} } //this should navigate to the login page
       ],
       { cancelable: false }
       )} >

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
+import { Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,AsyncStorage } from 'react-native';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -28,6 +28,15 @@ export default class Login extends Component {
       this.setState({text1:"请输入您的注册手机号码"})
     }
   }
+  
+  storeToken = async (token) => {
+    try {
+       await AsyncStorage.setItem("token", token);
+       console.log("Store token success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
   loginRequest() {
     let s = this.state;
     let errors=[];
@@ -53,6 +62,7 @@ export default class Login extends Component {
         console.log(url);
         if (json.code === 0) {
           //this.context.action.changeLogin(true);
+          this.storeToken(json.data);
           this.context.action.changetoken(json.data);
           console.log(json.code)
         } else {
@@ -66,6 +76,8 @@ export default class Login extends Component {
   render(){
   return (
     <KeyboardAwareScrollView
+    enableOnAndroid={true}
+    enableAutomaticScroll={(Platform.OS === 'ios')}
     style={{backgroundColor:"white"}}
     contentContainerStyle={{flex:1,backgroundColor: 'white',
     marginTop: -50,

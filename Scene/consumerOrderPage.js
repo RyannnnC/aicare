@@ -19,8 +19,11 @@ export default function ConsumerOrderPage() {
   const user = useContext(DataContext)
   const Tab = createMaterialTopTabNavigator();
   useEffect(() => {
+    let poll = setInterval(() => {
+      updateRequest();
+    }, 5000);
+    return()=>clearInterval(poll)
     
-    updateRequest();
     
     },[])
   updateRequest=()=>{

@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import {Platform, Alert,Text, Button, View, Switch,KeyboardAvoidingView, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+import {Platform, Alert,Text, Button, View, Switch,KeyboardAvoidingView, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,AsyncStorage} from 'react-native';
 import {styles} from '../style';
 //import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
@@ -18,6 +18,14 @@ class Signup extends Component {
     checked2: false,
     checked3:false,
     press:false,
+  }
+  storeToken = async (token) => {
+    try {
+       await AsyncStorage.setItem("token", token);
+       console.log("Store token success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
   }
   sendRequest() {
     if (this.state.confirm != this.state.password) {
@@ -77,7 +85,7 @@ class Signup extends Component {
            //console.log(json.msg);
            Alert.alert("注册成功！")
            console.log(json)
-
+           this.storeToken(json.token);
           //this.props.navigation.navigate('登陆');
           this.context.action.changetoken(json.token);
         }else{
@@ -143,8 +151,10 @@ class Signup extends Component {
   render() {
     return (
       <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}
+      enableOnAndroid={true}
+      enableAutomaticScroll={(Platform.OS === 'ios')}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}>
+      >
       <ScrollView style={{flex:1}}>
 
       <View style={{ flex:1, justifyContent: "center", alignItems: "center",backgroundColor:'white' }}>

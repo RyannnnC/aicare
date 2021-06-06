@@ -115,7 +115,7 @@ export default function TelehealthrMain({navigation}) {
             source={item.headPortrait?{uri:item.headPortrait}:require('../../images/telehealth_icon/service_doctor_img1.png')}/>
           </View>
           <Text style={{fontSize:17,marginTop:-78,marginLeft:103}}>{item.employerName}</Text>
-          <Text style={{fontSize:12,color:'#999999',marginLeft:102,marginTop:10}}>全科医生-{item.orgName}</Text>
+          <Text style={{fontSize:12,color:'#999999',marginLeft:102,marginTop:10}}>全科医生{item.orgName}</Text>
           {/*<View style={{flexDirection: 'row'}}>
           
           <Image
@@ -343,6 +343,7 @@ export default function TelehealthrMain({navigation}) {
           <Text style={{color:'#68B0AB',marginTop:2}}>牙医</Text>
           </TouchableOpacity>
           </View>
+          
         </View>
         </ScrollView>
         <View style={{flexDirection: 'row', marginBottom: 15}}>

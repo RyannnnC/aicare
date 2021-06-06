@@ -136,7 +136,9 @@ export default function TelePay({navigation,route}) {
   var content ={name:"",mobile:"",number:"",date:"",serial:"",first:"",last:"",gender:""};
   return (
 
-    <KeyboardAwareScrollView contentContainerStyle={{backgroundColor:"white"}} style={{backgroundColor:"white"}}>
+    <KeyboardAwareScrollView contentContainerStyle={{backgroundColor:"white"}} style={{backgroundColor:"white"}} enableOnAndroid={true}
+    enableAutomaticScroll={(Platform.OS === 'ios')}
+    >
 
     <View style={styles.container}>
     <View style={{flexDirection:'row',marginTop:45,marginLeft:-140}}>

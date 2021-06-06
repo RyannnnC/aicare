@@ -2,7 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import {Platform,Alert,Linking} from "react-native";
+import {Platform,Alert,Linking,AsyncStorage} from "react-native";
 import Info from './Scene/consumerInfo';
 import ConsumerOrder from './Scene/consumerOrder';
 import ConsumerIcon from "./Scene/consumerIcon";
@@ -53,6 +53,7 @@ import changeClinic from './Scene/telehealth/changeClinic';
 import changeDoc from './Scene/telehealth/changeDoc';
 import changeDocInfo from './Scene/telehealth/changeDocInfo';
 import telehealthPayment from "./Scene/telehealth/telehealthPayment";
+import Intro from "./intro";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -94,7 +95,7 @@ function Home() {
             options={{
               tabBarLabel: '账号',
               tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="account" color={color} size={size} />
+              <MaterialCommunityIcons name="account" color={color}  size={size} />
             ),
           }}
              />
@@ -207,7 +208,40 @@ class App extends React.Component {
     docId:0,
     schedule:[],
     first_visit:0,
+    first_time:null,
     })
+  }
+  async getToken() {
+    try {
+      let userData = await AsyncStorage.getItem("token");
+      //let id = await AsyncStorage.getItem("id");
+      /*if(id) {
+        this.setState({employerId:JSON.parse(id)});
+        console.log("Get id success");
+      }*/
+      if(userData){
+        this.setState({token:userData})
+        console.log("Get token success");
+      }
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+  async getFirst() {
+    try {
+      let userData = await AsyncStorage.getItem("firsttime");
+      //let id = await AsyncStorage.getItem("id");
+      /*if(id) {
+        this.setState({employerId:JSON.parse(id)});
+        console.log("Get id success");
+      }*/
+      if(userData){
+        //this.setState({token:userData})
+        this.setState({first_time:userData});
+      }
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
   }
   changeLoading = (value) => {
     this.setState({loading: value});
@@ -297,6 +331,9 @@ changetime = (value) => {
       date: value
   });
 }
+componentDidMount() {
+  this.getToken();
+ }
 
 render() {
   return (
@@ -344,13 +381,14 @@ render() {
         <Stack.Screen name ="pay" component={Pay} options={{headerShown:false}}/>
         <Stack.Screen name="数据协议" component={DataPolicy} />
         <Stack.Screen name="termofuse" component={TermOfUse} />
-
+        
 
 
 
         </>
         ):(
           <>
+          {this.first_time?null:<Stack.Screen options={{headerShown: false}} name="intro" component={Intro} />}
           <Stack.Screen options={{headerShown: false}} name="登陆" component={Login} />
           <Stack.Screen name="注册" component={Signup} />
           <Stack.Screen name="数据协议" component={DataPolicy} />
@@ -365,3 +403,4 @@ render() {
 }
 
 export default App;
+

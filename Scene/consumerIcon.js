@@ -1,5 +1,5 @@
 import React,{useContext} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,Switch} from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,AsyncStorage} from 'react-native';
 import {styles} from '../style';
 import call from 'react-native-phone-call'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -11,8 +11,66 @@ const  ConsumerIcon= ({navigation}) => {
     navigation.navigate('consumerOrder')
   }
   const goToTelehealth= () => {
+    if(checkToken()){
+      Alert.alert(
+        "登陆提醒",
+        "您还没登陆，如需使用此功能请移步注册登录",
+        [
+          {text:"取消",
+            onPress:()=>console.log("cancel redirect"),
+            style:"cancel"
+        },{
+          text:"注册登陆",
+          onPress:()=>removeToken()//navigation.navigate("登陆")
+
+        }
+        
+      ]
+      )
+      return;
+    }
     navigation.navigate("telehealthMain")
 }
+const checkToken=()=>{
+  if (user.token==-1){
+    return true
+  }else{
+    return false
+  }
+}
+const removeToken=async() =>{
+  try {
+    await AsyncStorage.removeItem("token");
+    //await AsyncStorage.removeItem("firsttime");
+
+    console.log("Remove token success");
+    user.action.clearstate()
+  } catch (error) {
+    console.log("Something went wrong", error);
+
+  }
+}
+  const goSomewhere=(index)=>{
+    if(checkToken()){
+      Alert.alert(
+        "登陆提醒",
+        "您还没登陆，如需使用此功能请移步注册登录",
+        [
+          {text:"取消",
+            onPress:()=>console.log("cancel redirect"),
+            style:"cancel"
+        },{
+          text:"注册登陆",
+          onPress:()=>removeToken()//navigation.navigate("登陆")
+
+        }
+        
+      ]
+      )
+      return;
+    }
+    navigation.navigate("telehealthClinic",{return:"",type:true,doctype:index,state:"NSW"})
+  }
   const makecall=()=>{
     call(args).catch(console.error)
   }
@@ -68,7 +126,7 @@ const  ConsumerIcon= ({navigation}) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "确定", onPress :()=>   navigation.navigate("telehealthSub",{docType:7}) } //this should navigate to the login page
+        { text: "确定", onPress :()=>   goSomewhere(7) } //this should navigate to the login page
       ],
       { cancelable: false }
       )}>
@@ -81,14 +139,14 @@ const  ConsumerIcon= ({navigation}) => {
       />
     </TouchableOpacity>
     <View style={{marginTop:0}}></View>
-    <TouchableOpacity >
+    <TouchableOpacity onPress={()=>goSomewhere(9)} >
       <Image
         style = {{marginTop:25,
           height:120,
           width:290,
           marginLeft:30,
           }}
-        source = {require('../images/large_n_booking.png')}
+        source = {require('../images/bodycheck_long.png')}
       />
     </TouchableOpacity>
     

@@ -141,7 +141,9 @@ class OngoingingOrder extends Component {
   }
 
   componentWillUnmount() {
+    console.log(this.dataPolling);
     clearInterval(this.dataPolling);
+
   }
 
   getAITraining = () => {
@@ -150,7 +152,7 @@ class OngoingingOrder extends Component {
     var today = new Date();
     var month =(today.getMonth()+1);
     if (month<10){
-      month = ('0' + month).slice(-2)
+      month = ('0' + month).slice(-2);
     }
     var day = today.getDate();
     if (day<10){
@@ -179,12 +181,12 @@ class OngoingingOrder extends Component {
                 //console.log(json.page[0].appointDate);
                 //this.setState({query:json.page})
                 this.setState({query: json.page });
-                console.log(json.img)
+                //console.log(json.img)
                 //Alert.alert('查询成功');
                 //console.log(json.page[0].telehealthFlg)
               } else {
-                console.log(json.msg);
-                console.log(json.code);
+                //console.log(json.msg);
+                //console.log(json.code);
                 //Alert.alert('查询失败');
               }
             }).catch(error => console.warn(error));
