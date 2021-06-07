@@ -54,6 +54,7 @@ import changeDoc from './Scene/telehealth/changeDoc';
 import changeDocInfo from './Scene/telehealth/changeDocInfo';
 import telehealthPayment from "./Scene/telehealth/telehealthPayment";
 import Intro from "./intro";
+import CardInfo from "./Scene/account/cardInfo";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -112,7 +113,7 @@ class App extends React.Component {
       loading:true,
       first_visit:0,
       street:"请点击右边箭头按钮输入您的地址",
-      url:"3.104.87.14:8085",//develop："3.104.232.106:8085"；test："3.104.87.14:8085"
+      url:"3.104.232.106:8085",//develop："3.104.232.106:8085"；test："3.104.87.14:8085"
       suburb:"",
       postcode:"",
       state:"",

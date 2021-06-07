@@ -124,9 +124,37 @@ const AccountMain = ({navigation}) => {
             height: 22,
             marginLeft:10,
             marginRight:10,}}
-          source={require('../../images/singup_icon_name.png')}
+          source={require('../../images/telehealth_icon/account_icon_info.png')}
         />
         <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>个人信息</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar} onPress = {goInfo} >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/telehealth_icon/service_telehealth_select_icon_calender.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>医保信息</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar} onPress = {goInfo} >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/telehealth_icon/account_icon_medical.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>病史信息</Text>
       </TouchableOpacity>
       </View>
       </View>
