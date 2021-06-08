@@ -11,13 +11,42 @@ class Pay extends Component {
       () => {
         this.getAITraining();
       },
-      3000);
+      5000);
   }
 
   componentWillUnmount() {
     clearInterval(this.dataPolling);
   }
-
+  cancelOrder(){
+    let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/delete-appointment?id="+this.props.route.params.orderId;
+    fetch(url,{
+      method: 'GET',
+                mode: 'cors',
+                credentials: 'include',
+                headers: {
+                'Accept':       'application/json',
+                'Content-Type': 'application/json',
+                'sso-auth-token': this.context.token,
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+                'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+              }})
+              .then((response) => response.json())
+              .then((json) => {
+                if (json.code == 0) {
+                  //console.log(json.sysDeptInfo);
+                  //this.setState({clinics:json.sysDeptInfo})
+                  //this.setState({loading:false})
+                  //Alert.alert('查询成功');
+                  console.log("取消订单");
+                } else {
+                  Alert.alert("哎呀，app好像有异常情况，请联系客服。")
+                  console.log("network issue")
+                }
+              }).catch(error => console.warn(error));
+    
+  }
   getAITraining=()=>{
     //console.log('轮询测试 '+new Date())
       let url2 = "http://"+this.context.url+"/aicare-customer-api/customer/pay/checkresult?orderId="+this.props.route.params.orderId;
@@ -44,8 +73,11 @@ class Pay extends Component {
                   //Alert.alert('查询成功');
                   console.log(json.data.payResult);
                   if(json.data.payResult=="PAY_SUCCESS"){
-                    this.props.navigation.navigate("teleSuccess")
+                    clearInterval(this.dataPolling);
+                    this.props.navigation.navigate("teleSuccess",{docName:"",doctype:"",startTime:"",endTime:"",teleFlg:"",mobile:"",method:""})
                   }if(json.data.payResult=="PAY_FAIL"){
+                    clearInterval(this.dataPolling);
+                    this.cancelOrder(this.props.route.params.orderId);
                     Alert.alert("支付失败","请检查您的账户余额是否足够以及卡信息是否填写正确并重新支付。",[{ text: "确认", onPress: () => {this.props.navigation.navigate("teleConfirm")}
                   }]
                     )                  
@@ -97,6 +129,8 @@ class Pay extends Component {
       }*/
       if (newNavState.url.includes('?errors=true')) {
         this.webview.stopLoading();
+        clearInterval(this.dataPolling);
+
         this.props.navigation.navigate("teleConfirm")
       }
       /*const { url } = newNavState;

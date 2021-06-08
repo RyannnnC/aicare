@@ -36,7 +36,7 @@ export default function Confirm({route,navigation}) {
     //let str = JSON.stringify(content);
     //console.log(str)//figure out whats wrong in android stringnify
     
-    let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+Date+"&serialNumber="+serial+"&cardNumber="+number+"&patientMobile="+text1+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
+    /*let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+Date+"&serialNumber="+serial+"&cardNumber="+number+"&patientMobile="+text1+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -58,19 +58,19 @@ export default function Confirm({route,navigation}) {
               if (json.code == 0) {
                 Alert.alert("已预约成功")
                 setModalVisible(!modalVisible)
-                /*if(teleFlg==1 && content.type!="Medicare"){
-                  navigation.navigate("telehealthPayment")
+                if(teleFlg==1 && content.type!="Medicare"){
+                  navigation.navigate("Pay",{})
                 }else{
-                  navigation.navigate("teleSuccess")
-                }*/
-                navigation.navigate("teleSuccess",{docName:docName,doctype:doctype,startTime:startTime,endTime:endTime,teleFlg:teleFlg,mobile:content.mobile,method:method})
+                  navigation.navigate("teleSuccess",{docName:docName,doctype:doctype,startTime:startTime,endTime:endTime,teleFlg:teleFlg,mobile:content.mobile,method:method})//navigation.navigate("teleSuccess")
+                }
+                //navigation.navigate("teleSuccess",{docName:docName,doctype:doctype,startTime:startTime,endTime:endTime,teleFlg:teleFlg,mobile:content.mobile,method:method})
 
               } else {
                 console.log(json.msg);
                 Alert.alert('预约失败,请重试或者联系客服。');
               }
-            }).catch(error => console.warn(error));
-            /*let url = "http://"+user.url+"/aicare-customer-api/customer/pay/create_order?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method+"&currency=AUD&price=100&channel="+paymethod+"&serviceType="+(teleFlg+1);//+"&content="+str;
+            }).catch(error => console.warn(error));*/
+            let url = "http://"+user.url+"/aicare-customer-api/customer/pay/create_order?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method+"&currency=AUD&price=100&channel="+paymethod+"&serviceType="+(teleFlg+1);//+"&content="+str;
             fetch(url,{
               method: 'POST',
               mode: 'cors',
@@ -99,7 +99,7 @@ export default function Confirm({route,navigation}) {
                   //NativeAppEventEmitter.addListener('alipay.mobile.securitypay.pay.onPaymentResult', onPaymentResult)
 
                 }else{
-                  navigation.navigate("teleSuccess")
+                  navigation.navigate("teleSuccess",{docName:docName,doctype:doctype,startTime:startTime,endTime:endTime,teleFlg:teleFlg,mobile:content.mobile,method:method})//navigation.navigate("teleSuccess")
                 }
               } else {
                 console.log(json.msg);
@@ -107,7 +107,7 @@ export default function Confirm({route,navigation}) {
 
                 Alert.alert('预约失败,请重试或者联系客服。');
               }
-            }).catch(error => console.warn(error));      */
+            }).catch(error => console.warn(error));      
   }
   /*const onPaymentResult = (result) => {
     //console.log(`result -> `)
@@ -224,12 +224,12 @@ export default function Confirm({route,navigation}) {
           />
     </View>
     </View>:null}
-    {/*teleFlg==1 && type!="Medicare"?<View style={{marginLeft:-43,marginTop:0}}>
+    {teleFlg==1 && type!="Medicare"?<View style={{marginLeft:-138,marginTop:0}}>
     <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:45}}
         source= {require('../../images/telehealth_icon/order_confirm_icon_means.png')}
       /><Text style={{marginLeft:70,fontSize:16,marginTop:-17}}>支付方式</Text>
     <View style ={styles.comment_container}>
-      <Text style={{fontSize:16,marginLeft:45}}>卡支付</Text>
+      <Text style={{fontSize:16,marginLeft:45}}>银行卡</Text>
       <CheckBox
             checked={paymethod=="CardPayment"}
             checkedColor='#FF8570'
@@ -256,7 +256,7 @@ export default function Confirm({route,navigation}) {
             }}
           />
     </View>
-          </View>:null*/}
+          </View>:null}
     
 
     
