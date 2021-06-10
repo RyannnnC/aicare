@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView
+   Text, View,TouchableOpacity,ScrollView
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import {styles} from '../providerStyle';
-import { StackActions } from '@react-navigation/native';
 import DataContext from "../../providerContext";
 import I18n from '../switchLanguage';
 

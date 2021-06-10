@@ -1,11 +1,7 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
+import { Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import { CheckBox } from 'react-native-elements';
-import moment from 'moment-timezone';
 import DataContext from '../../providerContext';
-import * as Localization from 'expo-localization';
 import I18n from '../switchLanguage';
 
 export default class Enotes3 extends Component {
@@ -16,8 +12,8 @@ export default class Enotes3 extends Component {
       pressed1:false,
       complaint:'',
       doctorComment:'',
-      medicine:[],
       id:null,
+      medicine:[],
       }
     }
   async componentDidMount(){
@@ -26,6 +22,9 @@ export default class Enotes3 extends Component {
       complaint:this.props.route.params.patientComplaint});
   }
 
+  addMedicine(){
+
+  }
   saveReport() {
     let url = 'http://'
     +this.context.url
@@ -38,7 +37,6 @@ export default class Enotes3 extends Component {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
-        'sso-refresh-token': this.context.refresh_token,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -66,21 +64,19 @@ export default class Enotes3 extends Component {
       .catch(error => console.warn(error));
   }
 
-  addMedicine() {
-
-  }
+  /*  <View style={{flexDirection: 'row', marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
+        </View>
+        <View style={{width:'100%', height:150,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
+          <TextInput style={{width:'90%',height:60,marginTop:15,marginLeft:20,marginRight:20}}
+            placeholder={this.context.intro}
+            value={this.state.doctorComment}
+            onChangeText={(text) => {this.setState({doctorComment:text})}}
+            multiline={true}
+          />
+        </View>*/
 
   render() {
-    if (this.state.medicine.length >0) {
-    times = this.state.time.map((item) => {
-      return (
-        <View style={styles.timePick} key={item.id}>
-          <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId);}}>
-            <Text>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
-          </TouchableOpacity>
-        </View>
-      )
-    })}
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -93,17 +89,9 @@ export default class Enotes3 extends Component {
       <View style={{width:'90%'}}>
         <ScrollView style={{height:'90%'}}>
 
+
         <View style={{flexDirection: 'row',marginTop:20,marginBottom:10}}>
-          <View style={{flexDirection: 'row',width:'50%'}}>
             <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('prescription')}</Text>
-          </View>
-          <View style={{flexDirection: 'row',width:'50%',justifyContent:'flex-end'}}>
-            <TouchableOpacity onPress={this.addMedicine}>
-              <Image style={{width:20,height:20,borderRadius:40}}
-                source = {require('../../images/providerImg/account_icon_add_1.png')}
-              />
-            </TouchableOpacity>
-          </View>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>

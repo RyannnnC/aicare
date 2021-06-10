@@ -1,11 +1,8 @@
 import React ,{Component}from 'react';
 import { Platform,Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
-import { SearchBar } from 'react-native-elements';
 import {styles} from '../providerStyle';
-import DateSelect from "./dateSelect";
 import DataContext from '../../providerContext';
 import CalendarPicker from 'react-native-calendar-picker';
-import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import I18n from '../switchLanguage';
 
@@ -651,14 +648,14 @@ export default class ProcessingOrder extends Component {
        </TouchableOpacity>
        <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
        <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
-       <Text style = {{ color:'#006A71',fontSize:16}}>{I18n.t('orderTime')}</Text>
-       <CalendarPicker
+        <Text style = {{ color:'#006A71',fontSize:16}}>{I18n.t('orderTime')}</Text>
+        <CalendarPicker
          onDateChange={this.onDateChange}
          previousTitle={I18n.t('prevMonth')}
          nextTitle = {I18n.t('nextMonth')}
          width = {300}
          height = {300}
-       />
+        />
        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>{I18n.t('time')}</Text>
        <ScrollView style ={{marginTop: 30,maxHeight:100}}>
          <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>

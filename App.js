@@ -1,7 +1,11 @@
 import React ,{Component}from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {AsyncStorage} from 'react-native';
+import { createDrawerNavigator, DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem, } from "@react-navigation/drawer";
+  import {Text} from 'react-native';
+import {AsyncStorage} from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
 import Welcome from './Scene/welcome';
@@ -32,54 +36,38 @@ import MyAccount from './Scene/Health/myAccount'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
-
-function Home() {
+function CustomDrawerContent(props) {
   return (
-      <Tab.Navigator>
-          <Tab.Screen
-            name="主页"
-            component={ProviderMain}
-            options={{
-              tabBarLabel: '主页',
-              tabBarIcon: ({ color, size }) => (
-                <MaterialIcons name="home" size={size} color={color} />
-              ),
-            }}
-            />
-          <Tab.Screen
-            name="订单"
-            component={ProviderOrder}
-            options={{
-              tabBarLabel: '订单',
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="收益"
-            component={Income}
-            options={{
-              tabBarLabel: '收益',
-              tabBarIcon: ({ color, size }) => (
-                <Feather name="dollar-sign" size={24} color="black" />
-              ),
-            }}
-             />
-          <Tab.Screen
-            name="账号"
-            component={AccountMain}
-            options={{
-              tabBarLabel: '账号',
-              tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="account" color={color} size={size} />
-            ),
-          }}
-             />
-        </Tab.Navigator>
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem label={I18n.t('booking')} />
+      <DrawerItem label={I18n.t('processingOrder')}
+       onPress={() => props.navigation.navigate('预约',{screen:I18n.t('processingOrder')})} />
+      <DrawerItem label={I18n.t('pendingOrder')}
+       onPress={() => props.navigation.navigate('预约',{screen:I18n.t('pendingOrder')})} />
+      <DrawerItem label={I18n.t('myAccount')} onPress={() => {
+        props.navigation.navigate('账号')
+        props.navigation.navigate(I18n.t('myAccount'))
+      }} />
+      <DrawerItem label={I18n.t('changePassword')}
+       onPress={() => {
+        props.navigation.navigate('账号')
+        props.navigation.navigate(I18n.t('changePassword'))
+      }} />
+    </DrawerContentScrollView>
   );
 }
+
+function Draw() {
+  return (
+    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name={I18n.t('homePage')} component={DoctorHome}/>
+    </Drawer.Navigator>
+  )
+}
+
 function OrgHome() {
   return (
       <Tab.Navigator>
@@ -424,7 +412,7 @@ export default class App extends React.Component {
             </>
           ):(
             <>
-            <Stack.Screen options={{headerShown: false}} name="healthHome" component={DoctorHome} />
+            <Stack.Screen options={{headerShown: false}} name="healthHome" component={Draw} />
             <Stack.Screen name={I18n.t('changePassword')} component={ChangePwd} />
             <Stack.Screen name={I18n.t('mySetting')} component={Setting} />
             <Stack.Screen name={I18n.t('mintro')} component={Mintro} />

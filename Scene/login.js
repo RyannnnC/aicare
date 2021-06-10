@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
-import { AsyncStorage,SafeAreaView,Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput } from 'react-native';
+import { Platform,KeyboardAvoidingView,Text, View, Alert, Image,TouchableOpacity,TextInput } from 'react-native';
 import {styles} from '../style';
+import {AsyncStorage} from '@react-native-async-storage/async-storage';
 import DataContext from "../providerContext";
 import I18n from './switchLanguage';
 

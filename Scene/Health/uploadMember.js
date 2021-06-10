@@ -1,7 +1,7 @@
 import React ,{Component}from 'react';
-import { Modal,Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator  } from 'react-native';
+import { Modal,Text, View, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons ,AntDesign} from '@expo/vector-icons';
+import { MaterialIcons,AntDesign} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
@@ -1373,9 +1373,9 @@ export default class UploadMember extends Component {
       onRequestClose={()=>{
         this.setVisible(!this.state.visible);}
       }>
-        <TouchableOpacity style={{width:'100%',height:'65%'}} onPress={() => {this.setState({visible:false})}}>
+        <TouchableOpacity style={{width:'100%',height:'65%',backgroundColor: 'rgba(0, 0, 0, 0.5)'}} onPress={() => {this.setState({visible:false})}}>
         </TouchableOpacity>
-        <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'35%',backgroundColor:'#FFFAF0'}}>
+        <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'35%',backgroundColor:'white'}}>
           <Text style={{height:'10%',padding:5,borderBottomWidth:1,borderBottomColor:'#EEEEEE', fontSize:20, fontWeight: '400', color: '#0000FF' }}>Choose Your Upload Method</Text>
           <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
           onPress={this.launchCamera}>

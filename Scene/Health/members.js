@@ -1,8 +1,6 @@
 import React ,{Component}from 'react';
-import { Alert,Text, View, ImageBackground,Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { Alert,Text, View, ImageBackground,Image,SafeAreaView,ScrollView,TouchableOpacity,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
-import DateSelect from "./dateSelect";
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 

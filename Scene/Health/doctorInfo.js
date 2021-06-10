@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
+import { Text, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
 import moment from 'moment-timezone';

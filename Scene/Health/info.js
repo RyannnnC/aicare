@@ -1,7 +1,7 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
+import { Text,  View,  Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import {  MaterialIcons} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment-timezone';

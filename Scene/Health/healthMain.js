@@ -1,6 +1,6 @@
 import React ,{Component} from 'react';
-import { SafeAreaView,ScrollView,Text, Button, View, Alert, Image,TouchableOpacity, FlatList} from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { SafeAreaView,ScrollView,Text,View,Image,TouchableOpacity} from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import {styles} from '../providerStyle';
 import DataContext from "../../providerContext";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -141,6 +141,9 @@ export default class HealthMain extends Component {
     <ScrollView style={{ width:'100%',flex:1}}>
       <View style={{ justifyContent: "center", alignItems: "center"}}>
       <View style={{flex:1,width:'88%',marginTop:40,flexDirection: 'row', marginBottom: 15}}>
+        <TouchableOpacity onPress={()=>{this.props.navigation.openDrawer()}}>
+          <MaterialIcons name="menu" size={24} color="black" />
+        </TouchableOpacity>
         <View style={{flex:1,width:'50%',marginLeft:'5%',marginTop:30,}}>
           <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{date}</Text>
           <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('numOrder',{num:this.state.length})}</Text>

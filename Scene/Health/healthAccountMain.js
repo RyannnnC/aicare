@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
-import {SafeAreaView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,ActivityIndicator  } from 'react-native';
+import {SafeAreaView,Text, View, Alert, Image,TouchableOpacity,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from "../../providerContext";
 import { LinearGradient } from 'expo-linear-gradient';
 import I18n from '../switchLanguage';

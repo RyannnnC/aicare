@@ -1,11 +1,7 @@
 import React ,{Component}from 'react';
-import { KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
-import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons, FontAwesome,AntDesign } from '@expo/vector-icons';
-import { CheckBox } from 'react-native-elements';
-import moment from 'moment-timezone';
+import { KeyboardAvoidingView,Text,  View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
+import { MaterialCommunityIcons,  FontAwesome} from '@expo/vector-icons';
 import DataContext from '../../providerContext';
-import * as Localization from 'expo-localization';
 import I18n from '../switchLanguage';
 //import Voice from '@react-native-community/voice';
 import * as Permissions from "expo-permissions";

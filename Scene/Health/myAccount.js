@@ -1,12 +1,6 @@
 import React ,{Component}from 'react';
-import { Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import {styles} from '../providerStyle';
-import DateSelect from "./dateSelect";
+import { Text, View, Image,SafeAreaView,TouchableOpacity,ActivityIndicator } from 'react-native';
 import DataContext from '../../providerContext';
-import CalendarPicker from 'react-native-calendar-picker';
-import { CheckBox } from 'react-native-elements';
-import moment from 'moment';
 import I18n from '../switchLanguage';
 
 export default class MyAccount extends Component {

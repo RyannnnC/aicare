@@ -1,7 +1,6 @@
 import React ,{Component}from 'react';
-import { Dimensions, Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
+import { Text,  View,  Image,TouchableOpacity,SafeAreaView } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 
