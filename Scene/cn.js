@@ -170,4 +170,7 @@ export default {
   personalMedicine:'个人药史',
   male:'男',
   female:'女',
+  sae:'上班时间不能晚于下班时间',
+  ebs:'下班时间不能早于上班时间',
+  cancel:'取消',
 }

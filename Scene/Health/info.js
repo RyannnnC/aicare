@@ -410,472 +410,567 @@ export default class Info extends Component {
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
         </View>
-          <View style={{marginTop:10, marginBottom:10}}>
-            <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceHours')}</Text>
+        <Text style={{ marginTop:10,marginBottom:10,fontSize:16, fontWeight: '400' }}>{I18n.t('serviceHours')}</Text>
+        <View  style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={{
+            backgroundColor:this.state.buttons[0].backgroundColor,
+            borderWidth: this.state.buttons[0].borderWidth,
+            width: 100,
+            height: 30,
+            borderRadius: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            marginRight: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+            onPress={()=>this.changeColor(0)}>
+            <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>{I18n.t('monday')}</Text>
+          </TouchableOpacity>
+          { this.state.buttons[0].pressed &&
+            <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.timePick} onPress={()=>{
+              let t = this.state.times;
+              t[0].visible1 = true;
+              this.setState({times:t})}}>
+              <Text>{moment(this.state.times[0].time1).tz(Localization.timezone).format('LT')} </Text>
+            </TouchableOpacity>
+              <Text> _ </Text>
+              <TouchableOpacity style={styles.timePick} onPress={()=>{
+                let t = this.state.times;
+                t[0].visible2 = true;
+                this.setState({times:t})}}>
+                <Text>{moment(this.state.times[0].time2).tz(Localization.timezone).format('LT')} </Text>
+              </TouchableOpacity>
+            </View>
+          }
+          <DateTimePicker
+            isVisible={this.state.times[0].visible1}
+            onConfirm={(time) => {
+              let st = moment.tz(time,Localization.timezone).format('HH:mm');
+              let et = moment.tz(this.state.times[0].time2,Localization.timezone).format('HH:mm');
+              console.log(st);
+              console.log(et)
+              if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                alert(I18n.t('sae'))
+              }else {
+              let t = this.state.times;
+              t[0].time1 = time;
+              t[0].visible1 = false;
+              this.setState({times:t})}}}
+            onCancel={()=> {
+                let t = this.state.times;
+                t[0].visible1 = false;
+              this.setState({times:t})}}
+            display="spinner"
+            mode={'time'}
+            value={this.state.times[0].time1}
+            minuteInterval={10}
+            />
+            <DateTimePicker
+              isVisible={this.state.times[0].visible2}
+              onConfirm={(time) => {
+                  let st = moment.tz(this.state.times[0].time1,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                    alert(I18n.t('ebs'))
+                  }else {
+                  let t = this.state.times;
+                  t[0].time2 = time;
+                  t[0].visible2 = false;
+                  this.setState({times:t})}}}
+              onCancel={()=> {
+                  let t = this.state.times;
+                  t[0].visible2 = false;
+                  this.setState({times:t})}}
+              display="spinner"
+              mode={'time'}
+              value={this.state.times[0].time2}
+              minuteInterval={10}
+              />
+        </View>
+        <View  style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={{
+            backgroundColor:this.state.buttons[1].backgroundColor,
+            borderWidth: this.state.buttons[1].borderWidth,
+            width: 100,
+            height: 30,
+            borderRadius: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            marginRight: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+            onPress={()=>this.changeColor(1)}>
+            <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>{I18n.t('tuesday')}</Text>
+          </TouchableOpacity>
+          { this.state.buttons[1].pressed &&
+            <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.timePick} onPress={()=>{
+              let t = this.state.times;
+              t[1].visible1 = true;
+              this.setState({times:t})}}>
+              <Text>{moment(this.state.times[1].time1).tz(Localization.timezone).format('LT')} </Text>
+            </TouchableOpacity>
+              <Text> _ </Text>
+              <TouchableOpacity style={styles.timePick} onPress={()=>{
+                let t = this.state.times;
+                t[1].visible2 = true;
+                this.setState({times:t})}}>
+                <Text>{moment(this.state.times[1].time2).tz(Localization.timezone).format('LT')} </Text>
+              </TouchableOpacity>
+            </View>
+          }
+          <DateTimePicker
+            isVisible={this.state.times[1].visible1}
+            onConfirm={(time) => {
+              let st = moment.tz(time,Localization.timezone).format('HH:mm');
+              let et = moment.tz(this.state.times[1].time2,Localization.timezone).format('HH:mm');
+              console.log(st);
+              console.log(et)
+              if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                alert(I18n.t('sae'))
+              }else {
+              let t = this.state.times;
+              t[1].time1 = time;
+              t[1].visible1 = false;
+              this.setState({times:t})}}}
+            onCancel={()=> {
+                let t = this.state.times;
+                t[1].visible1 = false;
+              this.setState({times:t})}}
+            display="spinner"
+            mode={'time'}
+            value={this.state.times[1].time1}
+            minuteInterval={10}
+            />
+            <DateTimePicker
+              isVisible={this.state.times[1].visible2}
+              onConfirm={(time) => {
+                let st = moment.tz(this.state.times[1].time1,Localization.timezone).format('HH:mm');
+                let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                console.log(st);
+                console.log(et)
+                if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                  alert(I18n.t('ebs'))
+                }else {
+                let t = this.state.times;
+                t[1].time2 = time;
+                t[1].visible2 = false;
+                this.setState({times:t})}}}
+              onCancel={()=> {
+                  let t = this.state.times;
+                  t[1].visible2 = false;
+                this.setState({times:t})}}
+              display="spinner"
+              mode={'time'}
+              value={this.state.times[1].time2}
+              minuteInterval={10}
+              />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={{
+            backgroundColor:this.state.buttons[2].backgroundColor,
+            borderWidth: this.state.buttons[2].borderWidth,
+            width: 100,
+            height: 30,
+            borderRadius: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            marginRight: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+            onPress={()=>this.changeColor(2)}>
+            <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>{I18n.t('wednesday')}</Text>
+          </TouchableOpacity>
+          { this.state.buttons[2].pressed &&
+            <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.timePick} onPress={()=>{
+              let t = this.state.times;
+              t[2].visible1 = true;
+              this.setState({times:t})}}>
+              <Text>{moment(this.state.times[2].time1).tz(Localization.timezone).format('LT')} </Text>
+            </TouchableOpacity>
+              <Text> _ </Text>
+              <TouchableOpacity style={styles.timePick} onPress={()=>{
+                let t = this.state.times;
+                t[2].visible2 = true;
+                this.setState({times:t})}}>
+                <Text>{moment(this.state.times[2].time2).tz(Localization.timezone).format('LT')} </Text>
+              </TouchableOpacity>
+            </View>
+          }
+          <DateTimePicker
+            isVisible={this.state.times[2].visible1}
+            onConfirm={(time) => {
+              let st = moment.tz(time,Localization.timezone).format('HH:mm');
+              let et = moment.tz(this.state.times[2].time2,Localization.timezone).format('HH:mm');
+              console.log(st);
+              console.log(et)
+              if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                alert(I18n.t('sae'))
+              }else {
+              let t = this.state.times;
+              t[2].time1 = time;
+              t[2].visible1 = false;
+              this.setState({times:t})}}}
+            onCancel={()=> {
+                let t = this.state.times;
+                t[2].visible1 = false;
+              this.setState({times:t})}}
+            display="spinner"
+            mode={'time'}
+            value={this.state.times[2].time1}
+            minuteInterval={10}
+            />
+            <DateTimePicker
+              isVisible={this.state.times[2].visible2}
+              onConfirm={(time) => {
+                let st = moment.tz(this.state.times[2].time1,Localization.timezone).format('HH:mm');
+                let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                console.log(st);
+                console.log(et)
+                if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                  alert(I18n.t('ebs'))
+                }else {
+                let t = this.state.times;
+                t[2].time2 = time;
+                t[2].visible2 = false;
+                this.setState({times:t})}}}
+              onCancel={()=> {
+                  let t = this.state.times;
+                  t[2].visible2 = false;
+                this.setState({times:t})}}
+              mode={'time'}
+              display="spinner"
+              value={this.state.times[2].time2}
+              minuteInterval={10}
+              />
           </View>
           <View  style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[0].backgroundColor,
-              borderWidth: this.state.buttons[0].borderWidth,
-              width: 100,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(0)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[0].fontColor }}>{I18n.t('monday')}</Text>
+          <TouchableOpacity style={{
+            backgroundColor:this.state.buttons[3].backgroundColor,
+            borderWidth: this.state.buttons[3].borderWidth,
+            width: 100,
+            height: 30,
+            borderRadius: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            marginRight: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+            onPress={()=>this.changeColor(3)}>
+            <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>{I18n.t('thursday')}</Text>
+          </TouchableOpacity>
+          { this.state.buttons[3].pressed &&
+            <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.timePick} onPress={()=>{
+              let t = this.state.times;
+              t[3].visible1 = true;
+              this.setState({times:t})}}>
+              <Text>{moment(this.state.times[3].time1).tz(Localization.timezone).format('LT')} </Text>
             </TouchableOpacity>
-            { this.state.buttons[0].pressed &&
-              <View style={{flexDirection: 'row'}}>
+              <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
-                t[0].visible1 = true;
+                t[3].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[0].time1).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[3].time2).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[0].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[0].time2).tz(Localization.timezone).format('LT')} </Text>
-                </TouchableOpacity>
-              </View>
-            }
+            </View>
+          }
+          <DateTimePicker
+            isVisible={this.state.times[3].visible1}
+            onConfirm={(time) => {
+              let st = moment.tz(time,Localization.timezone).format('HH:mm');
+              let et = moment.tz(this.state.times[3].time2,Localization.timezone).format('HH:mm');
+              console.log(st);
+              console.log(et)
+              if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                alert(I18n.t('sae'))
+              }else {
+              let t = this.state.times;
+              t[3].time1 = time;
+              t[3].visible1 = false;
+              this.setState({times:t})}}}
+            onCancel={()=> {
+                let t = this.state.times;
+                t[3].visible1 = false;
+              this.setState({times:t})}}
+            mode={'time'}
+            display="spinner"
+            value={this.state.times[3].time1}
+            minuteInterval={10}
+            />
             <DateTimePicker
-              isVisible={this.state.times[0].visible1}
+              isVisible={this.state.times[3].visible2}
               onConfirm={(time) => {
-                  console.log(time)
-                  let t = this.state.times;
-                  t[0].time1 = time;
-                  t[0].visible1 = false;
-                this.setState({times:t})}}
+                let st = moment.tz(this.state.times[3].time1,Localization.timezone).format('HH:mm');
+                let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                console.log(st);
+                console.log(et)
+                if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                  alert(I18n.t('ebs'))
+                }else {
+                let t = this.state.times;
+                t[3].time2 = time;
+                t[3].visible2 = false;
+                this.setState({times:t})}}}
               onCancel={()=> {
                   let t = this.state.times;
-                  t[0].visible1 = false;
+                  t[3].visible2 = false;
                 this.setState({times:t})}}
-              display="spinner"
               mode={'time'}
-              value={this.state.times[0].time1}
+              display="spinner"
+              value={this.state.times[3].time2}
               minuteInterval={10}
               />
-              <DateTimePicker
-                isVisible={this.state.times[0].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[0].time2 = time;
-                    t[0].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[0].visible2 = false;
-                  this.setState({times:t})}}
-                display="spinner"
-                mode={'time'}
-                value={this.state.times[0].time2}
-                minuteInterval={10}
-                />
           </View>
-          <View  style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[1].backgroundColor,
-              borderWidth: this.state.buttons[1].borderWidth,
-              width: 100,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(1)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[1].fontColor }}>{I18n.t('tuesday')}</Text>
-            </TouchableOpacity>
-            { this.state.buttons[1].pressed &&
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[1].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{moment(this.state.times[1].time1).tz(Localization.timezone).format('LT')} </Text>
-              </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[1].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[1].time2).tz(Localization.timezone).format('LT')} </Text>
-                </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[1].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[1].time1 = time;
-                  t[1].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[1].visible1 = false;
-                this.setState({times:t})}}
-              display="spinner"
-              mode={'time'}
-              value={this.state.times[1].time1}
-              minuteInterval={10}
-              />
-              <DateTimePicker
-                isVisible={this.state.times[1].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[1].time2 = time;
-                    t[1].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[1].visible2 = false;
-                  this.setState({times:t})}}
-                display="spinner"
-                mode={'time'}
-                value={this.state.times[1].time2}
-                minuteInterval={10}
-                />
-            </View>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={{
+            backgroundColor:this.state.buttons[4].backgroundColor,
+            borderWidth: this.state.buttons[4].borderWidth,
+            width: 100,
+            height: 30,
+            borderRadius: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            marginRight: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+            onPress={()=>this.changeColor(4)}>
+            <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>{I18n.t('friday')}</Text>
+          </TouchableOpacity>
+          { this.state.buttons[4].pressed &&
             <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[2].backgroundColor,
-              borderWidth: this.state.buttons[2].borderWidth,
-              width: 100,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(2)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[2].fontColor }}>{I18n.t('wednesday')}</Text>
+            <TouchableOpacity style={styles.timePick} onPress={()=>{
+              let t = this.state.times;
+              t[4].visible1 = true;
+              this.setState({times:t})}}>
+              <Text>{moment(this.state.times[4].time1).tz(Localization.timezone).format('LT')} </Text>
             </TouchableOpacity>
-            { this.state.buttons[2].pressed &&
-              <View style={{flexDirection: 'row'}}>
+              <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
-                t[2].visible1 = true;
+                t[4].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[2].time1).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[4].time2).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[2].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[2].time2).tz(Localization.timezone).format('LT')} </Text>
-                </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[2].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[2].time1 = time;
-                  t[2].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[2].visible1 = false;
-                this.setState({times:t})}}
-              display="spinner"
-              mode={'time'}
-              value={this.state.times[2].time1}
-              minuteInterval={10}
-              />
-              <DateTimePicker
-                isVisible={this.state.times[2].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[2].time2 = time;
-                    t[2].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[2].visible2 = false;
-                  this.setState({times:t})}}
-                mode={'time'}
-                display="spinner"
-                value={this.state.times[2].time2}
-                minuteInterval={10}
-                />
             </View>
-            <View  style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[3].backgroundColor,
-              borderWidth: this.state.buttons[3].borderWidth,
-              width: 100,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(3)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[3].fontColor }}>{I18n.t('thursday')}</Text>
-            </TouchableOpacity>
-            { this.state.buttons[3].pressed &&
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
+          }
+          <DateTimePicker
+            isVisible={this.state.times[4].visible1}
+            onConfirm={(time) => {
+              let st = moment.tz(time,Localization.timezone).format('HH:mm');
+              let et = moment.tz(this.state.times[4].time2,Localization.timezone).format('HH:mm');
+              console.log(st);
+              console.log(et)
+              if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                alert(I18n.t('sae'))
+              }else {
+              let t = this.state.times;
+              t[4].time1 = time;
+              t[4].visible1 = false;
+              this.setState({times:t})}}}
+            onCancel={()=> {
                 let t = this.state.times;
-                t[3].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{moment(this.state.times[3].time1).tz(Localization.timezone).format('LT')} </Text>
-              </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[3].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[3].time2).tz(Localization.timezone).format('LT')} </Text>
-                </TouchableOpacity>
-              </View>
-            }
+                t[4].visible1 = false;
+              this.setState({times:t})}}
+            mode={'time'}
+            display="spinner"
+            value={this.state.times[4].time1}
+            minuteInterval={10}
+            />
             <DateTimePicker
-              isVisible={this.state.times[3].visible1}
+              isVisible={this.state.times[4].visible2}
               onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[3].time1 = time;
-                  t[3].visible1 = false;
-                this.setState({times:t})}}
+                let st = moment.tz(this.state.times[4].time1,Localization.timezone).format('HH:mm');
+                let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                console.log(st);
+                console.log(et)
+                if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                  alert(I18n.t('ebs'))
+                }else {
+                let t = this.state.times;
+                t[4].time2 = time;
+                t[4].visible2 = false;
+                this.setState({times:t})}}}
               onCancel={()=> {
                   let t = this.state.times;
-                  t[3].visible1 = false;
-                this.setState({times:t})}}
-              mode={'time'}
-              display="spinner"
-              value={this.state.times[3].time1}
-              minuteInterval={10}
-              />
-              <DateTimePicker
-                isVisible={this.state.times[3].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[3].time2 = time;
-                    t[3].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[3].visible2 = false;
-                  this.setState({times:t})}}
-                mode={'time'}
-                display="spinner"
-                value={this.state.times[3].time2}
-                minuteInterval={10}
-                />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[4].backgroundColor,
-              borderWidth: this.state.buttons[4].borderWidth,
-              width: 100,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(4)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[4].fontColor }}>{I18n.t('friday')}</Text>
-            </TouchableOpacity>
-            { this.state.buttons[4].pressed &&
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity style={styles.timePick} onPress={()=>{
-                let t = this.state.times;
-                t[4].visible1 = true;
-                this.setState({times:t})}}>
-                <Text>{moment(this.state.times[4].time1).tz(Localization.timezone).format('LT')} </Text>
-              </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[4].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[4].time2).tz(Localization.timezone).format('LT')} </Text>
-                </TouchableOpacity>
-              </View>
-            }
-            <DateTimePicker
-              isVisible={this.state.times[4].visible1}
-              onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[4].time1 = time;
-                  t[4].visible1 = false;
-                this.setState({times:t})}}
-              onCancel={()=> {
-                  let t = this.state.times;
-                  t[4].visible1 = false;
+                  t[4].visible2 = false;
                 this.setState({times:t})}}
               mode={'time'}
               display="spinner"
               value={this.state.times[4].time1}
               minuteInterval={10}
               />
-              <DateTimePicker
-                isVisible={this.state.times[4].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[4].time2 = time;
-                    t[4].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[4].visible2 = false;
-                  this.setState({times:t})}}
-                mode={'time'}
-                display="spinner"
-                value={this.state.times[4].time1}
-                minuteInterval={10}
-                />
-            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={{
+            backgroundColor:this.state.buttons[5].backgroundColor,
+            borderWidth: this.state.buttons[5].borderWidth,
+            width: 100,
+            height: 30,
+            borderRadius: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            marginRight: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+            onPress={()=>this.changeColor(5)}>
+            <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>{I18n.t('saturday')}</Text>
+          </TouchableOpacity>
+          { this.state.buttons[5].pressed &&
             <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[5].backgroundColor,
-              borderWidth: this.state.buttons[5].borderWidth,
-              width: 100,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(5)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[5].fontColor }}>{I18n.t('saturday')}</Text>
+            <TouchableOpacity style={styles.timePick} onPress={()=>{
+              let t = this.state.times;
+              t[5].visible1 = true;
+              this.setState({times:t})}}>
+              <Text>{moment(this.state.times[5].time1).tz(Localization.timezone).format('LT')} </Text>
             </TouchableOpacity>
-            { this.state.buttons[5].pressed &&
-              <View style={{flexDirection: 'row'}}>
+              <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
-                t[5].visible1 = true;
+                t[5].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[5].time1).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[5].time2).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[5].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[5].time2).tz(Localization.timezone).format('LT')} </Text>
-                </TouchableOpacity>
-              </View>
-            }
+            </View>
+          }
+          <DateTimePicker
+            isVisible={this.state.times[5].visible1}
+            onConfirm={(time) => {
+              let st = moment.tz(time,Localization.timezone).format('HH:mm');
+              let et = moment.tz(this.state.times[5].time2,Localization.timezone).format('HH:mm');
+              console.log(st);
+              console.log(et)
+              if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                alert(I18n.t('sae'))
+              }else {
+              let t = this.state.times;
+              t[5].time1 = time;
+              t[5].visible1 = false;
+              this.setState({times:t})}}}
+            onCancel={()=> {
+                let t = this.state.times;
+                t[5].visible1 = false;
+              this.setState({times:t})}}
+            mode={'time'}
+            display="spinner"
+            value={this.state.times[5].time1}
+            minuteInterval={10}
+            />
             <DateTimePicker
-              isVisible={this.state.times[5].visible1}
+              isVisible={this.state.times[5].visible2}
               onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[5].time1 = time;
-                  t[5].visible1 = false;
-                this.setState({times:t})}}
+                let st = moment.tz(this.state.times[5].time1,Localization.timezone).format('HH:mm');
+                let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                console.log(st);
+                console.log(et)
+                if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                  alert(I18n.t('ebs'))
+                }else {
+                let t = this.state.times;
+                t[5].time2 = time;
+                t[5].visible2 = false;
+                this.setState({times:t})}}}
               onCancel={()=> {
                   let t = this.state.times;
-                  t[5].visible1 = false;
+                  t[5].visible2 = false;
                 this.setState({times:t})}}
               mode={'time'}
               display="spinner"
-              value={this.state.times[5].time1}
+              value={this.state.times[5].time2}
               minuteInterval={10}
               />
-              <DateTimePicker
-                isVisible={this.state.times[5].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[5].time2 = time;
-                    t[5].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[5].visible2 = false;
-                  this.setState({times:t})}}
-                mode={'time'}
-                display="spinner"
-                value={this.state.times[5].time2}
-                minuteInterval={10}
-                />
-            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={{
+            backgroundColor:this.state.buttons[6].backgroundColor,
+            borderWidth: this.state.buttons[6].borderWidth,
+            width: 100,
+            height: 30,
+            borderRadius: 10,
+            marginTop: 5,
+            marginBottom: 5,
+            marginRight: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}
+            onPress={()=>this.changeColor(6)}>
+            <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>{I18n.t('sunday')}</Text>
+          </TouchableOpacity>
+          { this.state.buttons[6].pressed &&
             <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={{
-              backgroundColor:this.state.buttons[6].backgroundColor,
-              borderWidth: this.state.buttons[6].borderWidth,
-              width: 100,
-              height: 30,
-              borderRadius: 10,
-              marginTop: 5,
-              marginBottom: 5,
-              marginRight: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-              }}
-              onPress={()=>this.changeColor(6)}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: this.state.buttons[6].fontColor }}>{I18n.t('sunday')}</Text>
+            <TouchableOpacity style={styles.timePick} onPress={()=>{
+              let t = this.state.times;
+              t[6].visible1 = true;
+              this.setState({times:t})}}>
+              <Text>{moment(this.state.times[6].time1).tz(Localization.timezone).format('LT')}</Text>
             </TouchableOpacity>
-            { this.state.buttons[6].pressed &&
-              <View style={{flexDirection: 'row'}}>
+              <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
-                t[6].visible1 = true;
+                t[6].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[6].time1).tz(Localization.timezone).format('LT')}</Text>
+                <Text>{moment(this.state.times[6].time2).tz(Localization.timezone).format('LT')} </Text>
               </TouchableOpacity>
-                <Text> _ </Text>
-                <TouchableOpacity style={styles.timePick} onPress={()=>{
-                  let t = this.state.times;
-                  t[6].visible2 = true;
-                  this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[6].time2).tz(Localization.timezone).format('LT')} </Text>
-                </TouchableOpacity>
-              </View>
-            }
+            </View>
+          }
+          <DateTimePicker
+            isVisible={this.state.times[6].visible1}
+            onConfirm={(time) => {
+              let st = moment.tz(time,Localization.timezone).format('HH:mm');
+              let et = moment.tz(this.state.times[6].time2,Localization.timezone).format('HH:mm');
+              console.log(st);
+              console.log(et)
+              if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                alert(I18n.t('sae'))
+              }else {
+              let t = this.state.times;
+              t[6].time1 = time;
+              t[6].visible1 = false;
+              this.setState({times:t})}}}
+            onCancel={()=> {
+                let t = this.state.times;
+                t[6].visible1 = false;
+              this.setState({times:t})}}
+            mode={'time'}
+            display="spinner"
+            value={this.state.times[6].time1}
+            minuteInterval={10}
+            />
             <DateTimePicker
-              isVisible={this.state.times[6].visible1}
+              isVisible={this.state.times[6].visible2}
               onConfirm={(time) => {
-                  let t = this.state.times;
-                  t[6].time1 =time;
-                  t[6].visible1 = false;
-                this.setState({times:t})}}
+                let st = moment.tz(this.state.times[6].time1,Localization.timezone).format('HH:mm');
+                let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                console.log(st);
+                console.log(et)
+                if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                  alert(I18n.t('ebs'))
+                }else {
+                let t = this.state.times;
+                t[6].time2 = time;
+                t[6].visible2 = false;
+                this.setState({times:t})}}}
               onCancel={()=> {
                   let t = this.state.times;
-                  t[6].visible1 = false;
+                  t[6].visible2 = false;
                 this.setState({times:t})}}
               mode={'time'}
               display="spinner"
-              value={this.state.times[6].time1}
+              value={this.state.times[6].time2}
               minuteInterval={10}
               />
-              <DateTimePicker
-                isVisible={this.state.times[6].visible2}
-                onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[6].time2 = time;
-                    t[6].visible2 = false;
-                  this.setState({times:t})}}
-                onCancel={()=> {
-                    let t = this.state.times;
-                    t[6].visible2 = false;
-                  this.setState({times:t})}}
-                mode={'time'}
-                display="spinner"
-                value={this.state.times[6].time2}
-                minuteInterval={10}
-                />
-            </View>
+          </View>
             <View style={{marginTop:10, marginBottom:10}}>
               <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
             </View>

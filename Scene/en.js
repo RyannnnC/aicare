@@ -170,4 +170,7 @@ export default {
   personalMedicine:'Medication History',
   male:'Male',
   female:'Female',
+  sae:'Opening Hour can not be later than Closing Hour',
+  ebs:'Closing Hour can not be earlier than Opening Hour',
+  cancel:'Cancel',
 }

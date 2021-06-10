@@ -32,50 +32,7 @@ export default class ProcessingOrder extends Component {
   /*
 } */
   componentDidMount = () => {
-    this.setState({isLoading:true})
-    let tp = 1;
-    if (this.context.employerId !=null) {
-      tp = 2;
-    }
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = 'http://'
-      +this.context.url
-      +'/aicare-business-api/business/appointment/query?status=1'
-      + '&type=' + tp;
-        fetch(url,{
-          method: 'GET',
-          mode: 'cors',
-          credentials: 'include',
-          headers: {
-          'Accept':       'application/json',
-          'Content-Type': 'application/json',
-          'sso-auth-token': this.context.token,
-          'sso-refresh-token': this.context.refresh_token,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-        }})
-        .then((response) => response.json())
-        .then((json) => {
-          this.setState({isLoading:false})
-          if (json.code === 0) {
-            console.log(json);
-            this.setState({data:json.page});
-            for(let i=0; i<json.page.length;i++){
-              var d= {
-                id:json.page[i].id,
-                visible:false,
-              }
-              let t = this.state.mds;
-              t.push(d);
-              this.setState({mds:t});
-            }
-          } else {
-            console.log(json.msg)
-          }
-        }).catch(error => console.warn(error));
-    });
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {this.query()});
   }
 
   setIsEnabled = (value) => {
@@ -254,6 +211,50 @@ export default class ProcessingOrder extends Component {
             console.log(json.msg)
           }
         }).catch(error => console.warn(error));
+  }
+  query() {
+    this.setState({isLoading:true})
+    let tp = 1;
+    if (this.context.employerId !=null) {
+      tp = 2;
+    }
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/appointment/query?status=1'
+    + '&type=' + tp;
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }})
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({isLoading:false})
+        if (json.code === 0) {
+          console.log(json);
+          this.setState({data:json.page});
+          for(let i=0; i<json.page.length;i++){
+            var d= {
+              id:json.page[i].id,
+              visible:false,
+            }
+            let t = this.state.mds;
+            t.push(d);
+            this.setState({mds:t});
+          }
+        } else {
+          console.log(json.msg)
+        }
+      }).catch(error => console.warn(error));
   }
   queryType(type){
     this.setState({
@@ -755,6 +756,7 @@ elevation: 24,}}>
                             alignItems: 'center',
                             justifyContent:'center',
                             borderRadius:25,}}
+                            onPress={() => {this.query();this.setVisible(!this.state.Visible);}}
           >
           <Image
             style={{width:40,height:40}}
@@ -782,7 +784,7 @@ elevation: 24,}}>
                             alignItems: 'center',
                             justifyContent:'center',
                             borderRadius:25,}}
-                            onPress={() => {this.queryType(1);}}
+                            onPress={() => {this.queryType(1);this.setVisible(!this.state.Visible);}}
                             >
           <Image
             style={{width:40,height:40}}
@@ -809,7 +811,7 @@ elevation: 24,}}>
                             alignItems: 'center',
                             justifyContent:'center',
                             borderRadius:25,}}
-                            onPress={() => {this.queryType(2);}}
+                            onPress={() => {this.queryType(2);this.setVisible(!this.state.Visible);}}
                             >
 
           <Image
@@ -837,7 +839,7 @@ elevation: 24,}}>
                             alignItems: 'center',
                             justifyContent:'center',
                             borderRadius:25,}}
-                            onPress={() => {this.queryType(3);}}
+                            onPress={() => {this.queryType(3);this.setVisible(!this.state.Visible);}}
                             >
 
           <Image
@@ -864,7 +866,7 @@ elevation: 24,}}>
                             alignItems: 'center',
                             justifyContent:'center',
                             borderRadius:25,}}
-                            onPress={() => {this.queryType(4);}}>
+                            onPress={() => {this.queryType(4);this.setVisible(!this.state.Visible);}}>
           <Image
             style={{width:40,height:40}}
             source = {require('../../images/providerImg/中医.png')}
@@ -889,7 +891,7 @@ elevation: 24,}}>
                             alignItems: 'center',
                             justifyContent:'center',
                             borderRadius:25,}}
-                            onPress={() => {this.queryType(5);}}
+                            onPress={() => {this.queryType(5);this.setVisible(!this.state.Visible);}}
                             >
           <Image
             style={{width:40,height:40}}
@@ -915,7 +917,7 @@ elevation: 24,}}>
                             alignItems: 'center',
                             justifyContent:'center',
                             borderRadius:25,}}
-                            onPress={() => {this.queryType(6);}}>
+                            onPress={() => {this.queryType(6);this.setVisible(!this.state.Visible);}}>
           <Image
             style={{width:40,height:40}}
             source = {require('../../images/providerImg/康复.png')}
@@ -940,16 +942,6 @@ elevation: 24,}}>
         style = {styles.finishImg}
         source = {require('../../images/providerImg/order_img_empty_inprogress1.png')}
       />
-      <TouchableOpacity style={{width: 75,
-        height: 25,
-        backgroundColor: '#FF7E67',
-        borderRadius: 10,
-        marginTop: 15,
-        marginLeft:20,
-        justifyContent: "center",
-        alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id: null})}}>
-        <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
-      </TouchableOpacity>
      <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，快去接取吧！</Text>
      </View>
     )

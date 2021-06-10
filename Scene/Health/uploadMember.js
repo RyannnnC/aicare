@@ -1,10 +1,10 @@
 import React ,{Component}from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator  } from 'react-native';
+import { Modal,Text, Button, View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialCommunityIcons, MaterialIcons, Ionicons ,AntDesign} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
-import moment from 'moment-timezone';
+import moment from 'moment';
 import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
@@ -24,8 +24,9 @@ export default class UploadMember extends Component {
         oimage:null,
         pressed:false,
         we:0,
-        gender:'f',
+        gender:0,
         isLoading:false,
+        visible:false,
         types: [
           { value:'1',name:'全科问诊',status: 0},
           { value:'2',name:'牙科问诊',status: 0},
@@ -53,18 +54,18 @@ export default class UploadMember extends Component {
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         ],
         times: [
-            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-            { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
+            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
+            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
+            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
+            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
+            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
+            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
         ]
       }
     }
 
-    componentDidMount ()  {
+    async componentDidMount ()  {
       console.log(this.props.route.params.id);
       this.setState({isLoading:true})
       if(this.props.route.params.id !=null){
@@ -97,6 +98,7 @@ export default class UploadMember extends Component {
                 we:json.employerInfo.workLong,
                 languages:json.employerInfo.languages,
                 email:json.employerInfo.email,
+                gender:parseInt(json.employerInfo.gender),
                 oimage:json.employerInfo.imgUrl,
               })
               let i;
@@ -160,7 +162,10 @@ export default class UploadMember extends Component {
       } else{
         this.setState({isLoading:false})
       }
-
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      this.setState({ hasCameraPermission: status === "granted" });
+      const { c_status } = await Permissions.askAsync(Permissions.CAMERA);
+      this.setState({ hasCameraPermission: c_status === "granted" });
     }
   changeColor(index){
     let but = this.state.buttons;
@@ -208,6 +213,7 @@ export default class UploadMember extends Component {
         introduce:this.context.mintro,
         workLong:this.state.we,
         email:this.state.email,
+        gender:this.state.gender,
         employerSchedulevos:[
             {
                 "dayOfWeek": 1,
@@ -341,6 +347,7 @@ export default class UploadMember extends Component {
         introduce:this.context.mintro,
         workLong:this.state.we,
         email:this.state.email,
+        gender:this.state.gender,
         employerSchedulevos:[
             {
                 "dayOfWeek": 1,
@@ -463,12 +470,24 @@ export default class UploadMember extends Component {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
+    this.setState({visible:false});
     if (!result.cancelled) {
       this.setState({image:result.uri});
     }
   };
 
+  launchCamera = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+    this.setState({visible:false});
+    if (!result.cancelled) {
+      this.setState({image:result.uri});
+    }
+  };
   render() {
     let languages =[];
     if(this.context.mlan.length>0) {
@@ -493,7 +512,7 @@ export default class UploadMember extends Component {
       <ScrollView style={{ flex: 1 }}>
         <View style={{flex:1,width:'90%'}}>
         <View style={{ marginTop:10,marginBottom:20,justifyContent: "center",alignItems: "center" }}>
-          <TouchableOpacity onPress={this.pickImage}>
+          <TouchableOpacity onPress={() => {this.setState({visible:true})}}>
           {this.state.image ?
           <Image style={{width:80,height:80,borderRadius:40}}
                 source={{ uri: this.state.image }}
@@ -525,7 +544,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400'}}>{I18n.t('gender')}</Text>
        <SwitchSelector
-        initial={0}
+        value={this.state.gender}
         onPress={value => this.setState({ gender: value })}
         buttonColor='#8FD7D3'
         borderColor='#8FD7D3'
@@ -533,8 +552,8 @@ export default class UploadMember extends Component {
         style={{width:200,marginLeft:30}}
         height={35}
         options={[
-          { label: I18n.t('female'), value: "f",}, //images.feminino = require('./path_to/assets/img/feminino.png')
-          { label: I18n.t('male'), value: "m", } //images.masculino = require('./path_to/assets/img/masculino.png')
+          { label: I18n.t('female'), value: 0,}, //images.feminino = require('./path_to/assets/img/feminino.png')
+          { label: I18n.t('male'), value: 1, } //images.masculino = require('./path_to/assets/img/masculino.png')
         ]}
         testID="gender-switch-selector"
         accessibilityLabel="gender-switch-selector"
@@ -543,7 +562,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "04*******"
-          value={this.state.phone}
+          value={this.state.phone.toString()}
           keyboardType="numeric"
           onChangeText={(text) => {this.setState({phone:text})}}/>
         </View>
@@ -650,7 +669,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('experience')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "Input Only a number"
-            value={this.state.we}
+            value={this.state.we.toString()}
             keyboardType="numeric"
             onChangeText={(number) => {this.setState({we:number})}}/>
         </View>
@@ -675,7 +694,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row' , marginBottom:10}}>
         {this.context.mlan.length>0 ? languages:
         <Text style={{marginTop:5}}>{I18n.t('nosupLanguage')}</Text>}
-          <TouchableOpacity  onPress={() => this.props.navigation.navigate(I18n.t('mlan'))}>
+          <TouchableOpacity  onPress={() => this.props.navigation.navigate(I18n.t('mlan'),{})}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -717,11 +736,17 @@ export default class UploadMember extends Component {
               <DateTimePicker
                 isVisible={this.state.times[0].visible1}
                 onConfirm={(time) => {
-                    console.log(time)
-                    let t = this.state.times;
-                    t[0].time1 = time;
-                    t[0].visible1 = false;
-                  this.setState({times:t})}}
+                  let st = moment.tz(time,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(this.state.times[0].time2,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                    alert(I18n.t('sae'))
+                  }else {
+                  let t = this.state.times;
+                  t[0].time1 = time;
+                  t[0].visible1 = false;
+                  this.setState({times:t})}}}
                 onCancel={()=> {
                     let t = this.state.times;
                     t[0].visible1 = false;
@@ -734,14 +759,21 @@ export default class UploadMember extends Component {
                 <DateTimePicker
                   isVisible={this.state.times[0].visible2}
                   onConfirm={(time) => {
+                      let st = moment.tz(this.state.times[0].time1,Localization.timezone).format('HH:mm');
+                      let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                      console.log(st);
+                      console.log(et)
+                      if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                        alert(I18n.t('ebs'))
+                      }else {
                       let t = this.state.times;
                       t[0].time2 = time;
                       t[0].visible2 = false;
-                    this.setState({times:t})}}
+                      this.setState({times:t})}}}
                   onCancel={()=> {
                       let t = this.state.times;
                       t[0].visible2 = false;
-                    this.setState({times:t})}}
+                      this.setState({times:t})}}
                   display="spinner"
                   mode={'time'}
                   value={this.state.times[0].time2}
@@ -784,10 +816,17 @@ export default class UploadMember extends Component {
               <DateTimePicker
                 isVisible={this.state.times[1].visible1}
                 onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[1].time1 = time;
-                    t[1].visible1 = false;
-                  this.setState({times:t})}}
+                  let st = moment.tz(time,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(this.state.times[1].time2,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                    alert(I18n.t('sae'))
+                  }else {
+                  let t = this.state.times;
+                  t[1].time1 = time;
+                  t[1].visible1 = false;
+                  this.setState({times:t})}}}
                 onCancel={()=> {
                     let t = this.state.times;
                     t[1].visible1 = false;
@@ -800,10 +839,17 @@ export default class UploadMember extends Component {
                 <DateTimePicker
                   isVisible={this.state.times[1].visible2}
                   onConfirm={(time) => {
-                      let t = this.state.times;
-                      t[1].time2 = time;
-                      t[1].visible2 = false;
-                    this.setState({times:t})}}
+                    let st = moment.tz(this.state.times[1].time1,Localization.timezone).format('HH:mm');
+                    let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                    console.log(st);
+                    console.log(et)
+                    if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                      alert(I18n.t('ebs'))
+                    }else {
+                    let t = this.state.times;
+                    t[1].time2 = time;
+                    t[1].visible2 = false;
+                    this.setState({times:t})}}}
                   onCancel={()=> {
                       let t = this.state.times;
                       t[1].visible2 = false;
@@ -850,10 +896,17 @@ export default class UploadMember extends Component {
               <DateTimePicker
                 isVisible={this.state.times[2].visible1}
                 onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[2].time1 = time;
-                    t[2].visible1 = false;
-                  this.setState({times:t})}}
+                  let st = moment.tz(time,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(this.state.times[2].time2,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                    alert(I18n.t('sae'))
+                  }else {
+                  let t = this.state.times;
+                  t[2].time1 = time;
+                  t[2].visible1 = false;
+                  this.setState({times:t})}}}
                 onCancel={()=> {
                     let t = this.state.times;
                     t[2].visible1 = false;
@@ -866,10 +919,17 @@ export default class UploadMember extends Component {
                 <DateTimePicker
                   isVisible={this.state.times[2].visible2}
                   onConfirm={(time) => {
-                      let t = this.state.times;
-                      t[2].time2 = time;
-                      t[2].visible2 = false;
-                    this.setState({times:t})}}
+                    let st = moment.tz(this.state.times[2].time1,Localization.timezone).format('HH:mm');
+                    let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                    console.log(st);
+                    console.log(et)
+                    if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                      alert(I18n.t('ebs'))
+                    }else {
+                    let t = this.state.times;
+                    t[2].time2 = time;
+                    t[2].visible2 = false;
+                    this.setState({times:t})}}}
                   onCancel={()=> {
                       let t = this.state.times;
                       t[2].visible2 = false;
@@ -916,10 +976,17 @@ export default class UploadMember extends Component {
               <DateTimePicker
                 isVisible={this.state.times[3].visible1}
                 onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[3].time1 = time;
-                    t[3].visible1 = false;
-                  this.setState({times:t})}}
+                  let st = moment.tz(time,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(this.state.times[3].time2,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                    alert(I18n.t('sae'))
+                  }else {
+                  let t = this.state.times;
+                  t[3].time1 = time;
+                  t[3].visible1 = false;
+                  this.setState({times:t})}}}
                 onCancel={()=> {
                     let t = this.state.times;
                     t[3].visible1 = false;
@@ -932,10 +999,17 @@ export default class UploadMember extends Component {
                 <DateTimePicker
                   isVisible={this.state.times[3].visible2}
                   onConfirm={(time) => {
-                      let t = this.state.times;
-                      t[3].time2 = time;
-                      t[3].visible2 = false;
-                    this.setState({times:t})}}
+                    let st = moment.tz(this.state.times[3].time1,Localization.timezone).format('HH:mm');
+                    let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                    console.log(st);
+                    console.log(et)
+                    if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                      alert(I18n.t('ebs'))
+                    }else {
+                    let t = this.state.times;
+                    t[3].time2 = time;
+                    t[3].visible2 = false;
+                    this.setState({times:t})}}}
                   onCancel={()=> {
                       let t = this.state.times;
                       t[3].visible2 = false;
@@ -982,10 +1056,17 @@ export default class UploadMember extends Component {
               <DateTimePicker
                 isVisible={this.state.times[4].visible1}
                 onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[4].time1 = time;
-                    t[4].visible1 = false;
-                  this.setState({times:t})}}
+                  let st = moment.tz(time,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(this.state.times[4].time2,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                    alert(I18n.t('sae'))
+                  }else {
+                  let t = this.state.times;
+                  t[4].time1 = time;
+                  t[4].visible1 = false;
+                  this.setState({times:t})}}}
                 onCancel={()=> {
                     let t = this.state.times;
                     t[4].visible1 = false;
@@ -998,10 +1079,17 @@ export default class UploadMember extends Component {
                 <DateTimePicker
                   isVisible={this.state.times[4].visible2}
                   onConfirm={(time) => {
-                      let t = this.state.times;
-                      t[4].time2 = time;
-                      t[4].visible2 = false;
-                    this.setState({times:t})}}
+                    let st = moment.tz(this.state.times[4].time1,Localization.timezone).format('HH:mm');
+                    let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                    console.log(st);
+                    console.log(et)
+                    if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                      alert(I18n.t('ebs'))
+                    }else {
+                    let t = this.state.times;
+                    t[4].time2 = time;
+                    t[4].visible2 = false;
+                    this.setState({times:t})}}}
                   onCancel={()=> {
                       let t = this.state.times;
                       t[4].visible2 = false;
@@ -1048,10 +1136,17 @@ export default class UploadMember extends Component {
               <DateTimePicker
                 isVisible={this.state.times[5].visible1}
                 onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[5].time1 = time;
-                    t[5].visible1 = false;
-                  this.setState({times:t})}}
+                  let st = moment.tz(time,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(this.state.times[5].time2,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                    alert(I18n.t('sae'))
+                  }else {
+                  let t = this.state.times;
+                  t[5].time1 = time;
+                  t[5].visible1 = false;
+                  this.setState({times:t})}}}
                 onCancel={()=> {
                     let t = this.state.times;
                     t[5].visible1 = false;
@@ -1064,10 +1159,17 @@ export default class UploadMember extends Component {
                 <DateTimePicker
                   isVisible={this.state.times[5].visible2}
                   onConfirm={(time) => {
-                      let t = this.state.times;
-                      t[5].time2 = time;
-                      t[5].visible2 = false;
-                    this.setState({times:t})}}
+                    let st = moment.tz(this.state.times[5].time1,Localization.timezone).format('HH:mm');
+                    let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                    console.log(st);
+                    console.log(et)
+                    if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                      alert(I18n.t('ebs'))
+                    }else {
+                    let t = this.state.times;
+                    t[5].time2 = time;
+                    t[5].visible2 = false;
+                    this.setState({times:t})}}}
                   onCancel={()=> {
                       let t = this.state.times;
                       t[5].visible2 = false;
@@ -1114,10 +1216,17 @@ export default class UploadMember extends Component {
               <DateTimePicker
                 isVisible={this.state.times[6].visible1}
                 onConfirm={(time) => {
-                    let t = this.state.times;
-                    t[6].time1 =time;
-                    t[6].visible1 = false;
-                  this.setState({times:t})}}
+                  let st = moment.tz(time,Localization.timezone).format('HH:mm');
+                  let et = moment.tz(this.state.times[6].time2,Localization.timezone).format('HH:mm');
+                  console.log(st);
+                  console.log(et)
+                  if (moment(st,'HH:mm').isAfter(moment(et,'HH:mm'))) {
+                    alert(I18n.t('sae'))
+                  }else {
+                  let t = this.state.times;
+                  t[6].time1 = time;
+                  t[6].visible1 = false;
+                  this.setState({times:t})}}}
                 onCancel={()=> {
                     let t = this.state.times;
                     t[6].visible1 = false;
@@ -1130,10 +1239,17 @@ export default class UploadMember extends Component {
                 <DateTimePicker
                   isVisible={this.state.times[6].visible2}
                   onConfirm={(time) => {
-                      let t = this.state.times;
-                      t[6].time2 = time;
-                      t[6].visible2 = false;
-                    this.setState({times:t})}}
+                    let st = moment.tz(this.state.times[6].time1,Localization.timezone).format('HH:mm');
+                    let et = moment.tz(time,Localization.timezone).format('HH:mm');
+                    console.log(st);
+                    console.log(et)
+                    if (moment(et,'HH:mm').isBefore(moment(st,'HH:mm'))) {
+                      alert(I18n.t('ebs'))
+                    }else {
+                    let t = this.state.times;
+                    t[6].time2 = time;
+                    t[6].visible2 = false;
+                    this.setState({times:t})}}}
                   onCancel={()=> {
                       let t = this.state.times;
                       t[6].visible2 = false;
@@ -1250,6 +1366,30 @@ export default class UploadMember extends Component {
         </TouchableOpacity>
         </View>
       </ScrollView>
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={this.state.visible}
+      onRequestClose={()=>{
+        this.setVisible(!this.state.visible);}
+      }>
+        <TouchableOpacity style={{width:'100%',height:'65%'}} onPress={() => {this.setState({visible:false})}}>
+        </TouchableOpacity>
+        <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'35%',backgroundColor:'#FFFAF0'}}>
+          <Text style={{height:'10%',padding:5,borderBottomWidth:1,borderBottomColor:'#EEEEEE', fontSize:20, fontWeight: '400', color: '#0000FF' }}>Choose Your Upload Method</Text>
+          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
+          onPress={this.launchCamera}>
+            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Take a photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
+          onPress={this.pickImage}>
+            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Pick a Image</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}} onPress={() => {this.setState({visible:false})}}>
+            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>{I18n.t('cancel')}</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );}}
 }

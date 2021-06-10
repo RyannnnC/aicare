@@ -17,6 +17,16 @@ export default class Login extends Component {
 
   loginRequest() {
     let s = this.state;
+    let ct = 0;
+    if (Platform.isPad) {
+      ct = 4
+    } else if (Platform.OS ==='android') {
+      ct = 1
+    } else if (Platform.OS ==='ios') {
+      ct = 2
+    } else {
+      ct = 3
+    }
     if (s.info.length === 0) {
         Alert.alert("Enter a valid phone or email");
         return false;
@@ -30,6 +40,7 @@ export default class Login extends Component {
     +'/aicare-business-api/business/user/login?'
     +'loginName='+ s.info
     +'&passWord=' + s.password
+    +'&clientType=' + ct
     +'&appType=1'
     +'&loginType=mobile'
     fetch(url,{
@@ -58,6 +69,7 @@ export default class Login extends Component {
       +'/aicare-business-api/business/user/login?'
       +'loginName='+ s.info
       +'&passWord=' + s.password
+      +'&clientType=' + ct
       +'&appType=1'
       +'&loginType=email'
       fetch(url,{
@@ -111,13 +123,9 @@ export default class Login extends Component {
         source = {require('../images/providerImg/login_img_1.png')}
       />
       {this.state.mobile && (
-        <View style={{width:'80%',marginTop:50,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
+        <View style={{width:'80%',marginTop:50}}>
           <View style={{marginBottom:10,flexDirection:'row'}}>
             <View style={{width:'50%',alignItems:'flex-start',flexDirection:'row'}}>
-            <Image
-              style = {{width:20,height:20,marginRight:10}}
-              source = {require('../images/providerImg/login_icon_account.png')}
-            />
             <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
             </View>
             <View style={{width:'50%',alignItems:'flex-end'}}>
@@ -126,20 +134,22 @@ export default class Login extends Component {
             </TouchableOpacity>
             </View>
           </View>
+          <View  style={{width: '100%',flexDirection:'row'}}>
+          <Image
+            style = {{width:30,height:30,marginRight:10}}
+            source = {require('../images/providerImg/account_icon_phone_1.png')}
+          />
           <TextInput
-            style = {styles.account}
+            style = {{height: 35,width: '90%',borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}
             placeholder="04********"
             onChangeText={(text) => {this.setState({ info: text})}}
           />
+          </View>
         </View>)}
         {this.state.email && (
-          <View style={{width:'80%',marginTop:50,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
+          <View style={{width:'80%',marginTop:50}}>
             <View style={{marginBottom:10,flexDirection:'row'}}>
               <View style={{width:'50%',alignItems:'flex-start',flexDirection:'row'}}>
-              <Image
-                style = {{width:20,height:20,marginRight:10}}
-                source = {require('../images/providerImg/login_icon_account.png')}
-              />
               <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
               </View>
               <View style={{width:'50%',alignItems:'flex-end'}}>
@@ -148,25 +158,33 @@ export default class Login extends Component {
                 </TouchableOpacity>
               </View>
             </View>
+            <View  style={{width: '100%',flexDirection:'row'}}>
+            <Image
+              style = {{width:30,height:30,marginRight:10}}
+              source = {require('../images/providerImg/account_icon_mail_1.png')}
+            />
             <TextInput
-              style = {styles.account}
+              style = {{height: 35,width: '90%',borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}
               placeholder="xxxxx@gmail.com"
               onChangeText={(text) => {this.setState({ info: text})}}
             />
+            </View>
           </View>)}
-      <View style={{width:'80%',marginTop:25,borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}>
+      <View style={{width:'80%',marginTop:25}}>
         <View style={{marginBottom:10,flexDirection:'row'}}>
-          <Image
-            style = {{width:20,height:20,marginRight:10}}
-            source = {require('../images/providerImg/login_icon_pswd.png')}
-          />
           <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('password')}</Text>
         </View>
+        <View  style={{width: '100%',flexDirection:'row'}}>
+        <Image
+          style = {{width:30,height:30,marginRight:10}}
+          source = {require('../images/providerImg/login_icon_pswd.png')}
+        />
         <TextInput
-        style = {styles.password}
+        style = {{height: 35,width: '90%',borderBottomWidth:1,borderBottomColor:'#BBBBBB'}}
         secureTextEntry={true}
         onChangeText={(text) => {this.setState({ password: text})}}
         />
+        </View>
       </View>
 
       <View style ={{marginTop:20,flexDirection: 'row',width:'80%'}}>

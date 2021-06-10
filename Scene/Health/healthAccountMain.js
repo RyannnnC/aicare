@@ -129,7 +129,7 @@ export default class HealthAccountMain extends Component {
               this.context.action.changephone(json.employerInfo.mobile);
               this.context.action.changeintro(json.employerInfo.introduce);
               this.context.action.changestate(json.employerInfo.city);
-              this.context.action.changelanguage(json.employerInfo.languages);
+              this.context.action.changemlan(json.employerInfo.languages);
               this.context.action.changeserviceclass(json.employerInfo.serviceClassList);
               this.context.action.changetime(json.employerInfo.employerSchedulevos);
               this.context.action.changetypelist(json.employerInfo.serviceTypeList);

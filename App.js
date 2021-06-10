@@ -427,6 +427,7 @@ export default class App extends React.Component {
             <Stack.Screen options={{headerShown: false}} name="healthHome" component={DoctorHome} />
             <Stack.Screen name={I18n.t('changePassword')} component={ChangePwd} />
             <Stack.Screen name={I18n.t('mySetting')} component={Setting} />
+            <Stack.Screen name={I18n.t('mintro')} component={Mintro} />
             <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
             <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
             <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />

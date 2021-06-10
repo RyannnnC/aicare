@@ -8,14 +8,30 @@ import I18n from '../switchLanguage';
 export default class Mlan extends Component {
   state={
     buttons: [
-        { value:'1',name:'普通话',status: 1},
-        { value:'2',name:'英语',status: 1},
+        { value:'1',name:'普通话',status: 0},
+        { value:'2',name:'英语',status: 0},
         { value:'3',name:'粤语',status: 0},
         { value:'4',name:'法语',status: 0},
         { value:'5',name:'德语',status: 0},
         { value:'6',name:'俄语',status: 0},
     ],
   };
+
+  componentDidMount ()  {
+    if (this.context.mlan.length>0) {
+        for (let i=0;i<this.context.mlan.length;i++) {
+          for (let j=0;j<this.state.buttons.length;j++){
+            if(this.context.mlan[i].value == this.state.buttons[j].value) {
+              console.log('修改mlan['+i+'] button['+j+']')
+              let but = this.state.buttons;
+              but[j].status = this.context.mlan[i].status;
+              this.setState({buttons: but});
+
+            }
+          }
+        }
+    }
+  }
 
   changeColor(index){
     let but = this.state.buttons;
@@ -74,7 +90,7 @@ export default class Mlan extends Component {
       justifyContent: 'center',
     }}
     onPress={()=>this.changeColor(1)}>
-      <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[1].status==1?'#FFFFFF': '#999999' }}>{I18n.t('cantonese')}</Text>
+      <Text style={{ fontSize:12, fontWeight: '300', color: this.state.buttons[1].status==1?'#FFFFFF': '#999999' }}>{I18n.t('english')}</Text>
     </TouchableOpacity>
     <TouchableOpacity style={{
       backgroundColor:this.state.buttons[2].status==1?'#FF7E67':'transparent',
@@ -92,7 +108,7 @@ export default class Mlan extends Component {
       justifyContent: 'center',
     }}
     onPress={()=>this.changeColor(2)}>
-      <Text style={{ fontSize:12, fontWeight: '300', color:this.state.buttons[2].status==1?'#FFFFFF': '#999999' }}>{I18n.t('english')}</Text>
+      <Text style={{ fontSize:12, fontWeight: '300', color:this.state.buttons[2].status==1?'#FFFFFF': '#999999' }}>{I18n.t('cantonese')}</Text>
     </TouchableOpacity>
     <TouchableOpacity style={{
       backgroundColor:this.state.buttons[3].status==1?'#FF7E67':'transparent',
