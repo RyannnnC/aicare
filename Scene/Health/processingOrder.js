@@ -411,7 +411,7 @@ export default class ProcessingOrder extends Component {
                  marginTop: 15,
                  marginLeft:20,
                  justifyContent: "center",
-                 alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id: item.customerId})}}>
+                 alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote3'),{id: item.customerId})}}>
                  <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
                </TouchableOpacity>
             }
@@ -484,7 +484,7 @@ export default class ProcessingOrder extends Component {
                marginTop: 15,
                marginLeft:20,
                justifyContent: "center",
-               alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'), {id: item.customerId})}}>
+               alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote3'), {id: item.customerId})}}>
                <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
              </TouchableOpacity>
             }

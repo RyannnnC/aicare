@@ -42,7 +42,7 @@ function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem label={I18n.t('booking')} />
+      <DrawerItem label={I18n.t('booking')} style={{borderWidth:1}}/>
       <DrawerItem label={I18n.t('processingOrder')}
        onPress={() => props.navigation.navigate('预约',{screen:I18n.t('processingOrder')})} />
       <DrawerItem label={I18n.t('pendingOrder')}
@@ -56,6 +56,7 @@ function CustomDrawerContent(props) {
         props.navigation.navigate('账号')
         props.navigation.navigate(I18n.t('changePassword'))
       }} />
+      <DrawerItem label={I18n.t('enote')} style={{borderWidth:1}}/>
     </DrawerContentScrollView>
   );
 }

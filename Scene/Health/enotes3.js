@@ -14,6 +14,9 @@ export default class Enotes3 extends Component {
       doctorComment:'',
       id:null,
       medicine:[],
+      times:0,
+      name:'',
+      usage:'',
       }
     }
   async componentDidMount(){
@@ -23,7 +26,9 @@ export default class Enotes3 extends Component {
   }
 
   addMedicine(){
+    medicine.push({
 
+    })
   }
   saveReport() {
     let url = 'http://'
@@ -86,41 +91,58 @@ export default class Enotes3 extends Component {
     }else {
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <View style={{width:'90%'}}>
-        <ScrollView style={{height:'90%'}}>
-
-
-        <View style={{flexDirection: 'row',marginTop:20,marginBottom:10}}>
-            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('prescription')}</Text>
-        </View>
-
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('medicineName')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
-          value={this.context.name}
-          onChangeText={(text) => {this.context.action.changename(text)}}/>
-        </View>
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('dosage')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "0403571833"
-          value={this.context.phone}
-          onChangeText={(text) => {this.context.action.changephone(text)}}/>
-        </View>
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('quantity')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "657416708xy@gmail.com"
-          value={this.context.email}
-          onChangeText={(text) => {this.context.action.changeemail(text)}}/>
-        </View>
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('repeat')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "657416708xy@gmail.com"
-          value={this.context.email}
-          onChangeText={(text) => {this.context.action.changeemail(text)}}/>
-        </View>
-
+      <View style={{height:'90%',width:'90%',flexDirection:'row',justifyContent: "center", alignItems: "center"}}>
+        <ScrollView style={{height:'90%',width:'50%',borderRightWidth:1}}>
+          {this.state.medicine.length>0 ? medicine
+          :
+            <View style={{alignItems:'center',justifyContent:'center',width:'90%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+              <Text>暂无药品，请添加</Text>
+            </View>
+          }
         </ScrollView>
-          <View  style={{ height:'10%',flex:1, justifyContent: "center", alignItems: "center"}}>
+        <View style={{height:'90%',width:'50%',alignItems:'center'}}>
+          <View style={{width:'90%',flexDirection:'row',marginBottom:'5%'}}>
+            <Text>药品名称</Text>
+            <TextInput
+            style={{width:'70%',borderWidth:1}}
+            placeholder='请输入药名'
+            value={this.state.name}
+            onChangeText={(text) => {this.setState({name:text})}}/>
+          </View>
+          <View style={{width:'90%',flexDirection:'row',marginBottom:'5%'}}>
+            <Text>用法用量</Text>
+            <TextInput
+            style={{width:'70%',borderWidth:1}}
+            placeholder='请输入'
+            value={this.state.usage}
+            onChangeText={(text) => {this.setState({usage:text})}}/>
+          </View>
+          <View style={{width:'90%',flexDirection:'row',marginBottom:'5%'}}>
+            <Text>重复次数</Text>
+            <TextInput
+              style={{width:'20%',borderWidth:1}}
+              value={this.state.times.toString()}
+              keyboardType='numeric'
+              onChangeText={(text) => {this.setState({times:text})}}
+            />
+            <Text>次</Text>
+          </View>
+          <View  style={{ height:'15%', width:'80%',justifyContent: "center", alignItems: "center"}}>
+            <TouchableOpacity style={{
+              width: '100%',
+              height: 40,
+              marginTop: 10,
+              marginBottom:20,
+              backgroundColor: '#68B0AB',
+              borderRadius: 20,
+              alignItems: 'center',
+              justifyContent: "center",}} onPress={() => {this.addMedicine()}}>
+              <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
+            </TouchableOpacity>
+          </View>  
+        </View>
+        </View>
+          <View  style={{ height:'10%', width:'80%',justifyContent: "center", alignItems: "center"}}>
             <TouchableOpacity style={{
               width: '100%',
               height: 40,
@@ -132,8 +154,7 @@ export default class Enotes3 extends Component {
               justifyContent: "center",}} onPress={() => {this.saveReport()}}>
               <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
             </TouchableOpacity>
-          </View>
-      </View>
+          </View>  
     </SafeAreaView>
   );}}
 }
