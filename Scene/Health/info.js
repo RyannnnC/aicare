@@ -85,6 +85,8 @@ export default class Info extends Component {
    );*/
    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
    this.setState({ hasCameraPermission: status === "granted" });
+   const { c_status } = await Permissions.askAsync(Permissions.CAMERA);
+   this.setState({ hasCameraPermission: c_status === "granted" });
   }
   changeColor(index){
     let but = this.state.buttons;
@@ -259,9 +261,6 @@ export default class Info extends Component {
       }
   }
 
-  hidePicker = () => {
-    this.setState({visible:false})
-  }
 
   pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -276,6 +275,18 @@ export default class Info extends Component {
     }
   };
 
+  launchCamera = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+    this.setState({visible:false});
+    if (!result.cancelled) {
+      this.setState({image:result.uri});
+    }
+  };
 /*  <TouchableOpacity style={{flexDirection: 'row', marginRight: 5}} onPress = {()=>{this.getData()}}>
     <Image style = {{width:12, height:15}}
       source= {require('../../images/providerImg/order_icon_location.png')}
@@ -1053,6 +1064,30 @@ export default class Info extends Component {
         </TouchableOpacity>
         </View>
       </ScrollView>
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={this.state.visible}
+      onRequestClose={()=>{
+        this.setVisible(!this.state.visible);}
+      }>
+        <TouchableOpacity style={{width:'100%',height:'65%',backgroundColor: 'rgba(0, 0, 0, 0.5)'}} onPress={() => {this.setState({visible:false})}}>
+        </TouchableOpacity>
+        <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'35%',backgroundColor:'white'}}>
+          <Text style={{height:'10%',padding:5,borderBottomWidth:1,borderBottomColor:'#EEEEEE', fontSize:20, fontWeight: '400', color: '#0000FF' }}>Choose Your Upload Method</Text>
+          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
+          onPress={this.launchCamera}>
+            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Take a photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
+          onPress={this.pickImage}>
+            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Pick a Image</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}} onPress={() => {this.setState({visible:false})}}>
+            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>{I18n.t('cancel')}</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );}}
 }
