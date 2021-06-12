@@ -173,4 +173,10 @@ export default {
   sae:'上班时间不能晚于下班时间',
   ebs:'下班时间不能早于上班时间',
   cancel:'取消',
+  rp:'重复',
+  norp:'不重复',
+  enterName:'请输入药名',
+  repeatyn:'是否重复',
+  times:'次',
+  repeattime:'重复次数',
 }

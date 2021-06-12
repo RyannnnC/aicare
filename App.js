@@ -33,6 +33,7 @@ import Enotes from './Scene/Health/enotes';
 import Enotes3 from './Scene/Health/enotes3';
 import CaseRecord from './Scene/Health/caseRecord';
 import MyAccount from './Scene/Health/myAccount'
+import PrescriptionCheck  from './Scene/Health/prescriptionCheck'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -424,6 +425,7 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('myAccount')} component={MyAccount} />
             <Stack.Screen name={I18n.t('enote')} component={Enotes} />
             <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
+            <Stack.Screen name={I18n.t('prescription')} component={PrescriptionCheck} />
             </>
           )
       ): (

@@ -173,4 +173,10 @@ export default {
   sae:'Opening Hour can not be later than Closing Hour',
   ebs:'Closing Hour can not be earlier than Opening Hour',
   cancel:'Cancel',
+  rp:'Repeat',
+  norp:'Not Repeat',
+  enterName:'Please Enter Name of Medicine',
+  repeatyn:'Repeat or Not',
+  times:'times',
+  repeattime:'Repeat Times',
 }

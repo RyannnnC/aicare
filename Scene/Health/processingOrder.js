@@ -73,10 +73,6 @@ export default class ProcessingOrder extends Component {
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
         'sso-refresh-token': this.context.refresh_token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
       }})
       .then((response) => response.json())
       .then((json) => {
@@ -111,10 +107,6 @@ export default class ProcessingOrder extends Component {
               'Content-Type': 'application/json',
               'sso-auth-token': this.context.token,
               'sso-refresh-token': this.context.refresh_token,
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true,
-              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
             }
             })
             .then((response) => response.json())
@@ -184,10 +176,6 @@ export default class ProcessingOrder extends Component {
           'Content-Type': 'application/json',
           'sso-auth-token': this.context.token,
           'sso-refresh-token': this.context.refresh_token,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
         }})
         .then((response) => response.json())
         .then((json) => {
@@ -228,10 +216,6 @@ export default class ProcessingOrder extends Component {
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
         'sso-refresh-token': this.context.refresh_token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
       }})
       .then((response) => response.json())
       .then((json) => {
@@ -277,10 +261,6 @@ export default class ProcessingOrder extends Component {
           'Content-Type': 'application/json',
           'sso-auth-token': this.context.token,
           'sso-refresh-token': this.context.refresh_token,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
         }})
         .then((response) => response.json())
         .then((json) => {
@@ -411,7 +391,7 @@ export default class ProcessingOrder extends Component {
                  marginTop: 15,
                  marginLeft:20,
                  justifyContent: "center",
-                 alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote3'),{id: item.customerId})}}>
+                 alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id:item.id})}}>
                  <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
                </TouchableOpacity>
             }
