@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
+import { Modal,Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
@@ -17,6 +17,8 @@ export default class Enotes3 extends Component {
       times:0,
       name:'',
       usage:'',
+      visible:false,
+      result:[],
       }
     }
   async componentDidMount(){
@@ -26,8 +28,16 @@ export default class Enotes3 extends Component {
   }
 
   addMedicine(){
-    medicine.push({
-
+    this.state.medicine.push({
+      name:this.state.name,
+      usage:this.state.usage,
+      times:this.state.times,
+      id:this.state.medicine.length+1
+    })
+    this.setState({
+      times:0,
+      name:'',
+      usage:'',
     })
   }
   saveReport() {
@@ -80,8 +90,64 @@ export default class Enotes3 extends Component {
             multiline={true}
           />
         </View>*/
-
+  _onChangeText(text) {
+      if (text) {
+        this.setState({ name: text })  //实时变化值
+        clearTimeout(this.settimeId);       //如搜索的内容变化在1秒之中，可以清除变化前的fetch请求，继而减少fetch请求。但不能中断fetch请求
+        this.settimeId = setTimeout(() => {
+          let url = 'http://'
+          +this.context.url
+          +'/aicare-business-api/business/shop/medicinedata?'
+          +'enName='+this.state.name;
+            fetch(url,{
+              method: 'POST',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+              'Accept':       'application/json',
+              'Content-Type': 'application/json',
+              'sso-auth-token': this.context.token,
+              'sso-refresh-token': this.context.refresh_token,
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+            }})
+            .then((response) => response.json())
+            .then((json) => {
+              if (json.code === 0) {
+                this.setState({result:json.list})
+              } else {
+                console.log(json.msg)
+              }
+            })
+            .catch(error => console.warn(error));
+        }, 800);
+        console.log("sheng chen id:" + this.settimeId);
+      } else {
+        this.setState({name:''})
+      }
+  }
   render() {
+    let medicine = []
+    if (this.state.medicine.length >0) {
+    medicine = this.state.medicine.map((item) => {
+      return (
+        <View key = {item.id}style={{alignItems:'center',justifyContent:'center',width:'90%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+          <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}}>{item.name}</Text>
+          <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>用法用量：{item.usage}</Text>
+        </View>
+      )
+    })}
+    let result = []
+    if (this.state.result.length >0) {
+    result = this.state.result.map((item) => {
+      return (
+        <TouchableOpacity style={{alignItems:'center',justifyContent:'center',width:'90%',margin:'5%',height:40,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+          <Text style={{ color: '#006A71', fontSize: 14, fontWeight: '400'}}>{item}</Text>
+        </TouchableOpacity>
+      )
+    })}
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -103,12 +169,27 @@ export default class Enotes3 extends Component {
         <View style={{height:'90%',width:'50%',alignItems:'center'}}>
           <View style={{width:'90%',flexDirection:'row',marginBottom:'5%'}}>
             <Text>药品名称</Text>
-            <TextInput
-            style={{width:'70%',borderWidth:1}}
-            placeholder='请输入药名'
-            value={this.state.name}
-            onChangeText={(text) => {this.setState({name:text})}}/>
+            <View style={{width:'70%'}}>
+              <TextInput
+              style={{width:'100%',borderWidth:1}}
+              placeholder='请输入药名'
+              value={this.state.name}
+              onChangeText={this._onChangeText.bind(this)}/>
+              {this.state.name &&
+                <ScrollView
+                  style={{width:'100%',borderWidth:1}}
+                  >
+                  {this.state.result.length>0 ? result
+                  :
+                    <View style={{alignItems:'center',justifyContent:'center',width:'90%',height:30,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+                      <Text>暂无结果</Text>
+                    </View>
+                  }
+                </ScrollView>
+            }
+            </View>
           </View>
+
           <View style={{width:'90%',flexDirection:'row',marginBottom:'5%'}}>
             <Text>用法用量</Text>
             <TextInput
@@ -139,7 +220,7 @@ export default class Enotes3 extends Component {
               justifyContent: "center",}} onPress={() => {this.addMedicine()}}>
               <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
             </TouchableOpacity>
-          </View>  
+          </View>
         </View>
         </View>
           <View  style={{ height:'10%', width:'80%',justifyContent: "center", alignItems: "center"}}>
@@ -154,7 +235,7 @@ export default class Enotes3 extends Component {
               justifyContent: "center",}} onPress={() => {this.saveReport()}}>
               <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
             </TouchableOpacity>
-          </View>  
+          </View>
     </SafeAreaView>
   );}}
 }

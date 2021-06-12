@@ -5,7 +5,7 @@ import { createDrawerNavigator, DrawerContentScrollView,
   DrawerItemList,
   DrawerItem, } from "@react-navigation/drawer";
   import {Text} from 'react-native';
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
 import Welcome from './Scene/welcome';
