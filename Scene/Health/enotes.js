@@ -146,9 +146,9 @@ export default class Enotes extends Component {
       <ScrollView style={{height:'90%'}}>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500'}}>{I18n.t('patientComplaint')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500'}}>{I18n.t('statement')}</Text>
         </View>
-        <View style={{width:'100%', height:200,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
+        <View style={{width:'100%',height:'10%',alignItems:'center',justifyContent:'center',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
           <Text style={{margin:'5%',fontSize:16, fontWeight: '400'}}>{this.state.patientComment}</Text>
         </View>
 
@@ -165,7 +165,7 @@ export default class Enotes extends Component {
           }
         </View>
 
-        <View style={{width:'100%', height:200,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
+        <View style={{width:'100%', height:'25%',alignItems:'center',justifyContent:'center',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
           <TextInput style={{width:'90%',height:'90%'}}
             value={this.state.complaint}
             onChangeText={(text) => {this.setState({complaint:text})}}
@@ -176,29 +176,28 @@ export default class Enotes extends Component {
         <View style={{flexDirection: 'row', marginBottom:10,marginTop:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
         </View>
-        <View style={{width:'100%', height:200,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11,marginBottom:50}}>
+        <View style={{width:'100%', height:'25%',alignItems:'center',justifyContent:'center',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11,marginBottom:50}}>
           <TextInput style={{width:'90%',height:'90%'}}
             value={this.state.doctorComment}
             onChangeText={(text) => {this.setState({doctorComment:text})}}
             multiline={true}
           />
         </View>
-
+        
+        <View  style={{ height:'10%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
+          <TouchableOpacity style={{
+          width: '100%',
+          height: 40,
+          backgroundColor: '#68B0AB',
+          borderRadius: 20,
+          alignItems: 'center',
+          justifyContent: "center",}} onPress={() => {
+          this.props.navigation.navigate(I18n.t('enote3'),{id: this.state.id,patientComplaint:this.state.complaint,doctorComplaint:this.state.doctorComment})
+          }}>
+          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-      <View  style={{ height:'10%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
-      <TouchableOpacity style={{
-        width: '100%',
-        height: 40,
-        backgroundColor: '#68B0AB',
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: "center",}} onPress={() => {
-        this.props.navigation.navigate(I18n.t('enote3'),{id: this.state.id,patientComplaint:this.state.complaint,doctorComplaint:this.state.doctorComment})
-        }}>
-        <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
-      </TouchableOpacity>
-      </View>
-        <View style={{ flex : 1 }} />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );}}

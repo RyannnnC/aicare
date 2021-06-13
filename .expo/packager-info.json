@@ -4,7 +4,7 @@
   "devToolsPort": 19002,
   "packagerPort": 19000,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://7p-fki.398268537.aicare.exp.direct",
+  "packagerNgrokUrl": "https://packager.7p-fki.398268537.aicare.exp.direct",
+  "ngrokPid": 60369
 }

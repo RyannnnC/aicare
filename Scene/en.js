@@ -179,4 +179,5 @@ export default {
   repeatyn:'Repeat or Not',
   times:'times',
   repeattime:'Repeat Times',
+  statement:'Condition Statement',
 }

@@ -45,7 +45,8 @@ export default class Enotes3 extends Component {
       name:this.state.name,
       usage:this.state.usage,
       times:this.state.times,
-      id:this.state.mid
+      id:this.state.mid,
+      isRepeat: this.state.rp ?'1':'0',
     })
     this.setState({
       times:0,
@@ -109,9 +110,16 @@ export default class Enotes3 extends Component {
     if (this.state.medicine.length >0) {
     medicine = this.state.medicine.map((item) => {
       return (
-        <View key = {item.id} style={{alignItems:'center',justifyContent:'center',width:'90%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
-          <Text style={{ color: 'black', fontSize: 21, fontWeight: '600'}}>{item.name}</Text>
-          <Text style={{ color: '#696969', fontSize: 16, fontWeight: '400'}}>用法用量：{item.usage}</Text>
+        <View key = {item.id} style={{width:'90%',flexDirection:'row'}}>
+          <View style={{justifyContent:'center',width:'90%',padding:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+            <Text style={{ color: 'black', fontSize: 21, fontWeight: '600'}}>{item.name}</Text>
+            <Text style={{ color: '#696969', fontSize: 16, fontWeight: '400'}}>用法用量：{item.usage}</Text>
+          </View>
+          <View style={{width:'10%'}}>
+            <TouchableOpacity>
+              <Text>-</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )
     })}

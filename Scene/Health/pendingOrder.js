@@ -43,7 +43,7 @@ export default class PendingOrder extends Component {
     this.setState({isLoading:true});
     let url = 'http://'
     +this.context.url
-    +'/aicare-business-api/business/appointment/query?status=0'
+    +'/aicare-business-api/business/appointment/query?status=2'
     + '&type=' + tp;
       fetch(url,{
         method: 'GET',
@@ -262,7 +262,7 @@ export default class PendingOrder extends Component {
         alignItems: 'center',
         justifyContent: 'center'}} key={item.id}>
         <TouchableOpacity onPress={() => {this.modify(item.scheduleDetailedId,item.startTime.substring(0,5),item.endTime.substring(0,5));}}>
-          <Text>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
+          <Text style={{color:'white'}}>{item.startTime.substring(0,5)}-{item.endTime.substring(0,5)}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -309,7 +309,7 @@ export default class PendingOrder extends Component {
             style = {{width: 15, height:15, marginRight:5}}
             source = {require('../../images/providerImg/schedule_icon_type.png')}
           />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.serviceClassName}</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row',paddingBottom: 12, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
@@ -447,37 +447,37 @@ elevation: 24,}}>
       <ScrollView style={{ flex:1}}>
         {orders}
         <Modal
-         animationType="slide"
-         transparent={true}
-         visible={this.state.modalVisible}
-         onRequestClose={() => this.setModalVisible(!this.state.modalVisible)}>
-         <View style={{marginTop:200,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
-         shadowOffset: {
-   	       width: 0,
-   	       height: 12,
-         },
-         shadowOpacity: 0.58,
-         shadowRadius: 16.00,
-         elevation: 24,}}>
-     <TouchableOpacity onPress={() =>{this.setModalVisible(!this.state.modalVisible)}} style={{marginRight:30}}>
-       <Image
-         style = {styles.arrow_image}
-         source={require('../../images/icon/2/Arrow_left.png')}
-       />
-     </TouchableOpacity>
-     <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
-     <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
-       <Text style = {{ color:'#006A71',fontSize:16}}>{I18n.t('orderTime')}</Text>
-       <CalendarPicker
+           animationType="slide"
+           transparent={true}
+           visible={this.state.modalVisible}
+           onRequestClose={() => this.setModalVisible(!this.state.modalVisible)}>
+           <View style={{marginTop:200,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
+           shadowOffset: {
+             width: 0,
+             height: 12,
+           },
+           shadowOpacity: 0.58,
+           shadowRadius: 16.00,
+           elevation: 24,}}>
+       <TouchableOpacity onPress={() =>{this.setModalVisible(!this.state.modalVisible)}} style={{marginRight:30}}>
+         <Image
+           style = {styles.arrow_image}
+           source={require('../../images/icon/2/Arrow_left.png')}
+         />
+       </TouchableOpacity>
+       <ScrollView style={{backgroundColor:"#F7FAFA", marginBottom:20}}>
+       <View style={{backgroundColor: '#F7FAFA',  alignItems: 'center',justifyContent:'center'}}>
+        <Text style = {{ color:'#006A71',fontSize:16}}>{I18n.t('orderTime')}</Text>
+        <CalendarPicker
          onDateChange={this.onDateChange}
          previousTitle={I18n.t('prevMonth')}
          nextTitle = {I18n.t('nextMonth')}
          width = {300}
          height = {300}
-       />
+        />
        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>{I18n.t('time')}</Text>
-       <ScrollView style ={{marginTop: 30,maxHeight:100}}>
-         <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
+       <ScrollView style ={{marginTop: 30,maxHeight:130}}>
+         <View style ={{maxWidth:300,alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
          { this.state.timeLoad?
          <View>
            <ActivityIndicator size="large" color="#00ff00"  />
@@ -488,13 +488,14 @@ elevation: 24,}}>
          </View>}
         </View>
        </ScrollView>
-     </View>
+       </View>
 
-     </ScrollView>
-      </View>
-      <>
-      </>
-       </Modal>
+       </ScrollView>
+
+        </View>
+        <>
+        </>
+         </Modal>
       </ScrollView>
     </SafeAreaView>
   )} else {

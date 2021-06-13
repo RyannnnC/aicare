@@ -30,30 +30,32 @@ export default class MyAccount extends Component {
     }else {
     return (
       <SafeAreaView style={{ flex:1,backgroundColor:"white" }}>
-        <View style={{height:'20%',flexDirection: 'row',justifyContent:'center',alignItems: 'center',borderBottomWidth:1}}>
-          <TouchableOpacity style={{height:90,width:'23%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#9ADAD6',
+        <View style={{width:'90%',justifyContent:'center',alignItems: 'center',}}>
+        <View style={{height:'30%',flexDirection: 'row',justifyContent:'center',alignItems: 'center',borderBottomWidth:1}}>
+          <TouchableOpacity style={{height:90,width:'20%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#9ADAD6',
           borderRadius: 15,justifyContent: "center",alignItems: "center"}}>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{this.state.balance}</Text>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>Balance</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{height:90,width:'23%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#196F75',
+          <TouchableOpacity style={{height:90,width:'20%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#196F75',
           borderRadius: 15,justifyContent: "center",alignItems: "center"}}>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{this.state.week}</Text>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>Weekly Income</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{height:90,width:'23%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#FF816B',
+          <TouchableOpacity style={{height:90,width:'20%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#FF816B',
           borderRadius: 15,justifyContent: "center",alignItems: "center"}}>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{this.state.month}</Text>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>Monthly Income</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{height:90,width:'23%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#00FFFF',
+          <TouchableOpacity style={{height:90,width:'20%',marginLeft:'1%',marginRight:'1%',backgroundColor: '#00FFFF',
           borderRadius: 15,justifyContent: "center",alignItems: "center"}}>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>{this.state.total}</Text>
             <Text style={{ color: '#FFFFFF', fontSize: 14, fontWeight: '600'}}>Total Income</Text>
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row', marginBottom:21,marginTop:30}}>
-          <TouchableOpacity style={{flexDirection: 'row', marginRight:199,marginLeft:30}}
+        <View style={{height:'60%',flexDirection: 'row'}}>
+        <View style={{width:'50%'}}>
+          <TouchableOpacity style={{flexDirection: 'row',marginLeft:'5%'}}
           onPress={()=>{this.setVisible(!this.state.Visible)}}>
             <Text style={{fontSize:13}}>{I18n.t('all')}</Text>
             <Image
@@ -61,7 +63,9 @@ export default class MyAccount extends Component {
               source = {require('../../images/providerImg/schedule_icon_filter.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={{flexDirection: 'row', marginRight:30}}
+          </View>
+          <View style={{width:'50%',justifyContent:'flex-end'}}>
+          <TouchableOpacity style={{flexDirection: 'row', marginRight:'5%'}}
           onPress={() => this.setModalVisible(!this.state.modalVisible)}>
             <Text style={{fontSize:13}}>{month}/{date}</Text>
             <Image
@@ -69,8 +73,9 @@ export default class MyAccount extends Component {
               source = {require('../../images/providerImg/schedule_icon_calender.png')}
             />
           </TouchableOpacity>
+          </View>
         </View>
-
+       </View>
       </SafeAreaView>
     )
   }}

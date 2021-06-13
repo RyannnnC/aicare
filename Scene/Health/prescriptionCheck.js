@@ -11,6 +11,7 @@ export default class PrescriptionCheck extends Component {
       this.state={
       id:null,
       medicine:[],
+      result:[],
       isLoading:false,
       name:'',
       gender:'',
@@ -22,7 +23,7 @@ export default class PrescriptionCheck extends Component {
       infoId:null,
       }
     }
-  async componentDidMount(){
+  componentDidMount(){
     this.setState({
       id:this.props.route.params.id,
       medicine:this.props.route.params.medicine});
@@ -70,7 +71,53 @@ export default class PrescriptionCheck extends Component {
     .catch(error => console.warn(error));
   }
 
+  modifyMedicine(rid){
+    for (let i =0; i<this.state.medicine.length;i++)
+    this.state.result.push({
+      medicalReportId:rid,
+      customerUserId:this.state.userId,
+      customerUserInfoId: this.state.infoId,
+      medicineDataId: this.state.medicine[i].id,
+      isRepeat:this.state.medicine[i].isRepeat,
+      repetition:this.state.medicine[i].usage,
+    })
+  }
+
+  savePrescription(rid) {
+    this.modifyMedicine(rid);
+    console.log(this.state.result)
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/medical-report/save-prescription'
+    fetch(url,{
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/json',
+      'sso-auth-token': this.context.token,
+      'sso-refresh-token': this.context.refresh_token,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+    },
+    body: JSON.stringify(this.state.result),
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.code === 0) {
+        alert('提交药品成功')
+      } else {
+        console.log(json.msg)
+      }
+    })
+    .catch(error => console.warn(error));
+  }
+
   saveReport() {
+    this.setState({isLoading:true});
     let url = 'http://'
     +this.context.url
     +'/aicare-business-api/business/medical-report/save';
@@ -82,6 +129,7 @@ export default class PrescriptionCheck extends Component {
         'Accept':       'application/json',
         'Content-Type': 'application/json',
         'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
@@ -89,26 +137,29 @@ export default class PrescriptionCheck extends Component {
       },
         body: JSON.stringify({
           customerUserId : this.state.userId,
-          customerUserInfoId : this.state.userInfoId,
+          customerUserInfoId : this.state.infoId,
           customerAppointmentId:this.props.route.params.id,
-          diagnosisTitle : "report_001",
           type : "远程医疗",
           patientComment : this.props.route.params.patientComplaint,
           doctorComment : this.props.route.params.doctorComplaint,
-          clinicalConditions : "MAD",
       })
       })
       .then((response) => response.json())
       .then((json) => {
         if (json.code === 0) {
-          console.log(json);
+          this.savePrescription(json.reportId)
+          alert('提交成功')
         } else {
           console.log(json.msg)
         }
+        this.setState({isLoading:false})
       })
-      .then(() => {this.props.navigation.navigate('预约')})
+     .then(() => {
+        this.props.navigation.navigate('预约')
+      })
       .catch(error => console.warn(error));
   }
+
 
   render() {
     let medicine = []
@@ -140,30 +191,30 @@ export default class PrescriptionCheck extends Component {
       })}
     return (
     <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <View style={{height:'90%',width:'95%',flexDirection:'row',justifyContent: "center", alignItems: "center"}}>
-        <View style={{height:'90%',width:'30%',borderRightWidth:1}}>
+      <View style={{height:'85%',width:'95%',flexDirection:'row',justifyContent: "center",marginTop:'5%'}}>
+        <View style={{height:'90%',width:'28%',borderRightWidth:1}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>医生信息</Text>
-          <Text>{I18n.t('name')}:</Text>
-          <Text>Prescriber No.</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('name')}:</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>Prescriber No.</Text>
         </View>
-        <View style={{height:'90%',width:'30%',borderRightWidth:1}}>
+        <View style={{height:'90%',width:'28%',borderRightWidth:1,marginLeft:'4%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>病人信息</Text>
-          <Text>{I18n.t('name')}: {this.state.name}</Text>
-          <Text>{I18n.t('gender')}: {this.state.gender}</Text>
-          <Text>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
-          <Text>{I18n.t('mobile')}: {this.state.mobile}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('name')}: {this.state.name}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.mobile}</Text>
           {this.state.medicareCard &&
           <View>
-            <Text>{I18n.t('insuranceType')}: {this.state.medicareCard.category}</Text>
-            <Text>{I18n.t('cardNumber')}: {this.state.medicareCard.number}</Text>
+            <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('insuranceType')}: {this.state.medicareCard.category}</Text>
+            <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('cardNumber')}: {this.state.medicareCard.number}</Text>
           </View>
           }
         </View>
-        <View style={{height:'90%',width:'40%',alignItems:'center'}}>
-          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>处方信息</Text>
+        <View style={{height:'90%',width:'40%'}}>
+          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB',marginLeft:'5%' }}>处方信息</Text>
           {this.state.medicine.length>0 ? medicine
           :
-            <View style={{alignItems:'center',justifyContent:'center',width:'90%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+            <View style={{alignItems:'center',justifyContent:'center',width:'90%',height:100,borderRadius:10,backgroundColor:'#EBEBEB',margin:'5%'}}>
               <Text style={{fontSize: 16, fontWeight: '400'}}>暂无药品，请添加</Text>
             </View>
           }
@@ -178,7 +229,9 @@ export default class PrescriptionCheck extends Component {
             backgroundColor: '#68B0AB',
             borderRadius: 20,
             alignItems: 'center',
-            justifyContent: "center",}} onPress={() => {this.props.navigation.navigate(I18n.t('barcode'),{id: item.customerId})}}>
+            justifyContent: "center",}} onPress={() => {
+              this.saveReport()
+            }}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
         </TouchableOpacity>
       </View>

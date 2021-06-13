@@ -179,4 +179,5 @@ export default {
   repeatyn:'是否重复',
   times:'次',
   repeattime:'重复次数',
+  statement:'病情陈述',
 }

@@ -163,7 +163,7 @@ export default class ProcessingOrder extends Component {
     let fd = this.formatDate(date);
       let url = 'http://'
       +this.context.url
-      +'/aicare-business-api/business/appointment/query?status=1'
+      +'/aicare-business-api/business/appointment/query?status=3'
       + '&type=' + tp
       + '&appointDate=' + fd
       + '&dateFlg=1';
@@ -205,7 +205,7 @@ export default class ProcessingOrder extends Component {
     }
     let url = 'http://'
     +this.context.url
-    +'/aicare-business-api/business/appointment/query?status=1'
+    +'/aicare-business-api/business/appointment/query?status=3'
     + '&type=' + tp;
       fetch(url,{
         method: 'GET',
@@ -249,7 +249,7 @@ export default class ProcessingOrder extends Component {
     }
       let url = 'http://'
       +this.context.url
-      +'/aicare-business-api/business/appointment/query?status=1'
+      +'/aicare-business-api/business/appointment/query?status=3'
       + '&type=' + tp
       + '&deptId=' + type
         fetch(url,{
@@ -363,7 +363,7 @@ export default class ProcessingOrder extends Component {
                 style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_type.png')}
               />
-              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.serviceClassName}</Text>
               </View>
             </View>
             <View style={{width:'100%',flexDirection: 'row',marginBottom:5}}>
@@ -445,7 +445,7 @@ export default class ProcessingOrder extends Component {
                 style = {{width: 15, height:15, marginRight:5}}
                 source = {require('../../images/providerImg/schedule_icon_type.png')}
               />
-              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.deptName}</Text>
+              <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.serviceClassName}</Text>
               </View>
               <View style={{flexDirection: 'row',width:'33%'}}>
               <Image
@@ -464,7 +464,7 @@ export default class ProcessingOrder extends Component {
                marginTop: 15,
                marginLeft:20,
                justifyContent: "center",
-               alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote3'), {id: item.customerId})}}>
+               alignItems: "center" }} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id:item.id})}}>
                <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('diagnose')}</Text>
              </TouchableOpacity>
             }
@@ -637,8 +637,8 @@ export default class ProcessingOrder extends Component {
          height = {300}
         />
        <Text style = {{ color:'#006A71',fontSize:16,marginTop:10}}>{I18n.t('time')}</Text>
-       <ScrollView style ={{marginTop: 30,maxHeight:100}}>
-         <View style ={{alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
+       <ScrollView style ={{marginTop: 30,maxHeight:130}}>
+         <View style ={{maxWidth:300,alignItems: 'center',justifyContent:'center',flexDirection:'row',flexWrap:'wrap'}}>
          { this.state.timeLoad?
          <View>
            <ActivityIndicator size="large" color="#00ff00"  />
