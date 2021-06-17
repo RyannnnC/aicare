@@ -1,5 +1,6 @@
 import React ,{Component}from 'react';
-import { Modal,Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
+import { Alert,Modal,Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
@@ -31,6 +32,27 @@ export default class Enotes3 extends Component {
       complaint:this.props.route.params.patientComplaint});
   }
 
+  deleteMedicine(id) {
+    Alert.alert(
+      '提醒',
+      '您确定要删除这个药吗？',
+      [
+        {text: '确定', onPress: () => {
+          for(let i =0;i<this.state.medicine.length;i++){
+              if(this.state.medicine[i].id === id) {
+                let temp = this.state.medicine;
+                temp.splice(i,1)
+                this.setState({medicine:temp})
+              }
+          }
+        }},
+        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
+  }
   addMedicine(){
     if (this.state.name =='') {
       return false
@@ -110,14 +132,14 @@ export default class Enotes3 extends Component {
     if (this.state.medicine.length >0) {
     medicine = this.state.medicine.map((item) => {
       return (
-        <View key = {item.id} style={{width:'90%',flexDirection:'row'}}>
+        <View key = {item.id} style={{width:'90%',flexDirection:'row',marginTop:'5%'}}>
           <View style={{justifyContent:'center',width:'90%',padding:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
             <Text style={{ color: 'black', fontSize: 21, fontWeight: '600'}}>{item.name}</Text>
             <Text style={{ color: '#696969', fontSize: 16, fontWeight: '400'}}>用法用量：{item.usage}</Text>
           </View>
           <View style={{width:'10%'}}>
-            <TouchableOpacity>
-              <Text>-</Text>
+            <TouchableOpacity onPress={() =>{this.deleteMedicine(item.id)}}>
+              <AntDesign name="minuscircleo" size={20} color="black" />
             </TouchableOpacity>
           </View>
         </View>

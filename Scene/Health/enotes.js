@@ -5,6 +5,7 @@ import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 //import Voice from '@react-native-community/voice';
 import * as Permissions from "expo-permissions";
+import ImageView from 'react-native-image-view';
 
 export default class Enotes extends Component {
     constructor(props) {
@@ -21,6 +22,8 @@ export default class Enotes extends Component {
       id:null,
       talk:false,
       hasAudioPermission: null,
+      image:[],
+      visible:false,
       }
     }
   onSpeechStartHandler = (e) => {
@@ -69,8 +72,14 @@ export default class Enotes extends Component {
     .then((json) => {
       if (json.code === 0) {
         this.setState({
-          image:json.medicalInfo.commentImg,
           patientComment:json.medicalInfo.patientComment,
+        })
+       let src = {uri: json.medicalInfo.commentImg,}
+       let image = []
+       let obj = {source:src}
+       image.push(obj)
+       this.setState({
+          image:image
         })
       } else {
         console.log(json.msg)
@@ -103,34 +112,15 @@ export default class Enotes extends Component {
       console.error(e);
     }
   };
-    /*
-        <View style={{marginTop:15}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('emRecord')}</Text>
-        </View>
-        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('basicMedicalHistory')}</Text>
-          <AntDesign name="down" size={18} color="black" />
-        </TouchableOpacity>
-       {this.state.pressed &&
-        <View>
-        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('orginfo')}</Text>
-          <AntDesign name="down" size={18} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('personalRecord')}</Text>
-          <AntDesign name="down" size={18} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('personalMedicine')}</Text>
-          <AntDesign name="down" size={18} color="black" />
-        </TouchableOpacity>
-        </View>
-        }
-        <TouchableOpacity style={{flexDirection: 'row', marginTop:10, marginBottom:10}} onPress={() => {this.setState({pressed1:!this.state.pressed})}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('historyRecord')}</Text>
-          <AntDesign name="down" size={18} color="black" />
-        </TouchableOpacity>*/
+  /*  {this.state.talk ?
+      <TouchableOpacity onPress={() => {this.stopRecognizing()}}>
+        <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
+      </TouchableOpacity>
+      :
+      <TouchableOpacity onPress={() => {this.startRecognizing()}}>
+        <FontAwesome name="microphone" size={24} color="black" />
+      </TouchableOpacity>
+    }*/
   render() {
     if (this.state.isLoading){
       return(
@@ -142,49 +132,40 @@ export default class Enotes extends Component {
     return (
     <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}
     behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <SafeAreaView style={{flex:1,width:'90%'}}>
-      <ScrollView style={{height:'90%'}}>
-
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500'}}>{I18n.t('statement')}</Text>
-        </View>
-        <View style={{width:'100%',height:'10%',alignItems:'center',justifyContent:'center',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
-          <Text style={{margin:'5%',fontSize:16, fontWeight: '400'}}>{this.state.patientComment}</Text>
+      <View style={{flex:1,width:'90%'}}>
+        <Text style={{ fontSize:18, fontWeight: '500',marginTop:10, marginBottom:10}}>{I18n.t('statement')}</Text>
+        <View style={{width:'100%',height:'15%',alignItems:'center',flexDirection:'row'}}>
+          {this.state.image.map((item) => (
+            <TouchableOpacity style={{height:'100%',width:'30%'}} onPress={() => {this.setState({visible:true})}}>
+              <Image
+                style={{height:'100%',width:'100%'}}
+                source={item.source}
+              />
+            </TouchableOpacity>
+          ))}
+          <Text style={{fontSize:16, fontWeight: '400'}}>{this.state.patientComment}</Text>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500'}}>{I18n.t('patientComplaint')}</Text>
-          {this.state.talk ?
-            <TouchableOpacity onPress={() => {this.stopRecognizing()}}>
-              <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
-            </TouchableOpacity>
-            :
-            <TouchableOpacity onPress={() => {this.startRecognizing()}}>
-              <FontAwesome name="microphone" size={24} color="black" />
-            </TouchableOpacity>
-          }
-        </View>
 
-        <View style={{width:'100%', height:'25%',alignItems:'center',justifyContent:'center',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
-          <TextInput style={{width:'90%',height:'90%'}}
+        </View>
+          <TextInput style={{width:'100%',height:'15%',padding:'2%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}
             value={this.state.complaint}
             onChangeText={(text) => {this.setState({complaint:text})}}
             multiline={true}
           />
-        </View>
 
         <View style={{flexDirection: 'row', marginBottom:10,marginTop:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
         </View>
-        <View style={{width:'100%', height:'25%',alignItems:'center',justifyContent:'center',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11,marginBottom:50}}>
-          <TextInput style={{width:'90%',height:'90%'}}
-            value={this.state.doctorComment}
-            onChangeText={(text) => {this.setState({doctorComment:text})}}
-            multiline={true}
-          />
-        </View>
-        
-        <View  style={{ height:'10%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
+        <TextInput style={{width:'100%',height:'15%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11,padding:'2%'}}
+          value={this.state.doctorComment}
+          onChangeText={(text) => {this.setState({doctorComment:text})}}
+          multiline={true}
+        />
+
+        <View  style={{ height:'10%',justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
           <TouchableOpacity style={{
           width: '100%',
           height: 40,
@@ -197,8 +178,13 @@ export default class Enotes extends Component {
           <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
-      </SafeAreaView>
+      </View>
+      <ImageView
+        images={this.state.image}
+        imageIndex={0}
+        isVisible={this.state.visible}
+        onClose={()=>{this.setState({visible:false})}}
+      />
     </KeyboardAvoidingView>
   );}}
 }

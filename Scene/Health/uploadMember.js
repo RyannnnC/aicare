@@ -17,7 +17,7 @@ export default class UploadMember extends Component {
       super(props);
       this.state={
         name:"",
-        phone:"",
+        phone:0,
         email:'',
         schedulevos:[],
         image:null,
@@ -91,7 +91,7 @@ export default class UploadMember extends Component {
           .then((json) => {
             this.setState({isLoading:false})
             if (json.code === 0) {
-              console.log(json.msg);
+              console.log(json.employerInfo);
               this.setState({
                 name:json.employerInfo.name,
                 phone:json.employerInfo.mobile,
@@ -559,7 +559,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "04*******"
-          value={this.state.phone.toString()}
+          value={this.state.phone==null?0:this.state.phone.toString()}
           keyboardType="numeric"
           onChangeText={(text) => {this.setState({phone:text})}}/>
         </View>
@@ -666,7 +666,7 @@ export default class UploadMember extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('experience')}</Text>
           <TextInput style={styles.resumeInput} placeholder= "Input Only a number"
-            value={this.state.we.toString()}
+            value={this.state.we==null?0:this.state.we.toString()}
             keyboardType="numeric"
             onChangeText={(number) => {this.setState({we:number})}}/>
         </View>

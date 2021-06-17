@@ -54,7 +54,9 @@ export default class Login extends Component {
     .then((response) => response.json())
     .then((json) =>  {
         if (json.code === 0) {
+          console.log(json)
           if (json.roleType == '2') {
+            console.log(json.employerId)
             this.storeId(json.employerId);
             this.context.action.changeemployerid(json.employerId);
           }
@@ -84,6 +86,7 @@ export default class Login extends Component {
       .then((json) =>  {
           if (json.code === 0) {
             if (json.roleType == '2') {
+              console.log(json.employerId)
               this.storeId(json.employerId);
               this.context.action.changeemployerid(json.employerId);
             }

@@ -21,15 +21,47 @@ export default class PrescriptionCheck extends Component {
       language:[],
       userId:null,
       infoId:null,
+      dname:'',
+      dmobile:'',
       }
     }
   componentDidMount(){
     this.setState({
       id:this.props.route.params.id,
       medicine:this.props.route.params.medicine});
-    this.queryPatient()
+    this.queryPatient();
+    this.queryDoctor();
   }
 
+  queryDoctor() {
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/employer/list'
+    +'?employerId=' + this.context.employerId;
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
+      }})
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({isLoading:false})
+        if (json.code === 0) {
+          console.log(json.msg);
+          this.setState({
+            dname:json.employerInfo.name,
+            dmobile:json.employerInfo.mobile,
+          })
+        } else {
+          console.log(json.msg)
+        }
+      }).catch(error => console.warn(error));
+  }
   queryPatient() {
     this.setState({isLoading:true})
     let url = 'http://'
@@ -55,7 +87,7 @@ export default class PrescriptionCheck extends Component {
       this.setState({isLoading:false})
       if (json.code === 0) {
         this.setState({
-          name:json.medicalInfo.name,
+          name:json.medicalInfo.firstName + json.medicalInfo.lastName,
           gender:json.medicalInfo.gender,
           dob:json.medicalInfo.dob,
           mobile:json.medicalInfo.mobile,
@@ -78,8 +110,9 @@ export default class PrescriptionCheck extends Component {
       customerUserId:this.state.userId,
       customerUserInfoId: this.state.infoId,
       medicineDataId: this.state.medicine[i].id,
+      usage:this.state.medicine[i].usage,
       isRepeat:this.state.medicine[i].isRepeat,
-      repetition:this.state.medicine[i].usage,
+      repetition:this.state.medicine[i].times,
     })
   }
 
@@ -155,7 +188,7 @@ export default class PrescriptionCheck extends Component {
         this.setState({isLoading:false})
       })
      .then(() => {
-        this.props.navigation.navigate('预约')
+        this.props.navigation.navigate(I18n.t('finish'),{name:this.state.name})
       })
       .catch(error => console.warn(error));
   }
@@ -194,19 +227,27 @@ export default class PrescriptionCheck extends Component {
       <View style={{height:'85%',width:'95%',flexDirection:'row',justifyContent: "center",marginTop:'5%'}}>
         <View style={{height:'90%',width:'28%',borderRightWidth:1}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>医生信息</Text>
-          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('name')}:</Text>
-          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>Prescriber No.</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.dname}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>编号: 123456.</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.dmobile}</Text>
         </View>
         <View style={{height:'90%',width:'28%',borderRightWidth:1,marginLeft:'4%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>病人信息</Text>
-          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('name')}: {this.state.name}</Text>
-          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
-          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
-          <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.mobile}</Text>
-          {this.state.medicareCard &&
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.name}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.mobile}</Text>
+          <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>医保信息</Text>
+          {this.state.medicareCard ?
+            this.state.medicareCard.map((item)=>(
+              <View>
+                <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('insuranceType')}: {item.category}</Text>
+                <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('cardNumber')}: {item.number}</Text>
+              </View>
+            ))
+          :
           <View>
-            <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('insuranceType')}: {this.state.medicareCard.category}</Text>
-            <Text style={{ fontSize:18, fontWeight: '500',marginTop:'5%' }}>{I18n.t('cardNumber')}: {this.state.medicareCard.number}</Text>
+            <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>无医保信息</Text>
           </View>
           }
         </View>

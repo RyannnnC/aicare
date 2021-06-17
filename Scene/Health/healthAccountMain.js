@@ -120,7 +120,7 @@ export default class HealthAccountMain extends Component {
         .then((json) => {
           this.setState({ isLoading: false });
           if (json.code === 0) {
-
+            console.log(json.employerInfo);
             if(json.employerInfo.name!=null){
               this.context.action.changeimg(json.employerInfo.imgUrl);
               this.context.action.changename(json.employerInfo.name);

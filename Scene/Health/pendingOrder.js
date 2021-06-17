@@ -28,6 +28,9 @@ export default class PendingOrder extends Component {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {this.queryOrders()});
   }
 
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
   setIsEnabled = (value) => {
     this.setState({isEnabled: value})
   }
@@ -233,7 +236,7 @@ export default class PendingOrder extends Component {
       }
     }
   }
-  
+
   changevis(id,value){
     for (let i=0;i<this.state.mds.length;i++) {
       if(this.state.mds[i].id == id) {
@@ -270,9 +273,9 @@ export default class PendingOrder extends Component {
   let orders;
   if (this.state.isLoading){
     return(
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size="large" color="#00ff00"  />
-   </View>
+    <View style={{ flex: 1, backgroundColor:'rgb(51,51,51)', justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator size="large" color="white"  />
+    </View>
   )
   }else {
   if (this.state.data.length >0) {
@@ -284,97 +287,57 @@ export default class PendingOrder extends Component {
       tp = 'Skype'
     }
     return (
-      <View style={styles.card2} key={item.id}>
-        <View style={{width:'80%',marginLeft:'10%'}}>
-        <TouchableOpacity style={{flexDirection: 'row', marginTop:16, marginBottom:16}} onPress={()=>this.changevis(item.id,true)}>
+      <View key={item.id} style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:'30%',backgroundColor:'white'}}>
+        <TouchableOpacity style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'14%'}}
+        onPress={()=>{this.changevis(item.id,true)}}>
+          {item.sex == 'Male'?
           <Image
-            style = {{width:40,height:40,marginRight:15}}
-            source = {require('../../images/providerImg/home_img_person.png')}
+            style = {{width:20,height:20,marginRight:5}}
+            source = {require('../../images/providerImg/Gender-2.png')}
           />
-          <View>
-            <Text style={{marginTop:4,fontSize:16, color:'#333333', fontWeight: '500'}}>{item.customerRealName}</Text>
-            <Text style={{marginTop:1,fontSize:12, color:'#666666', fontWeight: '400'}}>{item.mobile}</Text>
-          </View>
-        </TouchableOpacity>
-        <View style={{flexDirection: 'row',paddingBottom: 10}}>
-          <View style={{flexDirection: 'row',width:'65%'}}>
-          <Image
-            style = {{width: 15, height:15 , marginRight:5}}
-            source = {require('../../images/providerImg/schedule_icon_time.png')}
-            />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{moment(item.appointDate).format('L').substring(0,5)} {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
-          </View>
-          <View style={{flexDirection: 'row',width:'35%'}}>
-          <Image
-            style = {{width: 15, height:15, marginRight:5}}
-            source = {require('../../images/providerImg/schedule_icon_type.png')}
-          />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.serviceClassName}</Text>
-          </View>
-        </View>
-        <View style={{flexDirection: 'row',paddingBottom: 12, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
-          <View style={{flexDirection: 'row',width:'65%'}}>
-          <Image
-            style = {{width: 15, height:15 , marginRight:5}}
-            source = {require('../../images/providerImg/schedule_icon_person.png')}
-            />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{item.businessEmployerName}</Text>
-          </View>
-          {item.telehealthFlg ==1?
-            <View style={{flexDirection: 'row',width:'35%'}}>
-            <Image
-              style = {{width: 15, height:15,marginRight:5}}
-              source = {require('../../images/providerImg/account_icon_video.png')}
-            />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('telehealth')}</Text>
-            </View>
           :
-          <View style={{flexDirection: 'row',width:'35%'}}>
           <Image
-            style = {{width: 15, height:15, marginRight:5}}
-            source = {require('../../images/providerImg/schedule_icon_location.png')}
+            style = {{width:20,height:20,marginRight:5}}
+            source = {require('../../images/providerImg/Gender-1.png')}
           />
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t('onsite')}</Text>
-          </View>
           }
+          <Text style={{fontWeight: '400'}}>{item.customerRealName}</Text>
+        </TouchableOpacity>
+        <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+          <Text style={{fontWeight: '400'}}>{moment(item.appointDate).format('L')}</Text>
         </View>
-        <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity style={{
-            width: 'auto',
-            height: 30,
-            backgroundColor: '#68B0AB',
-            borderRadius: 10,
-            textAlign: 'center',
-            marginTop: 15,
-            justifyContent: "center",
-            alignItems: "center" ,
-            paddingLeft:15,
-            paddingRight:15,
-          }} onPress={() => this.startAlert(item.id)}>
-            <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('take')}</Text>
+        <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+          <Text style={{fontWeight: '400'}}>{item.startTime&&item.startTime.substring(0,5)}</Text>
+        </View>
+        <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+          <Text style={{fontWeight: '400'}}>{item.serviceTypeName}</Text>
+        </View>
+        <View style={{alignItems:'center',justifyContent:'center',width:'8%'}}>
+          <Text style={{fontWeight: '400'}}>{item.sex}</Text>
+        </View>
+        <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+          <Text style={{fontWeight: '400'}}>{item.birthDate}</Text>
+        </View>
+        <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+          <Text style={{fontWeight: '400'}}>{item.mobile}</Text>
+        </View>
+        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'15%'}}>
+          <TouchableOpacity stlye={{margin:5}} onPress={() => this.startAlert(item.id)}>
+            <Image
+              style = {{width:25,height:25}}
+              source={require('../../images/providerImg/Operation-4.png')}
+            />
           </TouchableOpacity>
-          <TouchableOpacity style={{
-            width: 'auto',
-            height: 30,
-            backgroundColor: '#FF7E67',
-            borderRadius: 10,
-            textAlign: 'center',
-            marginRight: 25,
-            marginTop: 15,
-            justifyContent: "center",
-            alignItems: "center" ,
-            paddingLeft:15,
-            paddingRight:15,
-          }} onPress={() => {
+          <TouchableOpacity onPress={() => {
             this.setModalVisible(!this.state.modalVisible);
             this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
-            console.log(this.state.selectedId);
-            console.log(this.state.selectedDoctor);
           }}>
-            <Text style={{fontSize:14, color:'#FAFAFA'}}>{I18n.t('modify')}</Text>
+            <Image
+              style = {{marginLeft:'20%',width:25,height:25}}
+              source={require('../../images/providerImg/Operation-3.png')}
+            />
           </TouchableOpacity>
         </View>
-      </View>
       <Modal
       animationType="slide"
       transparent={true}
@@ -443,8 +406,42 @@ elevation: 24,}}>
     )
   })
   return (
-    <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" , backgroundColor:'white'}}>
-      <ScrollView style={{ flex:1}}>
+    <SafeAreaView style={{ flex:1,height:'100%', justifyContent: "center", alignItems: "center" , backgroundColor:'rgb(51,51,51)'}}>
+      <ScrollView style={{ flex:1, width:'90%',height:'100%',backgroundColor:'white'}}
+      contentContainerStyle={{alignItems:'center'}}>
+        <View style={{flexDirection:'row',width:'90%',margin:'3%'}}>
+          <Image
+            style = {{width:30,height:30}}
+            source={require('../../images/providerImg/Appointment-calendar-3.png')}
+          />
+          <Text style={{marginLeft:'2%',fontSize:24,color:'rgb(33,192,196)',fontWeight: '500'}}>{I18n.t('pOrder')}</Text>
+        </View>
+        <View style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:'30%',backgroundColor:'rgb(222,246,246)'}}>
+          <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>
+            <Text style={{fontWeight: '400'}}>Name</Text>
+          </View>
+          <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+            <Text style={{fontWeight: '400'}}>Date of Visit</Text>
+          </View>
+          <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+            <Text style={{fontWeight: '400'}}>Time of Visit</Text>
+          </View>
+          <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+            <Text style={{fontWeight: '400'}}>Type</Text>
+          </View>
+          <View style={{alignItems:'center',justifyContent:'center',width:'8%'}}>
+            <Text style={{fontWeight: '400'}}>Sex</Text>
+          </View>
+          <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+            <Text style={{fontWeight: '400'}}>Date of Birth</Text>
+          </View>
+          <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+            <Text style={{fontWeight: '400'}}>Mobile Number</Text>
+          </View>
+          <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+            <Text style={{fontWeight: '400'}}>Operation</Text>
+          </View>
+        </View>
         {orders}
         <Modal
            animationType="slide"
@@ -500,13 +497,15 @@ elevation: 24,}}>
     </SafeAreaView>
   )} else {
     return (
-     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , backgroundColor:'white'}}>
-     <Image
-       style = {styles.finishImg}
-       source = {require('../../images/providerImg/order_img_empty1.png')}
-     />
-    <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('noOrder')}</Text>
+      <SafeAreaView style={{ flex:1,height:'100%', justifyContent: "center", alignItems: "center" , backgroundColor:'rgb(51,51,51)'}}>
+     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , flex:1, width:'90%',height:'100%',backgroundColor:'white'}}>
+      <Image
+        style = {styles.finishImg}
+        source = {require('../../images/providerImg/order_img_empty1.png')}
+       />
+     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('noOrder')}</Text>
     </View>
+    </SafeAreaView>
  )};
   }}
 }

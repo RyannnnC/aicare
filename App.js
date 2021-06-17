@@ -34,6 +34,7 @@ import Enotes3 from './Scene/Health/enotes3';
 import CaseRecord from './Scene/Health/caseRecord';
 import MyAccount from './Scene/Health/myAccount'
 import PrescriptionCheck  from './Scene/Health/prescriptionCheck'
+import Finish from './Scene/Health/finish'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,7 +73,11 @@ function Draw() {
 
 function OrgHome() {
   return (
-      <Tab.Navigator>
+      <Tab.Navigator tabBarOptions={{
+          style:{backgroundColor:'rgb(51,51,51)'},
+          inactiveTintColor:'white',
+          activeTintColor:'rgb(33,192,196)',
+        }}>
           <Tab.Screen
             name="主页"
             component={HealthMain}
@@ -108,7 +113,11 @@ function OrgHome() {
 }
 function DoctorHome() {
   return (
-      <Tab.Navigator>
+      <Tab.Navigator tabBarOptions={{
+          style:{backgroundColor:'rgb(51,51,51)'},
+          inactiveTintColor:'white',
+          activeTintColor:'rgb(33,192,196)',
+        }}>
           <Tab.Screen
             name="主页"
             component={HealthMain}
@@ -426,6 +435,7 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('enote')} component={Enotes} />
             <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
             <Stack.Screen name={I18n.t('prescription')} component={PrescriptionCheck} />
+            <Stack.Screen name={I18n.t('finish')} component={Finish} />
             </>
           )
       ): (
