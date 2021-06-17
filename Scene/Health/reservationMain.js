@@ -15,7 +15,7 @@ export default function ReservationMain() {
     <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
     <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
       <Image
-        style={{height:'70%',width:'20%'}}
+        style={{height:40,width:160,marginLeft:'5%'}}
         resizeMode='stretch'
         source={require('../../images/providerImg/顶端LOGO.png')}
       />

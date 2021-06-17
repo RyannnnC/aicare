@@ -24,6 +24,18 @@ export default class Enotes extends Component {
       hasAudioPermission: null,
       image:[],
       visible:false,
+      name:'',
+      gender:'',
+      dob:'',
+      mobile:'',
+      medicareCard:[],
+      language:[],
+      userId:null,
+      infoId:null,
+      medicineUsage:[],
+      familyHistory:[],
+      chronic:[],
+      allergy:[],
       }
     }
   onSpeechStartHandler = (e) => {
@@ -72,7 +84,19 @@ export default class Enotes extends Component {
     .then((json) => {
       if (json.code === 0) {
         this.setState({
+          name:json.medicalInfo.firstName + json.medicalInfo.lastName,
+          gender:json.medicalInfo.gender,
+          dob:json.medicalInfo.dob,
+          mobile:json.medicalInfo.mobile,
+          medicareCard:json.medicalInfo.medicareCard,
+          language:json.medicalInfo.languages,
+          userId:json.medicalInfo.customerUserId,
+          infoId:json.medicalInfo.customerUserInfoId,
           patientComment:json.medicalInfo.patientComment,
+          allergy:json.medicalInfo.allergen,
+          medicineUsage:json.medicalInfo.medicineUsage,
+          familyHistory:json.medicalInfo.familyHistory,
+          chronic:json.medicalInfo.chronic,
         })
        let src = {uri: json.medicalInfo.commentImg,}
        let image = []
@@ -112,15 +136,7 @@ export default class Enotes extends Component {
       console.error(e);
     }
   };
-  /*  {this.state.talk ?
-      <TouchableOpacity onPress={() => {this.stopRecognizing()}}>
-        <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
-      </TouchableOpacity>
-      :
-      <TouchableOpacity onPress={() => {this.startRecognizing()}}>
-        <FontAwesome name="microphone" size={24} color="black" />
-      </TouchableOpacity>
-    }*/
+    
   render() {
     if (this.state.isLoading){
       return(
@@ -130,9 +146,9 @@ export default class Enotes extends Component {
     )
     }else {
     return (
-    <KeyboardAvoidingView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}
+    <KeyboardAvoidingView style={{ flex:1, flexDirection:'row',justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}
     behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <View style={{flex:1,width:'90%'}}>
+      <View style={{height:'91.5%',width:'65%',backgroundColor:'white',borderRadius:5,padding:'2%'}}>
         <Text style={{ fontSize:18, fontWeight: '500',marginTop:10, marginBottom:10}}>{I18n.t('statement')}</Text>
         <View style={{width:'100%',height:'15%',alignItems:'center',flexDirection:'row'}}>
           {this.state.image.map((item) => (
@@ -158,6 +174,17 @@ export default class Enotes extends Component {
 
         <View style={{flexDirection: 'row', marginBottom:10,marginTop:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
+          {this.state.talk ?
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.stopRecognizing()
+          }}>
+            <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
+          </TouchableOpacity>
+          :
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.startRecognizing()
+          }}>
+            <FontAwesome name="microphone" size={24} color="black" />
+          </TouchableOpacity>
+          }
         </View>
         <TextInput style={{width:'100%',height:'15%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11,padding:'2%'}}
           value={this.state.doctorComment}
@@ -165,17 +192,44 @@ export default class Enotes extends Component {
           multiline={true}
         />
 
-        <View  style={{ height:'10%',justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
+        <View  style={{ flexDirection:'row',height:'10%',justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
           <TouchableOpacity style={{
-          width: '100%',
+          width: '55%',
           height: 40,
           backgroundColor: '#68B0AB',
-          borderRadius: 20,
+          borderRadius: 5,
           alignItems: 'center',
-          justifyContent: "center",}} onPress={() => {
+          justifyContent: "center",
+          margin:'2%'}} onPress={() => {
           this.props.navigation.navigate(I18n.t('enote3'),{id: this.state.id,patientComplaint:this.state.complaint,doctorComplaint:this.state.doctorComment})
           }}>
-          <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
+          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{
+          width: '20%',
+          height: 40,
+          borderColor: '#68B0AB',
+          borderWidth:1,
+          borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: "center",
+          margin:'1%'}} onPress={() => {
+          
+          }}>
+          <Text style={{ fontSize:16, fontWeight: '500', color: 'black' }}>{I18n.t('referral')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{
+          width: '20%',
+          height: 40,
+          borderColor: '#68B0AB',
+          borderWidth:1,
+          borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: "center",
+          margin:'1%'}} onPress={() => {
+          
+          }}>
+          <Text style={{ fontSize:16, fontWeight: '500', color: 'black' }}>{I18n.t('followup')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -185,6 +239,84 @@ export default class Enotes extends Component {
         isVisible={this.state.visible}
         onClose={()=>{this.setState({visible:false})}}
       />
+      <View style={{width:'30%',borderRadius:5,padding:'2%'}}>
+        <View style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
+          <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('name')}: {this.state.name}</Text>
+          <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
+          <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
+          <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('mobile')}: {this.state.mobile}</Text>
+          <Text style={{ fontSize:16, fontWeight: '500',marginTop:'2%'}}>{I18n.t('mcInfo')}</Text>
+          {this.state.medicareCard ?
+            this.state.medicareCard.map((item)=>(
+              <View key={item.number}>
+                <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('insuranceType')}: {item.category}</Text>
+                <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('cardNumber')}: {item.number}</Text>
+              </View>
+            ))
+          :
+          <View>
+            <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('nomcInfo')}</Text>
+          </View>
+          }
+        </View>
+        <View style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('allergy')}</Text>
+          {this.state.allergy.length > 0 ?
+            this.state.allergy.map((item)=>(
+              <View key={item.id} style={{flexDirection:'row'}}>
+                <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.allergen}</Text>
+              </View>
+            ))
+          :
+          <View>
+            <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
+          </View>
+          }
+        </View>
+        <View style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('mediHis')}</Text>
+          {this.state.medicineUsage.length > 0 ?
+            this.state.medicineUsage.map((item)=>(
+              <View key={item.id} style={{flexDirection:'row'}}>
+                <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.medicine}</Text>
+              </View>
+            ))
+          :
+          <View>
+            <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
+          </View>
+          }
+        </View>
+        <View style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('famHis')}</Text>
+          {this.state.familyHistory.length > 0 ?
+            this.state.familyHistory.map((item)=>(
+              <View key={item.id} style={{flexDirection:'row'}}>
+                <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.disease}</Text>
+              </View>
+            ))
+          :
+          <View>
+            <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
+          </View>
+          }
+        </View>
+        <View style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('chronic')}</Text>
+          {this.state.chronic.length > 0 ?
+            this.state.chronic.map((item)=>(
+              <View key={item.id} style={{flexDirection:'row'}}>
+                <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.chronic}</Text>
+              </View>
+            ))
+          :
+          <View>
+            <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
+          </View>
+          }
+        </View>
+      </View>
     </KeyboardAvoidingView>
   );}}
 }

@@ -287,7 +287,8 @@ export default class PendingOrder extends Component {
       tp = 'Skype'
     }
     return (
-      <View key={item.id} style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:'30%',backgroundColor:'white'}}>
+      <View key={item.id}>
+      <View  style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:50,backgroundColor:'white'}}>
         <TouchableOpacity style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'14%'}}
         onPress={()=>{this.changevis(item.id,true)}}>
           {item.sex == 'Male'?
@@ -338,6 +339,7 @@ export default class PendingOrder extends Component {
             />
           </TouchableOpacity>
         </View>
+      </View>
       <Modal
       animationType="slide"
       transparent={true}
@@ -416,31 +418,31 @@ elevation: 24,}}>
           />
           <Text style={{marginLeft:'2%',fontSize:24,color:'rgb(33,192,196)',fontWeight: '500'}}>{I18n.t('pOrder')}</Text>
         </View>
-        <View style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:'30%',backgroundColor:'rgb(222,246,246)'}}>
-          <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>
-            <Text style={{fontWeight: '400'}}>Name</Text>
-          </View>
-          <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
-            <Text style={{fontWeight: '400'}}>Date of Visit</Text>
-          </View>
-          <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
-            <Text style={{fontWeight: '400'}}>Time of Visit</Text>
-          </View>
-          <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
-            <Text style={{fontWeight: '400'}}>Type</Text>
-          </View>
-          <View style={{alignItems:'center',justifyContent:'center',width:'8%'}}>
-            <Text style={{fontWeight: '400'}}>Sex</Text>
-          </View>
-          <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
-            <Text style={{fontWeight: '400'}}>Date of Birth</Text>
-          </View>
-          <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
-            <Text style={{fontWeight: '400'}}>Mobile Number</Text>
-          </View>
-          <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
-            <Text style={{fontWeight: '400'}}>Operation</Text>
-          </View>
+        <View style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:60,backgroundColor:'rgb(222,246,246)'}}>
+            <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('name')}</Text>
+            </View>
+            <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('bookingDate')}</Text>
+            </View>
+            <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('bookingTime')}</Text>
+            </View>
+            <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('serviceType')}</Text>
+            </View>
+            <View style={{alignItems:'center',justifyContent:'center',width:'8%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('gender')}</Text>
+            </View>
+            <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('dateofBirth')}</Text>
+            </View>
+            <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('mobile')}</Text>
+            </View>
+            <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+              <Text style={{fontWeight: '400'}}>{I18n.t('operation')}</Text>
+            </View>
         </View>
         {orders}
         <Modal

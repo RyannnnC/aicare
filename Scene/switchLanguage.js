@@ -11,7 +11,7 @@ I18n.translations = {
 };
 const systemLanguage = Localization.locale;
 if (systemLanguage) {
-  I18n.locale = systemLanguage;
+  I18n.locale = 'en';
 } else {
   I18n.locale = 'en';  // 默认语言为英文
 }

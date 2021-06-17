@@ -112,14 +112,11 @@ export default class ProcessingOrder extends Component {
             .then((response) => response.json())
             .then((json) => {
               if (json.code === 0) {
-                this.setState({isLoading:true})
                 Alert.alert('修改成功')
-                this.queryOrders();
               } else {
-                this.setState({isLoading:true})
-                Alert.alert('修改失败')
-                this.queryOrders();
+                Alert.alert(json.msg)    
               }
+              this.query();
             }).catch(error => console.warn(error));
         }},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
@@ -325,7 +322,7 @@ export default class ProcessingOrder extends Component {
         tp = 'Skype'
       }
       return (
-        <View key={item.id} style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:'30%',backgroundColor:'white'}}>
+        <View key={item.id} style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:50,backgroundColor:'white'}}>
           <TouchableOpacity style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'14%'}}
           onPress={()=>{this.changevis(item.id,true)}}>
             {item.sex == 'Male'?
@@ -360,14 +357,14 @@ export default class ProcessingOrder extends Component {
             <Text style={{fontWeight: '400'}}>{item.mobile}</Text>
           </View>
           <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'15%'}}>
-            <TouchableOpacity stlye={{margin:5}} onPress={() => this.startAlert(item.id)}>
+            <TouchableOpacity stlye={{margin:5}} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id:item.id})}}>
               <Image
                 style = {{width:25,height:25}}
-                source={require('../../images/providerImg/Operation-4.png')}
+                source={require('../../images/providerImg/Operation-5.png')}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-              this.setModalVisible(!this.state.modalVisible);
+              this.setMdVisible(!this.state.mdVisible);
               this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
             }}>
               <Image
@@ -445,8 +442,8 @@ export default class ProcessingOrder extends Component {
     })
 
     return (
-      <SafeAreaView style={{ flex:1,height:'100%', justifyContent: "center", alignItems: "center" , backgroundColor:'rgb(51,51,51)'}}>
-        <ScrollView style={{ flex:1, width:'90%',height:'100%',backgroundColor:'white'}}
+      <SafeAreaView style={{ flex:1,height:'100%',justifyContent: "center", alignItems: "center" , backgroundColor:'rgb(51,51,51)'}}>
+        <ScrollView style={{ flex:1,backgroundColor:'white',width:'90%'}}
         contentContainerStyle={{alignItems:'center'}}>
         <View style={{flexDirection: 'row', width:'90%',marginBottom:21,marginTop:30,backgroundColor:'white'}}>
           <View style={{flexDirection: 'row', width:'50%'}}>
@@ -475,32 +472,32 @@ export default class ProcessingOrder extends Component {
               style = {{width:30,height:30}}
               source={require('../../images/providerImg/Appointment-calendar-3.png')}
             />
-            <Text style={{marginLeft:'2%',fontSize:24,color:'rgb(33,192,196)',fontWeight: '500'}}>{I18n.t('pOrder')}</Text>
+            <Text style={{marginLeft:'2%',fontSize:24,color:'rgb(33,192,196)',fontWeight: '500'}}>{I18n.t('oOrder')}</Text>
           </View>
-          <View style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:'30%',backgroundColor:'rgb(222,246,246)'}}>
+          <View style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:60,backgroundColor:'rgb(222,246,246)'}}>
             <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>
-              <Text style={{fontWeight: '400'}}>Name</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('name')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
-              <Text style={{fontWeight: '400'}}>Date of Visit</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('bookingDate')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
-              <Text style={{fontWeight: '400'}}>Time of Visit</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('bookingTime')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
-              <Text style={{fontWeight: '400'}}>Type</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('serviceType')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'8%'}}>
-              <Text style={{fontWeight: '400'}}>Sex</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('gender')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
-              <Text style={{fontWeight: '400'}}>Date of Birth</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('dateofBirth')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
-              <Text style={{fontWeight: '400'}}>Mobile Number</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('mobile')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
-              <Text style={{fontWeight: '400'}}>Operation</Text>
+              <Text style={{fontWeight: '400'}}>{I18n.t('operation')}</Text>
             </View>
           </View>
           {orders}

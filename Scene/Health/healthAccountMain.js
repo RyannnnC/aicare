@@ -227,7 +227,14 @@ export default class HealthAccountMain extends Component {
       </TouchableOpacity>
       <TouchableOpacity
       style={styles.profileBar}
-      onPress={() => {this.startAlert()}}
+      onPress={() => {
+        //this.startAlert()
+        if (this.context.employerId != null) {
+          this.removeId();
+        }
+        this.removeToken();
+        this.context.action.clearstate();
+      }}
       >
         <Image
           style = {styles.smallIconImg}

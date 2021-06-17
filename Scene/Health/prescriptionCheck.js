@@ -1,9 +1,8 @@
 import React ,{Component}from 'react';
-import { Modal,Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
-import {styles} from '../providerStyle';
+import { Image,Text, View, TouchableOpacity,ScrollView,SafeAreaView,ActivityIndicator } from 'react-native';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
-import { CheckBox } from 'react-native-elements';
+import moment from 'moment';
 
 export default class PrescriptionCheck extends Component {
     constructor(props) {
@@ -195,16 +194,7 @@ export default class PrescriptionCheck extends Component {
 
 
   render() {
-    let medicine = []
-    if (this.state.medicine.length >0) {
-    medicine = this.state.medicine.map((item) => {
-      return (
-        <View key = {item.id}style={{alignItems:'center',justifyContent:'center',width:'90%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
-          <Text style={{ color: 'black', fontSize: 24, fontWeight: '600'}}>{item.name}</Text>
-          <Text style={{ color: '#696969', fontSize: 16, fontWeight: '400'}}>用法用量：{item.usage}</Text>
-        </View>
-      )
-    })}
+
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -216,28 +206,38 @@ export default class PrescriptionCheck extends Component {
       if (this.state.medicine.length >0) {
       medicine = this.state.medicine.map((item) => {
         return (
-          <View key = {item.id} style={{alignItems:'center',justifyContent:'center',width:'90%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
-            <Text style={{ color: 'black', fontSize: 21, fontWeight: '600'}}>{item.name}</Text>
-            <Text style={{ color: '#696969', fontSize: 16, fontWeight: '400'}}>用法用量：{item.usage}</Text>
+          <View key = {item.id} style={{flexDirection:'row',width:'90%'}}>
+          <View style={{alignItems:'center',justifyContent:'center',width:'65%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+            <Text style={{ color: 'black', fontSize: 18, fontWeight: '500'}}>{item.name}</Text>
+            <Text style={{ color: '#696969', fontSize: 15, fontWeight: '400'}}>用法用量：{item.usage}</Text>
           </View>
+          <View style={{width:'30%',margin:'6%'}}>
+              <Image
+                style={{width:'100%',height:100}}
+                resizeMode='stretch'
+                source={require('../../images/providerImg/barcode.png')}
+              />
+          </View>
+        </View>
         )
       })}
     return (
-    <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <View style={{height:'85%',width:'95%',flexDirection:'row',justifyContent: "center",marginTop:'5%'}}>
-        <View style={{height:'90%',width:'28%',borderRightWidth:1}}>
-          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>医生信息</Text>
+    <SafeAreaView style={{ flex:1,height:'100%',width:'100%', justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}>
+      <View style={{height:'95%',width:'95%',flexDirection:'row',justifyContent: "center",backgroundColor:"white",borderRadius:5}}>
+        <View style={{height:'95%',width:'25%',borderRightWidth:1,margin:'2%'}}>
+          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('docInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.dname}</Text>
-          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>编号: 123456.</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>RACGP: 80225873</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.dmobile}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('address')}: 9 Park Road Hurstvile NSW 2220</Text>
         </View>
-        <View style={{height:'90%',width:'28%',borderRightWidth:1,marginLeft:'4%'}}>
-          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>病人信息</Text>
+        <View style={{height:'95%',width:'25%',borderRightWidth:1,marginTop:'2%',marginBottom:'2%',marginRight:'2%'}}>
+          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.name}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.mobile}</Text>
-          <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>医保信息</Text>
+          <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>{I18n.t('mcInfo')}</Text>
           {this.state.medicareCard ?
             this.state.medicareCard.map((item)=>(
               <View>
@@ -247,22 +247,26 @@ export default class PrescriptionCheck extends Component {
             ))
           :
           <View>
-            <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>无医保信息</Text>
+            <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
+          <Text style={{ fontSize:20, fontWeight: '500',marginTop:'10%'}}>{I18n.t('bookingDate')}: {moment(new Date()).format('L')}</Text>
         </View>
-        <View style={{height:'90%',width:'40%'}}>
-          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB',marginLeft:'5%' }}>处方信息</Text>
+        <View style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
+          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('presInfo')}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400', marginTop:'5%' }}>{I18n.t('preNumber')}: 01{new Date().getFullYear().toString()}{new Date().getMonth().toString()}{new Date().getDate().toString()}</Text>
+          <ScrollView
+                  style={{flex:1,width:'100%',maxHeight:'60%'}}
+                  >
           {this.state.medicine.length>0 ? medicine
           :
-            <View style={{alignItems:'center',justifyContent:'center',width:'90%',height:100,borderRadius:10,backgroundColor:'#EBEBEB',margin:'5%'}}>
-              <Text style={{fontSize: 16, fontWeight: '400'}}>暂无药品，请添加</Text>
+            <View style={{alignItems:'center',justifyContent:'center',width:'90%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+              <Text style={{fontSize: 16, fontWeight: '400'}}>{I18n.t('nomedi')}</Text>
             </View>
           }
-        </View>
-      </View>
-      <View  style={{ height:'10%', width:'80%',justifyContent: "center", alignItems: "center"}}>
-        <TouchableOpacity style={{
+        </ScrollView>
+        <View  style={{ height:'10%', width:'80%',margin:'10%',justifyContent: "center", alignItems: "center"}}>
+          <TouchableOpacity style={{
             width: '100%',
             height: 40,
             marginTop: 10,
@@ -274,8 +278,11 @@ export default class PrescriptionCheck extends Component {
               this.saveReport()
             }}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
+        </View>
       </View>
+      
     </SafeAreaView>
   );}}
 }

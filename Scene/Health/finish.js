@@ -1,6 +1,5 @@
 import React ,{Component}from 'react';
 import { Text,  View,TouchableOpacity,SafeAreaView } from 'react-native';
-import {styles} from '../providerStyle';
 import I18n from '../switchLanguage';
 export default class Finish extends Component {
   constructor(props) {
@@ -16,7 +15,7 @@ export default class Finish extends Component {
   return (
     <SafeAreaView style={{ flex:1, alignItems: "center",justifyContent:'center'}}>
       <Text style={{ fontSize:24, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('ftitle')} </Text>
-      <Text style={{ fontSize:20, fontWeight: '400' ,marginTop:'3%'}}>{I18n.t('fsend')}</Text>
+      <Text style={{ fontSize:22, fontWeight: '500' ,color: '#68B0AB' ,marginTop:'3%'}}>{I18n.t('fsend')}</Text>
       <TouchableOpacity
         style={{
           width: '30%',
