@@ -31,7 +31,10 @@ export default class ProcessingOrder extends Component {
   componentDidMount = () => {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {this.query()});
   }
-
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+  
   setIsEnabled = (value) => {
     this.setState({isEnabled: value})
   }
@@ -99,7 +102,7 @@ export default class ProcessingOrder extends Component {
           +'id=' + this.state.selectedId
           +'&scheduleDetailedId=' + sid;
             fetch(url,{
-              method: 'GET',
+              method: 'POST',
               mode: 'cors',
               credentials: 'include',
               headers: {
@@ -114,8 +117,9 @@ export default class ProcessingOrder extends Component {
               if (json.code === 0) {
                 Alert.alert('修改成功')
               } else {
-                Alert.alert(json.msg)    
+                Alert.alert(json.msg)
               }
+              this.setMdVisible(false)
               this.query();
             }).catch(error => console.warn(error));
         }},

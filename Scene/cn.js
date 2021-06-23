@@ -212,4 +212,7 @@ export default {
   presInfo:'处方信息',
   docInfo:'医生信息',
   operation:'操作',
+  takePhoto:'拍照',
+  chooseLib:'从相册中选择',
+  uploadMethod:'请选择一种方式来上传照片？',
 }

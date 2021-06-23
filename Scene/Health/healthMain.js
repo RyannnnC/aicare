@@ -20,7 +20,8 @@ export default class HealthMain extends Component {
 
   render () {
     return (
-      <SafeAreaView style={{flex:1,backgroundColor:'rgb(51,51,51)',alignItems:'center'}}>
+      <SafeAreaView style={{flex:1}}>
+        <View style={{width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)',alignItems:'center'}}>
         <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
           <Image
             style={{height:40,width:160,marginLeft:'5%'}}
@@ -163,7 +164,7 @@ export default class HealthMain extends Component {
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => {}}>
+              onPress={() => this.props.navigation.navigate(I18n.t('myAccount'))}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -277,6 +278,7 @@ export default class HealthMain extends Component {
               </View>
             </TouchableOpacity>
           </View>
+        </View>
         </View>
       </SafeAreaView>
   )}

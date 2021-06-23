@@ -146,7 +146,7 @@ export default {
   emRecord:'Electronic Medical Record',
   basicMedicalHistory:'Basic Medical History',
   historyRecord:'History Medical Record',
-  nextStep:'Next Step!',
+  nextStep:'Next Step',
   vitalSign:'Vital Signs',
   temperature:'Temperature',
   bloodPressure:'Blood Pressure',
@@ -212,4 +212,7 @@ export default {
   presInfo:'Prescription Information',
   docInfo:'Doctor Information',
   operation:'Operation',
+  takePhoto:'Take a Photo',
+  chooseLib:'Choose from Library',
+  uploadMethod:'Choose a Method to upload your Image',
 }

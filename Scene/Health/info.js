@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Text,  View,  Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
+import { Alert,Modal,Text,  View,  Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
 import {styles} from '../providerStyle';
 import {  MaterialIcons} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -36,13 +36,13 @@ export default class Info extends Component {
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
       ],
       times: [
-          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
-          { time1: new Date(), time2:new Date(),visible1:false, visible2:false},
+          { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+          { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+          { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+          { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+          { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+          { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+          { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
       ]
     }
     }
@@ -87,6 +87,13 @@ export default class Info extends Component {
    this.setState({ hasCameraPermission: status === "granted" });
    const { c_status } = await Permissions.askAsync(Permissions.CAMERA);
    this.setState({ hasCameraPermission: c_status === "granted" });
+  }
+  convertTime(date) {
+    var d = new Date(date);
+    let h = d.getHours(); // => 9
+    let m = d.getMinutes(); // =>  30
+    let s = d.getSeconds(); // => 51
+    return moment(h+':'+m+':'+s,'HH:mm:ss')
   }
   changeColor(index){
     let but = this.state.buttons;
@@ -287,6 +294,20 @@ export default class Info extends Component {
       this.setState({image:result.uri});
     }
   };
+  startAlert(){
+    Alert.alert(
+      'Alert',
+      '请选择一种方式来上传照片？',
+      [
+        {text: I18n.t('takePhoto'), onPress: this.launchCamera},
+        {text: I18n.t('chooseLib'), onPress: this.pickImage },
+        {text: I18n.t('cancel'), onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
+  }
 /*  <TouchableOpacity style={{flexDirection: 'row', marginRight: 5}} onPress = {()=>{this.getData()}}>
     <Image style = {{width:12, height:15}}
       source= {require('../../images/providerImg/order_icon_location.png')}
@@ -328,7 +349,7 @@ export default class Info extends Component {
       <ScrollView style={{ flex: 1}}>
         <View style={{flex:1,width:'90%'}}>
         <View style={{ marginTop:10,justifyContent: "center",alignItems: "center" }}>
-          <TouchableOpacity onPress={this.pickImage}>
+          <TouchableOpacity onPress={() => {this.startAlert()}}>
           {this.state.image ?
           <Image style={{width:80,height:80,borderRadius:40}}
                 source={{ uri: this.state.image }}
@@ -444,14 +465,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[0].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[0].time1).tz(Localization.timezone).format('LT')} </Text>
+              <Text>{moment(this.state.times[0].time1).format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[0].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[0].time2).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[0].time2).format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -524,14 +545,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[1].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[1].time1).tz(Localization.timezone).format('LT')} </Text>
+              <Text>{moment(this.state.times[1].time1).format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[1].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[1].time2).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[1].time2).format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -604,14 +625,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[2].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[2].time1).tz(Localization.timezone).format('LT')} </Text>
+              <Text>{moment(this.state.times[2].time1).format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[2].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[2].time2).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[2].time2).format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -684,14 +705,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[3].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[3].time1).tz(Localization.timezone).format('LT')} </Text>
+              <Text>{moment(this.state.times[3].time1).format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[3].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[3].time2).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[3].time2).format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
@@ -764,14 +785,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[4].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[4].time1).tz(Localization.timezone).format('LT')} </Text>
+              <Text>{moment(this.state.times[4].time1).format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[4].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[4].time2).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[4].time2).format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -844,14 +865,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[5].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[5].time1).tz(Localization.timezone).format('LT')} </Text>
+              <Text>{moment(this.state.times[5].time1).format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[5].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[5].time2).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[5].time2).format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -924,14 +945,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[6].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[6].time1).tz(Localization.timezone).format('LT')}</Text>
+              <Text>{moment(this.state.times[6].time1).format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[6].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[6].time2).tz(Localization.timezone).format('LT')} </Text>
+                <Text>{moment(this.state.times[6].time2).format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -1064,30 +1085,6 @@ export default class Info extends Component {
         </TouchableOpacity>
         </View>
       </ScrollView>
-      <Modal
-      animationType="slide"
-      transparent={true}
-      visible={this.state.visible}
-      onRequestClose={()=>{
-        this.setVisible(!this.state.visible);}
-      }>
-        <TouchableOpacity style={{width:'100%',height:'65%',backgroundColor: 'rgba(0, 0, 0, 0.5)'}} onPress={() => {this.setState({visible:false})}}>
-        </TouchableOpacity>
-        <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'35%',backgroundColor:'white'}}>
-          <Text style={{height:'10%',padding:5,borderBottomWidth:1,borderBottomColor:'#EEEEEE', fontSize:20, fontWeight: '400', color: '#0000FF' }}>Choose Your Upload Method</Text>
-          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
-          onPress={this.launchCamera}>
-            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Take a photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
-          onPress={this.pickImage}>
-            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Pick a Image</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}} onPress={() => {this.setState({visible:false})}}>
-            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>{I18n.t('cancel')}</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
     </SafeAreaView>
   );}}
 }

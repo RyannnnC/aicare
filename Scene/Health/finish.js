@@ -4,12 +4,7 @@ import I18n from '../switchLanguage';
 export default class Finish extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      name:'',
-    }
-  }
-  componentDidMount(){
-    this.setState({name:this.props.route.params.name});
+    this.state={}
   }
   render() {
   return (

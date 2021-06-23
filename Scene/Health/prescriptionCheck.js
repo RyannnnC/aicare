@@ -187,11 +187,42 @@ export default class PrescriptionCheck extends Component {
         this.setState({isLoading:false})
       })
      .then(() => {
-        this.props.navigation.navigate(I18n.t('finish'),{name:this.state.name})
+        this.finish()
       })
       .catch(error => console.warn(error));
   }
 
+  finish(){
+    this.setState({isLoading:true});
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/appointment/complete?'
+    +'id=' + this.props.route.params.id;
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
+      },
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          alert('完成成功')
+        } else {
+          console.log(json.msg)
+        }
+        this.setState({isLoading:false})
+      })
+     .then(() => {
+        this.props.navigation.navigate(I18n.t('finish'))
+      })
+      .catch(error => console.warn(error));
+  }
 
   render() {
 
@@ -209,7 +240,7 @@ export default class PrescriptionCheck extends Component {
           <View key = {item.id} style={{flexDirection:'row',width:'90%'}}>
           <View style={{alignItems:'center',justifyContent:'center',width:'65%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
             <Text style={{ color: 'black', fontSize: 18, fontWeight: '500'}}>{item.name}</Text>
-            <Text style={{ color: '#696969', fontSize: 15, fontWeight: '400'}}>用法用量：{item.usage}</Text>
+            <Text style={{ color: '#696969', fontSize: 15, fontWeight: '400'}}>{I18n.t('usage')}：{item.usage}</Text>
           </View>
           <View style={{width:'30%',margin:'6%'}}>
               <Image
@@ -224,13 +255,17 @@ export default class PrescriptionCheck extends Component {
     return (
     <SafeAreaView style={{ flex:1,height:'100%',width:'100%', justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}>
       <View style={{height:'95%',width:'95%',flexDirection:'row',justifyContent: "center",backgroundColor:"white",borderRadius:5}}>
-        <View style={{height:'95%',width:'25%',borderRightWidth:1,margin:'2%'}}>
+        <ScrollView style={{height:'95%',width:'25%',borderRightWidth:1,margin:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('docInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.dname}</Text>
-          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>RACGP: 80225873</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>Prescribe Number: 80225873</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.dmobile}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('address')}: 9 Park Road Hurstvile NSW 2220</Text>
-        </View>
+          <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>{I18n.t('diagnosisSuggestion')}:</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{this.props.route.params.doctorComplaint}</Text>
+          <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>{I18n.t('patientComplaint')}:</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{this.props.route.params.patientComplaint}</Text>
+        </ScrollView>
         <View style={{height:'95%',width:'25%',borderRightWidth:1,marginTop:'2%',marginBottom:'2%',marginRight:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.name}</Text>
@@ -250,13 +285,14 @@ export default class PrescriptionCheck extends Component {
             <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
-          <Text style={{ fontSize:20, fontWeight: '500',marginTop:'10%'}}>{I18n.t('bookingDate')}: {moment(new Date()).format('L')}</Text>
+
         </View>
         <View style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('presInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400', marginTop:'5%' }}>{I18n.t('preNumber')}: 01{new Date().getFullYear().toString()}{new Date().getMonth().toString()}{new Date().getDate().toString()}</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%'}}>{I18n.t('bookingDate')}: {moment(new Date()).format('L')}</Text>
           <ScrollView
-                  style={{flex:1,width:'100%',maxHeight:'60%'}}
+                  style={{flex:1,width:'100%',maxHeight:'60%',marginTop:'5%'}}
                   >
           {this.state.medicine.length>0 ? medicine
           :
@@ -282,7 +318,7 @@ export default class PrescriptionCheck extends Component {
         </View>
         </View>
       </View>
-      
+
     </SafeAreaView>
   );}}
 }

@@ -186,7 +186,7 @@ export default class Enotes3 extends Component {
               }
             })
             .catch(error => console.warn(error));
-        }, 800);
+        }, 500);
       } else {
         this.setState({dname:'',visible:false})
       }
@@ -251,7 +251,7 @@ export default class Enotes3 extends Component {
           <View style={{width:'90%',flexDirection:'row',marginBottom:'5%'}}>
             <View style={{flexWrap:'wrap',width:'30%',flexDirection:'row'}}>
               <Text style={{fontSize: 16, fontWeight: '400'}}>{I18n.t('mname')}</Text>
-            </View>  
+            </View>
             <View style={{width:'70%'}}>
               <TextInput
               style={{width:'100%',borderWidth:1,fontSize: 16, fontWeight: '400',marginLeft:'5%'}}
@@ -276,7 +276,7 @@ export default class Enotes3 extends Component {
           <View style={{width:'90%',flexDirection:'row',marginBottom:'5%'}}>
             <View style={{flexWrap:'wrap',width:'30%',flexDirection:'row'}}>
               <Text style={{fontSize: 16, fontWeight: '400'}}>{I18n.t('usage')}</Text>
-            </View>  
+            </View>
             <View style={{width:'70%'}}>
               <TextInput
               style={{width:'100%',borderWidth:1,fontSize: 16, fontWeight: '400',marginLeft:'5%'}}
@@ -350,7 +350,7 @@ export default class Enotes3 extends Component {
                   console.log('ok')
                 }
               }}>
-              <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
+              <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -373,7 +373,7 @@ export default class Enotes3 extends Component {
             </TouchableOpacity>
           </View>
       </View>
-          
+
       <View style={{width:'30%',borderRadius:5,padding:'2%'}}>
         <View style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>

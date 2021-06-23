@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Modal,Text, View, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator  } from 'react-native';
+import { Alert,Modal,Text, View, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import { MaterialIcons,AntDesign} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -54,13 +54,13 @@ export default class UploadMember extends Component {
           { backgroundColor: 'transparent',borderWidth: 1,fontColor: '#999999', pressed: false, },
         ],
         times: [
-            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
-            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
-            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
-            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
-            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
-            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
-            { time1: new Date("May 4 2021 09:00"), time2:new Date("May 4 2021 17:00"),visible1:false, visible2:false},
+            { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+            { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+            { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+            { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+            { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+            { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
+            { time1: this.convertTime(new Date("May 4 2021 09:00")), time2:this.convertTime(new Date("May 4 2021 17:00")),visible1:false, visible2:false},
         ]
       }
     }
@@ -104,7 +104,7 @@ export default class UploadMember extends Component {
               let i;
               if (json.employerInfo.employerSchedulevos.length>0){
                 for (i=0;i<json.employerInfo.employerSchedulevos.length;i++){
-                  if (json.employerInfo.employerSchedulevos[i].status != 0 && json.employerInfo.employerSchedulevos[i].status != null){
+                  if (json.employerInfo.employerSchedulevos[i].status != -1 &&json.employerInfo.employerSchedulevos[i].status != 0 && json.employerInfo.employerSchedulevos[i].status != null){
                     let but = this.state.buttons;
                     but[i].pressed = true;
                     but[i].backgroundColor = '#FF7E67';
@@ -112,8 +112,8 @@ export default class UploadMember extends Component {
                     but[i].fontColor = '#FFFFFF';
                     this.setState({buttons: but});
                     let t = this.state.times;
-                    t[i].time1 = json.employerInfo.employerSchedulevos[i].startTime;
-                    t[i].time2 = json.employerInfo.employerSchedulevos[i].endTime;
+                    t[i].time1 = moment(json.employerInfo.employerSchedulevos[i].startTime,'HH:mm:ss');
+                    t[i].time2 = moment(json.employerInfo.employerSchedulevos[i].endTime,'HH:mm:ss');
                     this.setState({times:t})
                   }
                 }
@@ -184,6 +184,21 @@ export default class UploadMember extends Component {
     }
   };
 
+  startAlert(){
+    Alert.alert(
+      'Alert',
+      '请选择一种方式来上传照片？',
+      [
+        {text: I18n.t('takePhoto'), onPress: this.launchCamera},
+        {text: I18n.t('chooseLib'), onPress: this.pickImage },
+        {text: I18n.t('cancel'), onPress: () => console.log('no button clicked'),style: "cancel"},
+      ],
+      {
+        cancelable: false
+      }
+    );
+  }
+
   sendRequest() {
     let s = this.state;
     this.setState({isLoading:true});
@@ -218,50 +233,50 @@ export default class UploadMember extends Component {
             {
                 "dayOfWeek": 1,
                 "dayOfWeekStr": "星期一",
-                "startTime": moment(this.state.times[0].time1).format(),
-                "endTime": moment(this.state.times[0].time2).format(),
+                "startTime": moment(this.state.times[0].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[0].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[0].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 2,
                 "dayOfWeekStr": "星期二",
-                "startTime": moment(this.state.times[1].time1).format(),
-                "endTime": moment(this.state.times[1].time2).format(),
+                "startTime": moment(this.state.times[1].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[1].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[1].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 3,
                 "dayOfWeekStr": "星期三",
-                "startTime": moment(this.state.times[2].time1).format(),
-                "endTime": moment(this.state.times[2].time2).format(),
+                "startTime": moment(this.state.times[2].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[2].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[2].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 4,
                 "dayOfWeekStr": "星期四",
-                "startTime": moment(this.state.times[3].time1).format(),
-                "endTime": moment(this.state.times[3].time2).format(),
+                "startTime": moment(this.state.times[3].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[3].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[3].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 5,
                 "dayOfWeekStr": "星期五",
-                "startTime": moment(this.state.times[4].time1).format(),
-                "endTime": moment(this.state.times[4].time2).format(),
+                "startTime": moment(this.state.times[4].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[4].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[4].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 6,
                 "dayOfWeekStr": "星期六",
-                "startTime": moment(this.state.times[5].time1).format(),
-                "endTime": moment(this.state.times[5].time2).format(),
+                "startTime": moment(this.state.times[5].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[5].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[5].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 7,
                 "dayOfWeekStr": "星期天",
-                "startTime": moment(this.state.times[6].time1).format(),
-                "endTime": moment(this.state.times[6].time2).format(),
+                "startTime": moment(this.state.times[6].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[6].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[6].pressed ? 1 : 0
             },
         ],
@@ -352,50 +367,50 @@ export default class UploadMember extends Component {
             {
                 "dayOfWeek": 1,
                 "dayOfWeekStr": "星期一",
-                "startTime": moment(this.state.times[0].time1).format(),
-                "endTime": moment(this.state.times[0].time2).format(),
+                "startTime": moment(this.state.times[0].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[0].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[0].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 2,
                 "dayOfWeekStr": "星期二",
-                "startTime": moment(this.state.times[1].time1).format(),
-                "endTime": moment(this.state.times[1].time2).format(),
+                "startTime": moment(this.state.times[1].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[1].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[1].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 3,
                 "dayOfWeekStr": "星期三",
-                "startTime": moment(this.state.times[2].time1).format(),
-                "endTime": moment(this.state.times[2].time2).format(),
+                "startTime": moment(this.state.times[2].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[2].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[2].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 4,
                 "dayOfWeekStr": "星期四",
-                "startTime": moment(this.state.times[3].time1).format(),
-                "endTime": moment(this.state.times[3].time2).format(),
+                "startTime": moment(this.state.times[3].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[3].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[3].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 5,
                 "dayOfWeekStr": "星期五",
-                "startTime": moment(this.state.times[4].time1).format(),
-                "endTime": moment(this.state.times[4].time2).format(),
+                "startTime": moment(this.state.times[4].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[4].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[4].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 6,
                 "dayOfWeekStr": "星期六",
-                "startTime": moment(this.state.times[5].time1).format(),
-                "endTime": moment(this.state.times[5].time2).format(),
+                "startTime": moment(this.state.times[5].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[5].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[5].pressed ? 1 : 0
             },
             {
                 "dayOfWeek": 7,
                 "dayOfWeekStr": "星期天",
-                "startTime": moment(this.state.times[6].time1).format(),
-                "endTime": moment(this.state.times[6].time2).format(),
+                "startTime": moment(this.state.times[6].time1).format('HH:mm:ss'),
+                "endTime": moment(this.state.times[6].time2).format('HH:mm:ss'),
                 "status": this.state.buttons[6].pressed ? 1 : 0
             },
         ],
@@ -485,6 +500,13 @@ export default class UploadMember extends Component {
       this.setState({image:result.uri});
     }
   };
+  convertTime(date) {
+    var d = new Date(date);
+    let h = d.getHours(); // => 9
+    let m = d.getMinutes(); // =>  30
+    let s = d.getSeconds(); // => 51
+    return moment(h+':'+m+':'+s,'HH:mm:ss')
+  }
   render() {
     let languages =[];
     if(this.context.mlan.length>0) {
@@ -509,7 +531,7 @@ export default class UploadMember extends Component {
       <ScrollView style={{ flex: 1 }}>
         <View style={{flex:1,width:'90%'}}>
         <View style={{ marginTop:10,marginBottom:20,justifyContent: "center",alignItems: "center" }}>
-          <TouchableOpacity onPress={() => {this.setState({visible:true})}}>
+          <TouchableOpacity onPress={() => {this.startAlert()}}>
           {this.state.image ?
           <Image style={{width:80,height:80,borderRadius:40}}
                 source={{ uri: this.state.image }}
@@ -719,14 +741,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[0].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[0].time1).tz(Localization.timezone).format('LT')} </Text>
+                  <Text>{moment(this.state.times[0].time1).format('HH:mm')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[0].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[0].time2).tz(Localization.timezone).format('LT')} </Text>
+                    <Text>{moment(this.state.times[0].time2).format('HH:mm')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -799,14 +821,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[1].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[1].time1).tz(Localization.timezone).format('LT')} </Text>
+                  <Text>{moment(this.state.times[1].time1).format('HH:mm')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[1].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[1].time2).tz(Localization.timezone).format('LT')} </Text>
+                    <Text>{moment(this.state.times[1].time2).format('HH:mm')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -879,14 +901,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[2].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[2].time1).tz(Localization.timezone).format('LT')} </Text>
+                  <Text>{moment(this.state.times[2].time1).format('HH:mm')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[2].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[2].time2).tz(Localization.timezone).format('LT')} </Text>
+                    <Text>{moment(this.state.times[2].time2).format('HH:mm')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -959,14 +981,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[3].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[3].time1).tz(Localization.timezone).format('LT')} </Text>
+                  <Text>{moment(this.state.times[3].time1).format('HH:mm')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[3].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[3].time2).tz(Localization.timezone).format('LT')} </Text>
+                    <Text>{moment(this.state.times[3].time2).format('HH:mm')}</Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -1039,14 +1061,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[4].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[4].time1).tz(Localization.timezone).format('LT')} </Text>
+                  <Text>{moment(this.state.times[4].time1).format('HH:mm')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[4].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[4].time2).tz(Localization.timezone).format('LT')} </Text>
+                    <Text>{moment(this.state.times[4].time2).format('HH:mm')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -1119,14 +1141,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[5].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[5].time1).tz(Localization.timezone).format('LT')} </Text>
+                  <Text>{moment(this.state.times[5].time1).format('HH:mm')} </Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[5].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[5].time2).tz(Localization.timezone).format('LT')} </Text>
+                    <Text>{moment(this.state.times[5].time2).format('HH:mm')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -1199,14 +1221,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[6].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[6].time1).tz(Localization.timezone).format('LT')}</Text>
+                  <Text>{moment(this.state.times[6].time1).format('HH:mm')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[6].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[6].time2).tz(Localization.timezone).format('LT')} </Text>
+                    <Text>{moment(this.state.times[6].time2).format('HH:mm')} </Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -1363,30 +1385,6 @@ export default class UploadMember extends Component {
         </TouchableOpacity>
         </View>
       </ScrollView>
-      <Modal
-      animationType="slide"
-      transparent={true}
-      visible={this.state.visible}
-      onRequestClose={()=>{
-        this.setVisible(!this.state.visible);}
-      }>
-        <TouchableOpacity style={{width:'100%',height:'65%',backgroundColor: 'rgba(0, 0, 0, 0.5)'}} onPress={() => {this.setState({visible:false})}}>
-        </TouchableOpacity>
-        <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'35%',backgroundColor:'white'}}>
-          <Text style={{height:'10%',padding:5,borderBottomWidth:1,borderBottomColor:'#EEEEEE', fontSize:20, fontWeight: '400', color: '#0000FF' }}>Choose Your Upload Method</Text>
-          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
-          onPress={this.launchCamera}>
-            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Take a photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
-          onPress={this.pickImage}>
-            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>Pick a Image</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{width:'100%',alignItems:'center',justifyContent:'center',height:'30%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}} onPress={() => {this.setState({visible:false})}}>
-            <Text style={{ fontSize:22, fontWeight: '500', color: '#0000FF' }}>{I18n.t('cancel')}</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
     </SafeAreaView>
   );}}
 }

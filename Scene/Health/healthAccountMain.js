@@ -5,6 +5,7 @@ import DataContext from "../../providerContext";
 import { LinearGradient } from 'expo-linear-gradient';
 import I18n from '../switchLanguage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment-timezone';
 
 export default class HealthAccountMain extends Component {
   constructor(props) {
@@ -144,13 +145,39 @@ export default class HealthAccountMain extends Component {
   render() {
     if (this.state.isLoading){
       return(
-     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-         <ActivityIndicator size="large" color="#00ff00" />
-      </View>
+        <SafeAreaView style={{ flex: 1}}>
+        <View style={{ width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)', alignItems: "center" }}>
+        <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
+          <Image
+            style={{height:40,width:160,marginLeft:'5%'}}
+            resizeMode='stretch'
+            source={require('../../images/providerImg/顶端LOGO.png')}
+          />
+          <View style={{width:'75%',alignItems:'flex-end',justifyContent:'center'}}>
+            <Text style={{fontSize:20,color:'white'}}>{moment(new Date()).format('ll')}</Text>
+          </View>
+        </View>
+          <View style={{marginTop:'35%'}}>
+            <ActivityIndicator size="large" color="white"  />
+          </View>
+        </View>
+        </SafeAreaView>
     )
     }else {
       return (
-    <SafeAreaView style={{ flex: 1,alignItems: "center", backgroundColor:'white' }}>
+    <SafeAreaView style={{ flex: 1}}>
+      <View style={{width:'100%',height:'100%',alignItems: "center", backgroundColor:'rgb(51,51,51)' }}>
+      <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
+        <Image
+          style={{height:40,width:160,marginLeft:'5%'}}
+          resizeMode='stretch'
+          source={require('../../images/providerImg/顶端LOGO.png')}
+        />
+        <View style={{width:'75%',alignItems:'flex-end',justifyContent:'center'}}>
+          <Text style={{fontSize:20,color:'white'}}>{moment(new Date()).format('ll')}</Text>
+        </View>
+      </View>
+      <View style={{width:'90%',height:'100%', backgroundColor:'white'}}>
       {this.context.image ?
       <View style={{ width: '100%',height:160}}>
       <LinearGradient
@@ -179,7 +206,7 @@ export default class HealthAccountMain extends Component {
       </LinearGradient>
       </View>
       }
-      <View style={{marginTop:20}}>
+      <View style={{marginTop:20, alignItems: "center"}}>
       <TouchableOpacity style={styles.profileBar} onPress={() => {
         if (this.context.employerId != null) {
           this.props.navigation.navigate(I18n.t('uploadMember'), {id: this.context.employerId})
@@ -243,13 +270,15 @@ export default class HealthAccountMain extends Component {
         <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('logout')}</Text>
       </TouchableOpacity>
       </View>
-      <View style={{marginTop:50,flexDirection: 'row', alignItems: "center" }}>
+      <View style={{marginTop:50,flexDirection: 'row', alignSelf:'center',alignItems: "center" }}>
         <Image
           source={require('../../images/logo.png')}
           style = {{width:85, height:30}}
         />
         <Text style={{fontSize:12, color:'#68B0AB'}}>+61 421326182</Text>
        </View>
+      </View>
+      </View>
     </SafeAreaView>
   );}}
 }

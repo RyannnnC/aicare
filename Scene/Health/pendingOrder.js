@@ -125,7 +125,7 @@ export default class PendingOrder extends Component {
             +'id=' + this.state.selectedId
             +'&scheduleDetailedId=' + sid;
               fetch(url,{
-                method: 'GET',
+                method: 'POST',
                 mode: 'cors',
                 credentials: 'include',
                 headers: {
@@ -287,8 +287,8 @@ export default class PendingOrder extends Component {
       tp = 'Skype'
     }
     return (
-      <View key={item.id}>
-      <View  style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:50,backgroundColor:'white'}}>
+      <View key={item.id} style={{width:'90%'}}>
+      <View  style={{borderTopWidth:1,flexDirection:'row',width:'100%',height:50,backgroundColor:'white'}}>
         <TouchableOpacity style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'14%'}}
         onPress={()=>{this.changevis(item.id,true)}}>
           {item.sex == 'Male'?

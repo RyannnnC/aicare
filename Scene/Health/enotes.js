@@ -92,7 +92,7 @@ export default class Enotes extends Component {
           language:json.medicalInfo.languages,
           userId:json.medicalInfo.customerUserId,
           infoId:json.medicalInfo.customerUserInfoId,
-          patientComment:json.medicalInfo.patientComment,
+          patientComment:json.medicalInfo.patientStatement,
           allergy:json.medicalInfo.allergen,
           medicineUsage:json.medicalInfo.medicineUsage,
           familyHistory:json.medicalInfo.familyHistory,
@@ -136,7 +136,7 @@ export default class Enotes extends Component {
       console.error(e);
     }
   };
-    
+
   render() {
     if (this.state.isLoading){
       return(
@@ -164,7 +164,6 @@ export default class Enotes extends Component {
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500'}}>{I18n.t('patientComplaint')}</Text>
-
         </View>
           <TextInput style={{width:'100%',height:'15%',padding:'2%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}
             value={this.state.complaint}
@@ -214,7 +213,7 @@ export default class Enotes extends Component {
           alignItems: 'center',
           justifyContent: "center",
           margin:'1%'}} onPress={() => {
-          
+
           }}>
           <Text style={{ fontSize:16, fontWeight: '500', color: 'black' }}>{I18n.t('referral')}</Text>
           </TouchableOpacity>
@@ -227,7 +226,7 @@ export default class Enotes extends Component {
           alignItems: 'center',
           justifyContent: "center",
           margin:'1%'}} onPress={() => {
-          
+
           }}>
           <Text style={{ fontSize:16, fontWeight: '500', color: 'black' }}>{I18n.t('followup')}</Text>
           </TouchableOpacity>
