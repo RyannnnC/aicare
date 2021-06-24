@@ -21,11 +21,9 @@ export default class Mlan extends Component {
         for (let i=0;i<this.context.mlan.length;i++) {
           for (let j=0;j<this.state.buttons.length;j++){
             if(this.context.mlan[i].value == this.state.buttons[j].value) {
-              console.log('修改mlan['+i+'] button['+j+']')
               let but = this.state.buttons;
               but[j].status = this.context.mlan[i].status;
               this.setState({buttons: but});
-
             }
           }
         }

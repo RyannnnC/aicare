@@ -507,6 +507,15 @@ export default class UploadMember extends Component {
     let s = d.getSeconds(); // => 51
     return moment(h+':'+m+':'+s,'HH:mm:ss')
   }
+  checkType() {
+    let bool = true
+    for (let i =0; i<this.state.types.length;i++) {
+      if (this.state.types[i].status ==1) {
+        bool = false
+      }
+    }
+    return bool
+  }
   render() {
     let languages =[];
     if(this.context.mlan.length>0) {
@@ -521,15 +530,16 @@ export default class UploadMember extends Component {
     })};
     if (this.state.isLoading){
       return(
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#00ff00"  />
-     </View>
+      <View style={{ flex: 1, backgroundColor:'rgb(51,51,51)', justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="white"  />
+      </View>
     )
     }else {
     return (
-    <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <ScrollView style={{ flex: 1 }}>
-        <View style={{flex:1,width:'90%'}}>
+    <SafeAreaView style={{ flex:1, width:'100%',justifyContent: "center", alignItems: "center" ,backgroundColor:"rgb(51,51,51)"}}>
+      <ScrollView style={{ flex: 1,width:'90%',backgroundColor:"white"  }}
+      contentContainerStyle={{alignItems: "center"}}>
+        <View style={{flex:1,width:'90%',backgroundColor:"white"}}>
         <View style={{ marginTop:10,marginBottom:20,justifyContent: "center",alignItems: "center" }}>
           <TouchableOpacity onPress={() => {this.startAlert()}}>
           {this.state.image ?
@@ -546,22 +556,53 @@ export default class UploadMember extends Component {
             />}
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start"}}>
-          <Image
-            style = {styles.smallIconImg}
-            source={require('../../images/providerImg/singup_icon_name.png')}
-            />
-            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('basicInformation')}</Text>
-        </View>
+      <View style={{flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start",borderBottomWidth:1,borderBottomColor:'rgb(32,191,195)'}}>
+           <Text style={{ fontSize:22, fontWeight: '600' ,color: 'rgb(32,191,195)'}}>{I18n.t('basicInformation')}</Text>
+      </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('name')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "Dr Lee"
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('name')}</Text>
+          <TextInput style={{
+            width: '80%',
+            fontSize:18,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE',
+          }} 
+          placeholder= "Dr Lee"
           value={this.state.name}
           onChangeText={(text) => {this.setState({name:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400'}}>{I18n.t('gender')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
+          <TextInput style={{
+            width: '80%',
+            fontSize:18,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE',
+          }}  
+          placeholder= "04*******"
+          value={this.state.phone==null?0:this.state.phone.toString()}
+          keyboardType="numeric"
+          onChangeText={(text) => {this.setState({phone:text})}}/>
+        </View>
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('email')}</Text>
+          <TextInput style={{
+            width: '80%',
+            fontSize:18,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE',
+          }} 
+          placeholder= "****@gmail.com"
+          value={this.state.email}
+          editable={this.props.route.params.id !=null?false:true}
+          onChangeText={(text) => {this.setState({email:text})}}/>
+        </View>
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '400'}}>{I18n.t('gender')}</Text>
        <SwitchSelector
         value={this.state.gender}
         onPress={value => this.setState({ gender: value })}
@@ -569,39 +610,27 @@ export default class UploadMember extends Component {
         borderColor='#8FD7D3'
         hasPadding
         style={{width:200,marginLeft:30}}
-        height={35}
+        height={25}
         options={[
-          { label: I18n.t('female'), value: 0,}, //images.feminino = require('./path_to/assets/img/feminino.png')
-          { label: I18n.t('male'), value: 1, } //images.masculino = require('./path_to/assets/img/masculino.png')
+          { label: I18n.t('female'), value: 0,}, 
+          { label: I18n.t('male'), value: 1, } 
         ]}
         testID="gender-switch-selector"
         accessibilityLabel="gender-switch-selector"
         />
         </View>
+        
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "04*******"
-          value={this.state.phone==null?0:this.state.phone.toString()}
-          keyboardType="numeric"
-          onChangeText={(text) => {this.setState({phone:text})}}/>
-        </View>
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('email')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "****@gmail.com"
-          value={this.state.email}
-          editable={this.props.route.params.id !=null?false:true}
-          onChangeText={(text) => {this.setState({email:text})}}/>
-        </View>
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
           <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
-          <View style={{flexDirection: 'row', flexWrap:'wrap',marginTop:2,marginLeft:10,width:'65%'}}>
-            {this.state.types[0].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('gpfull')}</Text>}
-            {this.state.types[1].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('denfull')}</Text>}
-            {this.state.types[2].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('psyfull')}</Text>}
-            {this.state.types[3].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('chifull')}</Text>}
-            {this.state.types[4].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('pedfull')}</Text>}
-            {this.state.types[5].status==1&&<Text style={{ fontSize:14, fontWeight: '400',marginLeft:5 }}>{I18n.t('phyfull')}</Text>}
+          <View style={{flexDirection: 'row', flexWrap:'wrap',marginTop:2,marginLeft:10,width:'80%'}}>
+            {this.checkType() && <Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>Please Choose your Department</Text>}
+            {this.state.types[0].status==1&&<Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>{I18n.t('gpfull')}</Text>}
+            {this.state.types[1].status==1&&<Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>{I18n.t('denfull')}</Text>}
+            {this.state.types[2].status==1&&<Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>{I18n.t('psyfull')}</Text>}
+            {this.state.types[3].status==1&&<Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>{I18n.t('chifull')}</Text>}
+            {this.state.types[4].status==1&&<Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>{I18n.t('pedfull')}</Text>}
+            {this.state.types[5].status==1&&<Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>{I18n.t('phyfull')}</Text>}
           </View>
             <AntDesign name="down" size={18} color="black" />
           </TouchableOpacity>
@@ -686,29 +715,32 @@ export default class UploadMember extends Component {
             </View>
           }
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('experience')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "Input Only a number"
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('experience')}</Text>
+          <TextInput style={{
+            width: '80%',
+            fontSize:18,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE',
+          }} 
+            placeholder= "Only Enter a number"
             value={this.state.we==null?0:this.state.we.toString()}
             keyboardType="numeric"
             onChangeText={(number) => {this.setState({we:number})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
-          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:16, fontWeight: '400' , color:'#999999',width:'60%'}}>{this.context.mintro}</Text>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
+          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:18, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.mintro}</Text>
           <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('mintro'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
-        <View style={{flexDirection: 'row', marginTop:10}}>
-          <Image
-            style = {styles.smallIconImg}
-            source={require('../../images/providerImg/account_icon_medical.png')}
-            />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('serviceInformation')}</Text>
+        <View style={{marginTop:20,flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start",borderBottomWidth:1,borderBottomColor:'rgb(32,191,195)'}}>
+           <Text style={{ fontSize:22, fontWeight: '600' ,color: 'rgb(32,191,195)'}}>{I18n.t('serviceInformation')}</Text>
         </View>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceLanguage')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('serviceLanguage')}</Text>
         </View>
         <View style={{flexDirection: 'row' , marginBottom:10}}>
         {this.context.mlan.length>0 ? languages:
@@ -718,7 +750,7 @@ export default class UploadMember extends Component {
           </TouchableOpacity>
         </View>
 
-            <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceHours')}</Text>
+            <Text style={{ fontSize:18, fontWeight: '400',marginBottom:10 }}>{I18n.t('serviceHours')}</Text>
             <View  style={{flexDirection: 'row'}}>
               <TouchableOpacity style={{
                 backgroundColor:this.state.buttons[0].backgroundColor,
@@ -741,14 +773,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[0].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[0].time1).format('HH:mm')} </Text>
+                  <Text>{moment(this.state.times[0].time1).format('HH:mm')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[0].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[0].time2).format('HH:mm')} </Text>
+                    <Text>{moment(this.state.times[0].time2).format('HH:mm')}</Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -821,14 +853,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[1].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[1].time1).format('HH:mm')} </Text>
+                  <Text>{moment(this.state.times[1].time1).format('HH:mm')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[1].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[1].time2).format('HH:mm')} </Text>
+                    <Text>{moment(this.state.times[1].time2).format('HH:mm')}</Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -908,7 +940,7 @@ export default class UploadMember extends Component {
                     let t = this.state.times;
                     t[2].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[2].time2).format('HH:mm')} </Text>
+                    <Text>{moment(this.state.times[2].time2).format('HH:mm')}</Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -981,7 +1013,7 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[3].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[3].time1).format('HH:mm')} </Text>
+                  <Text>{moment(this.state.times[3].time1).format('HH:mm')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
@@ -1061,14 +1093,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[4].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[4].time1).format('HH:mm')} </Text>
+                  <Text>{moment(this.state.times[4].time1).format('HH:mm')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[4].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[4].time2).format('HH:mm')} </Text>
+                    <Text>{moment(this.state.times[4].time2).format('HH:mm')}</Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -1141,14 +1173,14 @@ export default class UploadMember extends Component {
                   let t = this.state.times;
                   t[5].visible1 = true;
                   this.setState({times:t})}}>
-                  <Text>{moment(this.state.times[5].time1).format('HH:mm')} </Text>
+                  <Text>{moment(this.state.times[5].time1).format('HH:mm')}</Text>
                 </TouchableOpacity>
                   <Text> _ </Text>
                   <TouchableOpacity style={styles.timePick} onPress={()=>{
                     let t = this.state.times;
                     t[5].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[5].time2).format('HH:mm')} </Text>
+                    <Text>{moment(this.state.times[5].time2).format('HH:mm')}</Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -1228,7 +1260,7 @@ export default class UploadMember extends Component {
                     let t = this.state.times;
                     t[6].visible2 = true;
                     this.setState({times:t})}}>
-                    <Text>{moment(this.state.times[6].time2).format('HH:mm')} </Text>
+                    <Text>{moment(this.state.times[6].time2).format('HH:mm')}</Text>
                   </TouchableOpacity>
                 </View>
               }
@@ -1280,7 +1312,7 @@ export default class UploadMember extends Component {
                   />
               </View>
             <View style={{ marginTop:10, marginBottom:10}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceType')}</Text>
+              <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('serviceType')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox
@@ -1320,7 +1352,7 @@ export default class UploadMember extends Component {
             {this.state.service[1].status == 1 &&
               <View>
               <View style={{ marginTop:10, marginBottom:10}}>
-                <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('remoteMethod')}</Text>
+                <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('remoteMethod')}</Text>
               </View>
               <View style={{flexDirection: 'row'}}>
                 <CheckBox
@@ -1360,7 +1392,7 @@ export default class UploadMember extends Component {
             }
 
             <View style={{ marginTop:10, marginBottom:10}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('chargingMethod')}</Text>
+              <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('chargingMethod')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox
@@ -1380,7 +1412,15 @@ export default class UploadMember extends Component {
                />
             </View>
 
-        <TouchableOpacity style={styles.resumeButton} onPress={() => {this.sendRequest()}}>
+        <TouchableOpacity style={{
+          width: '100%',
+          height: 40,
+          marginTop: 20,
+          backgroundColor: '#68B0AB',
+          borderRadius: 20,
+          alignItems: 'center',
+          justifyContent: "center",
+        }} onPress={() => {this.sendRequest()}}>
           <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>
         </TouchableOpacity>
         </View>
