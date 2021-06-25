@@ -568,7 +568,7 @@ export default class UploadMember extends Component {
             marginLeft: 5,
             borderBottomWidth:1,
             borderBottomColor:'#EEEEEE',
-          }} 
+          }}
           placeholder= "Dr Lee"
           value={this.state.name}
           onChangeText={(text) => {this.setState({name:text})}}/>
@@ -581,7 +581,7 @@ export default class UploadMember extends Component {
             marginLeft: 5,
             borderBottomWidth:1,
             borderBottomColor:'#EEEEEE',
-          }}  
+          }}
           placeholder= "04*******"
           value={this.state.phone==null?0:this.state.phone.toString()}
           keyboardType="numeric"
@@ -595,7 +595,7 @@ export default class UploadMember extends Component {
             marginLeft: 5,
             borderBottomWidth:1,
             borderBottomColor:'#EEEEEE',
-          }} 
+          }}
           placeholder= "****@gmail.com"
           value={this.state.email}
           editable={this.props.route.params.id !=null?false:true}
@@ -612,14 +612,14 @@ export default class UploadMember extends Component {
         style={{width:200,marginLeft:30}}
         height={25}
         options={[
-          { label: I18n.t('female'), value: 0,}, 
-          { label: I18n.t('male'), value: 1, } 
+          { label: I18n.t('female'), value: 0,},
+          { label: I18n.t('male'), value: 1, }
         ]}
         testID="gender-switch-selector"
         accessibilityLabel="gender-switch-selector"
         />
         </View>
-        
+
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
           <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
@@ -722,7 +722,7 @@ export default class UploadMember extends Component {
             marginLeft: 5,
             borderBottomWidth:1,
             borderBottomColor:'#EEEEEE',
-          }} 
+          }}
             placeholder= "Only Enter a number"
             value={this.state.we==null?0:this.state.we.toString()}
             keyboardType="numeric"
@@ -730,8 +730,8 @@ export default class UploadMember extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
-          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:18, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.mintro}</Text>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('mintro'))}>
+          <TouchableOpacity style={{flexDirection:'row',width:'80%'}}onPress={() => this.props.navigation.navigate(I18n.t('mintro'))}>
+          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:18, fontWeight: '400' , color:'#999999',width:'90%'}}>{this.context.mintro}</Text>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>

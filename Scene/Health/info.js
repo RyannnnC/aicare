@@ -22,8 +22,8 @@ export default class Info extends Component {
       latitude:0,
       longitude:0,
       service:[
-        {value: "1",name: "实地问诊",status: 0},
-        {value: "2",name: "远程问诊",status: 0},
+        {value: "0",name: "实地问诊",status: 0},
+        {value: "1",name: "远程问诊",status: 0},
       ],
       checked3:true,
       buttons: [
@@ -73,7 +73,18 @@ export default class Info extends Component {
       }
     }
     if (this.context.typeList.length>0){
-      this.setState({service:this.context.typeList})
+      for (let i =0;i<this.context.typeList.length;i++) {
+          let t = this.state.service;
+          for(let j =0; j<t.length;j++) {
+            if(t[j].value == this.context.typeList[i].value) {
+              if (this.context.typeList[i].status == 1) {
+                t[j].status = 1
+                this.setState({service:t})
+              }
+            }
+          }
+      }
+
     }
 /*   navigator.geolocation.getCurrentPosition(
      position=>{
