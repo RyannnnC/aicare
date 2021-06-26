@@ -169,7 +169,7 @@ class Forget extends Component {
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
-              source={require('../images/signup_icon_pswd.png')}
+              source={require('../images/telehealth_icon/account_icon_pswd.png')}
             />
             <Text style={{ fontSize:16, fontWeight: '500' }}>密码</Text>
           </View>

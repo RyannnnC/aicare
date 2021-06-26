@@ -126,7 +126,7 @@ class telehealthDoc extends Component {
           <View style={{flexDirection: 'row', marginTop:5,  marginLeft:25}}>
          
             <Image
-            style = {{height:50,width:50,marginRight:15,marginLeft:-10}}
+            style = {{height:50,width:50,marginRight:15,marginLeft:-10,borderRadius:25}}
             source = {item.imgUrl?{uri:item.imgUrl}:require("../../images/telehealth_icon/service_doctor_img5.png")}
             />
           <View>

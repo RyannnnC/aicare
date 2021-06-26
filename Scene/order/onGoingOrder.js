@@ -180,6 +180,7 @@ class OngoingingOrder extends Component {
               if (json.code == 0) {
                 //console.log(json.page[0].appointDate);
                 //this.setState({query:json.page})
+                console.log(json.page[0])
                 this.setState({query: json.page });
                 //console.log(json.img)
                 //Alert.alert('查询成功');
@@ -497,7 +498,7 @@ elevation: 24,}}>
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
       <Image
         style = {styles.finishImg}
-        source = {require('../../images/complete_empty.png')}
+        source = {require('../../images/telehealth_icon/order_img_empty.png')}
       />
      <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，快去预定吧！</Text>
      </View>

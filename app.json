@@ -2,7 +2,7 @@
   "expo": {
     "name": "aicare health",
     "slug": "aicare",
-    "version": "1.236",
+    "version": "1.300",
     "orientation": "portrait",
     "icon": "./assets/aicare.png",
     "scheme":"aicarehealthau",
@@ -25,9 +25,9 @@
       "backgroundColor": "#000000"
     },
     "android": {
-      "versionCode":6,
+      "versionCode":8,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/aicare.png",
+        "foregroundImage": "./assets/android.png",
         "backgroundColor": "#FFFFFF"
       },
       "config": {

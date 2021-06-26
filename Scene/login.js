@@ -59,12 +59,15 @@ export default class Login extends Component {
     })
     .then((response) => response.json())
     .then((json) =>  {
-        console.log(url);
-        if (json.code === 0) {
+        //console.log(url);
+        if (json.code == 0) {
           //this.context.action.changeLogin(true);
-          this.storeToken(json.data);
+          //this.storeToken(json.data);
           this.context.action.changetoken(json.data);
-          console.log(json.code)
+          this.context.action.changeInfoId(json.customerUserInfoId);
+          console.log(this.context.customerUserInfoId);
+          
+          //console.log(json.code)
         } else {
           Alert.alert("Invalid username or password");  
           console.log(json.msg)
@@ -164,7 +167,7 @@ export default class Login extends Component {
     height:32,marginLeft:63}}
         source = {require('../images/logo.png')}
       />
-      <Text style={{marginTop:75,marginLeft:10,color:"#8FD7D3"}}>1.23</Text>
+      <Text style={{marginTop:75,marginLeft:10,color:"#8FD7D3"}}>{this.context.version}</Text>
       </View>
       
     </View>

@@ -82,25 +82,7 @@ class Intro extends Component {
 
       > 
         <View style={styles.slide1}>
-        <Image style = {{marginTop:30,
-          width:430,
-          height:700,
-        }}
-          source = {require('./images/turn3.png')}
-      />
-      <TouchableOpacity style={{backgroundColor: '#8FD7D3',
-              padding:10,
-              width:280,
-              marginTop:-60,
-              height:45,
-              alignItems: 'center',
-              borderRadius:25,}}
-              onPress = {()=>this.goSignUp()}>
-        <Text style={{color:"white"}}>开始体验</Text>
-      </TouchableOpacity>
-        </View>
-        <View style={styles.slide2}>
-        <Image style = {{marginTop:30,
+        <Image style = {{marginTop:0,
           width:430,
           height:700,
         }}
@@ -117,12 +99,30 @@ class Intro extends Component {
         <Text style={{color:"white"}}>开始体验</Text>
       </TouchableOpacity>
         </View>
-        <View style={styles.slide3}>
-        <Image style = {{marginTop:30,
+        <View style={styles.slide2}>
+        <Image style = {{marginTop:0,
           width:430,
           height:700,
         }}
           source = {require('./images/turn2.png')}
+      />
+      <TouchableOpacity style={{backgroundColor: '#8FD7D3',
+              padding:10,
+              width:280,
+              marginTop:-60,
+              height:45,
+              alignItems: 'center',
+              borderRadius:25,}}
+              onPress = {()=>this.goSignUp()}>
+        <Text style={{color:"white"}}>开始体验</Text>
+      </TouchableOpacity>
+        </View>
+        <View style={styles.slide3}>
+        <Image style = {{marginTop:0,
+          width:430,
+          height:700,
+        }}
+          source = {require('./images/turn3.png')}
       />
       <TouchableOpacity style={{backgroundColor: '#8FD7D3',
               padding:10,

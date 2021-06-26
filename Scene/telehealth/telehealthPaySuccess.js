@@ -26,8 +26,8 @@ export default function TeleSuccess({navigation,route}) {
       <Text style={{marginBottom:15,marginTop:20,color:"#808080"}}>预约医生:  {docName}</Text>
       <Text style={{marginBottom:15,color:"#808080"}}>就诊时间:  {user.date} {startTime.slice(0,5)} - {endTime.slice(0,5)}</Text>
       <Text style={{marginBottom:15,color:"#808080"}}>就诊科目:  {user.deptType[doctype]}</Text>
-      <Text style={{marginBottom:15,color:"#808080"}}>就诊方式:  {teleFlg==1?"远程就诊":"实地会诊"}</Text>
-      {teleFlg==1?<Text style={{marginBottom:10,color:"#808080"}}>远程方式:  {method==1?"FaceTIme(IOS)":"Skype(Android)"}</Text>:null}
+      <Text style={{marginBottom:15,color:"#808080"}}>就诊方式:  {teleFlg==2?"远程就诊":"实地会诊"}</Text>
+      {teleFlg==2?<Text style={{marginBottom:10,color:"#808080"}}>远程方式:  {method==2?"FaceTIme(IOS)":"Skype(Android)"}</Text>:null}
       </View>
     <TouchableOpacity style={{
     backgroundColor:'#8FD7D3',

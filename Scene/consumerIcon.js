@@ -88,7 +88,7 @@ const removeToken=async() =>{
     <View style={{height:80}}></View>
     <Image
       style = {styles.topping_image}
-      source={require('../images/order_img.png')}
+      source={require('../images/telehealth_icon/service_img.png')}
     />
     <View style={{marginTop:20}}></View>
     <Text style={{color:'#006A71',
@@ -119,7 +119,7 @@ const removeToken=async() =>{
 
     <TouchableOpacity onPress = {()=>Alert.alert(
       "疫苗阶段提醒",
-      "根据澳大利亚政府信息，目前(2021.5.17之后)澳大利亚疫苗阶段处于2a阶段，只有符合2a条件(50岁以上或关键高风险工作者)可以注射疫苗，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
+      "根据澳大利亚政府信息，目前(2021.6.8之后)澳大利亚疫苗阶段处于2a阶段，只有符合2a条件(40岁以上或关键高风险工作者)可以注射疫苗，诊所提供的疫苗类型为阿斯利康，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
       [
         {
           text: "取消",

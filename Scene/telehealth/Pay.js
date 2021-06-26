@@ -44,7 +44,7 @@ class Pay extends Component {
                   //Alert.alert('查询成功');
                   console.log(json.data.payResult);
                   if(json.data.payResult=="PAY_SUCCESS"){
-                    this.props.navigation.navigate("teleSuccess")
+                    this.props.navigation.navigate("teleSuccess",{docName:this.props.route.params.docName,doctype:1,startTime:this.props.route.params.startTime,endTime:this.props.route.params.endTime,teleFlg:1,mobile:"0426804898",method:1 })
                   }if(json.data.payResult=="PAY_FAIL"){
                     Alert.alert("支付失败","请检查您的账户余额是否足够以及卡信息是否填写正确并重新支付。",[{ text: "确认", onPress: () => {this.props.navigation.navigate("teleConfirm")}
                   }]

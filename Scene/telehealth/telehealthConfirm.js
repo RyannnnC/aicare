@@ -11,6 +11,7 @@ import call from 'react-native-phone-call'
 import DataContext from "../../consumerContext";
 import { CheckBox } from 'react-native-elements';
 import { WebView } from 'react-native-webview';
+import { AUDIO_RECORDING } from 'expo-permissions';
 
 const args = {
   number: '0403555432', // String value with the number to call
@@ -21,7 +22,7 @@ export default function Confirm({route,navigation}) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const user = useContext(DataContext);
-  const { content,scheduleId,type,date,doctype,address,docName,startTime,endTime,teleFlg,dob,Date,serial,number,first,last} = route.params;
+  const {orgId,mobile, Did,id,content,scheduleId,type,date,doctype,address,docName,startTime,endTime,teleFlg,dob,Date,serial,number,first,last} = route.params;
   const[method, setMethod] = useState("");//0 stands for facetime 1 stands for skype
   const [text, setText] = useState(first+last);
   const [text1, setText1] = useState('');
@@ -36,7 +37,7 @@ export default function Confirm({route,navigation}) {
     //let str = JSON.stringify(content);
     //console.log(str)//figure out whats wrong in android stringnify
     
-    let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+Date+"&serialNumber="+serial+"&cardNumber="+number+"&patientMobile="+text1+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
+    /*let url = "http://"+user.url+"/aicare-customer-api/customer/user/create-appointment?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+Date+"&serialNumber="+serial+"&cardNumber="+number+"&patientMobile="+text1+"&telehealthFlg="+teleFlg+"&videoChannel="+method;//+"&content="+str;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -58,19 +59,15 @@ export default function Confirm({route,navigation}) {
               if (json.code == 0) {
                 Alert.alert("已预约成功")
                 setModalVisible(!modalVisible)
-                /*if(teleFlg==1 && content.type!="Medicare"){
-                  navigation.navigate("telehealthPayment")
-                }else{
-                  navigation.navigate("teleSuccess")
-                }*/
+                
                 navigation.navigate("teleSuccess",{docName:docName,doctype:doctype,startTime:startTime,endTime:endTime,teleFlg:teleFlg,mobile:content.mobile,method:method})
 
               } else {
                 console.log(json.msg);
                 Alert.alert('预约失败,请重试或者联系客服。');
               }
-            }).catch(error => console.warn(error));
-            /*let url = "http://"+user.url+"/aicare-customer-api/customer/pay/create_order?"+"scheduleDetailedId="+scheduleId+"&deptId="+doctype+"&customerRealName="+text+"&insuranceType="+type+"&cardHolderName="+text+"&expireDate="+content.date+"&serialNumber="+content.serial+"&cardNumber="+content.number+"&patientMobile="+content.mobile+"&telehealthFlg="+teleFlg+"&videoChannel="+method+"&currency=AUD&price=100&channel="+paymethod+"&serviceType="+(teleFlg+1);//+"&content="+str;
+            }).catch(error => console.warn(error));*/
+            let url = "http://"+user.url+"/aicare-customer-api/customer/pay/create_order";//+"&content="+str;
             fetch(url,{
               method: 'POST',
               mode: 'cors',
@@ -83,23 +80,39 @@ export default function Confirm({route,navigation}) {
               'Access-Control-Allow-Credentials': true,
               'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
               'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-            }})
+            }, body: JSON.stringify({
+              scheduleDetailedId:scheduleId,
+              serviceClass:1,
+              insuranceType:type,
+              videoChannel:method,
+              currency:"AUD",
+              price:100,
+              orgId:orgId,
+
+              channel:paymethod,
+              serviceType:teleFlg,
+              customerUserInfoId:user.customerUserInfoId,
+              chiefComplaintId:Did,
+            })
+          })
             .then((response) => response.json())
             .then((json) => {
               setLoading(false)
               if (json.code == 0) {
-                Alert.alert("正在跳转支付")
                 setModalVisible(!modalVisible)
+                console.log(json);
                 if(json.ispay==1){
                   //navigation.navigate("telehealthPayment")
                   console.log(json.ispay)
+                  Alert.alert("正在跳转支付"),
                   //Linking.openURL("wechat://")
                   //Linking.openURL(json.order_url)
-                  navigation.navigate("pay",{url:json.order_url,orderId:json.partnerOrderId})
+                  navigation.navigate("pay",{url:json.order_url,orderId:json.partnerOrderId,docName:docName,startTime:startTime,endTime:endTime})
                   //NativeAppEventEmitter.addListener('alipay.mobile.securitypay.pay.onPaymentResult', onPaymentResult)
 
                 }else{
-                  navigation.navigate("teleSuccess")
+                  Alert.alert("预约成功")
+                  navigation.navigate("teleSuccess",{docName:docName,doctype:1,startTime:"20:00",endTime:"20:30",teleFlg:0,mobile:"999",method:1})
                 }
               } else {
                 console.log(json.msg);
@@ -107,7 +120,7 @@ export default function Confirm({route,navigation}) {
 
                 Alert.alert('预约失败,请重试或者联系客服。');
               }
-            }).catch(error => console.warn(error));      */
+            }).catch(error => console.warn(error));      
   }
   /*const onPaymentResult = (result) => {
     //console.log(`result -> `)
@@ -152,46 +165,13 @@ export default function Confirm({route,navigation}) {
     <Text style = {{    color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:40,}}>联系方式</Text>
+    marginLeft:40,}}>信息核对</Text>
     </View>
-    <View style={{marginLeft:-180,marginTop:30}}>
-    <Image style = {styles.name_image}
-        source= {require('../../images/icon/3/name.png')}
-      />
-    </View>
+    
 
-    <TextInput style = {{height: 35,
-    marginLeft:5,
-    marginTop:20,
-    width: 250,
-    borderBottomColor: '#999999',
-    borderBottomWidth:1,
-  }}defaultValue={text===""?null:text}
-    placeholder='请输入患者姓名'
-    onChangeText={text => {setText(text);}}
-    />
     
-    {teleFlg==0?<View style={{marginLeft:-180,marginTop:10}}>
-    <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:10}}
-        source= {require('../../images/telehealth_icon/signup_icon_phone.png')}
-      /><Text style={{marginLeft:40,fontSize:16,marginTop:-17}}>联系电话</Text>
-    
-    </View>:<View style={{marginLeft:-180,marginTop:10}}>
-    <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:43}}
-        source= {require('../../images/telehealth_icon/signup_icon_phone.png')}
-      /><Text style={{marginLeft:68,fontSize:16,marginTop:-17}}>联系电话</Text>
-    
-    </View>}
 
-    <TextInput style = {{height: 35,
-    marginLeft:5,
-    marginTop:20,
-    width: 250,
-    borderBottomColor: '#999999',
-    borderBottomWidth:1,}} placeholder={teleFlg==0?"请输入患者电话号码":"请输入远程会诊用的电话号码"}
-    onChangeText={text1 => {setText1(text1);}}
-    />
-    {teleFlg==1?<View style={{marginLeft:-43,marginTop:10}}>
+    {teleFlg==2?<View style={{marginLeft:-43,marginTop:10}}>
     <Image style = {{height:23,width:15,marginTop:15,marginBottom:-5,marginLeft:45}}
         source= {require('../../images/telehealth_icon/order_confirm_icon_means.png')}
       /><Text style={{marginLeft:70,fontSize:16,marginTop:-17}}>远程方式</Text>
@@ -264,14 +244,6 @@ export default function Confirm({route,navigation}) {
     <View style={{marginLeft:-80,marginTop:40}}> 
 
     <TouchableOpacity style={styles.next_wrapper} onPress={() =>{
-      if(text.length==0){
-        Alert.alert("请填写患者姓名。")
-        return
-      }
-      if(text1.length==0){
-        Alert.alert("请填写联系电话。")
-        return
-      }
       setModalVisible(!modalVisible);console.log(doctype)}}>
       <Text style={styles.onsite_text}>提交预约</Text>
     </TouchableOpacity>
@@ -314,14 +286,14 @@ elevation: 24,}}>
     <ScrollView style={{backgroundColor:"#F7FAFA"}}>
       <View style={{marginLeft:115,marginTop:30}}>
       <Text style={{marginBottom:10}}>患者姓名: {text}</Text>
-      <Text style={{marginBottom:10}}>患者电话: {text1}</Text>
+      <Text style={{marginBottom:10}}>患者电话: {mobile}</Text>
       <Text style={{marginBottom:10}}>就诊时间: {user.date} {startTime.slice(0,5)} - {endTime.slice(0,5)}</Text>
       <Text style={{marginBottom:10}}>就诊医生: {docName}</Text>
-      <Text style={{marginBottom:10}}>就诊科目: {user.deptType[doctype]}</Text>
-      {teleFlg==0?<Text style={{marginBottom:10}}>就诊地址: {address}</Text>:null}
-      <Text style={{marginBottom:10}}>就诊方式: {teleFlg==1?"远程就诊":"实地会诊"}</Text>
-      {teleFlg==1?<View>
-      <Text style={{marginBottom:10}}>远程方式: {method!=""?method==1?"FaceTime(苹果)":"Skype(安卓)":null}</Text>
+      <Text style={{marginBottom:10}}>就诊科目: {doctype?user.deptType[doctype]:"全科问诊"}</Text>
+      {teleFlg==1?<Text style={{marginBottom:10}}>就诊地址: {address}</Text>:null}
+      <Text style={{marginBottom:10}}>就诊方式: {teleFlg==2?"远程就诊":"实地会诊"}</Text>
+      {teleFlg==2?<View>
+      <Text style={{marginBottom:10}}>远程方式: {method!=""?method==2?"FaceTime(苹果)":"Skype(安卓)":null}</Text>
       
       </View>:null}
       {loading?

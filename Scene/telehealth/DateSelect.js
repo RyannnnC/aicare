@@ -109,9 +109,11 @@ class DateSelect extends Component {
         marginTop:20,
       }}>
         <CalendarPicker
+        selectedDayColor="#8FD7D3"
+        selectedDayTextColor="white"
           onDateChange={this.onDateChange}
-          previousTitle="上一月"
-          nextTitle = "下一月"
+          previousTitle="<"
+          nextTitle = ">"
           width = {300}
           height = {300}
         />

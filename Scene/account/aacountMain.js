@@ -44,7 +44,7 @@ const AccountMain = ({navigation}) => {
   const goSetting= () => {
     navigation.navigate("setting");
   }
-  user=useContext(DataContext);
+  const user=useContext(DataContext);
   
   const removeToken=async() =>{
     try {
@@ -56,7 +56,7 @@ const AccountMain = ({navigation}) => {
       console.log("Something went wrong", error);
     }
   }
-  useEffect(() => {
+  /*useEffect(() => {
     
     let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
             fetch(url,{
@@ -84,7 +84,7 @@ const AccountMain = ({navigation}) => {
                 console.log("got nothing")
               }
             }).catch(error => console.warn(error));
-    },[])
+    },[])*/
 
   return (
     <DataContext.Consumer>
@@ -106,12 +106,12 @@ const AccountMain = ({navigation}) => {
             overflow: "hidden",
             borderWidth: 5,
             borderColor: "white",width:80,height:80}}
-          source = {require('../../images/home_img_person.png')}
+          source = {require('../../images/chris.png')}
         />
         </View>
         <View style={{marginTop:50}}>
-        <Text style={{ fontSize:20, fontWeight: '600',marginLeft:20, }}>{info.name?info.name:"姓名未填写"}</Text>
-        <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{info.email?info.email:"邮箱未填写"}</Text>
+        <Text style={{ fontSize:20, fontWeight: '600',marginLeft:20, }}>{"Zhuo Ding"}</Text>
+        <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{"chrisDing@aicare.ai"}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -124,7 +124,7 @@ const AccountMain = ({navigation}) => {
             height: 22,
             marginLeft:10,
             marginRight:10,}}
-          source={require('../../images/telehealth_icon/account_icon_info.png')}
+          source={require('../../images/13.png')}
         />
         <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>个人信息</Text>
       </TouchableOpacity>
@@ -132,13 +132,13 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress = {goInfo} >
+      <TouchableOpacity style={styles.profileBar} onPress = {()=>navigation.navigate("cardInfo")} >
         <Image
           style = {{width: 22,
             height: 22,
             marginLeft:10,
             marginRight:10,}}
-          source={require('../../images/telehealth_icon/service_telehealth_select_icon_calender.png')}
+          source={require('../../images/8.png')}
         />
         <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>医保信息</Text>
       </TouchableOpacity>
@@ -146,15 +146,85 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress = {goInfo} >
+      <TouchableOpacity style={styles.profileBar} onPress = {()=>navigation.navigate("historyInfo")} >
         <Image
           style = {{width: 22,
             height: 22,
             marginLeft:10,
             marginRight:10,}}
-          source={require('../../images/telehealth_icon/account_icon_medical.png')}
+          source={require('../../images/6.png')}
         />
         <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>病史信息</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar}  >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/6.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>电子处方</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar}  >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/4.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>用药历史</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar}  >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/12.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>疫苗记录</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar}  >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/11.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>治愈历史</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar}  >
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/5.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>检验报告</Text>
       </TouchableOpacity>
       </View>
       </View>
@@ -213,7 +283,7 @@ const AccountMain = ({navigation}) => {
             height: 22,
             marginLeft:10,
             marginRight:10,}}
-          source={require('../../images/signup_icon_phone.png')}
+          source={require('../../images/2.png')}
         />
         <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>联系我们</Text>
       </TouchableOpacity>
@@ -223,7 +293,7 @@ const AccountMain = ({navigation}) => {
       <View style={{marginLeft:-70}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>Alert.alert(
       "提醒",
-      "您确定要推出登陆吗？",
+      user.token==-1?"点击确认前往注册登陆页面":"您确定要退出登陆吗？",
       [
         {
           text: "取消",
@@ -236,9 +306,9 @@ const AccountMain = ({navigation}) => {
       )} >
         <Image
           style = {styles.smallIconImg}
-          source={require('../../images/account_icon_logout.png')}
+          source={require('../../images/14.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>退出登录</Text>
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>{user.token==-1?"前往注册":"退出登录"}</Text>
       </TouchableOpacity>
       </View>
       </View>

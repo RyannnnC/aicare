@@ -14,6 +14,7 @@ export default function ProviderMain({navigation}) {
     }
     const [len, setLen] = useState(0)
     const [order,setOrder]=useState([]);
+    const [rec,setRec]=useState(-1);
     const goToOrder= () => {
         navigation.navigate("consumerOrder")
     }
@@ -83,7 +84,7 @@ export default function ProviderMain({navigation}) {
     }
     Alert.alert(
       "新冠疫苗阶段提醒",
-      "根据澳大利亚政府信息，目前(2021.5.17之后)澳大利亚新冠疫苗阶段处于2a阶段，只有符合2a条件(50岁以上或关键高风险工作者)可以注射疫苗，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
+      "根据澳大利亚政府信息，目前(2021.6.8之后)澳大利亚新冠疫苗阶段处于2a阶段，只有符合2a条件(40岁以上或关键高风险工作者)可以注射疫苗，诊所提供的疫苗类型是阿斯利康，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
       [
         {
           text: "取消",
@@ -127,11 +128,12 @@ export default function ProviderMain({navigation}) {
 
   useEffect(() => {
     getting();
-    let poll = setInterval(() => {
+    /*let poll = setInterval(() => {
       getting();
     }, 5000);
+    setRec(poll);
     return()=>clearInterval(poll)
-
+    */
             //
             /**/
     },[])
@@ -171,13 +173,14 @@ export default function ProviderMain({navigation}) {
                 //Alert.alert('查询成功');
                 //console.log(json.page)
                 //console.log("查询成功");
-                console.log(order)
+                //console.log(json.page[0].deptId)
+                console.log(order[0].deptId)
               } else {
                 console.log(json.msg);
                 //Alert.alert('查询失败');
               }
             }).catch(error => console.warn(error));
-            url2 = "http://"+user.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=0";
+            /*url2 = "http://"+user.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=0";
             fetch(url2,{
               method: 'GET',
               mode: 'cors',
@@ -196,13 +199,13 @@ export default function ProviderMain({navigation}) {
               if (json.code == 0) {
                 //this.setState({query:json.page})
                 setLen(json.page.length)
-                console.log(order)
+                //console.log(order)
               } else {
                 console.log(json.msg);
                 //Alert.alert('查询失败');
               }
-            }).catch(error => console.warn(error));
-            if(user.first_svisit==0){
+            }).catch(error => console.warn(error));*/
+            /*if(user.first_svisit==0){
             let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
             fetch(url,{
               method: 'POST',
@@ -280,7 +283,7 @@ export default function ProviderMain({navigation}) {
                 console.log(json.msg);
                 Alert.alert('查询失败');
               }
-            }).catch(error => console.warn(error));}
+            }).catch(error => console.warn(error));}*/
 
     }
 
@@ -427,17 +430,20 @@ export default function ProviderMain({navigation}) {
         <ScrollView style={{ flex:1}}>
 
         <View style={{flexDirection: 'row', marginBottom: 15,marginTop:85}}>
-          <View style={{marginLeft:30, marginRight:30}}>
+          <View style={{marginLeft:15, marginRight:10}}>
             <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
-            <Text>您今日有{len}项订单</Text>
+            {/*<Text>您今日有{len}项订单</Text>*/}
+            <Text style={{fontSize:12,marginTop:5}}>使用AI助手来测试今日心情吧。</Text>
           </View>
+          <TouchableOpacity onPress={()=>navigation.navigate("aiTest")}>
           <Image
-            style = {styles.mainImg}
-            source = {require('../images/crayon-1317.png')}
+            style = {{height:70,width:70,marginTop:-10}}
+            source = {require('../images/Group.png')}
           />
+          </TouchableOpacity>
         </View>
-      <View style={{textAlign: "left",marginBottom:8 }}>
-        <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500'}}>热门服务</Text>
+      <View style={{textAlign: "left",marginBottom:8,marginTop:25 }}>
+        <Text style={{ color: '#333333', fontSize: 19,marginLeft:8, fontWeight: '500'}}>热门服务</Text>
       </View>
       <View style={styles.buttons}>
         
@@ -460,7 +466,7 @@ export default function ProviderMain({navigation}) {
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/bodycheck.png')}
+          source = {require('../images/check.png')}
           />
           </View>
         </TouchableOpacity>
@@ -472,20 +478,33 @@ export default function ProviderMain({navigation}) {
         </TouchableOpacity>*/}
         
       </View>
-      {/*<View style={styles.buttons}>
+      <View style={styles.buttons}>
         
-      <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>goSomewhere(4)}>
+      <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{console.log(user.customerUserInfoId);navigation.navigate("资料收集");}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/chineseDoc.png')}
+          source = {require('../images/now.png')}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{navigation.navigate("healthRecord");}}>
+          <Image
+          style = {{width:110,height:110}}
+          source = {require('../images/record.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{Alert.alert("电子处方将为您记录处方药信息。")}}>
+          <Image
+          style = {{width:110,height:110}}
+          source = {require('../images/pres.png')}
           />
         </TouchableOpacity>
         
         
         
-      </View>*/}
+      </View>
         <View style={{textAlign: "left",marginTop:15,marginBottom:8 }}>
-          <Text style={{ color: '#333333', fontSize: 20, fontWeight: '500',marginBottom:8}}>最近预约</Text>
+          <Text style={{ color: '#333333', marginLeft:8,fontSize: 19, fontWeight: '500',marginBottom:8}}>最近预约</Text>
         </View>
       <TouchableOpacity onPress ={gotoOrderPage}>
       {order[0]?
@@ -493,8 +512,9 @@ export default function ProviderMain({navigation}) {
         <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
           <View style={{marginLeft:20 }}>
             <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}> {moment(order[0].appointDate).tz(Localization.timezone).format('L')} {order[0].startTime?order[0].startTime.slice(0,5) + " - "+order[0].endTime.slice(0,5):null}</Text>
-            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{order[0].deptName?"您预约了一门"+user.deptType[order[0].deptId]:null}。</Text>
+            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{order[0].deptId+1?"您预约了一门"+user.deptType[order[0].deptId]+"。":null}</Text>
           </View>
+        
         <Image
           style = {styles.img3}
           source = {require('../images/crayon-892.png')}

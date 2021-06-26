@@ -19,6 +19,7 @@ export default function ConsumerOrderPage() {
   const user = useContext(DataContext)
   const Tab = createMaterialTopTabNavigator();
   useEffect(() => {
+    updateRequest();
     let poll = setInterval(() => {
       updateRequest();
     }, 5000);
@@ -68,7 +69,7 @@ export default function ConsumerOrderPage() {
     <View style={{flex:1,backgroundColor:"white"}}>
       <Image
         style = {{height:90,width:300,marginLeft:50,marginTop:65}}
-        source = {require('../images/ordertop.png')}
+        source = {require('../images/telehealth_icon/order_img.png')}
       />
       <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
         <Tab.Screen name={"订单"+"("+num+")"} component={OngoingingOrder} />

@@ -1,4 +1,4 @@
-import React,{useContext, useState} from 'react';
+import React,{useContext, useState,useEffect} from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity, TextInput,Switch,ScrollView,Platform } from 'react-native';
 import {styles} from '../../style';
 import { CheckBox } from 'react-native-elements';
@@ -21,24 +21,77 @@ const args = {
 //mport { grey100 } from 'react-native-paper/lib/typescript/styles/colors';
 export default function TelePay({navigation,route}) {
   const user=useContext(DataContext);
+  const [members,setMembers]=useState([]);
+  const [first,setFirst]=useState("")
+  const [last,setLast]=useState("")
+  const [candidate,setCandidate]=useState({});
+  useEffect(() => {
+    
+
+      let url = 'http://'
+      +user.url
+      +'/aicare-customer-api/customer/customer-info/query-medical-info?customerUserInfoId='+user.customerUserInfoId;
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': user.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        },
+     
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        if (json.code === 0) {
+          setCandidate(json.medicalInfo);
+          setFirst(json.medicalInfo.firstName)
+          setLast(json.medicalInfo.LastName)
+          console.log(first)
+          //this.setState({press:new Array(members.length).fill(true)})
+          //console.log(candidate.medicareCard);
+        } else {
+          console.log(json.msg)
+          Alert.alert(json.msg);
+        }
+      }).catch(error => console.warn(error));;
+    /*let poll = setInterval(() => {
+      getting();
+    }, 5000);
+    setRec(poll);
+    return()=>clearInterval(poll)
+    */
+            //
+            /**/
+    },[])
   const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
   }
-  const { scheduleId,date,doctype,address,docName,startTime,endTime,teleFlg } = route.params;
+  const { scheduleId,date,doctype,address,docName,startTime,endTime,teleFlg,Did,orgId} = route.params;
   const [gender,setGender]=useState("")
+  const [id,setId]=useState("");
+
   const [visible,setVisible]=useState(false)
   const [exp,setExp]=useState(new Date())
   const [expVis,setExpVis]=useState(false)
-  const [first,setFirst]=useState("")
-  const [last,setLast]=useState("")
+ 
   const [number,setNumber]=useState("")
   const [serial,setSerial]=useState("")
   const [dob,setDob]=useState(new Date())
   const gotoSuccess= () => {
     var type = "";
+    if (!checked4){
+      Alert.alert("您需要阅读并同意用户须知。")
+    }
     if (checked1){
       type = "Medicare"
-      if(number.length<10){
+      /*if(number.length<10){
         Alert.alert("Medicare卡号位数为9位")
         return
       }
@@ -49,24 +102,14 @@ export default function TelePay({navigation,route}) {
       if(serial.length==0){
         Alert.alert("请输入序列号")
         return
-      }
+      }*/
       content.date=moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)
-    }else if(checked2){
-      type = "私人保险"
-      if (first.length==0||last.length==0){
-        Alert.alert("请输入私人保险持有人名字")
-        return
-      }
-      if(number.length==0){
-        Alert.alert("请输入私人保险号码")
-        return
-      }
     }else {
       type = "None"
     }
     console.log(doctype);
 
-    navigation.navigate("teleConfirm",{teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime,dob:dob,Date:moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,),serial:serial,number:number,first:first,last:last})
+    navigation.navigate("teleConfirm",{orgId:orgId,mobile:candidate.mobile,Did:Did,id:id,teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime,dob:dob,Date:moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,),serial:serial,number:number,first:candidate.firstName,last:candidate.lastName})
   }  
   const sendRequest=()=>{
     console.log(content);
@@ -128,11 +171,19 @@ export default function TelePay({navigation,route}) {
               }
             }).catch(error => console.warn(error));
   }
-  
+  const orders = members.length>0?members.map((item,index)=>{
+    return(
+        <TouchableOpacity style={{width:150,height:50,borderRadius:30,borderWidth:1,alignItems:"center",paddingTop:10,marginBottom:10}}
+        onPress={()=>setId(item.id)}>
+        <Text>{item.name}</Text>
+        </TouchableOpacity>
+    )
+}):null;
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
   const [checked4, setChecked4] = React.useState(false);
+  const [mobile,setMobile]=React.useState("");
   var content ={name:"",mobile:"",number:"",date:"",serial:"",first:"",last:"",gender:""};
   return (
 
@@ -154,18 +205,13 @@ export default function TelePay({navigation,route}) {
     marginTop:20,
     marginLeft:40,}}>费用报销</Text>
     </View>
-    <View style={{marginTop:20,marginLeft:-170}}>
-    <Image style = {{width:132,
-    height:33,
-    marginTop:40,
-    marginLeft:10,}}
-        source= {require('../../images/insurance.png')}
-      />
+    <View style={{marginTop:30,marginLeft:-170}}>
+    <Text style={{marginLeft:100,marginTop:40,fontSize:17,fontWeight:"500"}}>患者是否拥有Medicare卡?</Text>
     </View>
-    <View style={{marginTop:-15}}></View>
+    <View style={{marginTop:-5}}></View>
     <View style ={styles.comment_container}>
     
-      <Text style={{fontSize:16,marginLeft:33}}>Medicare</Text>
+      <Text style={{fontSize:16,marginLeft:-10}}>我有Medicare卡</Text>
 
     <CheckBox
             checked={checked1 }
@@ -173,7 +219,7 @@ export default function TelePay({navigation,route}) {
             uncheckedIcon='circle-thin'
             checkedIcon='check-circle'
             size={33}
-            containerStyle={{marginTop:-14,marginLeft:163}}
+            containerStyle={{marginTop:-14,marginLeft:100}}
             onPress={() => {
             setChecked1(!checked1);
             setChecked2(false);
@@ -181,9 +227,9 @@ export default function TelePay({navigation,route}) {
             }}
           />
     </View>
-    <View style={{marginTop:-15}}></View>
+    <View style={{marginTop:-5}}></View>
 
-    <View style ={styles.comment_container}>
+    {/*<View style ={styles.comment_container}>
       <Text style={{fontSize:16,marginLeft:32}}>Bupa/Medibank/OSHC/其他</Text>
       <CheckBox
             checked={checked2 }
@@ -198,18 +244,18 @@ export default function TelePay({navigation,route}) {
             setChecked3(false);
             }}
           />
-    </View>
+    </View>*/}
     <View style={{marginTop:-15}}></View>
 
     <View style ={styles.comment_container}>
-      <Text style={{fontSize:16,marginLeft:31}}>自费</Text>
+      <Text style={{fontSize:16,marginLeft:-10}}>我没有Medicare卡</Text>
       <CheckBox
             checked={checked3 }
             checkedColor='#FF8570'
             uncheckedIcon='circle-thin'
             checkedIcon='check-circle'
             size={33}
-            containerStyle={{marginTop:-14,marginLeft:206}}
+            containerStyle={{marginTop:-14,marginLeft:80}}
             onPress={() => {
             setChecked1(false);
             setChecked2(false);
@@ -249,8 +295,9 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     marginLeft:0,
     borderBottomWidth:1,}}
+          
           onChangeText={(text)=>setLast(text)}
-
+          defaultValue={candidate?candidate.lastName:null}
           placeholder="  持卡人姓(Last Name)"
         />
         </View>
@@ -264,6 +311,7 @@ export default function TelePay({navigation,route}) {
     borderBottomWidth:1,}}
           placeholder="持卡人名(First Name)"
           onChangeText={(text)=>setFirst(text)}
+          defaultValue={candidate?candidate.firstName:null}
 
       />
       </View>
@@ -277,6 +325,7 @@ export default function TelePay({navigation,route}) {
         confirmTextIOS='确认'
         onConfirm={(time)=>{setDob(time);setVisible(false);console.log(moment(dob).tz(Localization.timezone).format('L'))}}
         onCancel={()=>setVisible(false)}
+        
       />
       <View style={{flexDirection:"row",marginTop:10}}>
       <Text style={{marginTop:7,fontWeight:"500",marginLeft:-48}}>出生日期:</Text>
@@ -300,22 +349,23 @@ export default function TelePay({navigation,route}) {
     marginLeft:30,
     alignItems: 'center',
     borderRadius:25,}} onPress={()=>setVisible(true)}>
-      <Text style={{fontSize:12}}>{moment(dob).tz(Localization.timezone).format('L')}</Text>
+      <Text style={{fontSize:12}}>{candidate&&candidate.dob?candidate.dob:moment(dob).tz(Localization.timezone).format('L')}</Text>
     </TouchableOpacity>
         </View>
         <View style={{flexDirection:"row",marginTop:10}}>
         <Text style={{marginTop:7,fontWeight:"500"}}>性别:</Text>
         <SwitchSelector
   initial={0}
-  onPress={value => {setGender(value);console.log(moment(dob).tz(Localization.timezone).format('L'))}}
+  onPress={value => {setGender(value);}}
   buttonColor='#8FD7D3'
   borderColor='#8FD7D3'
   hasPadding
   style={{width:200,marginLeft:30}}
   height={35}
+  defaultValue={candidate?candidate.gender:null}//?
   options={[
-    { label: "女性", value: "f",  }, //images.feminino = require('./path_to/assets/img/feminino.png')
-    { label: "男性", value: "m", } //images.masculino = require('./path_to/assets/img/masculino.png')
+    { label: "女性", value: "female",  }, //images.feminino = require('./path_to/assets/img/feminino.png')
+    { label: "男性", value: "male", } //images.masculino = require('./path_to/assets/img/masculino.png')
   ]}
   testID="gender-switch-selector"
   accessibilityLabel="gender-switch-selector"
@@ -333,7 +383,7 @@ export default function TelePay({navigation,route}) {
         maxLength={10} 
           placeholder="卡号(Card Number)"
           onChangeText={(text)=>setNumber(text)}
-
+          defaultValue={candidate&&candidate.medicareCard?candidate.medicareCard[0].number:null}
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
@@ -347,6 +397,7 @@ export default function TelePay({navigation,route}) {
     maxLength={5} 
           placeholder="序列号(Ref Number)"
           onChangeText={(text)=>setSerial(text)}
+          defaultValue={candidate&&candidate.medicareCard?candidate.medicareCard[0].serialNumber:null}
 
       />
       </View>
@@ -373,8 +424,36 @@ export default function TelePay({navigation,route}) {
     marginLeft:30,
     alignItems: 'center',
     borderRadius:25,}} onPress={()=>setExpVis(true)}>
-      <Text style={{fontSize:12}}>{moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)}</Text>
+      <Text style={{fontSize:12}}>{candidate&&candidate.medicareCard&&candidate.medicareCard[0].expireDate?candidate.medicareCard[0].expireDate:moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)}</Text>
     </TouchableOpacity>
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>手机号码:</Text>
+
+      <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:5,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+    maxLength={10} 
+          placeholder="手机号码(Mobile Number)"
+          onChangeText={(text)=>setMobile(text)}
+        defaultValue={candidate?candidate.mobile:null}
+      />
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>电子邮箱:</Text>
+
+      <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:5,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+    
+          placeholder="手机号码(Mobile Number)"
+          onChangeText={(text)=>setMobile(text)}
+        defaultValue={candidate?candidate.email:null}
+      />
       </View>
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:60}}></View>
@@ -413,7 +492,7 @@ export default function TelePay({navigation,route}) {
     </View>
     </View>
     </View>: null}
-    {checked2?<View style = {styles.container}>
+    {/*checked2?<View style = {styles.container}>
         <View style={{flexDirection:"row"}}>
         <Image style = {{width:20,
         height:20,
@@ -461,11 +540,10 @@ export default function TelePay({navigation,route}) {
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:50}}></View>
     <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
-      {/*this need to manually calculated */}
       <Text style={styles.onsite_text}>下一步</Text>
     </TouchableOpacity>
     </View>
-    </View>: null}
+    </View>: null*/}
     {checked3?<View style = {styles.container}>
       
         
@@ -475,14 +553,81 @@ export default function TelePay({navigation,route}) {
         marginTop:2,
         marginLeft:10,}}
         source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
-        <Text style={{color:"#999999"}}> 若未持有保险，您无法享有诊金报销。</Text>
+        <Text style={{color:"#999999"}}> 若未持有Medicare卡，就诊费用需要自费。</Text>
         </View>
+        <View style={{flexDirection:"row"}}>
+        <Image style = {{width:20,
+        height:20,
+        marginTop:12,
+        marginLeft:-138,}}
+        source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
+        <Text style={{color:"#999999",marginTop:10}}> 本次问诊费用: 50澳币。</Text>
+
+        </View>
+        <View style={{flexDirection:"row",marginTop:30}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>持卡人姓:</Text>
+
+      <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:5,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+    maxLength={10} 
+          placeholder="患者姓名(Patient Name)"
+          defaultValue={candidate?candidate.lastName:null}          //onChangeText={(text)=>setMobile(text)}
+
+      />
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>持卡人名:</Text>
+
+      <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:5,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+    maxLength={10} 
+          placeholder="患者姓名(Patient Name)"
+          defaultValue={candidate?candidate.firstName:null}          //onChangeText={(text)=>setMobile(text)}
+
+      />
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>手机号码:</Text>
+
+      <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:5,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+    maxLength={10} 
+          placeholder="手机号码(Mobile Number)"
+          defaultValue={candidate?candidate.mobile:null}
+          //onChangeText={(text)=>setMobile(text)}
+
+      />
+      </View>
+      <View style={{flexDirection:"row",marginTop:10}}>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>电子邮箱:</Text>
+
+      <TextInput style = {{height: 35,
+    width: 200,
+    marginLeft:5,
+    borderBottomColor: '#999999',
+    borderBottomWidth:1,}}
+    maxLength={10} 
+          placeholder="手机号码(Mobile Number)"
+          defaultValue={candidate?candidate.email:null}
+          //onChangeText={(text)=>setMobile(text)}
+
+      />
+      </View>
     <View style={{marginLeft:-80}}> 
-    <View style={{marginTop:50}}></View>
+    <View style={{marginTop:30}}></View>
 
     <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
       {/*this need to manually calculated */}
-      <Text style={styles.onsite_text}>下一步</Text>
+      <Text style={styles.onsite_text}>{"下一步"}</Text>
     </TouchableOpacity>
     </View>
     </View>: null}

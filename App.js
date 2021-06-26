@@ -39,10 +39,10 @@ import ClinicInfo from "./Scene/telehealth/clinicInfo";
 import telehealthDoc from './Scene/telehealth/telehealthDoc';
 import TelehealthMV from './Scene/telehealth/telehealthMap';
 import Pay from './Scene/telehealth/Pay';
-
+import OnlineDoc from "./Scene/onlineDoctors";
 import DataPolicy from './Scene/datapolicy';
 import TermOfUse from './Scene/termofuse';
-
+import Patient_description from "./Scene/patient_description";
 import Welcome from './Scene/welcome';
 import Login from './Scene/login';
 import Signup from './Scene/signUp';
@@ -54,7 +54,13 @@ import changeDoc from './Scene/telehealth/changeDoc';
 import changeDocInfo from './Scene/telehealth/changeDocInfo';
 import telehealthPayment from "./Scene/telehealth/telehealthPayment";
 import Intro from "./intro";
+import Report from "./Scene/report"
 import CardInfo from "./Scene/account/cardInfo";
+import HealthRecord from "./Scene/healthRecord";
+import HistoryInfo from "./Scene/account/historyInfo";
+import AiTest from "./Scene/aiTest";
+import Result from "./Scene/result";
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -119,6 +125,8 @@ class App extends React.Component {
       state:"",
       name:"kim",
       mobile:"",
+      customerUserInfoId:-1,
+
       date: "请点击右边箭头按钮输入时间",
       start_time:"",
       end_time:"",
@@ -132,8 +140,10 @@ class App extends React.Component {
       orgId:0,
       docId:0,
       schedule:[],
+      consultWay:["实地就诊","远程医疗"],
       deptType:["推荐医生","全科","牙科","心理","中医","儿科","康复","疫苗"],
       lan:["语言","普通话","英语","粤语"],
+      version:1.27,
       action: {
         changeLogin: this.changeLogin,
         changesupply: this.changesupply,
@@ -155,6 +165,7 @@ class App extends React.Component {
         changevisit:this.changevisit,
         changeLoading:this.changeLoading,
         contact:this.contact,
+        changeInfoId:this.changeInfoId,
       }
     }
   }
@@ -210,6 +221,7 @@ class App extends React.Component {
     schedule:[],
     first_visit:0,
     first_time:null,
+    customerUserInfoId:-1,
     })
   }
   async getToken() {
@@ -246,6 +258,10 @@ class App extends React.Component {
   }
   changeLoading = (value) => {
     this.setState({loading: value});
+    console.log(value);
+  }
+  changeInfoId = (value) => {
+    this.setState({customerUserInfoId: value});
     console.log(value);
   }
   changetoken = (value) => {
@@ -373,7 +389,7 @@ render() {
         <Stack.Screen name="telehealthDoc" component ={telehealthDoc} options={{headerShown: false}}/>
         <Stack.Screen name="TelehealthMV" component ={TelehealthMV}/>
         <Stack.Screen name="ConsumerOrderPage" component ={ConsumerOrderPage}/>
-        <Stack.Screen name ="docRecommend" component={DocRecommend}/>
+        <Stack.Screen name ="docRecommend" component={DocRecommend} options={{headerShown:false}}/>
         <Stack.Screen name ="changeSuburb" component={changeSuburb}/>
         <Stack.Screen name ="changeClinic" component={changeClinic}/>
         <Stack.Screen name ="changeDoc" component={changeDoc}/>
@@ -382,7 +398,15 @@ render() {
         <Stack.Screen name ="pay" component={Pay} options={{headerShown:false}}/>
         <Stack.Screen name="数据协议" component={DataPolicy} />
         <Stack.Screen name="termofuse" component={TermOfUse} />
-        
+        <Stack.Screen name="资料收集" component={Patient_description} />
+        <Stack.Screen name="onlineDoc" component={OnlineDoc} options={{headerShown:false}}/>
+        <Stack.Screen name="healthRecord" component={HealthRecord} options={{headerShown:false}}/>
+        <Stack.Screen name="report" component={Report} options={{headerShown:false}}/>
+        <Stack.Screen name="cardInfo" component={CardInfo} options={{headerShown:false}}/>
+        <Stack.Screen name="historyInfo" component={HistoryInfo} options={{headerShown:false}}/>
+        <Stack.Screen name="aiTest" component={AiTest} options={{headerShown:false}}/>
+        <Stack.Screen name="result" component={Result} options={{headerShown:false}}/>
+
 
 
 

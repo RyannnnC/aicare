@@ -33,7 +33,7 @@ const AccountInfo = ({navigation}) => {
     console.log(telephone);
     console.log(postcode);
         
-    let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/save'
+    /*let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/save'
     
     fetch(url,{
         method: 'POST',
@@ -135,9 +135,9 @@ const AccountInfo = ({navigation}) => {
           alert('医疗信息提交失败');
         }
       });
-      }   
+      }   */
     }
-    useEffect(() => {
+    /*useEffect(() => {
     
         let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
                 fetch(url,{
@@ -205,10 +205,10 @@ const AccountInfo = ({navigation}) => {
                       console.log("you got nothing")
                   }else{
                     console.log(json.msg);
-                    Alert.alert('查询失败');
+                   // Alert.alert('查询失败');
                   }
                 }).catch(error => console.warn(error));
-        },[])
+        },[])*/
         
     const goEmail= () => {
         navigation.navigate("changeEmail")
@@ -245,8 +245,8 @@ const AccountInfo = ({navigation}) => {
     marginTop:20,
     marginLeft:100,}}>个人信息</Text>
         </View>
-        <Image style = {styles.personIcon}
-            source= {require('../../images/home_img_person.png')}
+        <Image style = {{width:80,height:80,borderRadius:40}}
+            source= {require('../../images/chris.png')}
           />
         <View style={{ marginTop:10,marginLeft:-20,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row'}}>
             <Image
@@ -260,29 +260,33 @@ const AccountInfo = ({navigation}) => {
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>姓名： </Text>
-            <TextInput defaultValue={base.name?base.name:""}  placeholder="请输入您的姓名" placeholderTextColor="grey" onChangeText={text => setName(text)}></TextInput>
+            <TextInput defaultValue="Zhuo Ding"  placeholder="请输入您的姓名" placeholderTextColor="grey" onChangeText={text => setName(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>性别： </Text>
-            <TextInput placeholder="请输入您的性别" defaultValue={base.gender?base.gender:""}  placeholderTextColor="grey" onChangeText={text => setGender(text)}></TextInput>
+            <TextInput placeholder="请输入您的性别" defaultValue="男"  placeholderTextColor="grey" onChangeText={text => setGender(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>年龄： </Text>
-            <TextInput placeholder="请输入您的年龄"  defaultValue={base.age?base.age:""} placeholderTextColor="grey" onChangeText={text => setAge(text)}></TextInput>
+            <TextInput placeholder="请输入您的年龄"  defaultValue="44" placeholderTextColor="grey" onChangeText={text => setAge(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>电话： </Text>
-            <TextInput placeholder="请输入您的电话" defaultValue={base.mobile?base.mobile:""} placeholderTextColor="grey" onChangeText={text => setTelephone(text)}></TextInput>
+            <TextInput placeholder="请输入您的电话" defaultValue="0426804898" placeholderTextColor="grey" onChangeText={text => setTelephone(text)}></TextInput>
+        </View>
+        <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
+            <Text>邮箱： </Text>
+            <TextInput placeholder="请输入您的邮箱" defaultValue="chrisidng@aicare.ai" placeholderTextColor="grey" onChangeText={text => setTelephone(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>地址： </Text>
-            <TextInput placeholder="请输入您的地址" defaultValue={base.address?base.address:""} placeholderTextColor="grey" onChangeText={text => setAddress(text)}></TextInput>
+            <TextInput placeholder="请输入您的地址" defaultValue="171/5 epping park drive, Epping" placeholderTextColor="grey" onChangeText={text => setAddress(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>编码： </Text>
-            <TextInput placeholder="请输入邮编" defaultValue={base.postCode?base.postCode:""} placeholderTextColor="grey" onChangeText={text => setPostcode(text)}></TextInput>
+            <TextInput placeholder="请输入邮编" defaultValue="2121" placeholderTextColor="grey" onChangeText={text => setPostcode(text)}></TextInput>
             <Text style={{marginLeft:50}}>州： </Text>
-            <TextInput placeholder="请输入州" defaultValue={base.state?base.state:""} placeholderTextColor="grey" onChangeText={text => setState(text)}></TextInput>
+            <TextInput placeholder="请输入州" defaultValue="NSW" placeholderTextColor="grey" onChangeText={text => setState(text)}></TextInput>
         </View>
         {/*<View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>邮箱： </Text>

@@ -168,7 +168,7 @@ class telehealthClinic extends Component {
         <View style={{marginTop:10}}>
         <Image
             style = {styles.topping_image}
-            source={require('../../images/order_img.png')}
+            source={require('../../images/telehealth_icon/service_img.png')}
         />
         </View>
         <View style ={{flexDirection:'row',marginTop:15}}>
