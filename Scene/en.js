@@ -215,4 +215,7 @@ export default {
   takePhoto:'Take a Photo',
   chooseLib:'Choose from Library',
   uploadMethod:'Choose a Method to upload your Image',
+  dt:'Doctor',
+  cl:'Clinic',
+  role:'Choose the Role',
 }

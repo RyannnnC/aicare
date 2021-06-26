@@ -40,10 +40,10 @@ export default class MyAccount extends Component {
           if (json.code === 0) {
             console.log(json);
             this.setState({
-              week:json.data.weekAcount ,
-              month:json.data.monthAcount,
-              balance:json.data.balanceAcount,
-              total:json.data.totalAcount,
+              week:json.data.weekAcount/100 ,
+              month:json.data.monthAcount/100,
+              balance:json.data.balanceAcount/100,
+              total:json.data.totalAcount/100,
             });
 
           } else {
@@ -92,7 +92,7 @@ export default class MyAccount extends Component {
         list = this.state.list.map((item) => {
         return (
           <View key={item.id} style={{borderBottomWidth:1,flexDirection:'row',width:'100%',height:50,backgroundColor:'white'}}>
-            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'30%'}}>
+            <View style={{flexDirection:'row',alignItems:'center',width:'30%',paddingLeft:'5%'}}>
               <Image
                 style = {{width:20,height:20,marginRight:10}}
                 source = {require('../../images/providerImg/Gender-2.png')}
@@ -103,7 +103,7 @@ export default class MyAccount extends Component {
               <Text style={{fontWeight: '400'}}>{moment(item.updatedDate).format('L')}</Text>
             </View>
             <View style={{alignItems:'flex-end',justifyContent:'center',width:'30%',paddingRight:'5%'}}>
-              <Text style={{fontWeight: '400'}}>${item.realAmount}</Text>
+              <Text style={{fontWeight: '400'}}>${item.realAmount/100}</Text>
             </View>
 
           </View>
@@ -119,17 +119,17 @@ export default class MyAccount extends Component {
           <View style={{width:'40%',flexDirection:'row', justifyContent:'space-between'}}>
             <TouchableOpacity style={{flexDirection:'row',marginRight:'1%'}}>
               <Image
-                style = {{width: 31, height:22,marginRight:5}}
+                style = {{width: 28, height:20,marginRight:5}}
                 source = {require('../../images/providerImg/yszh-05.png')}
               />
-              <Text style={{ fontSize: 20, fontWeight: '600'}}>Credit Card</Text>
+              <Text style={{ fontSize: 20, fontWeight: '500'}}>Credit Card</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{flexDirection:'row',marginRight:'3%'}}>
               <Image
-                style = {{width: 31, height:22,marginRight:5}}
+                style = {{width: 28, height:20,marginRight:5}}
                 source = {require('../../images/providerImg/yszh-06.png')}
               />
-              <Text style={{ fontSize: 20, fontWeight: '600'}}>Withdraw</Text>
+              <Text style={{ fontSize: 20, fontWeight: '500'}}>Withdraw</Text>
             </TouchableOpacity>
           </View>
         </View>

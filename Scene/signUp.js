@@ -12,35 +12,42 @@ export default class Signup extends Component {
     phone:"",
     mail:"",
     password:"",
-    confirm: "",
     code:"",
     type:"",
     checked1: false,
     checked2: true,
+    checked3:1,
+    checked4:0,
     timer:null,
     counter:60,
   }
   sendRequest() {
-    if (this.state.confirm != this.state.password) {
-      Alert.alert("两次密码必须相同");
-      return false;
-    } else if(this.state.mail==''){
+    if(this.state.mail==''){
       Alert.alert('请输入一个邮箱')
     } else if(this.state.code==''){
       Alert.alert('请输入一个验证码')
     } else {
     let s = this.state;
+    let rt = 1;
+    if (s.checked3 == 1) {
+      rt = 2
+    }
+    let tp = 'email';
+    if (s.checked1) {
+      tp='mobile'
+    }
     let url = 'http://'
       +this.context.url
       +'/aicare-business-api/business/user/register?'
       +'username='+ s.name
       +'&password=' + s.password
       +'&email=' + s.mail
+      +'&roleType='+ rt
       +'&mobile=' + s.phone
       +'&code=' + s.code
-      +'&clientType=3'
+      +'&clientType=2'
       +'&appType=1'
-      +'&type=' + s.type;
+      +'&type=' + tp;
       fetch(url,{
         method: 'POST',
         headers: {
@@ -186,15 +193,41 @@ export default class Signup extends Component {
           <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
-              source={require('../images/providerImg/account_icon_confirm.png')}
+              source={require('../images/providerImg/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('confirm')} *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('role')} *</Text>
           </View>
-          <TextInput style={styles.resumeInput}
-          placeholder={I18n.t('passwordInput2')}
-          secureTextEntry={true}
-          onChangeText={(text) => {this.setState({ confirm: text})}}
-          />
+            <CheckBox
+              title={I18n.t('dt')}
+              iconRight
+              checkedIcon='check-circle-o'
+              uncheckedIcon='circle-o'
+              checkedColor='red'
+              containerStyle={{borderWidth:0, backgroundColor:'white'}}
+              size={this.state.size}
+              checked={this.state.checked3 == 1?true:false}
+              onPress={() => {
+                this.setState({
+                checked3:1,
+                checked4:0,
+              })}}
+             />
+            <CheckBox
+              title={I18n.t('cl')}
+              iconRight
+              checkedIcon='check-circle-o'
+              uncheckedIcon='circle-o'
+              checkedColor='red'
+              containerStyle={{borderWidth:0, backgroundColor:'white'}}
+              size={this.state.size}
+              checked={this.state.checked4== 1?true:false}
+              onPress={() => {
+                this.setState({
+                checked3: 0,
+                checked4: 1,
+              })}}
+             />
+
 
           <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image

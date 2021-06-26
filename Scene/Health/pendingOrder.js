@@ -289,7 +289,7 @@ export default class PendingOrder extends Component {
     return (
       <View key={item.id} style={{width:'90%'}}>
       <View  style={{borderTopWidth:1,flexDirection:'row',width:'100%',height:50,backgroundColor:'white'}}>
-        <TouchableOpacity style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'14%'}}
+        <TouchableOpacity style={{flexDirection:'row',alignItems:'center',width:'14%',paddingLeft:'1%'}}
         onPress={()=>{this.changevis(item.id,true)}}>
           {item.sex == 'Male'?
           <Image
@@ -372,9 +372,9 @@ elevation: 24,}}>
       <Text style={{marginBottom:10}}>{I18n.t('patientMobile')}: {item.mobile}</Text>
       <Text style={{marginBottom:10}}>{I18n.t('bookingTime')}: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
       <Text style={{marginBottom:10}}>{I18n.t('bookingDoctor')}: {item.businessEmployerName}</Text>
-      <Text style={{marginBottom:10}}>{I18n.t('bookingDept')}: {item.deptName}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t('bookingDept')}: {item.serviceClassName}</Text>
       <Text style={{marginBottom:10}}>{I18n.t('bookingAdress')}: {item.orgAddress}</Text>
-      {item.telehealthFlg ==1?
+      {item.serviceType =='2'?
         <View>
           <Text style={{marginBottom:10}}>{I18n.t('treatmentTypeT')}</Text>
           <Text style={{marginBottom:10}}>{I18n.t('remoteMethod')}: {tp}</Text>

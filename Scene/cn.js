@@ -215,4 +215,7 @@ export default {
   takePhoto:'拍照',
   chooseLib:'从相册中选择',
   uploadMethod:'请选择一种方式来上传照片？',
+  dt:'医生',
+  cl:'诊所',
+  role:'角色选择',
 }

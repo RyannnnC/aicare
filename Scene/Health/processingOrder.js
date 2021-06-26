@@ -34,7 +34,7 @@ export default class ProcessingOrder extends Component {
   componentWillUnmount() {
     this._unsubscribe();
   }
-  
+
   setIsEnabled = (value) => {
     this.setState({isEnabled: value})
   }
@@ -327,7 +327,7 @@ export default class ProcessingOrder extends Component {
       }
       return (
         <View key={item.id} style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:50,backgroundColor:'white'}}>
-          <TouchableOpacity style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'14%'}}
+          <TouchableOpacity style={{flexDirection:'row',alignItems:'center',width:'14%',paddingLeft:'1%'}}
           onPress={()=>{this.changevis(item.id,true)}}>
             {item.sex == 'Male'?
             <Image
@@ -409,7 +409,7 @@ export default class ProcessingOrder extends Component {
         <Text style={{marginBottom:10}}>{I18n.t('patientMobile')}: {item.mobile}</Text>
         <Text style={{marginBottom:10}}>{I18n.t('bookingTime')}: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
         <Text style={{marginBottom:10}}>{I18n.t('bookingDoctor')}: {item.businessEmployerName}</Text>
-        <Text style={{marginBottom:10}}>{I18n.t('bookingDept')}: {item.deptName}</Text>
+        <Text style={{marginBottom:10}}>{I18n.t('bookingDept')}: {item.serviceClassName}</Text>
         <Text style={{marginBottom:10}}>{I18n.t('bookingAdress')}: {item.orgAddress}</Text>
         {item.telehealthFlg ==1?
           <View>
