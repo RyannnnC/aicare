@@ -1,9 +1,10 @@
-import React ,{Component}from 'react';
-import { Image,Text, View, TouchableOpacity,ScrollView,SafeAreaView,ActivityIndicator } from 'react-native';
+import React ,{Component,useRef}from 'react';
+import { Button,Image,Text, View, TouchableOpacity,ScrollView,SafeAreaView,ActivityIndicator } from 'react-native';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 import moment from 'moment';
-import ExpoPixi from 'expo-pixi'
+import SignatureScreen from 'react-native-signature-canvas';
+import * as FileSystem from 'expo-file-system';
 
 export default class PrescriptionCheck extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ export default class PrescriptionCheck extends Component {
       dname:'',
       dmobile:'',
       pn:0,
+      signature:null,
       }
     }
   componentDidMount(){
@@ -34,19 +36,29 @@ export default class PrescriptionCheck extends Component {
     this.queryDoctor();
   }
 
-  clearCanvas = () => {
-    this.refs.signatureCanvas.clear()
-  }
-  saveCanvas = async () => {
-    const signature_result = await
-    this.refs.signatureCanvas.takeSnapshotAsync({
-      format: 'png', // 'png' also supported
-      quality: 0.5, // quality 0 for very poor 1 for very good
-      result: 'file' //
+  handleSignature = signature => {
+    console.log(signature);
+    this.setState({signature:signature})
+    const path = FileSystem.cacheDirectory + 'sign.png';
+    FileSystem.writeAsStringAsync(path, signature.replace('data:image/png;base64,', ''), {encoding: FileSystem.EncodingType.Base64}).then(res => {
+      console.log(res);
+      FileSystem.getInfoAsync(path, {size: true, md5: true}).then(file => {
+        console.log(file);
+      })
+    }).catch(err => {
+      console.log("err", err);
     })
-     console.log(signature_result)
-    // inside the fn above, use signature_result.uri to get the absolute file path
+  };
+
+  handleClear = () => {
+    this.setState({signature:null})
+    console.log('clear')
   }
+
+  handleConfirm = () => {
+    console.log("end");
+  }
+
   queryDoctor() {
     let url = 'http://'
     +this.context.url
@@ -316,18 +328,18 @@ export default class PrescriptionCheck extends Component {
               <Text style={{fontSize: 16, fontWeight: '400'}}>{I18n.t('nomedi')}</Text>
             </View>
           }
-          <ExpoPixi.Signature
-            ref='signatureCanvas' //Important to be able to call this obj
-            strokeWidth={3} // thickness of the brush
-            strokeAlpha={0.5} // opacity of the brush
-            />
-            <TouchableOpacity onPress={this.clearCanvas}>
-              <Text>Reset</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.saveCanvas}>
-              <Text>Sign</Text>
-            </TouchableOpacity>
         </ScrollView>
+        <View style={{width:'80%',height:200,alignItems: 'center',justifyContent: 'center',}}>
+          <SignatureScreen
+            onOK={this.handleSignature}
+            onEmpty={this.handleEmpty}
+            onClear={this.handleClear}
+            descriptionText='请输入'
+            clearText="Clear"
+            confirmText="Save"
+            style={{width:'100%',height:'80%'}}
+          />
+        </View>
         <View  style={{ height:'10%', width:'80%',margin:'10%',justifyContent: "center", alignItems: "center"}}>
           <TouchableOpacity style={{
             width: '100%',
