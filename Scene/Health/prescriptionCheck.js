@@ -3,6 +3,7 @@ import { Image,Text, View, TouchableOpacity,ScrollView,SafeAreaView,ActivityIndi
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 import moment from 'moment';
+import ExpoPixi from 'expo-pixi'
 
 export default class PrescriptionCheck extends Component {
     constructor(props) {
@@ -22,6 +23,7 @@ export default class PrescriptionCheck extends Component {
       infoId:null,
       dname:'',
       dmobile:'',
+      pn:0,
       }
     }
   componentDidMount(){
@@ -32,6 +34,19 @@ export default class PrescriptionCheck extends Component {
     this.queryDoctor();
   }
 
+  clearCanvas = () => {
+    this.refs.signatureCanvas.clear()
+  }
+  saveCanvas = async () => {
+    const signature_result = await
+    this.refs.signatureCanvas.takeSnapshotAsync({
+      format: 'png', // 'png' also supported
+      quality: 0.5, // quality 0 for very poor 1 for very good
+      result: 'file' //
+    })
+     console.log(signature_result)
+    // inside the fn above, use signature_result.uri to get the absolute file path
+  }
   queryDoctor() {
     let url = 'http://'
     +this.context.url
@@ -55,6 +70,7 @@ export default class PrescriptionCheck extends Component {
           this.setState({
             dname:json.employerInfo.name,
             dmobile:json.employerInfo.mobile,
+            pn:json.employerInfo.prescriberNumber,
           })
         } else {
           console.log(json.msg)
@@ -258,7 +274,7 @@ export default class PrescriptionCheck extends Component {
         <ScrollView style={{height:'95%',width:'25%',borderRightWidth:1,margin:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('docInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.dname}</Text>
-          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>Prescribe Number: 80225873</Text>
+          <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>Prescribe Number: {this.state.pn}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.dmobile}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('address')}: 9 Park Road Hurstvile NSW 2220</Text>
           <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>{I18n.t('diagnosisSuggestion')}:</Text>
@@ -300,6 +316,17 @@ export default class PrescriptionCheck extends Component {
               <Text style={{fontSize: 16, fontWeight: '400'}}>{I18n.t('nomedi')}</Text>
             </View>
           }
+          <ExpoPixi.Signature
+            ref='signatureCanvas' //Important to be able to call this obj
+            strokeWidth={3} // thickness of the brush
+            strokeAlpha={0.5} // opacity of the brush
+            />
+            <TouchableOpacity onPress={this.clearCanvas}>
+              <Text>Reset</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.saveCanvas}>
+              <Text>Sign</Text>
+            </TouchableOpacity>
         </ScrollView>
         <View  style={{ height:'10%', width:'80%',margin:'10%',justifyContent: "center", alignItems: "center"}}>
           <TouchableOpacity style={{

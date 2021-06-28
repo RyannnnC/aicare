@@ -151,14 +151,16 @@ export default class Enotes extends Component {
       <View style={{height:'91.5%',width:'65%',backgroundColor:'white',borderRadius:5,padding:'2%'}}>
         <Text style={{ fontSize:18, fontWeight: '500',marginTop:10, marginBottom:10}}>{I18n.t('statement')}</Text>
         <View style={{width:'100%',height:'15%',alignItems:'center',flexDirection:'row'}}>
-          {this.state.image.map((item) => (
+          {this.state.image.map((item) => {
+            if (item.uri != null) {
+            return(
             <TouchableOpacity style={{height:'100%',width:'30%'}} onPress={() => {this.setState({visible:true})}}>
               <Image
                 style={{height:'100%',width:'100%'}}
                 source={item.source}
               />
             </TouchableOpacity>
-          ))}
+          )}})}
           <Text style={{fontSize:16, fontWeight: '400'}}>{this.state.patientComment}</Text>
         </View>
 
@@ -261,7 +263,7 @@ export default class Enotes extends Component {
         </View>
         <View style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('allergy')}</Text>
-          {this.state.allergy.length > 0 ?
+          {this.state.allergy ?
             this.state.allergy.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
                 <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.allergen}</Text>
@@ -275,7 +277,7 @@ export default class Enotes extends Component {
         </View>
         <View style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('mediHis')}</Text>
-          {this.state.medicineUsage.length > 0 ?
+          {this.state.medicineUsage ?
             this.state.medicineUsage.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
                 <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.medicine}</Text>
@@ -289,7 +291,7 @@ export default class Enotes extends Component {
         </View>
         <View style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('famHis')}</Text>
-          {this.state.familyHistory.length > 0 ?
+          {this.state.familyHistory?
             this.state.familyHistory.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
                 <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.disease}</Text>
@@ -303,7 +305,7 @@ export default class Enotes extends Component {
         </View>
         <View style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('chronic')}</Text>
-          {this.state.chronic.length > 0 ?
+          {this.state.chronic?
             this.state.chronic.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
                 <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.chronic}</Text>

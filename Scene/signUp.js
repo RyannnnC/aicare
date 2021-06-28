@@ -10,21 +10,16 @@ export default class Signup extends Component {
   state = {
     name:"",
     phone:"",
-    mail:"",
     password:"",
     code:"",
     type:"",
-    checked1: false,
-    checked2: true,
     checked3:1,
     checked4:0,
     timer:null,
     counter:60,
   }
   sendRequest() {
-    if(this.state.mail==''){
-      Alert.alert('请输入一个邮箱')
-    } else if(this.state.code==''){
+    if(this.state.code==''){
       Alert.alert('请输入一个验证码')
     } else {
     let s = this.state;
@@ -32,22 +27,17 @@ export default class Signup extends Component {
     if (s.checked3 == 1) {
       rt = 2
     }
-    let tp = 'email';
-    if (s.checked1) {
-      tp='mobile'
-    }
     let url = 'http://'
       +this.context.url
-      +'/aicare-business-api/business/user/register?'
+      +'/aicare-business-api/business/user/pcregister?'
       +'username='+ s.name
       +'&password=' + s.password
-      +'&email=' + s.mail
       +'&roleType='+ rt
       +'&mobile=' + s.phone
       +'&code=' + s.code
       +'&clientType=2'
       +'&appType=1'
-      +'&type=' + tp;
+      +'&type=mobile';
       fetch(url,{
         method: 'POST',
         headers: {
@@ -59,18 +49,16 @@ export default class Signup extends Component {
       .then((json) => {
         if (json.code == 0) {
           Alert.alert("注册成功");
+          this.props.navigation.navigate(I18n.t('login'))
         } else {
-          Alert.alert('注册失败');
+          Alert.alert(json.msg);
           return false;
         }
         console.log(json.msg);
-        this.props.navigation.navigate(I18n.t('login'))
       });}
-  //  .then(json => {console.log(json)});
   }
   sendCode() {
     this.setTimer();
-    if (this.state.checked1) {
       let p = this.state.phone;
       let url = 'http://'
       +this.context.url
@@ -87,30 +75,8 @@ export default class Signup extends Component {
       })
       .then((response) => response.json())
       .then((json) => {
-        this.setState({type: 'mobile'});
         console.log(json.msg);
       });
-    } else {
-      let m = this.state.mail;
-      let url = 'http://'
-      +this.context.url
-      +'/aicare-business-api/business/user/send?'
-      +'email=' + m
-      +'&type=email';
-      console.log(url);
-      fetch(url,{
-        method: 'POST',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        }
-      })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({ type: 'email'});
-        console.log(json.msg);
-      });
-    }
   }
 
   componentWillUnmount() {
@@ -168,18 +134,6 @@ export default class Signup extends Component {
           <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
             <Image
               style = {styles.smallIconImg}
-              source={require('../images/providerImg/signup_icon_mail.png')}
-            />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('email')} *</Text>
-          </View>
-          <TextInput style={styles.resumeInput}
-          placeholder={I18n.t('mailInput')}
-          onChangeText={(text) => {this.setState({ mail: text})}}
-          />
-
-          <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
-            <Image
-              style = {styles.smallIconImg}
               source={require('../images/providerImg/login_icon_pswd.png')}
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('password')} *</Text>
@@ -228,44 +182,14 @@ export default class Signup extends Component {
               })}}
              />
 
-
-          <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
-            <Image
-              style = {styles.smallIconImg}
+         <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
+           <Image
+             style = {styles.smallIconImg}
               source={require('../images/providerImg/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('binding')} *</Text>
+            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('verify')} *</Text>
           </View>
-            <CheckBox
-              title={I18n.t('mobile')}
-              iconRight
-              checkedIcon='check-circle-o'
-              uncheckedIcon='circle-o'
-              checkedColor='red'
-              containerStyle={{borderWidth:0, backgroundColor:'white'}}
-              size={this.state.size}
-              checked={this.state.checked1}
-              onPress={() => {
-                this.setState({
-                checked1: true,
-                checked2: false,
-              })}}
-             />
-            <CheckBox
-              title={I18n.t('email')}
-              iconRight
-              checkedIcon='check-circle-o'
-              uncheckedIcon='circle-o'
-              checkedColor='red'
-              containerStyle={{borderWidth:0, backgroundColor:'white'}}
-              size={this.state.size}
-              checked={this.state.checked2}
-              onPress={() => {
-                this.setState({
-                checked1: false,
-                checked2: true,
-              })}}
-             />
+
           <View style={{flex:1,flexDirection: 'row'}}>
             <TextInput style={styles.resumeInput3}
             placeholder= {I18n.t('verifyInput')}

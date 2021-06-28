@@ -218,4 +218,5 @@ export default {
   dt:'Doctor',
   cl:'Clinic',
   role:'Choose the Role',
+  verify:'Verification',
 }

@@ -25,6 +25,8 @@ export default class UploadMember extends Component {
         pressed:false,
         we:0,
         gender:0,
+        racgp:0,
+        pn:0,
         isLoading:false,
         visible:false,
         types: [
@@ -100,6 +102,8 @@ export default class UploadMember extends Component {
                 email:json.employerInfo.email,
                 gender:parseInt(json.employerInfo.gender),
                 oimage:json.employerInfo.imgUrl,
+                racgp:json.employerInfo.racgpNumber,
+                pn:json.employerInfo.prescriberNumber,
               })
               let i;
               if (json.employerInfo.employerSchedulevos.length>0){
@@ -229,6 +233,8 @@ export default class UploadMember extends Component {
         workLong:this.state.we,
         email:this.state.email,
         gender:this.state.gender,
+        racgpNumber:this.state.racgp,
+        prescriberNumber:this.state.pn,
         employerSchedulevos:[
             {
                 "dayOfWeek": 1,
@@ -598,7 +604,6 @@ export default class UploadMember extends Component {
           }}
           placeholder= "****@gmail.com"
           value={this.state.email}
-          editable={this.props.route.params.id !=null?false:true}
           onChangeText={(text) => {this.setState({email:text})}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
@@ -621,8 +626,63 @@ export default class UploadMember extends Component {
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>RACGP</Text>
+          <TextInput style={{
+            width: '80%',
+            fontSize:18,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE',
+          }}
+            placeholder= "Only Enter a number"
+            value={this.state.racgp==null?0:this.state.racgp.toString()}
+            keyboardType="numeric"
+            onChangeText={(number) => {this.setState({racgp:number})}}/>
+        </View>
+
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>Prescribe Number</Text>
+          <TextInput style={{
+            width: '80%',
+            fontSize:18,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE',
+          }}
+            placeholder= "Only Enter a number"
+            value={this.state.pn==null?0:this.state.pn.toString()}
+            keyboardType="numeric"
+            onChangeText={(number) => {this.setState({pn:number})}}/>
+        </View>
+
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('experience')}</Text>
+          <TextInput style={{
+            width: '80%',
+            fontSize:18,
+            marginLeft: 5,
+            borderBottomWidth:1,
+            borderBottomColor:'#EEEEEE',
+          }}
+            placeholder= "Only Enter a number"
+            value={this.state.we==null?0:this.state.we.toString()}
+            keyboardType="numeric"
+            onChangeText={(number) => {this.setState({we:number})}}/>
+        </View>
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
+          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
+          <TouchableOpacity style={{flexDirection:'row',width:'80%'}}onPress={() => this.props.navigation.navigate(I18n.t('mintro'))}>
+          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:18, fontWeight: '400' , color:'#999999',width:'90%'}}>{this.context.mintro}</Text>
+            <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={{marginTop:20,flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start",borderBottomWidth:1,borderBottomColor:'rgb(32,191,195)'}}>
+           <Text style={{ fontSize:22, fontWeight: '600' ,color: 'rgb(32,191,195)'}}>{I18n.t('serviceInformation')}</Text>
+        </View>
+        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
-          <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
+          <TouchableOpacity style={{flexDirection: 'row',width:'80%'}} onPress={() => {this.setState({pressed:!this.state.pressed})}}>
           <View style={{flexDirection: 'row', flexWrap:'wrap',marginTop:2,marginLeft:10,width:'80%'}}>
             {this.checkType() && <Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>Please Choose your Department</Text>}
             {this.state.types[0].status==1&&<Text style={{ fontSize:18, fontWeight: '400',marginLeft:5 }}>{I18n.t('gpfull')}</Text>}
@@ -714,31 +774,6 @@ export default class UploadMember extends Component {
                    />
             </View>
           }
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('experience')}</Text>
-          <TextInput style={{
-            width: '80%',
-            fontSize:18,
-            marginLeft: 5,
-            borderBottomWidth:1,
-            borderBottomColor:'#EEEEEE',
-          }}
-            placeholder= "Only Enter a number"
-            value={this.state.we==null?0:this.state.we.toString()}
-            keyboardType="numeric"
-            onChangeText={(number) => {this.setState({we:number})}}/>
-        </View>
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
-          <TouchableOpacity style={{flexDirection:'row',width:'80%'}}onPress={() => this.props.navigation.navigate(I18n.t('mintro'))}>
-          <Text numberOfLines={1} style={{ marginLeft:10,fontSize:18, fontWeight: '400' , color:'#999999',width:'90%'}}>{this.context.mintro}</Text>
-            <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={{marginTop:20,flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start",borderBottomWidth:1,borderBottomColor:'rgb(32,191,195)'}}>
-           <Text style={{ fontSize:22, fontWeight: '600' ,color: 'rgb(32,191,195)'}}>{I18n.t('serviceInformation')}</Text>
-        </View>
         <View style={{marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('serviceLanguage')}</Text>
         </View>

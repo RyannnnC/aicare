@@ -218,4 +218,5 @@ export default {
   dt:'医生',
   cl:'诊所',
   role:'角色选择',
+  verify:'验证',
 }
