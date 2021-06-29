@@ -11,6 +11,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { isNullishCoalesce } from 'typescript';
 
 
 const args = {
@@ -24,6 +25,10 @@ export default function TelePay({navigation,route}) {
   const [members,setMembers]=useState([]);
   const [first,setFirst]=useState("")
   const [last,setLast]=useState("")
+  const [email,setEmial]=useState("")
+  const [number,setNumber]=useState("")
+  const [serial,setSerial]=useState("")
+
   const [candidate,setCandidate]=useState({});
   useEffect(() => {
     
@@ -52,15 +57,37 @@ export default function TelePay({navigation,route}) {
         if (json.code === 0) {
           setCandidate(json.medicalInfo);
           setFirst(json.medicalInfo.firstName)
-          setLast(json.medicalInfo.LastName)
-          console.log(first)
+          setLast(json.medicalInfo.lastName)
+          setMobile(json.medicalInfo.mobile)
+          setEmial(json.medicalInfo.email)
+          
+          setDob(json.medicalInfo.dob)
+          if(json.medicalInfo.medicareCard[0]){
+           setId(json.medicalInfo.medicareCard[0].id) 
+          }
+          if(json.medicalInfo.medicareCard&&json.medicalInfo.medicareCard[0]){
+          setExp(json.medicalInfo.medicareCard[0].exp)
+          }
+          
+          
+          if(json.medicalInfo.medicareCard&&json.medicalInfo.medicareCard[0]){
+            setNumber(json.medicalInfo.medicareCard[0].number)
+            }
+          if(json.medicalInfo.medicareCard&&json.medicalInfo.medicareCard[0]){
+            setSerial(json.medicalInfo.medicareCard[0].serialNumber)
+          }
+          
+          setGender(json.medicalInfo.gender)
+          
+          
+          console.log(json.medicalInfo.medicareCard[0])
           //this.setState({press:new Array(members.length).fill(true)})
           //console.log(candidate.medicareCard);
         } else {
           console.log(json.msg)
           Alert.alert(json.msg);
         }
-      }).catch(error => console.warn(error));;
+      }).catch(error => console.warn(error));
     /*let poll = setInterval(() => {
       getting();
     }, 5000);
@@ -75,19 +102,19 @@ export default function TelePay({navigation,route}) {
   }
   const { scheduleId,date,doctype,address,docName,startTime,endTime,teleFlg,Did,orgId} = route.params;
   const [gender,setGender]=useState("")
-  const [id,setId]=useState("");
+  const [id,setId]=useState(isNullishCoalesce);
 
   const [visible,setVisible]=useState(false)
   const [exp,setExp]=useState(new Date())
   const [expVis,setExpVis]=useState(false)
  
-  const [number,setNumber]=useState("")
-  const [serial,setSerial]=useState("")
+  
   const [dob,setDob]=useState(new Date())
   const gotoSuccess= () => {
     var type = "";
     if (!checked4){
       Alert.alert("您需要阅读并同意用户须知。")
+      return;
     }
     if (checked1){
       type = "Medicare"
@@ -108,9 +135,96 @@ export default function TelePay({navigation,route}) {
       type = "None"
     }
     console.log(doctype);
-
+    update()
     navigation.navigate("teleConfirm",{orgId:orgId,mobile:candidate.mobile,Did:Did,id:id,teleFlg:teleFlg,content:content,scheduleId:scheduleId,type:type,date:date,doctype:doctype,address:address,docName:docName,startTime:startTime,endTime:endTime,dob:dob,Date:moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,),serial:serial,number:number,first:candidate.firstName,last:candidate.lastName})
   }  
+  const update=()=>{
+    if(checked1){
+    let url = 'http://'
+    +user.url
+    +'/aicare-customer-api/customer/customer-info/save?customerInfoId='+user.customerUserInfoId;
+    fetch(url,{
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/json',
+      'sso-auth-token': user.token,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+    }, body: JSON.stringify({
+      firstName:first,
+      lastName:last,
+      gender:gender,
+      dob:dob,
+
+      mobile: telephone,
+      email: email,
+      
+      medicareCard:[
+        {id:id,
+        category: "Medicare",
+        firstName: first,
+        lastName: last,
+        gender: gender,
+        dateOfBirth: dob,
+        expireDate:expire,
+        number: number,
+        serialNumber: serial}
+      ]
+    })
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.code === 0) {
+        Alert.alert("信息保存成功")
+        console.log(json.msg)
+
+      } else {
+        console.log(json.msg)
+        Alert.alert(json.msg);
+      }
+    }).catch(error => console.warn(error));
+  }else{
+    let url = 'http://'
+    +user.url
+    +'/aicare-customer-api/customer/customer-info/save?customerInfoId='+user.customerUserInfoId;
+    fetch(url,{
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/json',
+      'sso-auth-token': user.token,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+    }, body: JSON.stringify({
+      firstName:first,
+      lastName:last,
+      mobile: telephone,
+      email: email,
+    })
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.code === 0) {
+        Alert.alert("信息保存成功")
+        console.log(json.msg)
+
+      } else {
+        console.log(json.msg)
+        Alert.alert(json.msg);
+      }
+    }).catch(error => console.warn(error));
+  }
+  }
+
   const sendRequest=()=>{
     console.log(content);
     //console.log(date)
@@ -151,15 +265,6 @@ export default function TelePay({navigation,route}) {
             .then((json) => {
               if (json.code == 0) {
                 if(json.verification.status.medicare.code===0){
-
-                //console.log(json.page);
-                /*if (json.page.length>0){
-                  console.log(json.page[0]);
-                }else{
-                  //console.log(this.context.orgId)
-                  console.log("this page has no schedule")
-                }*/
-                //Alert.alert('查询成功');
                 Alert.alert('医保卡验证成功');
                 gotoSuccess();
               } else {
@@ -171,6 +276,7 @@ export default function TelePay({navigation,route}) {
               }
             }).catch(error => console.warn(error));
   }
+
   const orders = members.length>0?members.map((item,index)=>{
     return(
         <TouchableOpacity style={{width:150,height:50,borderRadius:30,borderWidth:1,alignItems:"center",paddingTop:10,marginBottom:10}}
@@ -227,26 +333,7 @@ export default function TelePay({navigation,route}) {
             }}
           />
     </View>
-    <View style={{marginTop:-5}}></View>
-
-    {/*<View style ={styles.comment_container}>
-      <Text style={{fontSize:16,marginLeft:32}}>Bupa/Medibank/OSHC/其他</Text>
-      <CheckBox
-            checked={checked2 }
-            checkedColor='#FF8570'
-            uncheckedIcon='circle-thin'
-            checkedIcon='check-circle'
-            size={33}
-            containerStyle={{marginTop:-14,marginLeft:0}}
-            onPress={() => {
-            setChecked1(false);
-            setChecked2(!checked2);
-            setChecked3(false);
-            }}
-          />
-    </View>*/}
-    <View style={{marginTop:-15}}></View>
-
+    <View style={{marginTop:-20}}></View>
     <View style ={styles.comment_container}>
       <Text style={{fontSize:16,marginLeft:-10}}>我没有Medicare卡</Text>
       <CheckBox
@@ -297,7 +384,7 @@ export default function TelePay({navigation,route}) {
     borderBottomWidth:1,}}
           
           onChangeText={(text)=>setLast(text)}
-          defaultValue={candidate?candidate.lastName:null}
+          defaultValue={last}
           placeholder="  持卡人姓(Last Name)"
         />
         </View>
@@ -311,7 +398,7 @@ export default function TelePay({navigation,route}) {
     borderBottomWidth:1,}}
           placeholder="持卡人名(First Name)"
           onChangeText={(text)=>setFirst(text)}
-          defaultValue={candidate?candidate.firstName:null}
+          defaultValue={first}
 
       />
       </View>
@@ -349,7 +436,7 @@ export default function TelePay({navigation,route}) {
     marginLeft:30,
     alignItems: 'center',
     borderRadius:25,}} onPress={()=>setVisible(true)}>
-      <Text style={{fontSize:12}}>{candidate&&candidate.dob?candidate.dob:moment(dob).tz(Localization.timezone).format('L')}</Text>
+      <Text style={{fontSize:12}}>{moment(dob).tz(Localization.timezone).format('L')}</Text>
     </TouchableOpacity>
         </View>
         <View style={{flexDirection:"row",marginTop:10}}>
@@ -362,10 +449,10 @@ export default function TelePay({navigation,route}) {
   hasPadding
   style={{width:200,marginLeft:30}}
   height={35}
-  defaultValue={candidate?candidate.gender:null}//?
+  defaultValue={gender}//?
   options={[
-    { label: "女性", value: "female",  }, //images.feminino = require('./path_to/assets/img/feminino.png')
-    { label: "男性", value: "male", } //images.masculino = require('./path_to/assets/img/masculino.png')
+    { label: "女性", value: "F",  }, 
+    { label: "男性", value: "M", } 
   ]}
   testID="gender-switch-selector"
   accessibilityLabel="gender-switch-selector"
@@ -383,7 +470,7 @@ export default function TelePay({navigation,route}) {
         maxLength={10} 
           placeholder="卡号(Card Number)"
           onChangeText={(text)=>setNumber(text)}
-          defaultValue={candidate&&candidate.medicareCard?candidate.medicareCard[0].number:null}
+          defaultValue={number}
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
@@ -397,7 +484,7 @@ export default function TelePay({navigation,route}) {
     maxLength={5} 
           placeholder="序列号(Ref Number)"
           onChangeText={(text)=>setSerial(text)}
-          defaultValue={candidate&&candidate.medicareCard?candidate.medicareCard[0].serialNumber:null}
+          defaultValue={serial}
 
       />
       </View>
@@ -424,7 +511,7 @@ export default function TelePay({navigation,route}) {
     marginLeft:30,
     alignItems: 'center',
     borderRadius:25,}} onPress={()=>setExpVis(true)}>
-      <Text style={{fontSize:12}}>{candidate&&candidate.medicareCard&&candidate.medicareCard[0].expireDate?candidate.medicareCard[0].expireDate:moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)}</Text>
+      <Text style={{fontSize:12}}>{moment(exp).tz(Localization.timezone).format('L').slice(0,2)+"/"+moment(exp).tz(Localization.timezone).format('L').slice(6,)}</Text>
     </TouchableOpacity>
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
@@ -438,7 +525,7 @@ export default function TelePay({navigation,route}) {
     maxLength={10} 
           placeholder="手机号码(Mobile Number)"
           onChangeText={(text)=>setMobile(text)}
-        defaultValue={candidate?candidate.mobile:null}
+        defaultValue={mobile}
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
@@ -452,7 +539,7 @@ export default function TelePay({navigation,route}) {
     
           placeholder="手机号码(Mobile Number)"
           onChangeText={(text)=>setMobile(text)}
-        defaultValue={candidate?candidate.email:null}
+        defaultValue={email}
       />
       </View>
     <View style={{marginLeft:-80}}> 
@@ -565,30 +652,28 @@ export default function TelePay({navigation,route}) {
 
         </View>
         <View style={{flexDirection:"row",marginTop:30}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>持卡人姓:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>患者姓:</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
     marginLeft:5,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-    maxLength={10} 
           placeholder="患者姓名(Patient Name)"
-          defaultValue={candidate?candidate.lastName:null}          //onChangeText={(text)=>setMobile(text)}
+          defaultValue={last}          onChangeText={(text)=>setLast(text)}
 
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>持卡人名:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>患者名:</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
     marginLeft:5,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-    maxLength={10} 
           placeholder="患者姓名(Patient Name)"
-          defaultValue={candidate?candidate.firstName:null}          //onChangeText={(text)=>setMobile(text)}
+          defaultValue={first}          onChangeText={(text)=>setFirst(text)}
 
       />
       </View>
@@ -602,8 +687,8 @@ export default function TelePay({navigation,route}) {
     borderBottomWidth:1,}}
     maxLength={10} 
           placeholder="手机号码(Mobile Number)"
-          defaultValue={candidate?candidate.mobile:null}
-          //onChangeText={(text)=>setMobile(text)}
+          defaultValue={mobile}
+          onChangeText={(text)=>setMobile(text)}
 
       />
       </View>
@@ -615,13 +700,40 @@ export default function TelePay({navigation,route}) {
     marginLeft:5,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-    maxLength={10} 
           placeholder="手机号码(Mobile Number)"
-          defaultValue={candidate?candidate.email:null}
-          //onChangeText={(text)=>setMobile(text)}
+          defaultValue={email}
+          onChangeText={(text)=>setEmial(text)}
 
       />
       </View>
+      <View style={{marginTop:60}}></View>
+    <View style={{flexDirection:"row"}}>
+    <CheckBox
+            checked={checked4 }
+            checkedColor='#FF8570'
+            uncheckedIcon='square-o'
+            checkedIcon='check-square-o'
+            size={23}
+            containerStyle={{marginTop:-52,marginLeft:-25}}
+            onPress={() => {
+            setChecked4(!checked4);
+            }}
+          />
+    <Text style={{marginTop:-40,marginLeft:-20}}>我确认我有完整并正确的填写信息。</Text>
+    </View>
+    <View>
+    <Text style={{marginLeft:40,marginTop:-15}}>I certify that I have completed this form completely and accurately to the best of my knowledge.</Text>
+    <Text style={{marginLeft:40,marginTop:5}}>By proceeding I consent to the handling of my personal information as described in the </Text>
+    <TouchableOpacity onPress={()=>navigation.navigate("termofuse")}>
+    <Text style={{marginLeft:40,marginTop:5,color:"#8FD7D3"}}>Collection Notice,</Text>
+    </TouchableOpacity>
+    <Text style={{marginLeft:40,marginTop:5}}>and agree to the Aicare's</Text>
+    <TouchableOpacity onPress={()=>navigation.navigate('数据协议')}>
+    <Text style={{marginLeft:40,marginTop:5,color:"#8FD7D3"}}>Term of Use and Privacy Policy.</Text>
+    </TouchableOpacity>
+    
+
+    </View>
     <View style={{marginLeft:-80}}> 
     <View style={{marginTop:30}}></View>
 

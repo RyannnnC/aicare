@@ -293,7 +293,7 @@ elevation: 24,}}>
       {teleFlg==1?<Text style={{marginBottom:10}}>就诊地址: {address}</Text>:null}
       <Text style={{marginBottom:10}}>就诊方式: {teleFlg==2?"远程就诊":"实地会诊"}</Text>
       {teleFlg==2?<View>
-      <Text style={{marginBottom:10}}>远程方式: {method!=""?method==2?"FaceTime(苹果)":"Skype(安卓)":null}</Text>
+      <Text style={{marginBottom:10}}>远程方式: {method!=""?method==1?"FaceTime(苹果)":"Skype(安卓)":null}</Text>
       
       </View>:null}
       {loading?

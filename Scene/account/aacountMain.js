@@ -8,7 +8,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 
 const AccountMain = ({navigation}) => {
-  const [info,setInfo] = React.useState({});
+  const [first,setFirst] = React.useState("");
+  const [last,setLast] = React.useState("");
+  const [email,setEmail] = React.useState("");
+
+
   const goInfo= () => {
     if(checkToken()){
       Alert.alert(
@@ -56,35 +60,42 @@ const AccountMain = ({navigation}) => {
       console.log("Something went wrong", error);
     }
   }
-  /*useEffect(() => {
-    
-    let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
-            fetch(url,{
-              method: 'POST',
-              mode: 'cors',
-              credentials: 'include',
-              headers: {
-              'Accept':       'application/json',
-              'Content-Type': 'application/json',
-              'sso-auth-token': user.token,
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true,
-              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-            }})
-            .then((response) => response.json())
-            .then((json) => {
-              if(json.code==500){
-                console.log(json.msg);
-                Alert.alert('查询失败');
-              }else if (json.code==2 || json.code==0){
-                console.log(json.user_base_info);
-                setInfo(json.user_base_info);
-              }else{
-                console.log("got nothing")
-              }
-            }).catch(error => console.warn(error));
-    },[])*/
+  useEffect(() => {
+    console.log(user.customerUserInfoId)
+      let url = 'http://'
+      +user.url
+      +'/aicare-customer-api/customer/customer-info/query-medical-info?customerUserInfoId='+user.customerUserInfoId;
+      fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': user.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        },
+     
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        if (json.code === 0) {
+         
+          setFirst(json.medicalInfo.firstName)
+          setLast(json.medicalInfo.lastName)
+          setEmail(json.medicalInfo.email)
+          
+
+        } else {
+          console.log(json.msg)
+          Alert.alert(json.msg);
+        }
+      }).catch(error => console.warn(error));
+        },[])
 
   return (
     <DataContext.Consumer>
@@ -106,12 +117,12 @@ const AccountMain = ({navigation}) => {
             overflow: "hidden",
             borderWidth: 5,
             borderColor: "white",width:80,height:80}}
-          source = {require('../../images/chris.png')}
+          source = {require('../../images/emotion1.png')}
         />
         </View>
         <View style={{marginTop:50}}>
-        <Text style={{ fontSize:20, fontWeight: '600',marginLeft:20, }}>{"Zhuo Ding"}</Text>
-        <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{"chrisDing@aicare.ai"}</Text>
+        <Text style={{ fontSize:20, fontWeight: '600',marginLeft:20, }}>{first.length==0 &&last.length==0?"未填写":first+" "+ last}</Text>
+        <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{email.length==0?"未填写":email}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -132,7 +143,24 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress = {()=>navigation.navigate("cardInfo")} >
+      <TouchableOpacity style={styles.profileBar} onPress = {()=>{ if(checkToken()){
+      Alert.alert(
+        "登陆提醒",
+        "您还没登陆，如需使用此功能请移步注册登录",
+        [
+          {text:"取消",
+            onPress:()=>console.log("cancel redirect"),
+            style:"cancel"
+        },{
+          text:"注册登陆",
+          onPress:()=>{removeToken(); user.action.clearstate()}
+
+        }
+        
+      ]
+      )
+      return;
+    }navigation.navigate("cardInfo")}} >
         <Image
           style = {{width: 22,
             height: 22,
@@ -146,7 +174,24 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress = {()=>navigation.navigate("historyInfo")} >
+      <TouchableOpacity style={styles.profileBar} onPress = {()=>{ if(checkToken()){
+      Alert.alert(
+        "登陆提醒",
+        "您还没登陆，如需使用此功能请移步注册登录",
+        [
+          {text:"取消",
+            onPress:()=>console.log("cancel redirect"),
+            style:"cancel"
+        },{
+          text:"注册登陆",
+          onPress:()=>{removeToken(); user.action.clearstate()}
+
+        }
+        
+      ]
+      )
+      return;
+    }navigation.navigate("historyInfo")}}>
         <Image
           style = {{width: 22,
             height: 22,
@@ -160,7 +205,7 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  >
+      <TouchableOpacity style={styles.profileBar}  onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}>
         <Image
           style = {{width: 22,
             height: 22,
@@ -174,7 +219,7 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  >
+      <TouchableOpacity style={styles.profileBar} onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}  >
         <Image
           style = {{width: 22,
             height: 22,
@@ -188,7 +233,7 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  >
+      <TouchableOpacity style={styles.profileBar} onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")} >
         <Image
           style = {{width: 22,
             height: 22,
@@ -202,7 +247,7 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  >
+      <TouchableOpacity style={styles.profileBar}  onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}>
         <Image
           style = {{width: 22,
             height: 22,
@@ -216,7 +261,7 @@ const AccountMain = ({navigation}) => {
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  >
+      <TouchableOpacity style={styles.profileBar}  onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}>
         <Image
           style = {{width: 22,
             height: 22,

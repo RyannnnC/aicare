@@ -100,7 +100,7 @@ export default function Report({route,navigation}) {
     <TouchableOpacity onPress={()=>navigation.navigate("docInfo",{orgId:null,docId:doc.businessEmployerId,docType:"全科",address:"bankstown clinics",docName:"Dr ryan",queryId:doc.businessEmployerId})}>
     <View style={{ width:'90%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,zIndex: 1,marginLeft:10}}>
       
-          <Image style={{width:60,height:60,borderRadius:40,marginLeft:-200,}}
+          <Image style={{width:60,height:60,borderRadius:40,marginLeft:-200,marginTop:0}}
             source = {doc.businessEmployerImg?{uri:doc.businessEmployerImg}:require("../images/telehealth_icon/service_doctor_img5.png")}
           />
           </View>
@@ -111,32 +111,34 @@ export default function Report({route,navigation}) {
                 shadowOpacity: 0.150,
                 shadowRadius: 3.05,
 
-                elevation: 0,marginTop:-100,width:'90%',marginLeft:15,height:200,justifyContent: "center",alignItems: "center",marginBottom:18,borderRadius:30}}>
+                elevation: 0,marginTop:-60,width:'90%',marginLeft:15,height:200,justifyContent: "center",alignItems: "center",marginBottom:18,borderRadius:30}}>
           <Text style={{ fontSize:18, fontWeight: '600',marginTop:0 }}>{doc.businessEmployerName}</Text>
           <View style={{flexDirection: 'row',paddingBottom: 15, }}>
             
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginTop:5}}>{doc.orgName}</Text>
           </View>
           <View style={{borderColor:"#EEEEEE",borderTopWidth:1.5,marginTop:-10,width:280}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13,color:"#666666" }}>时间: {doc.dateOfDiagnosis} </Text>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666" }}>科目: {doc.serviceClass} </Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13 }}>时间: {doc.dateOfDiagnosis} </Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7 }}>科目: {doc.serviceClass} </Text>
           <View style={{flexDirection:"row"}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666"  }}>就诊方式: {user.consultWay[doc.type]} </Text>
-          <Text style={{ fontSize:12, fontWeight: '400',color:"#666666",marginTop:7, marginLeft:20 }}></Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7 }}>就诊方式: {user.consultWay[doc.type]} </Text>
+
           </View>
+          <Text style={{fontSize:12, fontWeight: '400',paddingTop:6 }}>Presciber号码：{doc.prescriberNumber?doc.prescriberNumber:"未填写"}</Text>
+          <Text style={{fontSize:12, fontWeight: '400',paddingTop:6 }}>医生电话：{doc.doctorMobile?doc.doctorMobile:"未填写"}</Text>
+
           </View>
         </View>
         </TouchableOpacity>
 
-        <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18}}>
-        <View style={{marginTop:-30, marginBottom:10}}>
+        <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18,borderTopWidth:0.7}}>
+        <View style={{marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>病人信息</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{"姓名："+doc.lastName+" "+doc.firstName}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{"性别："+doc.gender}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{"年龄："+doc.age}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{"出生日期："+doc.dob}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{"Medicare卡号：" +doc.medicare.number}</Text>
-
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>姓名：{doc.lastName?doc.lastName:"未填写姓"} {doc.firstName?doc.firstName:"未填写名"}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>性别：{doc.gender?doc.gender:"未填写"}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>年龄：{doc.age?doc.age:"未填写"}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>出生日期：{doc.dob?doc.dob:"未填写"}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>Medicare卡号：{doc.medicare?doc.medicare.number:"未填写"}</Text>
 
         </View>
         

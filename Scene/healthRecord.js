@@ -35,7 +35,7 @@ class HealthRecord extends Component {
     console.log("start");
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = "http://"+this.context.url+"/aicare-customer-api/customer/consultation/query-all-reports?customerUserInfoId=35";
+      let url = "http://"+this.context.url+"/aicare-customer-api/customer/consultation/query-all-reports?customerUserInfoId="+this.context.customerUserInfoId;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -181,7 +181,23 @@ class HealthRecord extends Component {
       </View>
     )} else {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center",backgroundColor:"white" }}>
+        <View style={{flexDirection:"row"}}>
+        <Text style={{
+        fontSize:16,
+        marginLeft:20,
+        marginTop:-245}}>电子病历</Text>
+        <TouchableOpacity onPress={() =>{
+            this.props.navigation.dispatch(StackActions.pop(1))}}>
+            <Image
+            style = {{width:30,
+                height:30,
+                marginTop:-250,
+                marginLeft:-221,}}
+            source={require('../images/icon/2/Arrow_left.png')}
+            />
+            </TouchableOpacity>
+            </View>
       <Image
         style = {styles.finishImg}
         source = {require('../images/complete_empty.png')}

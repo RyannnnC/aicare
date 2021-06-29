@@ -9,223 +9,116 @@ import RNPickerSelect from 'react-native-picker-select';
 import DataContext from "../../consumerContext";
 const HistoryInfo = ({navigation}) => {
     const user=useContext(DataContext)
-    const [base, setBase] = useState({
-        customerId:"",
-        name: "",
-        gender: "",
-        age: 0,
-        mobile: "",
-        address: "",
-        postCode: "",
-        state: "",
-        email: ""
-    },);
-    const [medi, setMedi] = useState({
-        category: "",
-        name: "",
-        expireDate: "",
-        number: "",
-        serialNumber: ""
-    });
+   
+    const update=()=>{
+      let url = 'http://'
+      +user.url
+      +'/aicare-customer-api/customer/customer-info/save?customerInfoId='+user.customerUserInfoId;
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': user.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }, body: JSON.stringify({
+        chronic:[{
+          id:medical.chronic.id,
+          chronic:history
+        }],
+        familyHistory:[{
+          id:medical.familyHistory.id,
+          relation:null,
+          disease:family
+        }],
+        allergen:[{
+          id:medical.allergy.id,
+          allergen:allergy
+        }],
+        medicineUsage:[{
+          id:medical.medicineUsage.id,
+          medicine:medicine
+        }]
+      })
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        if (json.code === 0) {
+          Alert.alert("信息保存成功")
+          console.log(json.msg)
+
+        } else {
+          console.log(json.msg)
+          Alert.alert(json.msg);
+        }
+      }).catch(error => console.warn(error));
+    }
+    useEffect(() => {
+      console.log(user.customerUserInfoId)
+        let url = 'http://'
+        +user.url
+        +'/aicare-customer-api/customer/customer-info/query-medical-info?customerUserInfoId='+user.customerUserInfoId;
+        fetch(url,{
+          method: 'GET',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+          'sso-auth-token': user.token,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+          },
+       
+        })
+        .then((response) => response.json())
+        .then((json) => {
+          //this.setState({loading:false})
+          if (json.code === 0) {
+            console.log(json.medicalInfo.allergen);
+            setMedical(json.medicalInfo);
+            if (json.medicalInfo.chronic&&json.medicalInfo.chronic[0]){
+              
+            setHistory(json.medicalInfo.chronic[0].chronic)
+            
+            
+            }
+            if(json.medicalInfo.familyHistory&&json.medicalInfo.familyHistory[0]){
+            setFamily(json.medicalInfo.familyHistory[0].disease)}
+            if(json.medicalInfo.allergen&&json.medicalInfo.allergen[0]){
+            setAllergy(json.medicalInfo.allergen[0].allergen)}
+            if(json.medicalInfo.medicineUsage&&json.medicalInfo.medicineUsage[0]){
+
+            setMedicine(json.medicalInfo.medicineUsage[0].medicine)
+            }
+  
+          } else {
+            console.log(json.msg)
+            Alert.alert(json.msg)
+          }
+        }).catch(error => console.warn(error));
+          },[])
 
     const goBack= () => {
     navigation.dispatch(StackActions.pop(1))
-    console.log(telephone);
-    console.log(postcode);
+
         
-    /*let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/save'
-    
-    fetch(url,{
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': user.token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      },
-      body: JSON.stringify({
-        name: name,
-        gender:gender,
-        age:age,
-        mobile:telephone,
-        address:address,
-        postCode:postcode,   
-        state:state,    
-        email:email,
-      })
-      })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.code === 0) {
-          //alert("提交成功");
-          console.log(json.msg);
-        } else {
-          //console.log(json.msg)
-          console.log(base);
-          alert('个人信息提交失败');
-        }
-      });
-      if(selectedType=="Medicare"){
-        let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/medical-card'
-    
-    fetch(url,{
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': user.token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      },
-      body: JSON.stringify({
-        category:selectedType,
-        name:cardName?cardName:"",
-        expireDate:expire?expire:"",
-        number:cardNumber?cardNumber:"",
-        serialNumber:serial?serial:"",
-      })
-      })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.code === 0) {
-          //alert("医疗信息提交成功");
-          console.log(json.msg);
-        } else {
-          alert('医疗信息提交失败');
-        }
-      });
-      }else if(selectedType=="私人保险"){
-        let url = 'http://'+user.url+'/aicare-customer-api/customer/customer-info/medical-card'
-    
-    fetch(url,{
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': user.token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      },
-      body: JSON.stringify({
-        category:"私人保险",
-        name:cardName,
-        number:cardNumber,
-      })
-      })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.code === 0) {
-          //alert("医疗信息提交成功");
-          console.log(json.msg);
-        } else {
-          console.log(json.msg)
-          alert('医疗信息提交失败');
-        }
-      });
-      }   */
     }
-    /*useEffect(() => {
-    
-        let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
-                fetch(url,{
-                  method: 'POST',
-                  mode: 'cors',
-                  credentials: 'include',
-                  headers: {
-                  'Accept':       'application/json',
-                  'Content-Type': 'application/json',
-                  'sso-auth-token': user.token,
-                  'Access-Control-Allow-Origin': '*',
-                  'Access-Control-Allow-Credentials': true,
-                  'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-                  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-                }})
-                .then((response) => response.json())
-                .then((json) => {
-                  if (json.code == 0) {
-                    //console.log(json);
-
-                    setBase(json.user_base_info);
-                    setMedi(json.user_health_card);
-                    setName(json.user_base_info.name);
-                    setGender(json.user_base_info.name.gender);
-                    setAge(json.user_base_info.age);
-                    setTelephone(json.user_base_info.telephone);
-                    setAddress(json.user_base_info.address);
-                    setPostcode(json.user_base_info.postCode);
-                    setState(json.user_base_info.state);
-                    setEmail(json.user_base_info.email);
-
-                    setcardName(json.user_health_card.name);
-                    setExpire(json.user_health_card.expireDate);
-                    setSerial(json.user_health_card.serialNumber);
-                    setCardNumber(json.user_health_card.number);
-                    setSelectedType(json.user_health_card.category);
-                    //console.log("schedule");
-                    //console.log(timeSection);
-                    //console.log(json.code);
-                    //Alert.alert('查询成功');
-                  } else if(json.code==1){
-                      console.log("基本信息未录入")
-                      setMedi(json.user_health_card);
-                      setcardName(json.user_health_card.name);
-                    setExpire(json.user_health_card.expireDate);
-                    setSerial(json.user_health_card.serialNumber);
-                    setCardNumber(json.user_health_card.number);
-                    setSelectedType(json.user_health_card.category);
-                  }else if(json.code==2){
-
-                      console.log("医保信息未录入")
-                      setBase(json.user_base_info);
-                      setBase(json.user_base_info);
-                      setMedi(json.user_health_card);
-                      setName(json.user_base_info.name);
-                      setGender(json.user_base_info.name.gender);
-                      setAge(json.user_base_info.age);
-                      setTelephone(json.user_base_info.telephone);
-                      setAddress(json.user_base_info.address);
-                      setPostcode(json.user_base_info.postCode);
-                      setState(json.user_base_info.state);
-                      setEmail(json.user_base_info.email);
-                  }else if(json.code == 3){
-
-                      console.log("you got nothing")
-                  }else{
-                    console.log(json.msg);
-                    Alert.alert('查询失败');
-                  }
-                }).catch(error => console.warn(error));
-        },[])*/
         
-    const goEmail= () => {
-        navigation.navigate("changeEmail")
-    }
-    const [selectedType, setSelectedType] = React.useState("None");
-    const [name, setName] = React.useState("");
-    const [gender, setGender] = React.useState("");
-    const [age, setAge] = React.useState("");
-    const [telephone, setTelephone] = React.useState("");
-    const [address, setAddress] = React.useState("");
-    const [postcode, setPostcode] = React.useState("");
-    const [state, setState] = React.useState("");
-    const [cardName, setcardName] = React.useState("");
-    const [expire, setExpire] = React.useState("");
-    const [serial, setSerial] = React.useState("");
-    const [cardNumber, setCardNumber] = React.useState("");
-    const [email, setEmail] = React.useState("");
+    
+    const [history, setHistory] = React.useState("");
+    const [family, setFamily] = React.useState("");
+    const [allergy, setAllergy] = React.useState("");
+    const [medicine, setMedicine] = React.useState("");
+    const [medical,setMedical]=React.useState({})
 
 
     return (
@@ -260,19 +153,19 @@ const HistoryInfo = ({navigation}) => {
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>慢性病史： </Text>
-            <TextInput defaultValue="高血压，1类糖尿病"  placeholder="请输入您的医保卡号码" placeholderTextColor="grey" onChangeText={text => setName(text)}></TextInput>
+            <TextInput defaultValue={history}  placeholder="慢性病史" placeholderTextColor="grey" onChangeText={text => setHistory(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>家庭病史： </Text>
-            <TextInput placeholder="高血压" defaultValue="高血压，心脏病"  placeholderTextColor="grey" onChangeText={text => setGender(text)}></TextInput>
+            <TextInput defaultValue={family}  placeholder="家族病史" placeholderTextColor="grey" onChangeText={text => setFamily(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>过敏史： </Text>
-            <TextInput placeholder="青霉素"  defaultValue="酒精过敏" placeholderTextColor="grey" onChangeText={text => setAge(text)}></TextInput>
+            <TextInput defaultValue={allergy} placeholder="过敏史" placeholderTextColor="grey" onChangeText={text => setAllergy(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>用药历史： </Text>
-            <TextInput placeholder="请输入您的生日"  defaultValue="阿司匹林" placeholderTextColor="grey" onChangeText={text => setAge(text)}></TextInput>
+            <TextInput  defaultValue={medicine} placeholder="用药历史" placeholderTextColor="grey" onChangeText={text => setMedicine(text)}></TextInput>
         </View>
         
        
@@ -376,7 +269,7 @@ const HistoryInfo = ({navigation}) => {
     </View>: null}*/}
     
         <View style={{marginLeft:-75,marginTop:20}}>
-        <TouchableOpacity style={styles.next_wrapper} onPress ={goBack}>
+        <TouchableOpacity style={styles.next_wrapper} onPress ={update}>
             <Text style={styles.onsite_text}>确认</Text>
         </TouchableOpacity>
         </View>

@@ -396,7 +396,25 @@ export default function ProviderMain({navigation}) {
           }
         }).catch(error => console.warn(error));
       }*/
-    const getDate=(date)=>{
+      const getToken =async() => {
+        console.log("getting")
+        try {
+          let userData = await AsyncStorage.getItem("token");
+          
+          console.log(userData);
+          //let id = await AsyncStorage.getItem("id");
+          /*if(id) {
+            this.setState({employerId:JSON.parse(id)});
+            console.log("Get id success");
+          }*/
+          if(userData){
+            console.log(userData);
+          }
+        } catch (error) {
+          console.log("Something went wrong", error);
+        }
+      }
+  const getDate=(date)=>{
     var date=new Date(Date.parse(date));
     date.setDate(date.getDate() + 1)
     var today = new Date();
@@ -435,7 +453,7 @@ export default function ProviderMain({navigation}) {
             {/*<Text>您今日有{len}项订单</Text>*/}
             <Text style={{fontSize:12,marginTop:5}}>使用AI助手来测试今日心情吧。</Text>
           </View>
-          <TouchableOpacity onPress={()=>navigation.navigate("aiTest")}>
+          <TouchableOpacity onPress={()=>Alert.alert("该功能目前正在升级，敬请期待！")}>
           <Image
             style = {{height:70,width:70,marginTop:-10}}
             source = {require('../images/Group.png')}
@@ -480,20 +498,76 @@ export default function ProviderMain({navigation}) {
       </View>
       <View style={styles.buttons}>
         
-      <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{console.log(user.customerUserInfoId);navigation.navigate("资料收集");}}>
+      <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{
+         if(checkToken()){
+          Alert.alert(
+            "登陆提醒",
+            "您还没登陆，如需使用此功能请移步注册登录",
+            [
+              {text:"取消",
+                onPress:()=>console.log("cancel redirect"),
+                style:"cancel"
+            },{
+              text:"注册登陆",
+              onPress:()=>removeToken()
+  
+            }
+            
+          ]
+          )
+          return;
+        }
+        console.log(user.customerUserInfoId);navigation.navigate("资料收集");}}>
           <Image
           style = {{width:110,height:110}}
           source = {require('../images/now.png')}
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{navigation.navigate("healthRecord");}}>
+        <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{
+           if(checkToken()){
+            Alert.alert(
+              "登陆提醒",
+              "您还没登陆，如需使用此功能请移步注册登录",
+              [
+                {text:"取消",
+                  onPress:()=>console.log("cancel redirect"),
+                  style:"cancel"
+              },{
+                text:"注册登陆",
+                onPress:()=>removeToken()
+    
+              }
+              
+            ]
+            )
+            return;
+          }
+          navigation.navigate("healthRecord");}}>
           <Image
           style = {{width:110,height:110}}
           source = {require('../images/record.png')}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{Alert.alert("电子处方将为您记录处方药信息。")}}>
+        <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{
+            if(checkToken()){
+              Alert.alert(
+                "登陆提醒",
+                "您还没登陆，如需使用此功能请移步注册登录",
+                [
+                  {text:"取消",
+                    onPress:()=>console.log("cancel redirect"),
+                    style:"cancel"
+                },{
+                  text:"注册登陆",
+                  onPress:()=>removeToken()
+      
+                }
+                
+              ]
+              )
+              return;
+            }Alert.alert("电子处方将为您记录处方药信息。该模块正在升级，敬请期待。")}}>
           <Image
           style = {{width:110,height:110}}
           source = {require('../images/pres.png')}

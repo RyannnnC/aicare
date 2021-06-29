@@ -19,7 +19,7 @@ export default function DocInfo({route,navigation}) {
   
   const user=useContext(DataContext);
   //const [load,setLoad]=useState(false); 
-  const { orgId, docId,doctype,address,docName,queryId,Did } = route.params;
+  const { orgId, docId,doctype,address,docName,queryId,Did,online } = route.params;
   const timeSection = user.schedule;
   //const timeSection=[{id:10},{id:20},{id:30},{id:40},{id:50},{id:60}]
   const schduleId=3227;
@@ -126,7 +126,7 @@ export default function DocInfo({route,navigation}) {
     return (
       <View style={{flexDirection:'row'}}>
         <Text style={{ fontSize:14, fontWeight: '300' }}>{item.dayOfWeekStr}</Text>
-        <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300' }}>{item.startTime}-{item.endTime}</Text>
+        <Text style={{ marginLeft:5,fontSize:14, fontWeight: '300' }}>{item.startTime.slice(0,5)}-{item.endTime.slice(0,5)}</Text>
       </View>
     )
   }} ):null;
@@ -141,6 +141,10 @@ export default function DocInfo({route,navigation}) {
     marginTop: 15,
     paddingTop:10,paddingLeft:10}}
     onPress={()=>{
+      if(online){
+        goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,2)
+        return;
+      }
       if (doc.videoChannel.length!=0){
       Alert.alert(
       "就诊方式",
@@ -156,7 +160,7 @@ export default function DocInfo({route,navigation}) {
       ],
       { cancelable: false }
       )}else{
-        goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,0)
+        goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,1)
       }
       }}> 
     <Text style={{color:"white"}}>{item.item.startTime.slice(0,5)+" - "+item.item.endTime.slice(0,5)}</Text>

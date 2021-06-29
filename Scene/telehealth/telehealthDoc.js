@@ -122,7 +122,7 @@ class telehealthDoc extends Component {
           //console.log(this.props.route.params.orgId)
           console.log(this.props.route.params.doctype);
 
-          this.props.navigation.navigate("docInfo",{orgId:this.props.route.params.orgId,docId:item.employerId,queryId:item.employerId,doctype:this.props.route.params.doctype,address:this.props.route.params.address,docName:item.name})}}>
+          this.props.navigation.navigate("docInfo",{online:false,orgId:this.props.route.params.orgId,docId:item.employerId,queryId:item.employerId,doctype:this.props.route.params.doctype,address:this.props.route.params.address,docName:item.name})}}>
           <View style={{flexDirection: 'row', marginTop:5,  marginLeft:25}}>
          
             <Image

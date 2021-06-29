@@ -140,7 +140,7 @@ class App extends React.Component {
       orgId:0,
       docId:0,
       schedule:[],
-      consultWay:["实地就诊","远程医疗"],
+      consultWay:["就诊方式","实地就诊","远程医疗"],
       deptType:["推荐医生","全科","牙科","心理","中医","儿科","康复","疫苗"],
       lan:["语言","普通话","英语","粤语"],
       version:1.27,
@@ -227,6 +227,8 @@ class App extends React.Component {
   async getToken() {
     try {
       let userData = await AsyncStorage.getItem("token");
+      let userId = JSON.parse(await AsyncStorage.getItem("infoId"));
+
       //let id = await AsyncStorage.getItem("id");
       /*if(id) {
         this.setState({employerId:JSON.parse(id)});
@@ -234,6 +236,8 @@ class App extends React.Component {
       }*/
       if(userData){
         this.setState({token:userData})
+        this.setState({customerUserInfoId:userId})
+
         console.log("Get token success");
       }
     } catch (error) {

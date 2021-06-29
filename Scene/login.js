@@ -29,15 +29,37 @@ export default class Login extends Component {
     }
   }
   
-  storeToken = async (token) => {
+  storeToken = async (token,id) => {
     try {
        await AsyncStorage.setItem("token", token);
+       await AsyncStorage.setItem("infoId", JSON.stringify(id));
        console.log("Store token success");
     } catch (error) {
       console.log("Something went wrong", error);
     }
   }
+  async getToken() {
+    console.log("getting")
+    try {
+      let userData = await AsyncStorage.getItem("token");
+      
+      console.log(userData);
+      //let id = await AsyncStorage.getItem("id");
+      /*if(id) {
+        this.setState({employerId:JSON.parse(id)});
+        console.log("Get id success");
+      }*/
+      if(userData){
+        console.log(userData);
+      }
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+
   loginRequest() {
+    //console.log(this.context.token)
+    this.getToken()
     let s = this.state;
     let errors=[];
     if (s.name.length === 0) {
@@ -65,11 +87,12 @@ export default class Login extends Component {
           //this.storeToken(json.data);
           this.context.action.changetoken(json.data);
           this.context.action.changeInfoId(json.customerUserInfoId);
-          console.log(this.context.customerUserInfoId);
+          this.storeToken(json.data,json.customerUserInfoId);
+          //console.log(json.customerUserInfoId);
           
           //console.log(json.code)
         } else {
-          Alert.alert("Invalid username or password");  
+          Alert.alert("登良失败，请检查网络或联系客服，客服电话:0421326182.");  
           console.log(json.msg)
           //this.context.action.changeLogin(true);//need to remove this
         }

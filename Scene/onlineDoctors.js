@@ -73,7 +73,7 @@ class OnlineDoc extends Component {
       return (
         <View style={styles.card} key={item.employerId}>
           <TouchableOpacity onPress={() =>{
-            this.props.navigation.navigate("docInfo",{Did:this.props.route.params.Did,orgId:item.orgId,docId:item.businessUserId,docType:"全科",address:item.orgAddress,docName:item.employerName,queryId:item.employerId})}}>
+            this.props.navigation.navigate("docInfo",{online:true,Did:this.props.route.params.Did,orgId:item.orgId,docId:item.businessUserId,docType:"全科",address:item.orgAddress,docName:item.employerName,queryId:item.employerId})}}>
             <View style={{flexDirection: 'row', marginTop:5,  marginLeft:25}}>
 
             <Image

@@ -15,42 +15,7 @@ class OngoingingOrder extends Component {
         modalVisible:false,
         //secondsElapsed: 3600,
         id:0,
-        buttons: [
-          { backgroundColor: '#68B0AB', pressed: false,id:0},
-          { backgroundColor: '#68B0AB', pressed: false,id:1},
-          { backgroundColor: '#68B0AB', pressed: false,id:2},
-          { backgroundColor: '#68B0AB', pressed: false,id:3},
-          { backgroundColor: '#68B0AB', pressed: false,id:4},
-          { backgroundColor: '#68B0AB', pressed: false,id:5},
-          { backgroundColor: '#68B0AB', pressed: false,id:6},
-          { backgroundColor: '#68B0AB', pressed: false,id:7},
-          { backgroundColor: '#68B0AB', pressed: false,id:8},
-          { backgroundColor: '#68B0AB', pressed: false,id:9},
-        ],
-        buttons2: [
-          { backgroundColor: '#68B0AB', pressed: false,id:0},
-          { backgroundColor: '#68B0AB', pressed: false,id:1},
-          { backgroundColor: '#68B0AB', pressed: false,id:2},
-          { backgroundColor: '#68B0AB', pressed: false,id:3},
-          { backgroundColor: '#68B0AB', pressed: false,id:4},
-          { backgroundColor: '#68B0AB', pressed: false,id:5},
-          { backgroundColor: '#68B0AB', pressed: false,id:6},
-          { backgroundColor: '#68B0AB', pressed: false,id:7},
-          { backgroundColor: '#68B0AB', pressed: false,id:8},
-          { backgroundColor: '#68B0AB', pressed: false,id:9},
-        ],
-        buttons3: [
-          { backgroundColor: '#68B0AB', pressed: false,id:0},
-          { backgroundColor: '#68B0AB', pressed: false,id:1},
-          { backgroundColor: '#68B0AB', pressed: false,id:2},
-          { backgroundColor: '#68B0AB', pressed: false,id:3},
-          { backgroundColor: '#68B0AB', pressed: false,id:4},
-          { backgroundColor: '#68B0AB', pressed: false,id:5},
-          { backgroundColor: '#68B0AB', pressed: false,id:6},
-          { backgroundColor: '#68B0AB', pressed: false,id:7},
-          { backgroundColor: '#68B0AB', pressed: false,id:8},
-          { backgroundColor: '#68B0AB', pressed: false,id:9},
-        ],
+        
         query:[]
       };
       
@@ -137,7 +102,7 @@ class OngoingingOrder extends Component {
       () => {
         this.getAITraining();
       },
-      1000);
+      10000);
   }
 
   componentWillUnmount() {
@@ -182,13 +147,9 @@ class OngoingingOrder extends Component {
                 //this.setState({query:json.page})
                 console.log(json.page[0])
                 this.setState({query: json.page });
-                //console.log(json.img)
-                //Alert.alert('查询成功');
-                //console.log(json.page[0].telehealthFlg)
+                
               } else {
-                //console.log(json.msg);
-                //console.log(json.code);
-                //Alert.alert('查询失败');
+                
               }
             }).catch(error => console.warn(error));
     
@@ -242,35 +203,7 @@ class OngoingingOrder extends Component {
             .then((json) => {
               if (json.code == 0) {
                 console.log("ok");
-                /*let url = "http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=1";
-            fetch(url,{
-              method: 'GET',
-              mode: 'cors',
-              credentials: 'include',
-              headers: {
-              'Accept':       'application/json',
-              'Content-Type': 'application/json',
-              'sso-auth-token': this.context.token,
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true,
-              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-            }})
-            .then((response) => response.json())
-            .then((json) => {
-              if (json.code == 0) {
-                //console.log(json.page[0].appointDate);
-                //this.setState({query:json.page})
-                
-                this.setState({query: json.page });
-                Alert.alert('更新成功');
-              } else {
-                console.log(json.msg);
-                console.log(json.code);
-                Alert.alert('查询失败');
-              }
-            }).catch(error => console.warn(error));*/
-                //Alert.alert('查询成功');
+               
                 Alert.alert("订单已取消。")
               } else {
                 console.log(json.msg);
@@ -278,50 +211,14 @@ class OngoingingOrder extends Component {
               }
             }).catch(error => console.warn(error));
   }
-  /*getHours() {
-    return ("0" + Math.floor(this.state.secondsElapsed / 3600)).slice(-2);
-  }
-
-  getMinutes() {
-    return ("0" + Math.floor((this.state.secondsElapsed % 3600) / 60)).slice(
-      -2
-    );
-  }
-
-  getSeconds() {
-    return ("0" + (this.state.secondsElapsed % 60)).slice(-2);
-  }
-
-  startTime(index) {
-    let but = this.state.buttons;
-    but[index].pressed = true;
-    but[index].backgroundColor = '#FF7E67';
-    this.setState({buttons: but});
-    this.setState({secondsElapsed: but[index].timeSlot*3600});
-    this.countdown = setInterval(() => {
-      this.setState(({ secondsElapsed }) => ({
-        secondsElapsed: secondsElapsed - 1
-      }));
-    }, 1000);
-  }
-
-
-  pauseTime(index) {
-    let but = this.state.buttons;
-    clearInterval(this.countdown);
-    but[index].pressed = false;
-    but[index].backgroundColor = '#68B0AB';
-    this.setState({buttons: but});
-  }
-
-*/
+  
   presstime(time,date,end,s_id){
     date=new Date(Date.parse(date));
     date.setDate(date.getDate() + 1)
     date=date.toLocaleDateString();    
     Alert.alert(
       "提醒",
-      "确定要更改时间到"/*.concat(" ")*/.concat(time.slice(0,5)).concat(" - ").concat(end.slice(0,5)).concat("吗？"),
+      "确定要更改时间到".concat(time.slice(0,5)).concat(" - ").concat(end.slice(0,5)).concat("吗？"),
       [
         {
           text: "取消",
@@ -385,9 +282,9 @@ class OngoingingOrder extends Component {
           <View>
             <View style={{flexDirection:"row"}}>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500',marginTop:5}}>{item.businessEmployerName}</Text>
-            <Image style={{marginTop:9,height:15,width:15,marginLeft:3}} source={item.telehealthFlg?require('../../images/telehealth_icon/order_icon_video.png'):require('../../images/telehealth_icon/service_icon_location.png')}></Image>
-            <Text style={{fontSize:12,color: '#666666',marginTop:8,marginLeft:3}}>{item.telehealthFlg==0?"实地问诊":"远程问诊 - "}</Text>
-            {item.telehealthFlg?<Text style={{fontSize:12,color: '#666666',marginTop:8}}>{item.videoChannel==1?"FaceTime":"Skype"}</Text>:null}
+            <Image style={{marginTop:9,height:15,width:15,marginLeft:3}} source={item.serviceType==2?require('../../images/telehealth_icon/order_icon_video.png'):require('../../images/telehealth_icon/service_icon_location.png')}></Image>
+            <Text style={{fontSize:12,color: '#666666',marginTop:8,marginLeft:3}}>{item.serviceType==1?"实地问诊":"远程问诊 - "}</Text>
+            {item.serviceType==2?<Text style={{fontSize:12,color: '#666666',marginTop:8}}>{item.videoChannel==1?"FaceTime":"Skype"}</Text>:null}
 
             </View>
             <Text style={{fontSize:12, color:'#333333', }}>{this.context.deptType[item.deptId]+" - "+item.orgName}</Text>

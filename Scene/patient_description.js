@@ -50,7 +50,7 @@ export default class Patient_description extends Component {
   };
   uploadComplain(){
     this.setState({loading:true});
-    Alert.alert("正在为您匹配医生，请稍等")
+    Alert.alert("正在为您寻找医生，请稍等")
 
 
     let data = new FormData();
@@ -95,9 +95,9 @@ export default class Patient_description extends Component {
       }).catch(error => console.warn(error));
   }
   async componentDidMount (){
-    this.setState({loading:true});
+    //this.setState({loading:true});
 
-    let url = 'http://'
+    /*let url = 'http://'
       +this.context.url
       +'/aicare-customer-api/customer/customer-info/all-users';
       await fetch(url,{
@@ -127,7 +127,7 @@ export default class Patient_description extends Component {
           console.log(json.msg)
           Alert.alert('人员列表获取失败');
         }
-      }).catch(error => console.warn(error));
+      }).catch(error => console.warn(error));*/
     
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     this.setState({ hasCameraPermission: status === "granted" });
@@ -227,7 +227,7 @@ export default class Patient_description extends Component {
       multiline={true}
       maxLength={85}
       style = {{
-        height:205,
+        height:105,
         
         width:300,
         borderWidth:1,
@@ -248,7 +248,7 @@ export default class Patient_description extends Component {
       <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0,width:300}}>
           
       
-      <Text style={{marginTop:35,marginLeft:10}}>请问患者是否有相关病症照片等附件？请在此上传以便医生进行判断。</Text>
+      <Text style={{marginTop:35,marginLeft:10}}>请问患者是否有相关病症照片等附件？请在此上传以便医生进行判断。(必填)</Text>
       </View>     
       {this.state.loading?<ActivityIndicator size="large" style={{marginTop:0}} color="#8FD7D3"></ActivityIndicator>:null}
       {this.state.image.length==0?null:
