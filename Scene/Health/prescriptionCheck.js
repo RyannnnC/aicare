@@ -26,6 +26,21 @@ export default class PrescriptionCheck extends Component {
       dmobile:'',
       pn:0,
       signature:null,
+      style:`.m-signature-pad {
+            font-size: 15px;
+            width: 300px;
+            height: 150px;
+            border: 1px solid #e8e8e8;
+            background-color: #fff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.08) inset;
+          }
+          .m-signature-pad--footer {
+            position: absolute;
+            left: 20px;
+            right: 10px;
+            bottom: 20px;
+            height: 40px;
+          }`
       }
     }
   componentDidMount(){
@@ -40,7 +55,8 @@ export default class PrescriptionCheck extends Component {
     console.log(signature);
     this.setState({signature:signature})
     const path = FileSystem.cacheDirectory + 'sign.png';
-    FileSystem.writeAsStringAsync(path, signature.replace('data:image/png;base64,', ''), {encoding: FileSystem.EncodingType.Base64}).then(res => {
+    FileSystem.writeAsStringAsync(path, signature.replace('data:image/png;base64,', ''), {encoding: FileSystem.EncodingType.Base64})
+    .then(res => {
       console.log(res);
       FileSystem.getInfoAsync(path, {size: true, md5: true}).then(file => {
         console.log(file);
@@ -313,7 +329,6 @@ export default class PrescriptionCheck extends Component {
             <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
-
         </View>
         <View style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('presInfo')}</Text>
@@ -329,15 +344,16 @@ export default class PrescriptionCheck extends Component {
             </View>
           }
         </ScrollView>
-        <View style={{width:'80%',height:200,alignItems: 'center',justifyContent: 'center',}}>
+        <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('esign')}</Text>
+        <View style={{width:'90%',height:250}}>
           <SignatureScreen
             onOK={this.handleSignature}
             onEmpty={this.handleEmpty}
             onClear={this.handleClear}
-            descriptionText='请输入'
+            descriptionText='Please Sign Above'
             clearText="Clear"
             confirmText="Save"
-            style={{width:'100%',height:'80%'}}
+            webStyle={this.state.style}
           />
         </View>
         <View  style={{ height:'10%', width:'80%',margin:'10%',justifyContent: "center", alignItems: "center"}}>

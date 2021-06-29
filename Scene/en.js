@@ -219,4 +219,5 @@ export default {
   cl:'Clinic',
   role:'Choose the Role',
   verify:'Verification',
+  esign:'Doctor Signature',
 }

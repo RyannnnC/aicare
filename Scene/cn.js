@@ -219,4 +219,5 @@ export default {
   cl:'诊所',
   role:'角色选择',
   verify:'验证',
+  esign:'医生签名',
 }

@@ -145,7 +145,6 @@ export default class Info extends Component {
   sendRequest() {
     let s = this.state;
     this.setState({isLoading:true})
-    console.log(this.state.times[0].time1)
     let url = 'http://'
     +this.context.url
     +'/aicare-business-api/business/orginfo/save';
@@ -182,55 +181,55 @@ export default class Info extends Component {
             }
         ],
         orgschedulevos:[
-            {
-                "dayOfWeek": 1,
-                "dayOfWeekStr": "星期一",
-                "startTime": this.state.times[0].time1,
-                "endTime": this.state.times[0].time2,
-                "status": this.state.buttons[0].pressed ? 1 : 0
-            },
-            {
-                "dayOfWeek": 2,
-                "dayOfWeekStr": "星期二",
-                "startTime": moment(this.state.times[1].time1).format(),
-                "endTime": moment(this.state.times[1].time2).format(),
-                "status": this.state.buttons[1].pressed ? 1 : 0
-            },
-            {
-                "dayOfWeek": 3,
-                "dayOfWeekStr": "星期三",
-                "startTime": moment(this.state.times[2].time1).format(),
-                "endTime": moment(this.state.times[2].time2).format(),
-                "status": this.state.buttons[2].pressed ? 1 : 0
-            },
-            {
-                "dayOfWeek": 4,
-                "dayOfWeekStr": "星期四",
-                "startTime": moment(this.state.times[3].time1).format(),
-                "endTime": moment(this.state.times[3].time2).format(),
-                "status": this.state.buttons[3].pressed ? 1 : 0
-            },
-            {
-                "dayOfWeek": 5,
-                "dayOfWeekStr": "星期五",
-                "startTime": moment(this.state.times[4].time1).format(),
-                "endTime": moment(this.state.times[4].time2).format(),
-                "status": this.state.buttons[4].pressed ? 1 : 0
-            },
-            {
-                "dayOfWeek": 6,
-                "dayOfWeekStr": "星期六",
-                "startTime": moment(this.state.times[5].time1).format(),
-                "endTime": moment(this.state.times[5].time2).format(),
-                "status": this.state.buttons[5].pressed ? 1 : 0
-            },
-            {
-                "dayOfWeek": 7,
-                "dayOfWeekStr": "星期天",
-                "startTime": moment(this.state.times[6].time1).format(),
-                "endTime": moment(this.state.times[6].time2).format(),
-                "status": this.state.buttons[6].pressed ? 1 : 0
-            },
+          {
+              "dayOfWeek": 1,
+              "dayOfWeekStr": "星期一",
+              "startTime": moment(this.state.times[0].time1).format('HH:mm:ss'),
+              "endTime": moment(this.state.times[0].time2).format('HH:mm:ss'),
+              "status": this.state.buttons[0].pressed ? 1 : 0
+          },
+          {
+              "dayOfWeek": 2,
+              "dayOfWeekStr": "星期二",
+              "startTime": moment(this.state.times[1].time1).format('HH:mm:ss'),
+              "endTime": moment(this.state.times[1].time2).format('HH:mm:ss'),
+              "status": this.state.buttons[1].pressed ? 1 : 0
+          },
+          {
+              "dayOfWeek": 3,
+              "dayOfWeekStr": "星期三",
+              "startTime": moment(this.state.times[2].time1).format('HH:mm:ss'),
+              "endTime": moment(this.state.times[2].time2).format('HH:mm:ss'),
+              "status": this.state.buttons[2].pressed ? 1 : 0
+          },
+          {
+              "dayOfWeek": 4,
+              "dayOfWeekStr": "星期四",
+              "startTime": moment(this.state.times[3].time1).format('HH:mm:ss'),
+              "endTime": moment(this.state.times[3].time2).format('HH:mm:ss'),
+              "status": this.state.buttons[3].pressed ? 1 : 0
+          },
+          {
+              "dayOfWeek": 5,
+              "dayOfWeekStr": "星期五",
+              "startTime": moment(this.state.times[4].time1).format('HH:mm:ss'),
+              "endTime": moment(this.state.times[4].time2).format('HH:mm:ss'),
+              "status": this.state.buttons[4].pressed ? 1 : 0
+          },
+          {
+              "dayOfWeek": 6,
+              "dayOfWeekStr": "星期六",
+              "startTime": moment(this.state.times[5].time1).format('HH:mm:ss'),
+              "endTime": moment(this.state.times[5].time2).format('HH:mm:ss'),
+              "status": this.state.buttons[5].pressed ? 1 : 0
+          },
+          {
+              "dayOfWeek": 7,
+              "dayOfWeekStr": "星期天",
+              "startTime": moment(this.state.times[6].time1).format('HH:mm:ss'),
+              "endTime": moment(this.state.times[6].time2).format('HH:mm:ss'),
+              "status": this.state.buttons[6].pressed ? 1 : 0
+          },
         ]
       })
       })
@@ -356,10 +355,11 @@ export default class Info extends Component {
     )
     }else {
     return (
-    <SafeAreaView style={{ flex:1, justifyContent: "center", alignItems: "center" ,backgroundColor:"white"}}>
-      <ScrollView style={{ flex: 1}}>
-        <View style={{flex:1,width:'90%'}}>
-        <View style={{ marginTop:10,justifyContent: "center",alignItems: "center" }}>
+      <SafeAreaView style={{ flex:1, width:'100%',justifyContent: "center", alignItems: "center" ,backgroundColor:"rgb(51,51,51)"}}>
+        <ScrollView style={{ flex: 1,width:'90%',backgroundColor:"white"  }}
+        contentContainerStyle={{alignItems: "center"}}>
+          <View style={{flex:1,width:'90%',backgroundColor:"white"}}>
+          <View style={{ marginTop:10,marginBottom:20,justifyContent: "center",alignItems: "center" }}>
           <TouchableOpacity onPress={() => {this.startAlert()}}>
           {this.state.image ?
           <Image style={{width:80,height:80,borderRadius:40}}
@@ -375,44 +375,57 @@ export default class Info extends Component {
             />}
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row',marginTop:20}}>
-          <Image
-            style = {styles.smallIconImg}
-            source={require('../../images/providerImg/singup_icon_name.png')}
-            />
-            <Text style={{ fontSize:18, fontWeight: '500' , marginRight: 20}}>{I18n.t('basicInformation')}</Text>
+
+        <View style={{flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start",borderBottomWidth:1,borderBottomColor:'rgb(32,191,195)'}}>
+             <Text style={{ fontSize:22, fontWeight: '600' ,color: 'rgb(32,191,195)'}}>{I18n.t('basicInformation')}</Text>
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('name')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "Kingsford Clinic"
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('name')}</Text>
+          <TextInput style={{width: '80%',
+          fontSize:18,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE',}} placeholder= "Kingsford Clinic"
           value={this.context.name}
           onChangeText={(text) => {this.context.action.changename(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('mobile')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "0403571833"
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('mobile')}</Text>
+          <TextInput style={{width: '80%',
+          fontSize:18,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE',}} placeholder= "0403571833"
           value={this.context.phone}
           keyboardType="numeric"
           onChangeText={(text) => {this.context.action.changephone(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('email')}</Text>
-          <TextInput style={styles.resumeInput} placeholder= "********@gmail.com"
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('email')}</Text>
+          <TextInput style={{width: '80%',
+          fontSize:18,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE',}} placeholder= "********@gmail.com"
           value={this.context.email}
           onChangeText={(text) => {this.context.action.changeemail(text)}}/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('address')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('address')}</Text>
           <TextInput
-          style={styles.resumeInput}
+          style={{width: '80%',
+          fontSize:18,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE',}}
           placeholder= "1001/1 Mooltan Avanue"
           value = {this.context.street}
           onChangeText={(text) => {this.context.action.changestreet(text)}}
           />
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('postcode')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('postcode')}</Text>
           <TextInput
             style={styles.resumeInput1}
             placeholder= "2113"
@@ -428,22 +441,18 @@ export default class Info extends Component {
             placeholder= "NSW"/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('introduction')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('introduction')}</Text>
           <Text numberOfLines={1} style={{ fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.intro}</Text>
           <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate(I18n.t('introduction'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
-        <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Image
-            style = {styles.smallIconImg}
-            source={require('../../images/providerImg/account_icon_profile_normal.png')}
-            />
-            <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('serviceInformation')}</Text>
+        <View style={{marginTop:20,flexDirection: 'row',justifyContent: "flex-start", alignItems: "flex-start",borderBottomWidth:1,borderBottomColor:'rgb(32,191,195)'}}>
+           <Text style={{ fontSize:22, fontWeight: '600' ,color: 'rgb(32,191,195)'}}>{I18n.t('serviceInformation')}</Text>
         </View>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('supLanguage')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('supLanguage')}</Text>
         </View>
 
         <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
@@ -1015,7 +1024,7 @@ export default class Info extends Component {
               />
           </View>
             <View style={{marginTop:10, marginBottom:10}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceClass')}</Text>
+              <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('serviceClass')}</Text>
             </View>
             <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10,flexWrap:'wrap'}}>
             {this.context.serviceclass.length>0 ? service:
@@ -1026,7 +1035,7 @@ export default class Info extends Component {
             </View>
 
             <View style={{ marginTop:10, marginBottom:10}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('serviceType')}</Text>
+              <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('serviceType')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox
@@ -1064,7 +1073,7 @@ export default class Info extends Component {
                />
             </View>
             <View>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('chargingMethod')}</Text>
+              <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('chargingMethod')}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <CheckBox

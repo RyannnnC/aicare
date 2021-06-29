@@ -19,8 +19,8 @@ export default class Mintro extends Component {
       <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('details')}</Text>
       </View>
 
-      <View style={{width:'75%', height:'40%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
-        <TextInput style={{width:275,height:60,margin:'3%'}}
+      <View style={{width:'75%', height:'40%',borderWidth:1,padding:'3%', borderColor:'#bbbbbb',borderRadius:11}}>
+        <TextInput style={{width:'100%',height:'100%'}}
           placeholder={this.context.mintro}
           value={this.context.mintro}
           onChangeText={(text) => {this.context.action.changemintro(text)}}

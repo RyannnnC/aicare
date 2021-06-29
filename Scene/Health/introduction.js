@@ -19,9 +19,9 @@ export default class Introduction extends Component {
       <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('details')}</Text>
       </View>
 
-      <View style={{width:315, height:120,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
-        <TextInput style={{width:275,height:60,marginTop:15,marginLeft:20,marginRight:20}}
-          placeholder={this.context.intro}
+      <View style={{width:'75%', height:'40%',padding:'3%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
+        <TextInput style={{width:'100%',height:'100%'}}
+          placeholder={this.context.mintro}
           value={this.context.intro}
           onChangeText={(text) => {this.context.action.changeintro(text)}}
           multiline={true}
