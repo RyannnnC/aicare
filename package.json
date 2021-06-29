@@ -53,7 +53,8 @@
     "react-navigation-stack": "^2.10.4",
     "toggle-switch-react-native": "^2.3.0",
     "yarn": "^1.22.10",
-    "expo-file-system": "~9.3.0"
+    "expo-file-system": "~9.3.0",
+    "react-native-view-shot": "3.1.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
