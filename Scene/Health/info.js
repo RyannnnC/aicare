@@ -485,14 +485,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[0].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[0].time1).format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[0].time1,'HH:mm:ss').format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[0].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[0].time2).format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[0].time2,'HH:mm:ss').format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -565,14 +565,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[1].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[1].time1).format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[1].time1,'HH:mm:ss').format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[1].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[1].time2).format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[1].time2,'HH:mm:ss').format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -645,14 +645,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[2].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[2].time1).format('HH:mm')}</Text>
+              <Text>{moment(this.state.times[2].time1,'HH:mm:ss').format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[2].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[2].time2).format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[2].time2,'HH:mm:ss').format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -725,14 +725,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[3].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[3].time1).format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[3].time1,'HH:mm:ss').format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[3].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[3].time2).format('HH:mm')}</Text>
+                <Text>{moment(this.state.times[3].time2,'HH:mm:ss').format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
@@ -805,14 +805,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[4].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[4].time1).format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[4].time1,'HH:mm:ss').format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[4].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[4].time2).format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[4].time2,'HH:mm:ss').format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -885,14 +885,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[5].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[5].time1).format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[5].time1,'HH:mm:ss').format('HH:mm')} </Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[5].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[5].time2).format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[5].time2,'HH:mm:ss').format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }
@@ -965,14 +965,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[6].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[6].time1).format('HH:mm')}</Text>
+              <Text>{moment(this.state.times[6].time1,'HH:mm:ss').format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[6].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[6].time2).format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[6].time2,'HH:mm:ss').format('HH:mm')} </Text>
               </TouchableOpacity>
             </View>
           }

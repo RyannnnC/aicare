@@ -5,6 +5,7 @@ import I18n from '../switchLanguage';
 import moment from 'moment';
 import SignatureScreen from 'react-native-signature-canvas';
 import * as FileSystem from 'expo-file-system';
+import ViewShot from "react-native-view-shot";
 
 export default class PrescriptionCheck extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ export default class PrescriptionCheck extends Component {
       dname:'',
       dmobile:'',
       pn:0,
+      uri:null,
       signature:null,
       style:`.m-signature-pad {
             font-size: 15px;
@@ -42,6 +44,7 @@ export default class PrescriptionCheck extends Component {
             height: 40px;
           }`
       }
+      this.onCapture = this.onCapture.bind(this);
     }
   componentDidMount(){
     this.setState({
@@ -49,6 +52,13 @@ export default class PrescriptionCheck extends Component {
       medicine:this.props.route.params.medicine});
     this.queryPatient();
     this.queryDoctor();
+  }
+
+  onCapture () {
+    this.refs.viewShot.capture().then(uri =>{
+      console.log("do something with ", uri);
+      this.setState({uri:uri})
+    })
   }
 
   handleSignature = signature => {
@@ -298,7 +308,7 @@ export default class PrescriptionCheck extends Component {
       })}
     return (
     <SafeAreaView style={{ flex:1,height:'100%',width:'100%', justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}>
-      <View style={{height:'95%',width:'95%',flexDirection:'row',justifyContent: "center",backgroundColor:"white",borderRadius:5}}>
+      <ViewShot ref="viewShot" onCapture={this.onCapture} options={{ format: "jpg", quality: 0.9 }} style={{height:'95%',width:'95%',flexDirection:'row',justifyContent: "center",backgroundColor:"white",borderRadius:5}}>
         <ScrollView style={{height:'95%',width:'25%',borderRightWidth:1,margin:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('docInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.dname}</Text>
@@ -329,6 +339,11 @@ export default class PrescriptionCheck extends Component {
             <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
+          <Image
+            style={{width:'100%',height:100}}
+            resizeMode='stretch'
+            source={{uri:this.state.uri}}
+          />
         </View>
         <View style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('presInfo')}</Text>
@@ -344,7 +359,7 @@ export default class PrescriptionCheck extends Component {
             </View>
           }
         </ScrollView>
-        <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('esign')}</Text>
+        <Text style={{marginTop:20, fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('esign')}</Text>
         <View style={{width:'90%',height:250}}>
           <SignatureScreen
             onOK={this.handleSignature}
@@ -365,14 +380,13 @@ export default class PrescriptionCheck extends Component {
             backgroundColor: '#68B0AB',
             borderRadius: 20,
             alignItems: 'center',
-            justifyContent: "center",}} onPress={() => {
-              this.saveReport()
-            }}>
+            justifyContent: "center",}}
+            onPress={this.onCapture}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
           </TouchableOpacity>
         </View>
         </View>
-      </View>
+      </ViewShot>
 
     </SafeAreaView>
   );}}
