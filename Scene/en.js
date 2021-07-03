@@ -115,7 +115,7 @@ export default {
   addMember:'Add a New Member',
   myMember:'My Members',
   noMember:'Your clinic does not have a doctor yet, please add it above!',
-  take:'Take',
+  take:'Accept',
   modify:'Modify',
   patientName:'Patient Name:',
   patientMobile:'Patient Mobile',

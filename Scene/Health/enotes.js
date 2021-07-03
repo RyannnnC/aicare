@@ -3,16 +3,16 @@ import { KeyboardAvoidingView,Text,  View, Alert, Image,TouchableOpacity,ScrollV
 import { MaterialCommunityIcons,  FontAwesome} from '@expo/vector-icons';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
-//import Voice from '@react-native-community/voice';
+import Voice from '@react-native-voice/voice';
 import * as Permissions from "expo-permissions";
 import ImageView from 'react-native-image-view';
 
 export default class Enotes extends Component {
     constructor(props) {
       super(props);
-  //    Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
-  //    Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
-  //    Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
+      Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
+      Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
+      Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
       this.state={
       pressed:false,
       pressed1:false,
@@ -54,6 +54,31 @@ export default class Enotes extends Component {
     console.log('onSpeechEnd: ', e);
   };
 
+  async startRecognizing() {
+    //Starts listening for speech for a specific locale
+    try   {
+      await Voice.start('en-US');
+      this.setState({
+        complaint:[],
+        talk:true,
+      });
+    }   catch (e) {
+      //eslint-disable-next-line
+      console.error(e);
+    }
+  };
+  async stopRecognizing()  {
+    //Stops listening for speech
+    try {
+      await Voice.stop();
+      this.setState({
+        talk:false,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   async componentDidMount(){
       this.setState({id:this.props.route.params.id});
       const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
@@ -61,6 +86,10 @@ export default class Enotes extends Component {
       this.queryPatient();
   }
 
+  componentWillUnmount() {
+      Voice.destroy()
+      .then(Voice.removeAllListeners);
+  }
   queryPatient() {
     let url = 'http://'
     +this.context.url
@@ -112,32 +141,10 @@ export default class Enotes extends Component {
     .catch(error => console.warn(error));
   }
 
-  async startRecognizing() {
-    //Starts listening for speech for a specific locale
-    try   {
-      await Voice.start('en-US');
-      this.setState({
-        complaint:[],
-        talk:true,
-      });
-    }   catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
-    }
-  };
-  async stopRecognizing()  {
-    //Stops listening for speech
-    try {
-      await Voice.stop();
-      this.setState({
-        talk:false,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+
 
   render() {
+    console.log(this.state.image)
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -152,7 +159,7 @@ export default class Enotes extends Component {
         <Text style={{ fontSize:18, fontWeight: '500',marginTop:10, marginBottom:10}}>{I18n.t('statement')}</Text>
         <View style={{width:'100%',height:'15%',alignItems:'center',flexDirection:'row'}}>
           {this.state.image.map((item) => {
-            if (item.uri != null) {
+            if (item.source.uri != null) {
             return(
             <TouchableOpacity style={{height:'100%',width:'30%'}} onPress={() => {this.setState({visible:true})}}>
               <Image
@@ -176,12 +183,12 @@ export default class Enotes extends Component {
         <View style={{flexDirection: 'row', marginBottom:10,marginTop:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
           {this.state.talk ?
-          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.stopRecognizing()
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {this.stopRecognizing()
           }}>
             <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
           </TouchableOpacity>
           :
-          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.startRecognizing()
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {this.startRecognizing()
           }}>
             <FontAwesome name="microphone" size={24} color="black" />
           </TouchableOpacity>
@@ -239,9 +246,10 @@ export default class Enotes extends Component {
         imageIndex={0}
         isVisible={this.state.visible}
         onClose={()=>{this.setState({visible:false})}}
+        useNativeDriver={true}
       />
       <View style={{width:'30%',borderRadius:5,padding:'2%'}}>
-        <View style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
+        <ScrollView style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('name')}: {this.state.name}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
@@ -260,8 +268,8 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('allergy')}</Text>
           {this.state.allergy ?
             this.state.allergy.map((item)=>(
@@ -274,8 +282,8 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('mediHis')}</Text>
           {this.state.medicineUsage ?
             this.state.medicineUsage.map((item)=>(
@@ -288,8 +296,8 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('famHis')}</Text>
           {this.state.familyHistory?
             this.state.familyHistory.map((item)=>(
@@ -302,8 +310,8 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('chronic')}</Text>
           {this.state.chronic?
             this.state.chronic.map((item)=>(
@@ -316,7 +324,7 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
+        </ScrollView>
       </View>
     </KeyboardAvoidingView>
   );}}

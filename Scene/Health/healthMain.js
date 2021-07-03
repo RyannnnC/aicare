@@ -1,5 +1,5 @@
 import React ,{Component} from 'react';
-import { SafeAreaView,ScrollView,Text,View,Image,TouchableOpacity} from 'react-native';
+import { Platform,SafeAreaView,ScrollView,Text,View,Image,TouchableOpacity} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import {styles} from '../providerStyle';
 import DataContext from "../../providerContext";
@@ -21,7 +21,7 @@ export default class HealthMain extends Component {
   render () {
     return (
       <SafeAreaView style={{flex:1}}>
-        <View style={{width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)',alignItems:'center'}}>
+        <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)',alignItems:'center'}}>
         <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
           <Image
             style={{height:40,width:160,marginLeft:'5%'}}

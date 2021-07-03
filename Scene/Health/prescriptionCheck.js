@@ -6,6 +6,8 @@ import moment from 'moment';
 import SignatureScreen from 'react-native-signature-canvas';
 import * as FileSystem from 'expo-file-system';
 import ViewShot from "react-native-view-shot";
+import * as Print from 'expo-print';
+import {WebView } from 'react-native-webview';
 
 export default class PrescriptionCheck extends Component {
     constructor(props) {
@@ -19,7 +21,12 @@ export default class PrescriptionCheck extends Component {
       gender:'',
       dob:'',
       mobile:'',
-      medicareCard:[],
+      address:'',
+      date:moment(new Date()).format('ll'),
+      sn:new Date().getFullYear()*1000000 + (new Date().getMonth()+1)*10000+new Date().getDate()*100+Math.floor(Math.random() * 100),
+      category:null,
+      cardNumber:null,
+      pdfuri:null,
       language:[],
       userId:null,
       infoId:null,
@@ -28,9 +35,10 @@ export default class PrescriptionCheck extends Component {
       pn:0,
       uri:null,
       signature:null,
+      html:``,
       style:`.m-signature-pad {
             font-size: 15px;
-            width: 300px;
+            width: 280px;
             height: 150px;
             border: 1px solid #e8e8e8;
             background-color: #fff;
@@ -45,6 +53,7 @@ export default class PrescriptionCheck extends Component {
           }`
       }
       this.onCapture = this.onCapture.bind(this);
+      this.refs = React.createRef();
     }
   componentDidMount(){
     this.setState({
@@ -54,6 +63,138 @@ export default class PrescriptionCheck extends Component {
     this.queryDoctor();
   }
 
+   async renderHtml() {
+    let medicine=''
+    for(let i =0;i<this.state.medicine.length;i++){
+      medicine = medicine + '<tr>'
+      medicine = medicine + '<td>'
+      medicine = medicine + '<span style="font-size:16px">'
+      medicine = medicine + this.state.medicine[i].name
+      medicine = medicine + '</span><br><small>'
+      medicine = medicine + this.state.medicine[i].usage
+      medicine = medicine + '</small><br><small>'
+      if (this.state.medicine[i].isRepeat =='1') {
+        medicine = medicine + ' Quantity: '
+        medicine = medicine + this.state.medicine[i].times
+        medicine = medicine + ' Repeats'
+      }
+      medicine = medicine + '</small></td>'
+      medicine = medicine + '</tr>'
+    }
+    let html=`
+    <body style="margin-top:20px;
+  background:#eee;">
+  <div>
+     <div style="margin-top:20px;
+     background: #f0f3f4;">
+        <div style="background: #fff;
+        padding: 20px">
+           <div style="margin: 0 -20px;
+           background: #f0f3f4;
+           padding: 20px">
+              <div style="display: table-cell;
+              width: 1%;padding-right: 20px">
+             <address class="m-t-5 m-b-5">
+                <strong class="text-inverse">${this.state.dname}</strong><br>
+                ${this.state.address}<br>
+                Phone: ${this.state.dmobile}<br>
+                <br>
+                Prescribe Number: ${this.state.pn}
+             </address>
+          </div>
+          <div style="display: table-cell;
+            width: 1%;padding-right: 20px">
+               <address class="m-t-5 m-b-5">
+                  <strong style="font-size: 16px;
+                  font-weight: 600">${this.state.name}</strong><br>
+                Gender: ${this.state.gender}<br>
+                Phone: ${this.state.mobile}<br>
+                Medicare No: ${this.state.cardNumber}
+             </address>
+          </div>
+          <div style="display: table-cell;
+            width: 1%;text-align: right;
+            padding-left: 20px">
+               <small>Prescription</small>
+               <div>${this.state.date}</div>
+             <div class="invoice-detail">
+                #${this.state.sn}<br>
+             </div>
+          </div>
+       </div>
+       <div style="margin-bottom: 20px">
+            <div  style="margin-bottom: 20px">
+								 <table>
+	                   <thead style="border: 1px solid; font-size: 20px">
+                      <tr>
+                         <th>Medicine Detail</th>
+                      </tr>
+                   </thead>
+                   <tbody style="border: 1px solid #ccc; font-size: 16px">
+                      ${medicine}
+                   </tbody>
+                </table>
+          </div>
+       </div>
+       <div>
+        <img src=${this.state.signature} width="300" height="250"/>
+       </div>
+       <div style="border-top: 1px solid #ddd;
+         padding-top: 10px;
+         font-size: 10px">
+          <p class="text-center m-b-5 f-w-600">
+             THANK YOU FOR YOUR BUSINESS
+          </p>
+          <p class="text-center">
+             <span class="m-r-10"> https://www.aicare.ai/</span><br>
+             <span class="m-r-10"> Tel:(+61)421326182</span><br>
+             <span class="m-r-10"> chriding@aicare.ai</span>
+          </p>
+       </div>
+    </div>
+ </div>
+</div>
+    `
+    this.setState({html:html})
+    try {
+        const { uri } = await Print.printToFileAsync({ html:html });
+        this.setState({pdfuri:uri});
+    } catch (err) {
+        console.error(err);
+    }
+    let data = new FormData();
+    data.append('filename', 'prescriptionPDF');
+    data.append('file', {
+      uri: this.state.pdfuri,
+      name: 'prescriptionPDF.pdf',
+      type: 'pdf'
+    });
+    data.append('appointmentId',this.props.route.params.id);
+    let url = 'http://'
+        +this.context.url
+        +'/aicare-business-api/business/message/save-send-chief-complaint';
+       fetch(url,{
+         method: 'POST',
+         mode: 'cors',
+         credentials: 'include',
+         headers: {
+         'Content-Type': 'multipart/form-data',
+         'sso-auth-token': this.context.token,
+         'sso-refresh-token': this.context.refresh_token,
+       },
+         body: data
+       })
+       .then((response) => response.json())
+       .then((json) => {
+         if (json.code === 0) {
+           alert("pdf提交成功");
+           console.log(json.msg);
+         } else {
+           alert('pdf提交失败');
+           console.log(json.msg);
+         }
+       });
+  }
   onCapture () {
     this.refs.viewShot.capture().then(uri =>{
       console.log("do something with ", uri);
@@ -110,6 +251,11 @@ export default class PrescriptionCheck extends Component {
             dmobile:json.employerInfo.mobile,
             pn:json.employerInfo.prescriberNumber,
           })
+          if(json.employerInfo.address!=null){
+            this.setState({
+              address:json.employerInfo.address
+            })
+          }
         } else {
           console.log(json.msg)
         }
@@ -144,11 +290,16 @@ export default class PrescriptionCheck extends Component {
           gender:json.medicalInfo.gender,
           dob:json.medicalInfo.dob,
           mobile:json.medicalInfo.mobile,
-          medicareCard:json.medicalInfo.medicareCard,
           language:json.medicalInfo.languages,
           userId:json.medicalInfo.customerUserId,
           infoId:json.medicalInfo.customerUserInfoId,
         })
+        if(json.medicalInfo.medicareCard!=null){
+          this.setState({
+            category:json.medicalInfo.medicareCard[0].category,
+            cardNumber:json.medicalInfo.medicareCard[0].number,
+          })
+        }
       } else {
         console.log(json.msg)
       }
@@ -194,7 +345,7 @@ export default class PrescriptionCheck extends Component {
     .then((response) => response.json())
     .then((json) => {
       if (json.code === 0) {
-        alert('提交药品成功')
+        console.log(json.msg)
       } else {
         console.log(json.msg)
       }
@@ -203,6 +354,10 @@ export default class PrescriptionCheck extends Component {
   }
 
   saveReport() {
+    if(this.state.signature == null){
+      alert('Please Save your Signature')
+      return false;
+    }
     this.setState({isLoading:true});
     let url = 'http://'
     +this.context.url
@@ -234,11 +389,11 @@ export default class PrescriptionCheck extends Component {
       .then((json) => {
         if (json.code === 0) {
           this.savePrescription(json.reportId)
-          alert('提交成功')
+          this.renderHtml()
+          console.log(json.msg)
         } else {
           console.log(json.msg)
         }
-        this.setState({isLoading:false})
       })
      .then(() => {
         this.finish()
@@ -247,7 +402,6 @@ export default class PrescriptionCheck extends Component {
   }
 
   finish(){
-    this.setState({isLoading:true});
     let url = 'http://'
     +this.context.url
     +'/aicare-business-api/business/appointment/complete?'
@@ -266,7 +420,7 @@ export default class PrescriptionCheck extends Component {
       .then((response) => response.json())
       .then((json) => {
         if (json.code === 0) {
-          alert('完成成功')
+          console.log(json.msg)
         } else {
           console.log(json.msg)
         }
@@ -278,8 +432,15 @@ export default class PrescriptionCheck extends Component {
       .catch(error => console.warn(error));
   }
 
-  render() {
+  /*  <WebView
+      allowFileAccess={true}
+      style={{width:200,height:300}}
+      source={{html : this.state.html}}
+      onMessage={this.onMessage}
+    >
+    </WebView>*/
 
+  render() {
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -292,16 +453,9 @@ export default class PrescriptionCheck extends Component {
       medicine = this.state.medicine.map((item) => {
         return (
           <View key = {item.id} style={{flexDirection:'row',width:'90%'}}>
-          <View style={{alignItems:'center',justifyContent:'center',width:'65%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+          <View style={{alignItems:'center',justifyContent:'center',width:'75%',margin:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
             <Text style={{ color: 'black', fontSize: 18, fontWeight: '500'}}>{item.name}</Text>
             <Text style={{ color: '#696969', fontSize: 15, fontWeight: '400'}}>{I18n.t('usage')}：{item.usage}</Text>
-          </View>
-          <View style={{width:'30%',margin:'6%'}}>
-              <Image
-                style={{width:'100%',height:100}}
-                resizeMode='stretch'
-                source={require('../../images/providerImg/barcode.png')}
-              />
           </View>
         </View>
         )
@@ -320,32 +474,25 @@ export default class PrescriptionCheck extends Component {
           <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>{I18n.t('patientComplaint')}:</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{this.props.route.params.patientComplaint}</Text>
         </ScrollView>
-        <View style={{height:'95%',width:'25%',borderRightWidth:1,marginTop:'2%',marginBottom:'2%',marginRight:'2%'}}>
+        <ScrollView style={{height:'95%',width:'25%',borderRightWidth:1,marginTop:'2%',marginBottom:'2%',marginRight:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.name}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.mobile}</Text>
           <Text style={{ fontSize:20, fontWeight: '500',marginTop:'5%'}}>{I18n.t('mcInfo')}</Text>
-          {this.state.medicareCard ?
-            this.state.medicareCard.map((item)=>(
-              <View>
-                <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('insuranceType')}: {item.category}</Text>
-                <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('cardNumber')}: {item.number}</Text>
-              </View>
-            ))
+          {this.state.category ?
+            <View>
+              <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('insuranceType')}: {this.state.category}</Text>
+              <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('cardNumber')}: {this.state.cardNumber}</Text>
+            </View>
           :
           <View>
             <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
-          <Image
-            style={{width:'100%',height:100}}
-            resizeMode='stretch'
-            source={{uri:this.state.uri}}
-          />
-        </View>
-        <View style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('presInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400', marginTop:'5%' }}>{I18n.t('preNumber')}: 01{new Date().getFullYear().toString()}{new Date().getMonth().toString()}{new Date().getDate().toString()}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%'}}>{I18n.t('bookingDate')}: {moment(new Date()).format('L')}</Text>
@@ -362,6 +509,7 @@ export default class PrescriptionCheck extends Component {
         <Text style={{marginTop:20, fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('esign')}</Text>
         <View style={{width:'90%',height:250}}>
           <SignatureScreen
+            ref="sig"
             onOK={this.handleSignature}
             onEmpty={this.handleEmpty}
             onClear={this.handleClear}
@@ -381,11 +529,11 @@ export default class PrescriptionCheck extends Component {
             borderRadius: 20,
             alignItems: 'center',
             justifyContent: "center",}}
-            onPress={this.onCapture}>
+            onPress={()=>this.saveReport()}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
           </TouchableOpacity>
         </View>
-        </View>
+        </ScrollView>
       </ViewShot>
 
     </SafeAreaView>

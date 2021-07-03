@@ -375,7 +375,7 @@ export default class Enotes3 extends Component {
       </View>
 
       <View style={{width:'30%',borderRadius:5,padding:'2%'}}>
-        <View style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
+        <ScrollView style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('name')}: {this.state.name}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
@@ -394,8 +394,8 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('allergy')}</Text>
           {this.state.allergy ?
             this.state.allergy.map((item)=>(
@@ -408,10 +408,10 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('mediHis')}</Text>
-          {this.state.medicineUsage?
+          {this.state.medicineUsage ?
             this.state.medicineUsage.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
                 <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.medicine}</Text>
@@ -422,10 +422,10 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('famHis')}</Text>
-          {this.state.familyHistory ?
+          {this.state.familyHistory?
             this.state.familyHistory.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
                 <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.disease}</Text>
@@ -436,10 +436,10 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
-        <View style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
+        </ScrollView>
+        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('chronic')}</Text>
-          {this.state.chronic ?
+          {this.state.chronic?
             this.state.chronic.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
                 <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{item.chronic}</Text>
@@ -450,7 +450,7 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
-        </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );}}

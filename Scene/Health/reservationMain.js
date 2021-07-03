@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity, SafeAreaView } from 'react-native';
+import { Platform,Text, Button, View, Alert, Image,TouchableOpacity, SafeAreaView } from 'react-native';
 import {styles} from '../providerStyle';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -13,8 +13,8 @@ export default function ReservationMain() {
 
   return (
     <SafeAreaView style={{flex:1}}>
-      <View style={{width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)'}}>
-    <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
+    <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)'}}>
+      <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
       <Image
         style={{height:40,width:160,marginLeft:'5%'}}
         resizeMode='stretch'

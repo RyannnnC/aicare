@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {SafeAreaView,Text, View, Alert, Image,TouchableOpacity,ActivityIndicator  } from 'react-native';
+import {Platform,ScrollView,SafeAreaView,Text, View, Alert, Image,TouchableOpacity,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from "../../providerContext";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -146,7 +146,7 @@ export default class HealthAccountMain extends Component {
     if (this.state.isLoading){
       return(
         <SafeAreaView style={{ flex: 1}}>
-        <View style={{ width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)', alignItems: "center" }}>
+        <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0, width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)', alignItems: "center" }}>
         <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
           <Image
             style={{height:40,width:160,marginLeft:'5%'}}
@@ -166,7 +166,7 @@ export default class HealthAccountMain extends Component {
     }else {
       return (
     <SafeAreaView style={{ flex: 1}}>
-      <View style={{width:'100%',height:'100%',alignItems: "center", backgroundColor:'rgb(51,51,51)' }}>
+      <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',alignItems: "center", backgroundColor:'rgb(51,51,51)' }}>
       <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
         <Image
           style={{height:40,width:160,marginLeft:'5%'}}
@@ -206,7 +206,8 @@ export default class HealthAccountMain extends Component {
       </LinearGradient>
       </View>
       }
-      <View style={{marginTop:20, alignItems: "center"}}>
+      <ScrollView style={{marginTop:20}}
+      contentContainerStyle={{ alignItems: "center"}}>
       <TouchableOpacity style={styles.profileBar} onPress={() => {
         if (this.context.employerId != null) {
           this.props.navigation.navigate(I18n.t('uploadMember'), {id: this.context.employerId})
@@ -269,14 +270,14 @@ export default class HealthAccountMain extends Component {
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('logout')}</Text>
       </TouchableOpacity>
-      </View>
       <View style={{marginTop:50,flexDirection: 'row', alignSelf:'center',alignItems: "center" }}>
         <Image
           source={require('../../images/logo.png')}
           style = {{width:85, height:30}}
         />
         <Text style={{fontSize:12, color:'#68B0AB'}}>+61 421326182</Text>
-       </View>
+      </View>
+      </ScrollView>
       </View>
       </View>
     </SafeAreaView>

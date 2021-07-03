@@ -307,36 +307,31 @@ export default class PendingOrder extends Component {
         <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
           <Text style={{fontWeight: '400'}}>{moment(item.appointDate).format('L')}</Text>
         </View>
-        <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+        <View style={{alignItems:'center',justifyContent:'center',width:'10%'}}>
           <Text style={{fontWeight: '400'}}>{item.startTime&&item.startTime.substring(0,5)}</Text>
         </View>
         <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
           <Text style={{fontWeight: '400'}}>{item.serviceTypeName}</Text>
         </View>
-        <View style={{alignItems:'center',justifyContent:'center',width:'8%'}}>
+        <View style={{alignItems:'center',justifyContent:'center',width:'7%'}}>
           <Text style={{fontWeight: '400'}}>{item.sex}</Text>
         </View>
-        <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+        <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
           <Text style={{fontWeight: '400'}}>{item.birthDate}</Text>
         </View>
-        <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+        <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>
           <Text style={{fontWeight: '400'}}>{item.mobile}</Text>
         </View>
-        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'15%'}}>
-          <TouchableOpacity stlye={{margin:5}} onPress={() => this.startAlert(item.id)}>
-            <Image
-              style = {{width:25,height:25}}
-              source={require('../../images/providerImg/Operation-4.png')}
-            />
+        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'20%'}}>
+          <TouchableOpacity style={{marginRight:3,padding:2,borderWidth:1,borderRadius:5,borderColor:'rgb(33,192,196)'}} onPress={() => this.startAlert(item.id)}>
+            <Text>{I18n.t('take')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity style={{padding:2,borderWidth:1,borderRadius:5,borderColor:'rgb(33,192,196)'}}
+          onPress={() => {
             this.setModalVisible(!this.state.modalVisible);
             this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
           }}>
-            <Image
-              style = {{marginLeft:'20%',width:25,height:25}}
-              source={require('../../images/providerImg/Operation-3.png')}
-            />
+            <Text>{I18n.t('modify')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -425,22 +420,22 @@ elevation: 24,}}>
             <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('bookingDate')}</Text>
             </View>
-            <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
+            <View style={{alignItems:'center',justifyContent:'center',width:'10%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('bookingTime')}</Text>
             </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('serviceType')}</Text>
             </View>
-            <View style={{alignItems:'center',justifyContent:'center',width:'8%'}}>
+            <View style={{alignItems:'center',justifyContent:'center',width:'7%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('gender')}</Text>
             </View>
-            <View style={{alignItems:'center',justifyContent:'center',width:'13%'}}>
+            <View style={{alignItems:'center',justifyContent:'center',width:'11%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('dateofBirth')}</Text>
             </View>
-            <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+            <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('mobile')}</Text>
             </View>
-            <View style={{alignItems:'center',justifyContent:'center',width:'15%'}}>
+            <View style={{alignItems:'center',justifyContent:'center',width:'20%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('operation')}</Text>
             </View>
         </View>
