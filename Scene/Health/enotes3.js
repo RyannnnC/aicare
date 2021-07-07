@@ -42,10 +42,7 @@ export default class Enotes3 extends Component {
     this.setState({
       id:this.props.route.params.id,
       complaint:this.props.route.params.patientComplaint});
-    if(this.props.route.params.medicine != null) {
-      this.setState({medicine:this.props.route.params.medicine});
-    }
-    this.queryPatient();
+      this.queryPatient();
   }
 
   queryPatient() {
@@ -367,8 +364,10 @@ export default class Enotes3 extends Component {
               backgroundColor: '#68B0AB',
               borderRadius: 20,
               alignItems: 'center',
-              justifyContent: "center",}} onPress={() => {
-                this.props.navigation.navigate(I18n.t('enote'),{
+              justifyContent: "center",}} onPress={() => {this.props.navigation.navigate(I18n.t('prescription'),{
+                id:this.props.route.params.id,
+                patientComplaint:this.props.route.params.patientComplaint,
+                doctorComplaint:this.props.route.params.doctorComplaint,
                 medicine:this.state.medicine})}}>
               <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
             </TouchableOpacity>

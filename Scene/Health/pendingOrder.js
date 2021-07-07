@@ -76,8 +76,6 @@ export default class PendingOrder extends Component {
             t.push(d);
             this.setState({mds:t});
           }
-        } else if (json.code == 10011) {
-          this.loggedin(json.msg)
         } else {
           console.log(json.msg)
         }
@@ -248,18 +246,7 @@ export default class PendingOrder extends Component {
       }
     }
   }
-  loggedin(msg) {
-    Alert.alert(
-      '',
-      msg,
-      [
-        {text: '确定', onPress: () => {this.context.action.logout()}},
-      ],
-      {
-        cancelable: false
-      }
-    );
-  }
+
   render() {
   let times=[];
   if (this.state.time.length >0) {
@@ -337,14 +324,14 @@ export default class PendingOrder extends Component {
         </View>
         <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'20%'}}>
           <TouchableOpacity style={{marginRight:3,padding:2,borderWidth:1,borderRadius:5,borderColor:'rgb(33,192,196)'}} onPress={() => this.startAlert(item.id)}>
-            <Text style={{color:'rgb(33,192,196)'}}>{I18n.t('take')}</Text>
+            <Text>{I18n.t('take')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{padding:2,borderWidth:1,borderRadius:5,borderColor:'rgb(33,192,196)'}}
           onPress={() => {
             this.setModalVisible(!this.state.modalVisible);
             this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
           }}>
-            <Text style={{color:'rgb(33,192,196)'}}>{I18n.t('modify')}</Text>
+            <Text>{I18n.t('modify')}</Text>
           </TouchableOpacity>
         </View>
       </View>

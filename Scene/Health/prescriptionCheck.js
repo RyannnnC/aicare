@@ -1,5 +1,5 @@
 import React ,{Component,useRef}from 'react';
-import { Alert,Button,Image,Text, View, TouchableOpacity,ScrollView,SafeAreaView,ActivityIndicator } from 'react-native';
+import { Button,Image,Text, View, TouchableOpacity,ScrollView,SafeAreaView,ActivityIndicator } from 'react-native';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 import moment from 'moment';
@@ -63,18 +63,6 @@ export default class PrescriptionCheck extends Component {
     this.queryDoctor();
   }
 
-  loggedin(msg) {
-    Alert.alert(
-      '',
-      msg,
-      [
-        {text: '确定', onPress: () => {this.context.action.logout()}},
-      ],
-      {
-        cancelable: false
-      }
-    );
-  }
    async renderHtml() {
     let medicine=''
     for(let i =0;i<this.state.medicine.length;i++){
@@ -312,10 +300,8 @@ export default class PrescriptionCheck extends Component {
             cardNumber:json.medicalInfo.medicareCard[0].number,
           })
         }
-      } else if (json.code == 10011) {
-        this.loggedin(json.msg)
       } else {
-        alert(json.msg)
+        console.log(json.msg)
       }
     })
     .catch(error => console.warn(error));
@@ -375,7 +361,7 @@ export default class PrescriptionCheck extends Component {
     this.setState({isLoading:true});
     let url = 'http://'
     +this.context.url
-    +'/aicare-business-api/business/medical-report/saveAndUpdate';
+    +'/aicare-business-api/business/medical-report/save';
       fetch(url,{
         method: 'POST',
         mode: 'cors',
@@ -506,18 +492,20 @@ export default class PrescriptionCheck extends Component {
           </View>
           }
         </ScrollView>
-        <View style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
+        <ScrollView style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
           <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('presInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400', marginTop:'5%' }}>{I18n.t('preNumber')}: 01{new Date().getFullYear().toString()}{new Date().getMonth().toString()}{new Date().getDate().toString()}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%'}}>{I18n.t('bookingDate')}: {moment(new Date()).format('L')}</Text>
-          <ScrollView style={{width:'100%',height:'60%',marginTop:'5%'}}>
+          <ScrollView
+                  style={{flex:1,width:'100%',maxHeight:'60%',marginTop:'5%'}}
+                  >
           {this.state.medicine.length>0 ? medicine
           :
             <View style={{alignItems:'center',justifyContent:'center',width:'90%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
               <Text style={{fontSize: 16, fontWeight: '400'}}>{I18n.t('nomedi')}</Text>
             </View>
           }
-          </ScrollView>
+        </ScrollView>
         <Text style={{marginTop:20, fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('esign')}</Text>
         <View style={{width:'90%',height:250}}>
           <SignatureScreen
@@ -531,7 +519,7 @@ export default class PrescriptionCheck extends Component {
             webStyle={this.state.style}
           />
         </View>
-        <View  style={{ height:'10%', width:'80%',marginLeft:'10%',justifyContent: "center", alignItems: "center"}}>
+        <View  style={{ height:'10%', width:'80%',margin:'10%',justifyContent: "center", alignItems: "center"}}>
           <TouchableOpacity style={{
             width: '100%',
             height: 40,
@@ -545,7 +533,7 @@ export default class PrescriptionCheck extends Component {
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
           </TouchableOpacity>
         </View>
-        </View>
+        </ScrollView>
       </ViewShot>
 
     </SafeAreaView>

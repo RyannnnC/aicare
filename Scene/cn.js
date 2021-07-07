@@ -193,7 +193,6 @@ export default {
   report:'诊疗报告',
   vr:'疫苗记录',
   claim:'Claim',
-  prescrip:'处方药',
   referral:'转诊',
   followup:'复诊',
   preNumber:'处方编号',

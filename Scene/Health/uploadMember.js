@@ -159,8 +159,6 @@ export default class UploadMember extends Component {
                 }
               }
               this.context.action.changemintro(json.employerInfo.introduce)
-            } else if (json.code == 10011) {
-              this.loggedin(json.msg)
             } else {
               console.log(json.msg)
             }
@@ -173,7 +171,6 @@ export default class UploadMember extends Component {
       const { c_status } = await Permissions.askAsync(Permissions.CAMERA);
       this.setState({ hasCameraPermission: c_status === "granted" });
     }
-
   changeColor(index){
     let but = this.state.buttons;
     if(!but[index].pressed){
@@ -191,18 +188,6 @@ export default class UploadMember extends Component {
     }
   };
 
- loggedin(msg) {
-    Alert.alert(
-      '',
-      msg,
-      [
-        {text: '确定', onPress: () => {this.context.action.logout()}},
-      ],
-      {
-        cancelable: false
-      }
-    );
-  }
   startAlert(){
     Alert.alert(
       'Alert',

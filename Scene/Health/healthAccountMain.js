@@ -4,6 +4,7 @@ import {styles} from '../providerStyle';
 import DataContext from "../../providerContext";
 import { LinearGradient } from 'expo-linear-gradient';
 import I18n from '../switchLanguage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment-timezone';
 
 export default class HealthAccountMain extends Component {
@@ -15,25 +16,18 @@ export default class HealthAccountMain extends Component {
       isLoading:true,
     }
   }
-  loggedin(msg) {
-    Alert.alert(
-      '',
-      msg,
-      [
-        {text: '确定', onPress: () => {this.context.action.logout()}},
-      ],
-      {
-        cancelable: false
-      }
-    );
-  }
-  
   startAlert(){
     Alert.alert(
       '提醒',
       '您确定要退出登录吗？',
       [
-        {text: '确定', onPress: () => {this.context.action.logout()}},
+        {text: '确定', onPress: () => {
+                if (this.context.employerId != null) {
+                  this.removeId();
+                }
+                this.removeToken();
+                this.context.action.clearstate();
+        }},
         {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
       {
@@ -41,12 +35,74 @@ export default class HealthAccountMain extends Component {
       }
     );
   }
-
+  async removeToken() {
+    try {
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("rtoken");
+      console.log("Remove token success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+  async removeId() {
+    try {
+      await AsyncStorage.removeItem("id");
+      console.log("Remove id success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
   componentDidMount() {
-    if (this.context.employerId == null) {
+    this.setState({isLoading:true})
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      if (this.context.employerId == null) {
+          let url = 'http://'
+          +this.context.url
+          +'/aicare-business-api/business/orginfo/list';
+          fetch(url,{
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+            'Accept':       'application/json',
+            'Content-Type': 'application/json',
+            'sso-auth-token': this.context.token,
+            'sso-refresh-token': this.context.refresh_token,
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+          }})
+          .then((response) => response.json())
+          .then((json) => {
+            this.setState({ isLoading: false });
+            if (json.code === 0) {
+
+              if(json.orginfo.name!=null){
+                this.context.action.changeorg(json.orginfo.orgId);
+                this.context.action.changeimg(json.orginfo.orgImg);
+                this.context.action.changename(json.orginfo.name);
+                this.context.action.changeemail(json.orginfo.email);
+                this.context.action.changephone(json.orginfo.mobile);
+                this.context.action.changestreet(json.orginfo.address);
+                this.context.action.changepostcode(json.orginfo.postalCode);
+                this.context.action.changeintro(json.orginfo.introduce);
+                this.context.action.changestate(json.orginfo.city);
+                this.context.action.changelanguage(json.orginfo.languages);
+                this.context.action.changeserviceclass(json.orginfo.serviceClassList);
+                this.context.action.changetime(json.orginfo.orgschedulevos);
+                this.context.action.changetypelist(json.orginfo.serviceTypeList);
+              }
+              console.log(json.orginfo.orgschedulevos);
+            } else {
+              console.log(json.msg)
+            }
+          }).catch(error => console.warn(error));
+      } else {
         let url = 'http://'
         +this.context.url
-        +'/aicare-business-api/business/orginfo/list';
+        +'/aicare-business-api/business/employer/list'
+        +'?employerId=' + this.context.employerId;
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -65,83 +121,62 @@ export default class HealthAccountMain extends Component {
         .then((json) => {
           this.setState({ isLoading: false });
           if (json.code === 0) {
-            if(json.orginfo.name!=null){
-              this.context.action.changeorg(json.orginfo.orgId);
-              this.context.action.changeimg(json.orginfo.orgImg);
-              this.context.action.changename(json.orginfo.name);
-              this.context.action.changeemail(json.orginfo.email);
-              this.context.action.changephone(json.orginfo.mobile);
-              this.context.action.changestreet(json.orginfo.address);
-              this.context.action.changepostcode(json.orginfo.postalCode);
-              this.context.action.changeintro(json.orginfo.introduce);
-              this.context.action.changestate(json.orginfo.city);
-              this.context.action.changelanguage(json.orginfo.languages);
-              this.context.action.changeserviceclass(json.orginfo.serviceClassList);
-              this.context.action.changetime(json.orginfo.orgschedulevos);
-              this.context.action.changetypelist(json.orginfo.serviceTypeList);
+            console.log(json.employerInfo);
+            if(json.employerInfo.name!=null){
+              this.context.action.changeimg(json.employerInfo.imgUrl);
+              this.context.action.changename(json.employerInfo.name);
+              this.context.action.changeemail(json.employerInfo.email);
+              this.context.action.changephone(json.employerInfo.mobile);
+              this.context.action.changeintro(json.employerInfo.introduce);
+              this.context.action.changestate(json.employerInfo.city);
+              this.context.action.changemlan(json.employerInfo.languages);
+              this.context.action.changeserviceclass(json.employerInfo.serviceClassList);
+              this.context.action.changetime(json.employerInfo.employerSchedulevos);
+              this.context.action.changetypelist(json.employerInfo.serviceTypeList);
             }
-            console.log(json.orginfo.orgschedulevos);
-          } else if (json.code == 10011) {
-            this.loggedin(json.msg)
           } else {
             console.log(json.msg)
           }
         }).catch(error => console.warn(error));
-    } else {
-      let url = 'http://'
-      +this.context.url
-      +'/aicare-business-api/business/employer/list'
-      +'?employerId=' + this.context.employerId;
-      fetch(url,{
-        method: 'GET',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': this.context.token,
-        'sso-refresh-token': this.context.refresh_token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      }})
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({ isLoading: false });
-        if (json.code === 0) {
-          console.log(json.employerInfo);
-          if(json.employerInfo.name!=null){
-            this.context.action.changeimg(json.employerInfo.imgUrl);
-            this.context.action.changename(json.employerInfo.name);
-            this.context.action.changeemail(json.employerInfo.email);
-            this.context.action.changephone(json.employerInfo.mobile);
-            this.context.action.changeintro(json.employerInfo.introduce);
-            this.context.action.changestate(json.employerInfo.city);
-            this.context.action.changemlan(json.employerInfo.languages);
-            this.context.action.changeserviceclass(json.employerInfo.serviceClassList);
-            this.context.action.changetime(json.employerInfo.employerSchedulevos);
-            this.context.action.changetypelist(json.employerInfo.serviceTypeList);
-          }
-        } else if (json.code == 10011) {
-          this.loggedin(json.msg)
-        } else {
-          console.log(json.msg)
-        }
-      }).catch(error => console.warn(error));
-  }
+      }
+    });
   }
 
   render() {
     if (this.state.isLoading){
       return(
-        <SafeAreaView style={{ flex: 1,backgroundColor:'rgb(51,51,51)',alignItems:'center',justifyContent:'center'}}>
+        <SafeAreaView style={{ flex: 1}}>
+        <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0, width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)', alignItems: "center" }}>
+        <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
+          <Image
+            style={{height:40,width:160,marginLeft:'5%'}}
+            resizeMode='stretch'
+            source={require('../../images/providerImg/顶端LOGO.png')}
+          />
+          <View style={{width:'75%',alignItems:'flex-end',justifyContent:'center'}}>
+            <Text style={{fontSize:20,color:'white'}}>{moment(new Date()).format('ll')}</Text>
+          </View>
+        </View>
+          <View style={{marginTop:'35%'}}>
             <ActivityIndicator size="large" color="white"  />
+          </View>
+        </View>
         </SafeAreaView>
     )
     }else {
       return (
-    <SafeAreaView style={{ flex: 1,backgroundColor:'rgb(51,51,51)',alignItems:'center'}}>
+    <SafeAreaView style={{ flex: 1}}>
+      <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',alignItems: "center", backgroundColor:'rgb(51,51,51)' }}>
+      <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
+        <Image
+          style={{height:40,width:160,marginLeft:'5%'}}
+          resizeMode='stretch'
+          source={require('../../images/providerImg/顶端LOGO.png')}
+        />
+        <View style={{width:'75%',alignItems:'flex-end',justifyContent:'center'}}>
+          <Text style={{fontSize:20,color:'white'}}>{moment(new Date()).format('ll')}</Text>
+        </View>
+      </View>
       <View style={{width:'90%',height:'100%', backgroundColor:'white'}}>
       {this.context.image ?
       <View style={{ width: '100%',height:160}}>
@@ -220,7 +255,14 @@ export default class HealthAccountMain extends Component {
       </TouchableOpacity>
       <TouchableOpacity
       style={styles.profileBar}
-      onPress={() => {this.startAlert()}}
+      onPress={() => {
+        //this.startAlert()
+        if (this.context.employerId != null) {
+          this.removeId();
+        }
+        this.removeToken();
+        this.context.action.clearstate();
+      }}
       >
         <Image
           style = {styles.smallIconImg}
@@ -236,6 +278,7 @@ export default class HealthAccountMain extends Component {
         <Text style={{fontSize:12, color:'#68B0AB'}}>+61 421326182</Text>
       </View>
       </ScrollView>
+      </View>
       </View>
     </SafeAreaView>
   );}}
