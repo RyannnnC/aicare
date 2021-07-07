@@ -1,10 +1,11 @@
-import React ,{Component}from 'react';
+import React ,{Component, useContext}from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView,
   DrawerItemList,
   DrawerItem, } from "@react-navigation/drawer";
-  import {Text} from 'react-native';
+import { Platform,SafeAreaView,ScrollView,Text,View,Image,TouchableOpacity} from 'react-native';
+import moment from 'moment-timezone';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
@@ -72,7 +73,21 @@ function Draw() {
 }
 
 function OrgHome() {
+  const user = useContext(DataContext);
   return (
+    <SafeAreaView style={{flex:1}}>
+    <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)'}}>
+      <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'space-between'}}>
+      <Image
+        style={{height:36,width:160,marginLeft:'5%'}}
+        resizeMode='stretch'
+        source={require('./images/providerImg/顶端LOGO.png')}
+      />
+      <View style={{width:'70%',height:'100%',flexDirection:'row',alignItems:'center',justifyContent:'flex-end'}}>
+        <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{user.name}</Text>
+        <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{moment(new Date()).format('ll')}</Text>
+      </View>
+    </View>
       <Tab.Navigator tabBarOptions={{
           style:{backgroundColor:'rgb(51,51,51)'},
           inactiveTintColor:'white',
@@ -109,10 +124,26 @@ function OrgHome() {
           }}
              />
         </Tab.Navigator>
+        </View>
+      </SafeAreaView>
   );
 }
 function DoctorHome() {
+  const user = useContext(DataContext);
   return (
+    <SafeAreaView style={{flex:1}}>
+    <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)'}}>
+      <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'space-between'}}>
+      <Image
+        style={{height:36,width:160,marginLeft:'5%'}}
+        resizeMode='stretch'
+        source={require('./images/providerImg/顶端LOGO.png')}
+      />
+      <View style={{width:'70%',height:'100%',flexDirection:'row',alignItems:'center',justifyContent:'flex-end'}}>
+        <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{user.name}</Text>
+        <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{moment(new Date()).format('ll')}</Text>
+      </View>
+    </View>
       <Tab.Navigator tabBarOptions={{
           style:{backgroundColor:'rgb(51,51,51)'},
           inactiveTintColor:'white',
@@ -149,6 +180,8 @@ function DoctorHome() {
           }}
              />
         </Tab.Navigator>
+        </View>
+      </SafeAreaView>
   );
 }
 /*        <Tab.Screen
@@ -220,6 +253,7 @@ export default class App extends React.Component {
       changetypelist:this.changetypelist,
       changeemployerid:this.changeemployerid,
       changeorg:this.changeorg,
+      logout:this.logout,
     }
     }
   }
@@ -244,6 +278,30 @@ export default class App extends React.Component {
     } catch (error) {
       console.log("Something went wrong", error);
     }
+  }
+  async removeToken() {
+    try {
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("rtoken");
+      console.log("Remove token success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+  async removeId() {
+    try {
+      await AsyncStorage.removeItem("id");
+      console.log("Remove id success");
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+  logout = () => {
+    if (this.state.employerId != null) {
+      this.removeId();
+    }
+    this.removeToken();
+    this.clearstate();
   }
 
   changeemployerid = (value) => {
@@ -397,8 +455,95 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-   this.getToken();
+   this.getToken()
+   .then(() => {
+     if (this.state.employerId == null) {
+         let url = 'http://'
+         +this.state.url
+         +'/aicare-business-api/business/orginfo/list';
+         fetch(url,{
+           method: 'GET',
+           mode: 'cors',
+           credentials: 'include',
+           headers: {
+           'Accept':       'application/json',
+           'Content-Type': 'application/json',
+           'sso-auth-token': this.state.token,
+           'sso-refresh-token': this.state.refresh_token,
+           'Access-Control-Allow-Origin': '*',
+           'Access-Control-Allow-Credentials': true,
+           'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+           'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+         }})
+         .then((response) => response.json())
+         .then((json) => {
+           this.setState({ isLoading: false });
+           if (json.code === 0) {
+             if(json.orginfo.name!=null){
+               this.changeorg(json.orginfo.orgId);
+               this.changeimg(json.orginfo.orgImg);
+               this.changename(json.orginfo.name);
+               this.changeemail(json.orginfo.email);
+               this.changephone(json.orginfo.mobile);
+               this.changestreet(json.orginfo.address);
+               this.changepostcode(json.orginfo.postalCode);
+               this.changeintro(json.orginfo.introduce);
+               this.changestate(json.orginfo.city);
+               this.changelanguage(json.orginfo.languages);
+               this.changeserviceclass(json.orginfo.serviceClassList);
+               this.changetime(json.orginfo.orgschedulevos);
+               this.changetypelist(json.orginfo.serviceTypeList);
+             }
+             console.log(json.orginfo.orgschedulevos);
+           } else if (json.code == 10011) {
+             this.loggedin(json.msg)
+           } else {
+             console.log(json.msg)
+           }
+         }).catch(error => console.warn(error));
+     } else {
+       let url = 'http://'
+       +this.state.url
+       +'/aicare-business-api/business/employer/list'
+       +'?employerId=' + this.state.employerId;
+       fetch(url,{
+         method: 'GET',
+         mode: 'cors',
+         credentials: 'include',
+         headers: {
+         'Accept':       'application/json',
+         'Content-Type': 'application/json',
+         'sso-auth-token': this.state.token,
+         'sso-refresh-token': this.state.refresh_token,
+         'Access-Control-Allow-Origin': '*',
+         'Access-Control-Allow-Credentials': true,
+         'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+       }})
+       .then((response) => response.json())
+       .then((json) => {
+         this.setState({ isLoading: false });
+         if (json.code === 0) {
+           console.log(json.employerInfo);
+           if(json.employerInfo.name!=null){
+             this.changeimg(json.employerInfo.imgUrl);
+             this.changename(json.employerInfo.name);
+             this.changeemail(json.employerInfo.email);
+             this.changephone(json.employerInfo.mobile);
+             this.changeintro(json.employerInfo.introduce);
+             this.changestate(json.employerInfo.city);
+             this.changemlan(json.employerInfo.languages);
+             this.changeserviceclass(json.employerInfo.serviceClassList);
+             this.changetime(json.employerInfo.employerSchedulevos);
+             this.changetypelist(json.employerInfo.serviceTypeList);
+           }
+         } else {
+           console.log(json.msg)
+         }
+       }).catch(error => console.warn(error));
+   }})
   }
+
   render() {
   return (
     <DataContext.Provider value={ this.state }>

@@ -167,7 +167,7 @@ export default class ProcessingOrder extends Component {
       +'/aicare-business-api/business/appointment/query?status=3'
       + '&type=' + tp
       + '&appointDate=' + fd
-      + '&dateFlg=1';
+      + '&dateFlg=0';
         fetch(url,{
           method: 'GET',
           mode: 'cors',
@@ -193,7 +193,9 @@ export default class ProcessingOrder extends Component {
               t.push(d);
               this.setState({mds:t});
             }
-          } else {
+          } else if (json.code == 10011) {
+            this.loggedin(json.msg)
+          }else {
             console.log(json.msg)
           }
         }).catch(error => console.warn(error));
@@ -233,6 +235,8 @@ export default class ProcessingOrder extends Component {
             t.push(d);
             this.setState({mds:t});
           }
+        } else if (json.code == 10011) {
+          this.loggedin(json.msg)
         } else {
           console.log(json.msg)
         }
@@ -278,12 +282,25 @@ export default class ProcessingOrder extends Component {
               t.push(d);
               this.setState({mds:t});
             }
+          } else if (json.code == 10011) {
+            this.loggedin(json.msg)
           } else {
             console.log(json.msg)
           }
         }).catch(error => console.warn(error));
   }
-
+  loggedin(msg) {
+    Alert.alert(
+      '',
+      msg,
+      [
+        {text: '确定', onPress: () => {this.context.action.logout()}},
+      ],
+      {
+        cancelable: false
+      }
+    );
+  }
   render () {
     var date = new Date(this.state.selectedDate).getDate();
     var month = new Date(this.state.selectedDate).getMonth() + 1;
@@ -362,14 +379,14 @@ export default class ProcessingOrder extends Component {
           </View>
           <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'20%'}}>
             <TouchableOpacity style={{marginRight:3,padding:2,borderWidth:1,borderRadius:5,borderColor:'rgb(33,192,196)'}} onPress={() => {this.props.navigation.navigate(I18n.t('enote'),{id:item.id})}}>
-              <Text>{I18n.t('diagnose')}</Text>
+              <Text style={{color:'rgb(33,192,196)'}}>{I18n.t('diagnose')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{padding:2,borderWidth:1,borderRadius:5,borderColor:'rgb(33,192,196)'}}
             onPress={() => {
               this.setMdVisible(!this.state.mdVisible);
               this.setState({selectedId:item.id,selectedDoctor:item.businessEmployerId});
             }}>
-              <Text>{I18n.t('modify')}</Text>
+              <Text style={{color:'rgb(33,192,196)'}}>{I18n.t('modify')}</Text>
             </TouchableOpacity>
           </View>
         <Modal
@@ -466,12 +483,23 @@ export default class ProcessingOrder extends Component {
           </TouchableOpacity>
           </View>
         </View>
-          <View style={{flexDirection:'row',width:'90%',margin:'3%'}}>
+          <View style={{flexDirection:'row',width:'90%',margin:'3%',justifyContent:'space-between'}}>
+            <View style={{flexDirection:'row',width:'50%'}}>
             <Image
               style = {{width:30,height:30}}
               source={require('../../images/providerImg/Appointment-calendar-3.png')}
             />
             <Text style={{marginLeft:'2%',fontSize:24,color:'rgb(33,192,196)',fontWeight: '500'}}>{I18n.t('oOrder')}</Text>
+            </View>
+            <TouchableOpacity style={{
+            width: '20%',
+            height: 30,
+            backgroundColor: 'rgb(33,192,196)',
+            borderRadius: 5,
+            alignItems: 'center',
+            justifyContent: "center"}} onPress={() => {this.queryDate(new Date())}}>
+              <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('todayOrder')}</Text>
+            </TouchableOpacity>
           </View>
           <View style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:60,backgroundColor:'rgb(222,246,246)'}}>
             <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>

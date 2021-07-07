@@ -36,6 +36,7 @@ export default class Enotes extends Component {
       familyHistory:[],
       chronic:[],
       allergy:[],
+      medicine:[],
       }
     }
   onSpeechStartHandler = (e) => {
@@ -81,6 +82,9 @@ export default class Enotes extends Component {
 
   async componentDidMount(){
       this.setState({id:this.props.route.params.id});
+      if(this.props.route.params.medicine != null) {
+        this.setState({medicine:this.props.route.params.medicine});
+      }
       const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
       this.setState({ hasAudioPermission: status === "granted" });
       this.queryPatient();
@@ -153,9 +157,9 @@ export default class Enotes extends Component {
     )
     }else {
     return (
-    <KeyboardAvoidingView style={{ flex:1, flexDirection:'row',justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}
-    behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <View style={{height:'91.5%',width:'65%',backgroundColor:'white',borderRadius:5,padding:'2%'}}>
+    <View style={{ flex:1, flexDirection:'row',justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}
+    >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{height:'91.5%',width:'65%',backgroundColor:'white',borderRadius:5,padding:'2%'}}>
         <Text style={{ fontSize:18, fontWeight: '500',marginTop:10, marginBottom:10}}>{I18n.t('statement')}</Text>
         <View style={{width:'100%',height:'15%',alignItems:'center',flexDirection:'row'}}>
           {this.state.image.map((item) => {
@@ -202,16 +206,16 @@ export default class Enotes extends Component {
 
         <View  style={{ flexDirection:'row',height:'10%',justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
           <TouchableOpacity style={{
-          width: '55%',
+          width: '35%',
           height: 40,
           backgroundColor: '#68B0AB',
           borderRadius: 5,
           alignItems: 'center',
           justifyContent: "center",
           margin:'2%'}} onPress={() => {
-          this.props.navigation.navigate(I18n.t('enote3'),{id: this.state.id,patientComplaint:this.state.complaint,doctorComplaint:this.state.doctorComment})
+          this.props.navigation.navigate(I18n.t('enote3'),{medicine:this.state.medicine})
           }}>
-          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
+          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('prescrip')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{
           width: '20%',
@@ -239,8 +243,25 @@ export default class Enotes extends Component {
           }}>
           <Text style={{ fontSize:16, fontWeight: '500', color: 'black' }}>{I18n.t('followup')}</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={{
+          width: '20%',
+          height: 40,
+          backgroundColor: '#68B0AB',
+          borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: "center",
+          margin:'2%'}} onPress={() => {
+          this.props.navigation.navigate(I18n.t('prescription'),{
+            id:this.state.id,
+            patientComplaint:this.state.complaint,
+            doctorComplaint:this.state.doctorComment,
+            medicine:this.state.medicine
+          })
+          }}>
+          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('finish')}</Text>
+          </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAvoidingView>
       <ImageView
         images={this.state.image}
         imageIndex={0}
@@ -268,6 +289,7 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
         <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('allergy')}</Text>
@@ -282,6 +304,7 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
         <ScrollView style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('mediHis')}</Text>
@@ -296,6 +319,7 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
         <ScrollView style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('famHis')}</Text>
@@ -310,6 +334,7 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
         <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
           <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('chronic')}</Text>
@@ -324,9 +349,10 @@ export default class Enotes extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );}}
 }
 Enotes.contextType = DataContext;

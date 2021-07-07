@@ -20,19 +20,7 @@ export default class HealthMain extends Component {
 
   render () {
     return (
-      <SafeAreaView style={{flex:1}}>
-        <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)',alignItems:'center'}}>
-        <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center'}}>
-          <Image
-            style={{height:40,width:160,marginLeft:'5%'}}
-            resizeMode='stretch'
-            source={require('../../images/providerImg/顶端LOGO.png')}
-          />
-          <View style={{width:'75%',alignItems:'flex-end',justifyContent:'center'}}>
-            <Text style={{fontSize:20,color:'white'}}>{moment(new Date()).format('ll')}</Text>
-          </View>
-        </View>
-
+      <SafeAreaView style={{flex:1,backgroundColor:'rgb(51,51,51)',alignItems:'center'}}>
         <View style={{height:'90%',width:'85%',alignItems:'center',justifyContent:'center'}}>
           <View style={{height:'25%',width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
             <TouchableOpacity
@@ -278,7 +266,6 @@ export default class HealthMain extends Component {
               </View>
             </TouchableOpacity>
           </View>
-        </View>
         </View>
       </SafeAreaView>
   )}
