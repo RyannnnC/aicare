@@ -72,10 +72,25 @@ export default class MyAccount extends Component {
           if (json.code === 0) {
             console.log(json);
             this.setState({list:json.page.list});
+          } else if (json.code == 10011) {
+            this.loggedin(json.msg)
           } else {
             console.log(json.msg)
           }
         }).catch(error => console.warn(error));
+    }
+    
+  loggedin(msg) {
+       Alert.alert(
+         '',
+         msg,
+         [
+           {text: '确定', onPress: () => {this.context.action.logout()}},
+         ],
+         {
+           cancelable: false
+         }
+       );
     }
   render () {
     var date = new Date().getDate();
