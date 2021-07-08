@@ -4,25 +4,16 @@ import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
-
+import SwitchSelector from "react-native-switch-selector";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from 'moment-timezone';
+import * as Localization from 'expo-localization';
 import RNPickerSelect from 'react-native-picker-select';
 import DataContext from "../../consumerContext";
 const AccountInfo = ({navigation}) => {
     const user=useContext(DataContext)
     const goBack= () => {
-      Alert.alert(
-        "保存提醒",
-        "直接返回的话您更改的信息不会被保存，是否继续退回上一个页面？",
-        [
-          {text:"取消",
-            onPress:()=>console.log("cancel redirect"),
-            style:"cancel"
-        },{
-          text:"确定",
-          onPress:()=>{navigation.dispatch(StackActions.pop(1))}
-        }
-      ]
-      )        
+      navigation.dispatch(StackActions.pop(1))  
     }
     const update=()=>{
       let url = 'http://'
@@ -50,6 +41,7 @@ const AccountInfo = ({navigation}) => {
         address: address,
         postcode: postcode,
         state: state,
+
       })
     })
       .then((response) => response.json())
@@ -119,7 +111,7 @@ const AccountInfo = ({navigation}) => {
     const [dob, setDob] = React.useState("");
     const [serial, setSerial] = React.useState(0);
     const [email, setEmail] = React.useState("");
-
+    const [visible,setVisible]=React.useState(false)
 
     return (
         <ScrollView style={{marginTop:-20,backgroundColor:"white"}}>
@@ -139,7 +131,7 @@ const AccountInfo = ({navigation}) => {
     marginLeft:100,}}>个人信息</Text>
         </View>
         <Image style = {{width:80,height:80,borderRadius:40}}
-            source= {require('../../images/chris.png')}
+            source= {require('../../images/emotion1.png')}
           />
         <View style={{ marginTop:10,marginLeft:-20,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row'}}>
             <Image
@@ -159,14 +151,49 @@ const AccountInfo = ({navigation}) => {
             <Text>名： </Text>
             <TextInput placeholder="请输入您的名" defaultValue={first}  placeholderTextColor="grey" onChangeText={text => setFirst(text)}></TextInput>
         </View>
+        <DateTimePickerModal
+        display="spinner"
+        isVisible={visible}
+        mode="date"
+        headerTextIOS='出生日期'
+        cancelTextIOS="取消"
+        confirmTextIOS='确认'
+        onConfirm={(time)=>{setDob(moment(time).tz(Localization.timezone).format("DD/MM/YYYY"));setVisible(false);console.log(time)}}
+        onCancel={()=>setVisible(false)}
         
+      />
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>出生日期： </Text>
-            <TextInput placeholder="请输入您的出生日期" defaultValue={dob}  placeholderTextColor="grey" onChangeText={text => setDob(text)}></TextInput>
+            <TouchableOpacity style={{borderColor:"#8FD7D3",
+      borderWidth:1,
+    padding:8,
+    width:120,
+    marginTop:0,
+    height:35,
+
+    marginLeft:30,
+    alignItems: 'center',
+    borderRadius:25,}} onPress={()=>setVisible(true)}>
+      <Text style={{fontSize:12}}>{dob}</Text>
+    </TouchableOpacity>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>性别： </Text>
-            <TextInput placeholder="请输入您的性别" defaultValue={gender}  placeholderTextColor="grey" onChangeText={text => setGender(text)}></TextInput>
+            <SwitchSelector
+  initial={gender=="M"?1:0}
+  onPress={value => {setGender(value);}}
+  buttonColor='#8FD7D3'
+  borderColor='#8FD7D3'
+  hasPadding
+  style={{width:200,marginLeft:10}}
+  height={35}
+  defaultValue={"M"}//?
+  options={[
+    { label: "女性", value: "F",  }, 
+    { label: "男性", value: "M", } 
+  ]}
+  testID="gender-switch-selector"
+  accessibilityLabel="gender-switch-selector"></SwitchSelector>            
         </View>
         
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>

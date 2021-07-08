@@ -22,12 +22,14 @@
     "date-fns": "^2.16.1",
     "expo": "^40.0.0",
     "expo-image-picker": "^10.1.4",
+    "expo-linking": "^2.3.1",
     "expo-localization": "^10.0.0",
     "expo-permissions": "^12.0.1",
     "expo-status-bar": "~1.0.3",
     "i18n-js": "^3.8.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
+    "perf_hooks": "0.0.1",
     "qs": "^6.9.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -46,6 +48,7 @@
     "react-native-maps": "0.27.1",
     "react-native-modal-datetime-picker": "^9.2.3",
     "react-native-paper": "^4.6.0",
+    "react-native-pdf-light": "^1.5.2",
     "react-native-phone-call": "^1.0.9",
     "react-native-picker": "^4.3.7",
     "react-native-picker-select": "^8.0.4",
@@ -64,7 +67,9 @@
     "react-native-webrtc": "^1.89.1",
     "react-native-webview": "^11.4.4",
     "react-navigation": "^4.4.3",
-    "react-navigation-stack": "^2.10.2"
+    "react-navigation-stack": "^2.10.2",
+    "rn-image-zoom-viewer": "^2.2.28",
+    "rn-pdf-reader-js": "^4.1.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

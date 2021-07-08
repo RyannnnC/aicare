@@ -98,11 +98,12 @@ class OngoingingOrder extends Component {
       )
   }
   componentDidMount() {
+    this.getAITraining()
     this.dataPolling = setInterval(
       () => {
         this.getAITraining();
       },
-      10000);
+      3000);
   }
 
   componentWillUnmount() {
@@ -263,7 +264,7 @@ class OngoingingOrder extends Component {
         })
         
     const orders = query.map((item) => {
-      let date = moment(item.appointDate).tz(Localization.timezone).format('L')
+      let date = moment(item.appointDate).tz(Localization.timezone).format('DD/MM/YYYY')
       //date = new Date(date.getDate()+1).toLocaleDateString();
       return (
         <View style={{

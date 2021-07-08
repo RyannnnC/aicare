@@ -560,14 +560,13 @@ export default function ProviderMain({navigation}) {
                     style:"cancel"
                 },{
                   text:"注册登陆",
-                  onPress:()=>removeToken()
-      
-                }
-                
+                  onPress:()=>removeToken()      
+                }                
               ]
               )
               return;
-            }Alert.alert("电子处方将为您记录处方药信息。该模块正在升级，敬请期待。")}}>
+            }
+            navigation.navigate("prescription");}}>
           <Image
           style = {{width:110,height:110}}
           source = {require('../images/pres.png')}

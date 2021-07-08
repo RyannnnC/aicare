@@ -28,20 +28,20 @@ const HistoryInfo = ({navigation}) => {
         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
       }, body: JSON.stringify({
         chronic:[{
-          id:medical.chronic.id,
+          id:medical.chronic[0].id,
           chronic:history
         }],
         familyHistory:[{
-          id:medical.familyHistory.id,
+          id:medical.familyHistory[0].id,
           relation:null,
           disease:family
         }],
         allergen:[{
-          id:medical.allergy.id,
+          id:medical.allergen[0].id,
           allergen:allergy
         }],
         medicineUsage:[{
-          id:medical.medicineUsage.id,
+          id:medical.medicineUsage[0].id,
           medicine:medicine
         }]
       })
@@ -139,7 +139,7 @@ const HistoryInfo = ({navigation}) => {
     marginLeft:100,}}>病史信息</Text>
         </View>
         <Image style = {{width:80,height:80,borderRadius:40}}
-            source= {require('../../images/chris.png')}
+            source= {require('../../images/emotion1.png')}
           />
         <View style={{ marginTop:10,marginLeft:-20,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row'}}>
             <Image

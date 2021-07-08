@@ -6,11 +6,14 @@ import { StackActions } from '@react-navigation/native';
 //import { SearchBar } from 'react-native-elements';
 //import DateFilter from "./datefilter";
 import DataContext from "../consumerContext";
+import * as Linking from 'expo-linking';
+import moment from 'moment-timezone';
+import * as Localization from 'expo-localization';
 //import { UserOfflineReason } from 'react-native-agora';
 
 //import moment from "moment"
 
-class HealthRecord extends Component {
+class prescription extends Component {
   constructor(props) {
       super(props);
       //date: new Date();
@@ -35,7 +38,7 @@ class HealthRecord extends Component {
     console.log("start");
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
-      let url = "http://"+this.context.url+"/aicare-customer-api/customer/consultation/query-all-reports?customerUserInfoId="+this.context.customerUserInfoId;
+      let url = "http://"+this.context.url+"/aicare-customer-api/customer/user/chief-complaint-pdf-list?customerUserinfoId="+this.context.customerUserInfoId;
             fetch(url,{
               method: 'GET',
               mode: 'cors',
@@ -51,14 +54,16 @@ class HealthRecord extends Component {
             }})
             .then((response) => response.json())
             .then((json) => {
+                this.setState({loading:false})
+
               if (json.code == 0) {
                 //console.log(json.businessEmployer[0].businessUserId);
-                this.setState({reports:json.reports});
-                console.log(json.reports[1]);
-                this.setState({loading:false})
+                this.setState({reports:json.data});
+                console.log(json.data);
+                //console.log(json.reports[1]);
                 //Alert.alert('查询成功');
               } else {
-                console.log(json.code)
+                //console.log(json.code)
                 console.log(json.msg);
                 Alert.alert('查询失败');
               }
@@ -76,6 +81,7 @@ class HealthRecord extends Component {
   render () {
     //console.log (this.state);
     const { modalVisible,Visible,docs,loading,reports } = this.state;
+    
     if (loading){
       return (
         <View style={{ flex:1, backgroundColor:"white" }}>
@@ -90,7 +96,7 @@ class HealthRecord extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>电子病历</Text>
+        marginTop:20}}>电子处方</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -105,45 +111,73 @@ class HealthRecord extends Component {
         />
         </View>
         <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>
-          正在搜索您的相关报告，请耐心等待..
+          正在搜索相关医生，请耐心等待..
         </Text>
         <ActivityIndicator size="large" style={{marginTop:-90}} color="#FF8570"></ActivityIndicator>
         </View>
       )
     }
-    if (reports.length >0) {
+    if (reports&&reports.length >0) {
     const orders = reports.map((item) => {
-     
+    let date = moment(item.appointDate).tz(Localization.timezone).format('DD/MM/YYYY')
+      if(item.chiefcomplaintpdfUrl){
       return (
-        <View style={styles.card} key={item.employerId}> 
-        <TouchableOpacity onPress={()=>this.props.navigation.navigate("report",{appId:item.customerAppointmentId})}>
+        <View style={{
+            width: 315,
+            backgroundColor: '#ffffff',
+            borderRadius: 15,
+          }} key={item.employerId}> 
+            <View style={{flexDirection: 'row',}}>
+
+          <Text style={{marginBottom:10,marginLeft:15,marginTop:10,fontSize:15,fontWeight:"500",color:"#006A71"}}>处方总览</Text>
+          <View style={{
+            width: 150,marginLeft:30,
+            borderColor:"#68B0AB",
+            height:20,
+            marginTop:10,
+            borderRadius: 15,
+            borderWidth:0.5,paddingLeft:3,paddingTop:2
+          }}>
+              <Text style={{fontSize:11,color:"#68B0AB"}}>
+                  处方号：
+              </Text>
+              </View> 
+          </View>
           <View style={{flexDirection: 'row', marginTop:5,  marginLeft:25}}>
          
             <Image
             style = {{height:50,width:50,marginRight:15,marginLeft:-10,borderRadius:25}}
-            source = {item.businessEmployerImg?{uri:item.businessEmployerImg}:require("../images/telehealth_icon/service_doctor_img5.png")}
+            source = {item.headportraitUrl?{uri:item.headportraitUrl}:require("../images/telehealth_icon/service_doctor_img5.png")}
             />
           <View>
           <View style={{flexDirection:"row"}}>
 
-            <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.businessEmployerName}</Text>
-            {item.type=="远程医疗"?<Image style={{height:15,width:15,marginTop:5,marginLeft:10}}source={require('../images/telehealth_icon/service_icon_video.png')}></Image>:null}
+            <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.employerName}</Text>
+            <Text style={{fontSize:14, color:'#333333', fontWeight: '300',marginLeft:30,marginTop:2}}>{item.serviceClassName}</Text>
+
             </View>
+            
+            {item.orgName?<Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:0,marginBottom:2}}>{item.orgName}</Text>:null}
             <View style={{flexDirection:"row"}}>
             {/*types*/}
-            <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:0,marginTop:10}}>{ "全科问诊" }</Text>
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:75,marginTop:8}}>{item.dateOfDiagnosis}</Text>
+            <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:0,marginTop:5}}>{ date }</Text>
+            <TouchableOpacity onPress={()=>Linking.openURL(item.chiefcomplaintpdfUrl)}>
 
+            <Image
+            style = {{height:30,width:30,marginLeft:110}}
+            source = {require("../images/clarity_download-line2.png")}
+            />
+            </TouchableOpacity>
             </View>
+            <View style={{height:10}}></View>
           </View>
           </View>
-          <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
+          <View style={{flexDirection: 'row', borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
           
           </View>
-          </TouchableOpacity>    
 
         </View>
-      )
+      )}
     })
     return (
       <View style={{ flex:1, backgroundColor:"white" }}>
@@ -159,7 +193,7 @@ class HealthRecord extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:23}}>电子病历</Text>
+        marginTop:23}}>电子处方</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -208,5 +242,5 @@ class HealthRecord extends Component {
   }
   }
 }
-HealthRecord.contextType = DataContext;
-export default HealthRecord;
+prescription.contextType = DataContext;
+export default prescription;

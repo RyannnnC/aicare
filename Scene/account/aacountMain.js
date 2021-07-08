@@ -84,15 +84,19 @@ const AccountMain = ({navigation}) => {
       .then((json) => {
         //this.setState({loading:false})
         if (json.code === 0) {
-         
+          if(json.medicalInfo.firstName){
           setFirst(json.medicalInfo.firstName)
+          }
+          if(json.medicalInfo.lastName){
           setLast(json.medicalInfo.lastName)
+          }
+          if(json.medicalInfo.email){
           setEmail(json.medicalInfo.email)
-          
+          }
 
         } else {
           console.log(json.msg)
-          Alert.alert(json.msg);
+          //Alert.alert(json.msg);
         }
       }).catch(error => console.warn(error));
         },[])

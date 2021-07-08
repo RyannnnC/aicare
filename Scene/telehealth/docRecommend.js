@@ -37,13 +37,17 @@ class DocRecommend extends Component {
         )
       }):null;
       return (
-        <View style={styles.card} key={item.employerId}>
+        <View style={{
+          width: 315,
+          backgroundColor: '#ffffff',
+          borderRadius: 15,
+        }} key={item.employerId}>
           <TouchableOpacity onPress={() =>{
             this.props.navigation.navigate("docInfo",{orgId:item.orgId,docId:item.businessUserId,docType:"全科",address:item.orgAddress,docName:item.employerName,queryId:item.employerId})}}>
             <View style={{flexDirection: 'row', marginTop:5,  marginLeft:25}}>
 
             <Image
-            style = {{height:50,width:50,marginRight:15,marginLeft:-10}}
+            style = {{height:60,width:60,marginRight:15,marginLeft:-10,borderRadius:30}}
             source = {item.headPortrait?{uri:item.headPortrait}:require('../../images/telehealth_icon/service_doctor_img1.png')}
             />
           <View >
@@ -84,13 +88,13 @@ class DocRecommend extends Component {
         <View style={{marginTop:10}}>
         <Image
             style = {styles.topping_image}
-            source={require('../../images/order_img.png')}
+            source={require('../../images/telehealth_icon/service_img.png')}
         />
         </View>
         <View style={{alignItems:'center',marginTop:0}}>
         
         </View>
-        <ScrollView style={{ flex:1,marginTop:30,marginLeft:-30,maxHeight:550}}>
+        <ScrollView style={{ flex:1,marginTop:20,marginLeft:-30,maxHeight:630}}>
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>

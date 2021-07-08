@@ -19,9 +19,10 @@ class Signup extends Component {
     checked3:false,
     press:false,
   }
-  storeToken = async (token) => {
+  storeToken = async (token,id) => {
     try {
        await AsyncStorage.setItem("token", token);
+       await AsyncStorage.setItem("infoId", JSON.stringify(id));
        console.log("Store token success");
     } catch (error) {
       console.log("Something went wrong", error);
@@ -70,7 +71,7 @@ class Signup extends Component {
       +'&mobile=' + s.phone
       +'&clientType=3'
       +'&code=' + s.userCode
-      +'&appType=4'+"&type=mobile"
+      +'&appType=1'+"&type=mobile"
       fetch(url,{
         method: 'POST',
         headers: {
@@ -85,9 +86,10 @@ class Signup extends Component {
            //console.log(json.msg);
            Alert.alert("注册成功！")
            console.log(json)
-           this.storeToken(json.token);
+           this.storeToken(json.token,json.customerUserInfoId);
           //this.props.navigation.navigate('登陆');
           this.context.action.changetoken(json.token);
+          this.context.action.changeInfoId(json.customerUserInfoId)
         }else{
           Alert.alert(json.msg)
         }

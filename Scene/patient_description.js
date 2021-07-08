@@ -6,6 +6,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
 import * as Localization from 'expo-localization';
+import { StackActions } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class Patient_description extends Component {
   constructor(props) {
@@ -48,7 +50,12 @@ export default class Patient_description extends Component {
       //this.setState({loading:false})
     }
   };
+  
   uploadComplain(){
+    if(this.state.image.length==0){
+      Alert.alert("您需要先上传附件才可以提交。")
+      return;
+    }
     this.setState({loading:true});
     Alert.alert("正在为您寻找医生，请稍等")
 
@@ -93,6 +100,9 @@ export default class Patient_description extends Component {
           Alert.alert('网络异常');
         }
       }).catch(error => console.warn(error));
+  }
+   goBack= () => {
+    this.props.navigation.dispatch(StackActions.pop(1))
   }
   async componentDidMount (){
     //this.setState({loading:true});
@@ -186,9 +196,7 @@ export default class Patient_description extends Component {
         )
     }):null;
   return (
-    <KeyboardAwareScrollView
-    enableOnAndroid={true}
-    enableAutomaticScroll={(Platform.OS === 'ios')}
+    <ScrollView
     style={{backgroundColor:"white"}}
     contentContainerStyle={{flex:1,backgroundColor: 'white',
     marginTop: -70,
@@ -196,20 +204,33 @@ export default class Patient_description extends Component {
     behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={{backgroundColor:"white"}}>
       <View style={{marginTop:70}}>
-      {/*<View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0}}>
-          <Image style = {{height:20,width:20,marginTop:34}}
-        source = {require('../images/telehealth_icon/signup_icon_phone.png')}
-      />
       
-      <Text style={{marginTop:35,marginLeft:10}}>人员列表</Text>
-      </View>     
-      {orders}*/}
       </View>
-    
+      <View style={{flexDirection: 'row', marginTop:70, marginBottom:10}}>
+            <TouchableOpacity onPress={this.goBack}>
+            <Image
+            style = {{width:30,
+                height:30,
+                marginTop:0,
+                marginLeft:0,}}
+            source={require('../images/icon/2/Arrow_left.png')}
+            />
+            </TouchableOpacity>
+            <Text style={{
+              fontSize:16,
+
+              marginTop:3,marginLeft:85}}>在线问诊</Text>
+          </View>
+          <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0,width:330}}>
+          
       
+      <Text style={{marginTop:15,marginLeft:0,color:"#68B0AB"}}>在本模块，AIcare在线助手将对您的相关资料进行收集，对您进行病情初步的评估，并根据评估结果为您寻找与您匹配度最高的医生。</Text>
+      </View>  
+          <Text style={{fontSize:18,fontWeight:"500",marginLeft:0,marginTop:15}}>病情描述</Text>
+
       <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0}}>
-      <View style={{width:300}}>
-      <Text style={{marginTop:35,marginLeft:10}}>请仔细描述您的病情(如症状，患病时长，用药状况等)</Text>
+      <View style={{width:330}}>
+      <Text style={{marginTop:15,marginLeft:0}}>请仔细描述您的病情(如症状，患病时长，用药状况等)</Text>
       </View>
       {/*<TouchableOpacity style={{    borderColor:"#999999",
       borderWidth:1,
@@ -244,28 +265,26 @@ export default class Patient_description extends Component {
       />
       
       
-      
-      <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0,width:300}}>
+      <Text style={{fontSize:18,fontWeight:"500",marginLeft:0,marginTop:30}}>附件上传</Text>
+      <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0,width:330}}>
           
       
-      <Text style={{marginTop:35,marginLeft:10}}>请问患者是否有相关病症照片等附件？请在此上传以便医生进行判断。(必填)</Text>
+      <Text style={{marginTop:15,marginLeft:0}}>请问患者是否有相关病症照片等附件？请在此上传以便医生进行判断。(必填)</Text>
       </View>     
       {this.state.loading?<ActivityIndicator size="large" style={{marginTop:0}} color="#8FD7D3"></ActivityIndicator>:null}
+      <View style={{flexDirection:"row"}}>
       {this.state.image.length==0?null:
       <Image
-      style = {{height:130,width:130,marginTop:14}}
+      style = {{height:100,width:100,marginTop:14}}
       source={{ uri: this.state.image }}
  
       />
       
       }
-      <TouchableOpacity style={{backgroundColor: '#8FD7D3',
-              padding:10,
-              width:280,
+      <TouchableOpacity style={{
               marginTop:20,
-              height:45,
               alignItems: 'center',
-              borderRadius:25,}}
+           }}
               onPress = {()=>Alert.alert(
                 "照片上传",
                 "您可以上传与病情相关的照片，请问请问你是要打开相机拍照还是从相册选择呢?",
@@ -284,23 +303,27 @@ export default class Patient_description extends Component {
                 
               ]
               )}>
-        <Text style={{color:"white"}}>照片上传 +</Text>
+        <Image
+      style = {{height:100,width:100,marginTop:0,marginLeft:100}}
+      source={require('../images/plus.png')} 
+      />
       </TouchableOpacity>
       
-      {image.length>0?
+      </View>
       <View>
-      <Text style={{marginTop:40}}>  如填写完毕，请点击此处上传。</Text>
+      <Text style={{marginTop:40,marginLeft:-5}}>  如填写完毕，请点击此处上传。</Text>
       <TouchableOpacity style={{backgroundColor: '#8FD7D3',
               padding:10,
               width:280,
               marginTop:30,
               height:45,
               alignItems: 'center',
+              marginLeft:20,
               borderRadius:25,}}
               onPress = {()=>this.uploadComplain()}>
         <Text style={{color:"white"}}>{"提交"}</Text>
       </TouchableOpacity>
-      </View>:null}
+      </View>
       <View style={{flexDirection:"row"}}>
       <Image style = {{marginTop:70,
     width:120,
@@ -311,7 +334,7 @@ export default class Patient_description extends Component {
       
     </View>
     <View style={{height:100,backgroundColor:'white'}}></View> 
-    </KeyboardAwareScrollView>
+    </ScrollView>
   );}
 }
 

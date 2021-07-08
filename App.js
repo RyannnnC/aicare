@@ -60,7 +60,8 @@ import HealthRecord from "./Scene/healthRecord";
 import HistoryInfo from "./Scene/account/historyInfo";
 import AiTest from "./Scene/aiTest";
 import Result from "./Scene/result";
-
+import prescription from './Scene/prescriptions';
+import Pdf from './Scene/pdf';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -402,7 +403,7 @@ render() {
         <Stack.Screen name ="pay" component={Pay} options={{headerShown:false}}/>
         <Stack.Screen name="数据协议" component={DataPolicy} />
         <Stack.Screen name="termofuse" component={TermOfUse} />
-        <Stack.Screen name="资料收集" component={Patient_description} />
+        <Stack.Screen name="资料收集" component={Patient_description} options={{headerShown:false}}/>
         <Stack.Screen name="onlineDoc" component={OnlineDoc} options={{headerShown:false}}/>
         <Stack.Screen name="healthRecord" component={HealthRecord} options={{headerShown:false}}/>
         <Stack.Screen name="report" component={Report} options={{headerShown:false}}/>
@@ -410,6 +411,8 @@ render() {
         <Stack.Screen name="historyInfo" component={HistoryInfo} options={{headerShown:false}}/>
         <Stack.Screen name="aiTest" component={AiTest} options={{headerShown:false}}/>
         <Stack.Screen name="result" component={Result} options={{headerShown:false}}/>
+        <Stack.Screen name="prescription" component={prescription} options={{headerShown:false}}/>
+        <Stack.Screen name="pdf" component={Pdf} options={{headerShown:false}}/>
 
 
 

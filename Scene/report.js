@@ -65,7 +65,7 @@ export default function Report({route,navigation}) {
             <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>剂量：{item.dose}</Text>
             <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>数量：{item.amount}</Text>
             <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>疗程：{item.repetition}</Text>
-            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6,marginBottom:10 }}>是否重复:{item.isRepeat}</Text>
+            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6,marginBottom:10 }}>是否重复:{item.isRepeat==0?"不重复":"重复"}</Text>
 
           </View>
         )
@@ -97,7 +97,7 @@ export default function Report({route,navigation}) {
         </View>
         
         </View>
-    <TouchableOpacity onPress={()=>navigation.navigate("docInfo",{orgId:null,docId:doc.businessEmployerId,docType:"全科",address:"bankstown clinics",docName:"Dr ryan",queryId:doc.businessEmployerId})}>
+    <TouchableOpacity >
     <View style={{ width:'90%',flex:1, justifyContent: "center", alignItems: "center",marginTop:10,zIndex: 1,marginLeft:10}}>
       
           <Image style={{width:60,height:60,borderRadius:40,marginLeft:-200,marginTop:0}}
@@ -131,12 +131,11 @@ export default function Report({route,navigation}) {
         </View>
         </TouchableOpacity>
 
-        <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18,borderTopWidth:0.7}}>
+        <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18,}}>
         <View style={{marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>病人信息</Text>
           <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>姓名：{doc.lastName?doc.lastName:"未填写姓"} {doc.firstName?doc.firstName:"未填写名"}</Text>
           <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>性别：{doc.gender?doc.gender:"未填写"}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>年龄：{doc.age?doc.age:"未填写"}</Text>
           <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>出生日期：{doc.dob?doc.dob:"未填写"}</Text>
           <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>Medicare卡号：{doc.medicare?doc.medicare.number:"未填写"}</Text>
 
@@ -183,17 +182,7 @@ export default function Report({route,navigation}) {
         </View>
 
         </View>
-        <TouchableOpacity style={{backgroundColor: '#8FD7D3',
-              padding:10,
-              width:200,
-              marginLeft:80,
-              marginTop:10,
-              height:45,
-              alignItems: 'center',
-              borderRadius:25,}}
-              onPress = {()=>Alert.alert("购买成功")}>
-        <Text style={{color:"white"}}>一键购买</Text>
-      </TouchableOpacity>
+        
 
        
         

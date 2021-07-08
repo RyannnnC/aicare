@@ -117,7 +117,11 @@ class telehealthDoc extends Component {
         )
       }):null;
       return (
-        <View style={styles.card} key={item.employerId}> 
+        <View style={{
+          width: 315,
+          backgroundColor: '#ffffff',
+          borderRadius: 15,
+        }} key={item.employerId}> 
         <TouchableOpacity onPress={() =>{
           //console.log(this.props.route.params.orgId)
           console.log(this.props.route.params.doctype);
@@ -126,20 +130,20 @@ class telehealthDoc extends Component {
           <View style={{flexDirection: 'row', marginTop:5,  marginLeft:25}}>
          
             <Image
-            style = {{height:50,width:50,marginRight:15,marginLeft:-10,borderRadius:25}}
+            style = {{height:60,width:60,marginRight:15,marginLeft:-10,borderRadius:30}}
             source = {item.imgUrl?{uri:item.imgUrl}:require("../../images/telehealth_icon/service_doctor_img5.png")}
             />
           <View>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500'}}>{item.name}</Text>
             <View style={{flexDirection:"row"}}>
             {types}
-            <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:-5}}>{ " - "+ this.props.route.params.name}</Text>
+            <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:-5}}> {  this.props.route.params.name}</Text>
             </View>
           </View>
           </View>
-          <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
+          <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE',marginTop:-15}}>
             <Image
-              style = {{width: 20, height:20 , marginLeft:75, marginRight:1}}
+              style = {{width: 20, height:20 , marginLeft:85, marginRight:1}}
               source = {require('../../images/telehealth_icon/stars.png')}
             />
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{5+" ("+1+"条评价)"}</Text>
@@ -217,7 +221,7 @@ class telehealthDoc extends Component {
         <View style={{alignItems:'center',marginTop:5}}>
         
         </View>
-        <ScrollView style={{ flex:1,marginTop:-5,paddingTop:13,marginLeft:-30,maxHeight:500}}>
+        <ScrollView style={{ flex:1,marginTop:-5,paddingTop:13,marginLeft:-30,maxHeight:540}}>
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>

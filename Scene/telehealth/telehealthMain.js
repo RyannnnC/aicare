@@ -135,10 +135,10 @@ export default function TelehealthrMain({navigation}) {
          <View style={{flexDirection: 'row', marginTop:180, marginBottom:10}}>
             <TouchableOpacity onPress={goBack}>
             <Image
-            style = {{width:35,
-                height:35,
+            style = {{width:30,
+                height:30,
                 marginTop:-150,
-                marginLeft:-131,}}
+                marginLeft:-125,}}
             source={require('../../images/icon/2/Arrow_left.png')}
             />
             </TouchableOpacity>

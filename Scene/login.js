@@ -71,7 +71,7 @@ export default class Login extends Component {
     let url = 'http://'+this.context.url+'/aicare-customer-api/customer/user/login?'
     +'loginName='+ s.name
     +'&passWord=' + s.password
-    +"&appType=4" +"&loginType="+s.type;
+    +"&appType=1" +"&loginType="+s.type;
     fetch(url,{
       method: 'POST',
       headers: {
@@ -92,7 +92,7 @@ export default class Login extends Component {
           
           //console.log(json.code)
         } else {
-          Alert.alert("登良失败，请检查网络或联系客服，客服电话:0421326182.");  
+          Alert.alert(json.msg);  
           console.log(json.msg)
           //this.context.action.changeLogin(true);//need to remove this
         }

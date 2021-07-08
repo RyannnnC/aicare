@@ -116,14 +116,18 @@ class telehealthClinic extends Component {
     if (clinics.length >0) {
     const orders = clinics.map((item) => {
       return (
-        <View style={styles.card} key={item.id}>
+        <View style={{
+          width: 315,
+          backgroundColor: '#ffffff',
+          borderRadius: 15,
+        }} key={item.id}>
            <TouchableOpacity onPress={() =>{
             this.props.navigation.navigate("telehealthDoc",{orgId:item.orgId,name:item.name,doctype:this.props.route.params.doctype,address:item.address,item:item})}}
             >
-          <View style={{flexDirection: 'row', marginTop:5, marginBottom:5, marginLeft:25}}>
+          <View style={{flexDirection: 'row', marginTop:5, marginBottom:0, marginLeft:25}}>
          
             <Image
-            style = {{height:40,width:40,marginRight:15,marginLeft:-10}}
+            style = {{height:60,width:60,marginRight:15,marginLeft:-10,borderRadius:30}}
             source = {item.orgImg?{uri: item.orgImg}:require('../../images/telehealth_icon/service_telehealth_select_img_clinic1.png')}
             />
           <View>
@@ -131,9 +135,9 @@ class telehealthClinic extends Component {
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.address}</Text>
           </View>
           </View>
-          <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE'}}>
+          <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE',marginTop:-3}}>
             <Image
-              style = {{width: 20, height:20 , marginLeft:70, marginRight:1}}
+              style = {{width: 20, height:20 , marginLeft:85, marginRight:1}}
               source = {require('../../images/telehealth_icon/stars.png')}
             />
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{5+" (1条评价)"}</Text>
@@ -215,7 +219,7 @@ class telehealthClinic extends Component {
           value={this.state.search}
         />*/}
         </View>
-        <ScrollView style={{ flex:1,marginTop:30,marginLeft:-30,maxHeight:500}}>
+        <ScrollView style={{ flex:1,marginTop:0,marginLeft:-30,maxHeight:590}}>
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>
