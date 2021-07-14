@@ -262,7 +262,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 40,
     marginTop: 40,
-    backgroundColor: '#68B0AB',
+    backgroundColor: 'rgb(33,192,196)',
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: "center",
@@ -364,7 +364,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   codeTab: {
-    backgroundColor: '#68B0AB',
+    backgroundColor: 'rgb(33,192,196)',
     width:'auto',
     marginTop: 3,
     marginLeft: 25,
@@ -376,7 +376,7 @@ export const styles = StyleSheet.create({
     borderRadius:10,
   },
   codeTab2: {
-    backgroundColor: '#68B0AB',
+    backgroundColor: 'rgb(33,192,196)',
     width: 'auto',
     marginTop: 3,
     marginLeft: 10,

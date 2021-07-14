@@ -42,11 +42,10 @@ export default class Forget extends Component {
     .then((response) => response.json())
     .then((json) =>  {
         if (json.code === 0) {
-          console.log("success");
-          Alert.alert("修改成功");
+          Alert.alert("success");
           this.props.navigation.navigate('登陆');
         } else {
-          Alert.alert("Unknown Error");
+          Alert.alert(json.msg);
           return false;
         }
     })} else {
@@ -69,11 +68,10 @@ export default class Forget extends Component {
       .then((response) => response.json())
       .then((json) =>  {
           if (json.code === 0) {
-            console.log("success");
-            Alert.alert("修改成功");
+            Alert.alert("success");
             this.props.navigation.navigate('登陆');
           } else {
-            Alert.alert("Unknown Error");
+            Alert.alert(json.msg);
             return false;
           }
       })
@@ -195,14 +193,14 @@ export default class Forget extends Component {
           </View>
 
           <View style={{height:30,marginBottom:10}}>
-            <TextInput style={styles.resumeInput}
+            <TextInput style={{width:'80%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
             placeholder= {I18n.t('multipleInput')}
             onChangeText={(text) => {this.setState({ info: text})}}
             />
           </View>
 
           <View style={{flexDirection: 'row'}}>
-            <TextInput style={styles.resumeInput3}
+            <TextInput style={{width:'70%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
             placeholder={I18n.t('verifyInput')}
             onChangeText={(text) => {this.setState({ code: text})}}
             />
@@ -212,7 +210,7 @@ export default class Forget extends Component {
           </TouchableOpacity>
             :
             <TouchableOpacity style={styles.codeTab} onPress={()=>this.sendCode()}>
-            <Text style={{ fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
+            <Text style={{ color:'white',fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
           </TouchableOpacity>
             }
           </View>
@@ -224,8 +222,8 @@ export default class Forget extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('password')}</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
-          <TextInput style={styles.resumeInput}
+          <View>
+          <TextInput style={{width:'80%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
           placeholder={I18n.t('passwordInput')}
           onChangeText={(text) => {this.setState({ password: text})}}
           />
@@ -237,8 +235,8 @@ export default class Forget extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('confirm')}</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB'}}>
-          <TextInput style={styles.resumeInput}
+          <View>
+          <TextInput style={{width:'80%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
           placeholder={I18n.t('passwordInput2')}
           onChangeText={(text) => {this.setState({ confirm: text})}}
           />

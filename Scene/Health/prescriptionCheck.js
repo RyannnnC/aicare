@@ -36,6 +36,7 @@ export default class PrescriptionCheck extends Component {
       uri:null,
       signature:null,
       html:``,
+      canscroll:true,
       style:`.m-signature-pad {
             font-size: 15px;
             width: 280px;
@@ -240,7 +241,7 @@ export default class PrescriptionCheck extends Component {
 
   queryDoctor() {
     let url = 'http://'
-    +this.context.url
+    + this.context.url
     +'/aicare-business-api/business/employer/list'
     +'?employerId=' + this.context.employerId;
       fetch(url,{
@@ -457,9 +458,9 @@ export default class PrescriptionCheck extends Component {
   render() {
     if (this.state.isLoading){
       return(
-     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-         <ActivityIndicator size="large" color="#00ff00"  />
-      </View>
+        <View style={{ flex: 1, backgroundColor:'rgb(51,51,51)', justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" color="white"  />
+        </View>
     )
     }else {
       let medicine = []
@@ -478,7 +479,7 @@ export default class PrescriptionCheck extends Component {
     <SafeAreaView style={{ flex:1,height:'100%',width:'100%', justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}>
       <ViewShot ref="viewShot" onCapture={this.onCapture} options={{ format: "jpg", quality: 0.9 }} style={{height:'95%',width:'95%',flexDirection:'row',justifyContent: "center",backgroundColor:"white",borderRadius:5}}>
         <ScrollView style={{height:'95%',width:'25%',borderRightWidth:1,margin:'2%'}}>
-          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('docInfo')}</Text>
+          <Text style={{ fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('docInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.dname}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>Prescribe Number: {this.state.pn}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('mobile')}: {this.state.dmobile}</Text>
@@ -489,7 +490,7 @@ export default class PrescriptionCheck extends Component {
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{this.props.route.params.patientComplaint}</Text>
         </ScrollView>
         <ScrollView style={{height:'95%',width:'25%',borderRightWidth:1,marginTop:'2%',marginBottom:'2%',marginRight:'2%'}}>
-          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
+          <Text style={{ fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('name')}: {this.state.name}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
@@ -506,8 +507,8 @@ export default class PrescriptionCheck extends Component {
           </View>
           }
         </ScrollView>
-        <View style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
-          <Text style={{ fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('presInfo')}</Text>
+        <ScrollView scrollEnabled={this.state.canscroll} style={{height:'95%',width:'40%',marginRight:'1%',marginLeft:'1%',marginTop:'2%',marginBottom:'2%'}}>
+          <Text style={{ fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)'}}>{I18n.t('presInfo')}</Text>
           <Text style={{ fontSize:16, fontWeight: '400', marginTop:'5%' }}>{I18n.t('preNumber')}: 01{new Date().getFullYear().toString()}{new Date().getMonth().toString()}{new Date().getDate().toString()}</Text>
           <Text style={{ fontSize:16, fontWeight: '400',marginTop:'5%'}}>{I18n.t('bookingDate')}: {moment(new Date()).format('L')}</Text>
           <ScrollView style={{width:'100%',height:'60%',marginTop:'5%'}}>
@@ -518,10 +519,12 @@ export default class PrescriptionCheck extends Component {
             </View>
           }
           </ScrollView>
-        <Text style={{marginTop:20, fontSize:20, fontWeight: '500', color: '#68B0AB'}}>{I18n.t('esign')}</Text>
+        <Text style={{marginTop:20, fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)'}}>{I18n.t('esign')}</Text>
         <View style={{width:'90%',height:250}}>
           <SignatureScreen
             ref="sig"
+            onBegin={()=>this.setState({canscroll:false})}
+            onEnd={()=>this.setState({canscroll:true})}
             onOK={this.handleSignature}
             onEmpty={this.handleEmpty}
             onClear={this.handleClear}
@@ -537,7 +540,7 @@ export default class PrescriptionCheck extends Component {
             height: 40,
             marginTop: 10,
             marginBottom:20,
-            backgroundColor: '#68B0AB',
+            backgroundColor: 'rgb(33,192,196)',
             borderRadius: 20,
             alignItems: 'center',
             justifyContent: "center",}}
@@ -545,7 +548,7 @@ export default class PrescriptionCheck extends Component {
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
           </TouchableOpacity>
         </View>
-        </View>
+        </ScrollView>
       </ViewShot>
 
     </SafeAreaView>

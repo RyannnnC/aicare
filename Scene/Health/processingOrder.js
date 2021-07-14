@@ -15,13 +15,24 @@ export default class ProcessingOrder extends Component {
         isEnabled: false,
         modalVisible: false,
         mdVisible:false,
-        mds:[],
+        cardVisible:false,
         Visible:false,
         selectedId:'',
         selectedDoctor:'',
         timeLoad:false,
         isLoading:true,
         selectedDate: new Date(),
+        mcrn:'',
+        mmobile:'',
+        mdate:'',
+        mdoctor:'',
+        mclass:'',
+        maddress:'',
+        mflag:1,
+        minsurance:'',
+        msnum:'',
+        mcnum:'',
+        medate:'',
       };
       this.onDateChange = this.onDateChange.bind(this);
     }
@@ -91,11 +102,11 @@ export default class ProcessingOrder extends Component {
 
   modify(sid,stime,etime) {
     Alert.alert(
-      '提醒',
-      '您确定要修改预约至'+stime+' - ' +etime+'吗？',
+      'Alert',
+      'Do you want to change to Time'+stime+' - ' +etime+'？',
       [
-        {text: '确定', onPress: () => {
-          this.setState({isLoading:true})
+        {text: 'Yes', onPress: () => {
+          this.setState({isLoading:true,modalVisible:false})
           let url = 'http://'
           +this.context.url
           +'/aicare-business-api/business/appointment/modify?'
@@ -115,7 +126,7 @@ export default class ProcessingOrder extends Component {
             .then((response) => response.json())
             .then((json) => {
               if (json.code === 0) {
-                Alert.alert('修改成功')
+                Alert.alert('Modify Success')
               } else {
                 Alert.alert(json.msg)
               }
@@ -123,7 +134,7 @@ export default class ProcessingOrder extends Component {
               this.query();
             }).catch(error => console.warn(error));
         }},
-        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+        {text: 'No', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
       {
         cancelable: false
@@ -135,22 +146,6 @@ export default class ProcessingOrder extends Component {
     this.sendRequest(fd);
   }
 
-  findvis(id) {
-    for (let i=0;i<this.state.mds.length;i++) {
-      if(this.state.mds[i].id == id) {
-        return this.state.mds[i].visible;
-      }
-    }
-  }
-  changevis(id,value){
-    for (let i=0;i<this.state.mds.length;i++) {
-      if(this.state.mds[i].id == id) {
-        let t = this.state.mds;
-        t[i].visible = value;
-        this.setState({mds:t})
-      }
-    }
-  }
   queryDate = (date) =>{
     this.setState({
       modalVisible:false,
@@ -184,15 +179,6 @@ export default class ProcessingOrder extends Component {
           if (json.code === 0) {
             console.log(json);
             this.setState({data:json.page});
-            for(let i=0; i<json.page.length;i++){
-              var d= {
-                id:json.page[i].id,
-                visible:false,
-              }
-              let t = this.state.mds;
-              t.push(d);
-              this.setState({mds:t});
-            }
           } else if (json.code == 10011) {
             this.loggedin(json.msg)
           }else {
@@ -226,15 +212,6 @@ export default class ProcessingOrder extends Component {
         if (json.code === 0) {
           console.log(json);
           this.setState({data:json.page});
-          for(let i=0; i<json.page.length;i++){
-            var d= {
-              id:json.page[i].id,
-              visible:false,
-            }
-            let t = this.state.mds;
-            t.push(d);
-            this.setState({mds:t});
-          }
         } else if (json.code == 10011) {
           this.loggedin(json.msg)
         } else {
@@ -273,15 +250,6 @@ export default class ProcessingOrder extends Component {
           if (json.code === 0) {
             console.log(json);
             this.setState({data:json.page});
-            for(let i=0; i<json.page.length;i++){
-              var d= {
-                id:json.page[i].id,
-                visible:false,
-              }
-              let t = this.state.mds;
-              t.push(d);
-              this.setState({mds:t});
-            }
           } else if (json.code == 10011) {
             this.loggedin(json.msg)
           } else {
@@ -294,7 +262,7 @@ export default class ProcessingOrder extends Component {
       '',
       msg,
       [
-        {text: '确定', onPress: () => {this.context.action.logout()}},
+        {text: 'Yes', onPress: () => {this.context.action.logout()}},
       ],
       {
         cancelable: false
@@ -334,18 +302,26 @@ export default class ProcessingOrder extends Component {
         </View>
     )
     }else {
-    if (this.state.data.length > 0) {
     orders = this.state.data.map((item) => {
-      let tp = '';
-      if (item.videoChannel == 1) {
-        tp = 'Facetime'
-      } else {
-        tp = 'Skype'
-      }
       return (
-        <View key={item.id} style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:50,backgroundColor:'white'}}>
+        <View key={item.id} style={{borderColor:'#EEEEEE',borderTopWidth:1,flexDirection:'row',width:'90%',height:50,backgroundColor:'white'}}>
           <TouchableOpacity style={{flexDirection:'row',alignItems:'center',width:'14%',paddingLeft:'1%'}}
-          onPress={()=>{this.changevis(item.id,true)}}>
+          onPress={()=>{
+            this.setState({
+              mcrn:item.customerRealName,
+              mmobile:item.mobile,
+              mdate:moment(item.appointDate).format('L').substring(0,5) +' '+ item.timeRange,
+              mdoctor:item.businessEmployerName,
+              mclass:item.serviceClassName,
+              maddress:item.orgAddress,
+              mflag:item.telehealthFlg,
+              minsurance:item.insuranceType,
+              msnum:item.serialNumber,
+              mcnum:item.cardNumber,
+              medate:item.expireDate,
+            })
+            this.setState({cardVisible:true})
+          }}>
             {item.sex == 'Male'?
             <Image
               style = {{width:20,height:20,marginRight:5}}
@@ -389,70 +365,6 @@ export default class ProcessingOrder extends Component {
               <Text style={{color:'rgb(33,192,196)'}}>{I18n.t('modify')}</Text>
             </TouchableOpacity>
           </View>
-        <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.findvis(item.id)}
-        onRequestClose={() => {
-          this.changevis(item.id,false)
-        }}
-      >
-      <View style={{marginTop:250,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
-  shadowOffset: {
-  width: 0,
-  height: 12,
-  },
-  shadowOpacity: 0.58,
-  shadowRadius: 16.00,
-
-  elevation: 24,}}>
-    <View style={{flexDirection:"row"}}>
-    <TouchableOpacity onPress={() =>{this.changevis(item.id,false)}} style={{marginRight:60,marginLeft:23}}>
-      <Image
-        style = {styles.arrow_image}
-        source={require('../../images/icon/2/Arrow_left.png')}
-      />
-    </TouchableOpacity>
-    </View>
-    <ScrollView style={{backgroundColor:"#F7FAFA"}}>
-      <View style={{alignItems:'center'}}>
-      <View style={{marginTop:30}}>
-        <Text style={{marginBottom:10}}>{I18n.t('patientName')}: {item.customerRealName}</Text>
-        <Text style={{marginBottom:10}}>{I18n.t('patientMobile')}: {item.mobile}</Text>
-        <Text style={{marginBottom:10}}>{I18n.t('bookingTime')}: {moment(item.appointDate).format('L').substring(0,5)}  {item.startTime&&item.startTime.substring(0,5)}-{item.endTime&&item.endTime.substring(0,5)}</Text>
-        <Text style={{marginBottom:10}}>{I18n.t('bookingDoctor')}: {item.businessEmployerName}</Text>
-        <Text style={{marginBottom:10}}>{I18n.t('bookingDept')}: {item.serviceClassName}</Text>
-        <Text style={{marginBottom:10}}>{I18n.t('bookingAdress')}: {item.orgAddress}</Text>
-        {item.telehealthFlg ==1?
-          <View>
-            <Text style={{marginBottom:10}}>{I18n.t('treatmentTypeT')}</Text>
-            <Text style={{marginBottom:10}}>{I18n.t('remoteMethod')}: {tp}</Text>
-          </View>
-        :
-        <Text style={{marginBottom:10}}>{I18n.t('treatmentTypeO')}</Text>
-        }
-        <Text style={{marginBottom:10}}>{I18n.t('insuranceType')}: {item.insuranceType}</Text>
-        {item.insuranceType == 'Medicare' &&
-          <View>
-            <Text style={{marginBottom:10}}>{I18n.t('serialNumber')}: {item.serialNumber}</Text>
-            <Text style={{marginBottom:10}}>{I18n.t('cardNumber')}: {item.cardNumber}</Text>
-            <Text style={{marginBottom:10}}>{I18n.t('expireDate')}: {item.expireDate}</Text>
-          </View>
-        }
-        {item.insuranceType == '私人保险' &&
-          <View>
-            <Text style={{marginBottom:10}}>{I18n.t('cardNumber')}: {item.cardNumber}</Text>
-          </View>
-        }
-      </View>
-        <TouchableOpacity style={styles.next_wrapper} onPress={() =>{this.changevis(item.id,false)}}>
-          <Text style={styles.onsite_text}>{I18n.t('confirmation')}</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-        <View style={{height:20}}/>
-        </View>
-      </Modal>
         </View>
       )
     })
@@ -501,7 +413,7 @@ export default class ProcessingOrder extends Component {
               <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('todayOrder')}</Text>
             </TouchableOpacity>
           </View>
-          <View style={{borderTopWidth:1,flexDirection:'row',width:'90%',height:60,backgroundColor:'rgb(222,246,246)'}}>
+          <View style={{borderColor:'#EEEEEE',borderTopWidth:1,flexDirection:'row',width:'90%',height:60,backgroundColor:'rgb(222,246,246)'}}>
             <View style={{alignItems:'center',justifyContent:'center',width:'14%'}}>
               <Text style={{fontWeight: '400'}}>{I18n.t('name')}</Text>
             </View>
@@ -527,7 +439,15 @@ export default class ProcessingOrder extends Component {
               <Text style={{fontWeight: '400'}}>{I18n.t('operation')}</Text>
             </View>
           </View>
-          {orders}
+          {this.state.data.length>0?orders:
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , flex:1, width:'90%',height:'100%',backgroundColor:'white'}}>
+             <Image
+               style = {styles.finishImg}
+               source = {require('../../images/providerImg/order_img_empty1.png')}
+              />
+            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('noOrder')}</Text>
+           </View>
+          }
         </ScrollView>
          <Modal
            animationType="slide"
@@ -832,20 +752,69 @@ elevation: 24,}}>
         <View style={{height:20}}/>
         </View>
       </Modal>
-      </SafeAreaView>
-    )} else {
-    return (
-      <SafeAreaView style={{ flex:1,height:'100%', justifyContent: "center", alignItems: "center" , backgroundColor:'rgb(51,51,51)'}}>
-     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" , flex:1, width:'90%',height:'100%',backgroundColor:'white'}}>
-      <Image
-        style = {styles.finishImg}
-        source = {require('../../images/providerImg/order_img_empty1.png')}
-       />
-     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t('noOrder')}</Text>
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={this.state.cardVisible}
+      onRequestClose={() =>{this.setState({cardVisible:false})}}
+    >
+    <View style={{marginTop:250,backgroundColor:"#F7FAFA",borderRadius:40,shadowColor: "#000",
+      shadowOffset: {
+          width: 0,
+          height: 12,
+      },
+      shadowOpacity: 0.58,
+      shadowRadius: 16.00,
+      elevation: 24,}}>
+  <View style={{flexDirection:"row"}}>
+  <TouchableOpacity onPress={() =>{this.setState({cardVisible:false})}} style={{marginRight:60,marginLeft:23}}>
+    <Image
+      style = {styles.arrow_image}
+      source={require('../../images/icon/2/Arrow_left.png')}
+    />
+  </TouchableOpacity>
+  </View>
+  <ScrollView style={{backgroundColor:"#F7FAFA"}}>
+    <View style={{alignItems:'center'}}>
+    <View style={{marginTop:30}}>
+      <Text style={{marginBottom:10}}>{I18n.t('patientName')}: {this.state.mcrn}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t('patientMobile')}: {this.state.mmobile}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t('bookingTime')}: {this.state.mdate}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t('bookingDoctor')}: {this.state.mdoctor}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t('bookingDept')}: {this.state.mclass}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t('bookingAdress')}: {this.state.maddress}</Text>
+      {this.state.mflag ==1?
+        <View>
+          <Text style={{marginBottom:10}}>{I18n.t('treatmentTypeT')}</Text>
+          <Text style={{marginBottom:10}}>{I18n.t('remoteMethod')}: Skype</Text>
+        </View>
+      :
+        <Text style={{marginBottom:10}}>{I18n.t('treatmentTypeO')}</Text>
+      }
+      <Text style={{marginBottom:10}}>{I18n.t('insuranceType')}: {this.state.minsurance}</Text>
+      {this.state.minsurance == 'Medicare' &&
+        <View>
+          <Text style={{marginBottom:10}}>{I18n.t('serialNumber')}: {this.state.msnum}</Text>
+          <Text style={{marginBottom:10}}>{I18n.t('cardNumber')}: {this.state.mcnum}</Text>
+          <Text style={{marginBottom:10}}>{I18n.t('expireDate')}: {this.state.medate}</Text>
+        </View>
+      }
+      {this.state.minsurance == '私人保险' &&
+        <View>
+          <Text style={{marginBottom:10}}>{I18n.t('cardNumber')}: {this.state.mcnum}</Text>
+        </View>
+      }
     </View>
-    </SafeAreaView>
+      <TouchableOpacity style={styles.next_wrapper} onPress={() =>{this.setState({cardVisible:false})}}>
+        <Text style={styles.onsite_text}>{I18n.t('confirmation')}</Text>
+      </TouchableOpacity>
+    </View>
+  </ScrollView>
+      <View style={{height:20}}/>
+      </View>
+    </Modal>
+      </SafeAreaView>
     )
-  }
   }}
 }
 ProcessingOrder.contextType = DataContext;

@@ -127,7 +127,7 @@ export default class Login extends Component {
         source = {require('../images/providerImg/login_img_1.png')}
       />
       {this.state.mobile && (
-        <View style={{width:'80%',marginTop:50}}>
+        <View style={{width:'80%',marginTop:'2%'}}>
           <View style={{marginBottom:10,flexDirection:'row'}}>
             <View style={{width:'50%',alignItems:'flex-start',flexDirection:'row'}}>
             <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
@@ -151,7 +151,7 @@ export default class Login extends Component {
           </View>
         </View>)}
         {this.state.email && (
-          <View style={{width:'80%',marginTop:50}}>
+          <View style={{width:'80%',marginTop:'2%'}}>
             <View style={{marginBottom:10,flexDirection:'row'}}>
               <View style={{width:'50%',alignItems:'flex-start',flexDirection:'row'}}>
               <Text style={{ fontSize:18, fontWeight: '500', color: '#333333' }}>{I18n.t('account')}</Text>
@@ -194,17 +194,23 @@ export default class Login extends Component {
       <View style ={{marginTop:20,flexDirection: 'row',width:'80%'}}>
         <View style={{width:'50%',alignItems:'flex-start'}}>
         <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('forgotPassword'))}>
-          <Text style={styles.f_Text}>{I18n.t('forgotPassword')}</Text>
+          <Text>{I18n.t('forgotPassword')}</Text>
         </TouchableOpacity>
         </View>
         <View style={{width:'50%',alignItems:'flex-end'}}>
         <TouchableOpacity onPress={() => this.props.navigation.navigate(I18n.t('signup'))}>
-          <Text style={styles.r_Text}>{I18n.t('signup')}</Text>
+          <Text>{I18n.t('signup')}</Text>
         </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity style={styles.loginWrapper} onPress = {()=>this.loginRequest()}>
-        <Text style={styles.onsite_Text}>{I18n.t('login')}</Text>
+      <TouchableOpacity style={{backgroundColor: 'rgb(33,192,196)',
+      padding:10,
+      width:'80%',
+      marginTop:'3%',
+      height:40,
+      alignItems: 'center',
+      borderRadius:20,}} onPress = {()=>this.loginRequest()}>
+        <Text style={{color:'white'}}>{I18n.t('login')}</Text>
       </TouchableOpacity>
       <Image style = {styles.img4}
         source = {require('../images/logo.png')}

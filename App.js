@@ -1,5 +1,5 @@
 import React ,{Component, useContext}from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView,
   DrawerItemList,
@@ -17,25 +17,28 @@ import Signup from './Scene/signUp';
 import Forget from './Scene/forget';
 import DataContext from './providerContext';
 import HealthMain from './Scene/Health/healthMain';
-import HealthAccountMain from './Scene/Health/healthAccountMain';
+import HealthAccountMain from './Scene/Account/healthAccountMain';
 import ReservationMain from './Scene/Health/reservationMain';
-import Info from './Scene/Health/info';
-import Introduction from './Scene/Health/introduction';
-import Languages from './Scene/Health/languages';
-import HealthServiceType from './Scene/Health/healthServiceType';
-import OtherStores from './Scene/Health/otherStores';
-import Members from './Scene/Health/members';
-import UploadMember from './Scene/Health/uploadMember';
-import DoctorInfo from './Scene/Health/doctorInfo';
-import Mintro from './Scene/Health/mintro';
-import Mlan from './Scene/Health/mlan';
+import Info from './Scene/Account/info';
+import Introduction from './Scene/Account/introduction';
+import Languages from './Scene/Account/languages';
+import HealthServiceType from './Scene/Account/healthServiceType';
+import OtherStores from './Scene/Account/otherStores';
+import Members from './Scene/Account/members';
+import UploadMember from './Scene/Account/uploadMember';
+import DoctorInfo from './Scene/Account/doctorInfo';
+import Mintro from './Scene/Account/mintro';
+import Mlan from './Scene/Account/mlan';
 import I18n from './Scene/switchLanguage';
 import Enotes from './Scene/Health/enotes';
 import Enotes3 from './Scene/Health/enotes3';
-import CaseRecord from './Scene/Health/caseRecord';
-import MyAccount from './Scene/Health/myAccount'
+import CaseRecord from './Scene/MedicalRecord/caseRecord';
+import MyAccount from './Scene/Account/myAccount'
 import PrescriptionCheck  from './Scene/Health/prescriptionCheck'
 import Finish from './Scene/Health/finish'
+import Pathology from './Scene/Health/pathology'
+import Radiology from './Scene/Health/imageTest'
+import RecordDetail from './Scene/MedicalRecord/recordDetail'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,22 +47,43 @@ const Drawer = createDrawerNavigator();
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem label={I18n.t('booking')} style={{borderWidth:1}}/>
-      <DrawerItem label={I18n.t('processingOrder')}
-       onPress={() => props.navigation.navigate('预约',{screen:I18n.t('processingOrder')})} />
-      <DrawerItem label={I18n.t('pendingOrder')}
-       onPress={() => props.navigation.navigate('预约',{screen:I18n.t('pendingOrder')})} />
-      <DrawerItem label={I18n.t('myAccount')} onPress={() => {
-        props.navigation.navigate('账号')
-        props.navigation.navigate(I18n.t('myAccount'))
-      }} />
-      <DrawerItem label={I18n.t('changePassword')}
-       onPress={() => {
-        props.navigation.navigate('账号')
-        props.navigation.navigate(I18n.t('changePassword'))
-      }} />
-      <DrawerItem label={I18n.t('enote')} style={{borderWidth:1}}/>
+      <DrawerItem
+      label={I18n.t('homePage')}
+      style={{backgroundColor:'rgb(33,192,196)'}}
+      icon={({color,size}) =>
+      <MaterialIcons name="home" size={size} color={color} />}
+      onPress={() => props.navigation.navigate('主页')}/>
+      <DrawerItem
+      icon={({color,size}) => <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />}
+      label={I18n.t('booking')}
+      style={{backgroundColor:'rgb(33,192,196)'}}
+      onPress={() => props.navigation.navigate('预约')}/>
+        <DrawerItem label={I18n.t('processingOrder')}
+         onPress={() => props.navigation.navigate('预约',{screen:I18n.t('processingOrder')})} />
+        <DrawerItem label={I18n.t('pendingOrder')}
+         onPress={() => props.navigation.navigate('预约',{screen:I18n.t('pendingOrder')})} />
+      <DrawerItem
+      icon={({color,size}) =><MaterialCommunityIcons name="account" color={color} size={size} />}
+      label={I18n.t('account')}
+      style={{backgroundColor:'rgb(33,192,196)'}}
+      onPress={() => {props.navigation.navigate('账号')}}/>
+        <DrawerItem label={I18n.t('myAccount')} onPress={() => {
+          props.navigation.navigate('账号')
+          props.navigation.navigate(I18n.t('myAccount'))
+        }} />
+        <DrawerItem label={I18n.t('changePassword')}
+         onPress={() => {
+          props.navigation.navigate('账号')
+          props.navigation.navigate(I18n.t('changePassword'))
+        }} />
+        <DrawerItem label={I18n.t('orginfo')}
+         onPress={() => {
+          props.navigation.navigate('账号')
+          props.navigation.navigate(I18n.t('doctorInfo'))
+        }} />
+      <DrawerItem label={I18n.t('md')} style={{backgroundColor:'rgb(33,192,196)'}}
+        icon={({color,size}) =><FontAwesome5 name="notes-medical" size={size} color={color} />}
+        onPress={() => {props.navigation.navigate('病历')}}/>
     </DrawerContentScrollView>
   );
 }
@@ -128,17 +152,20 @@ function OrgHome() {
       </SafeAreaView>
   );
 }
-function DoctorHome() {
+function DoctorHome({ navigation }) {
   const user = useContext(DataContext);
   return (
     <SafeAreaView style={{flex:1}}>
     <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)'}}>
       <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'space-between'}}>
-      <Image
-        style={{height:36,width:160,marginLeft:'5%'}}
-        resizeMode='stretch'
-        source={require('./images/providerImg/顶端LOGO.png')}
-      />
+        <TouchableOpacity style={{marginLeft:'2%',height:'100%',alignItems:'center',justifyContent:'center'}} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <Feather name="menu" size={35} color="white" />
+        </TouchableOpacity>
+        <Image
+          style={{height:36,width:160,marginLeft:'5%'}}
+          resizeMode='stretch'
+          source={require('./images/providerImg/顶端LOGO.png')}
+        />
       <View style={{width:'70%',height:'100%',flexDirection:'row',alignItems:'center',justifyContent:'flex-end'}}>
         <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{user.name}</Text>
         <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{moment(new Date()).format('ll')}</Text>
@@ -170,6 +197,16 @@ function DoctorHome() {
             }}
           />
           <Tab.Screen
+             name="病历"
+             component={CaseRecord}
+             options={{
+               tabBarLabel: I18n.t('record'),
+               tabBarIcon: ({ color, size }) => (
+                 <FontAwesome5 name="notes-medical" size={24} color={color} />
+               ),
+             }}
+           />
+          <Tab.Screen
             name="账号"
             component={HealthAccountMain}
             options={{
@@ -184,16 +221,7 @@ function DoctorHome() {
       </SafeAreaView>
   );
 }
-/*        <Tab.Screen
-          name="病历"
-          component={CaseRecord}
-          options={{
-            tabBarLabel: I18n.t('record'),
-            tabBarIcon: ({ color, size }) => (
-              <FontAwesome5 name="notes-medical" size={24} color="black" />
-            ),
-          }}
-        />*/
+
 export default class App extends React.Component {
   constructor(props) {
   super(props);
@@ -581,6 +609,9 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
             <Stack.Screen name={I18n.t('prescription')} component={PrescriptionCheck} />
             <Stack.Screen name={I18n.t('finish')} component={Finish} />
+            <Stack.Screen name={I18n.t('recordDetail')} component={RecordDetail} />
+            <Stack.Screen name={I18n.t('pathology')} component={Pathology} />
+            <Stack.Screen name={I18n.t('image')} component={Radiology} />
             </>
           )
       ): (

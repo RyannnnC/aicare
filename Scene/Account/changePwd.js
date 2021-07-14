@@ -17,7 +17,7 @@ export default class ChangePwd extends Component {
   sendRequest() {
     let s = this.state;
     if (s.np != s.confirm) {
-      Alert.alert('两次输入的密码不一致')
+      Alert.alert('Two passwords must be same')
       return false;
     }
     let url = 'http://'
@@ -38,19 +38,17 @@ export default class ChangePwd extends Component {
     .then((response) => response.json())
     .then((json) =>  {
         if (json.code === 0) {
-          console.log("success");
-          Alert.alert("修改成功");
+          Alert.alert("success");
         } else {
-          Alert.alert("Unknown Error");
-          console.log(json)
+          Alert.alert(json.msg);
           return false;
         }
     })
   }
   render() {
     return (
-    <SafeAreaView style={{ flex:1, alignItems: "center" ,backgroundColor:'white'}}>
-        <View style={{alignItems: "flex-start",width:'85%' }}>
+    <SafeAreaView style={{ flex:1, alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}>
+        <View style={{alignItems: "flex-start",width:'90%',height:'100%',padding:'5%',backgroundColor:'white' }}>
         <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
           <Image
             style = {styles.smallIconImg}

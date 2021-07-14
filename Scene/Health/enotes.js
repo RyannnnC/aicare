@@ -3,16 +3,16 @@ import { KeyboardAvoidingView,Text,  View, Alert, Image,TouchableOpacity,ScrollV
 import { MaterialCommunityIcons,  FontAwesome} from '@expo/vector-icons';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
-import Voice from '@react-native-voice/voice';
+//import Voice from '@react-native-voice/voice';
 import * as Permissions from "expo-permissions";
 import ImageView from 'react-native-image-view';
 
 export default class Enotes extends Component {
     constructor(props) {
       super(props);
-      Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
-      Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
-      Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
+  //    Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
+  //    Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
+  //    Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
       this.state={
       pressed:false,
       pressed1:false,
@@ -36,7 +36,6 @@ export default class Enotes extends Component {
       familyHistory:[],
       chronic:[],
       allergy:[],
-      medicine:[],
       }
     }
   onSpeechStartHandler = (e) => {
@@ -80,19 +79,16 @@ export default class Enotes extends Component {
     }
   };
 
-  async componentDidMount(){
+   async componentDidMount(){
       this.setState({id:this.props.route.params.id});
-      if(this.props.route.params.medicine != null) {
-        this.setState({medicine:this.props.route.params.medicine});
-      }
       const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
       this.setState({ hasAudioPermission: status === "granted" });
       this.queryPatient();
   }
 
   componentWillUnmount() {
-      Voice.destroy()
-      .then(Voice.removeAllListeners);
+    //  Voice.destroy()
+    //  .then(Voice.removeAllListeners);
   }
   queryPatient() {
     let url = 'http://'
@@ -139,7 +135,7 @@ export default class Enotes extends Component {
           image:image
         })
       } else {
-        console.log(json.msg)
+        alert(json.msg)
       }
     })
     .catch(error => console.warn(error));
@@ -148,7 +144,6 @@ export default class Enotes extends Component {
 
 
   render() {
-    console.log(this.state.image)
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -159,8 +154,8 @@ export default class Enotes extends Component {
     return (
     <View style={{ flex:1, flexDirection:'row',justifyContent: "center", alignItems: "center" ,backgroundColor:'rgb(51,51,51)'}}
     >
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{height:'91.5%',width:'65%',backgroundColor:'white',borderRadius:5,padding:'2%'}}>
-        <Text style={{ fontSize:18, fontWeight: '500',marginTop:10, marginBottom:10}}>{I18n.t('statement')}</Text>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{height:'95%',width:'65%',backgroundColor:'white',borderRadius:5,padding:'2%'}}>
+        <Text style={{color:'rgb(33,192,196)', fontSize:18, fontWeight: '500',marginTop:10, marginBottom:10}}>{I18n.t('statement')}</Text>
         <View style={{width:'100%',height:'15%',alignItems:'center',flexDirection:'row'}}>
           {this.state.image.map((item) => {
             if (item.source.uri != null) {
@@ -176,7 +171,7 @@ export default class Enotes extends Component {
         </View>
 
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500'}}>{I18n.t('patientComplaint')}</Text>
+          <Text style={{color:'rgb(33,192,196)',fontSize:18, fontWeight: '500'}}>{I18n.t('patientComplaint')}</Text>
         </View>
           <TextInput style={{width:'100%',height:'15%',padding:'2%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}
             value={this.state.complaint}
@@ -185,14 +180,14 @@ export default class Enotes extends Component {
           />
 
         <View style={{flexDirection: 'row', marginBottom:10,marginTop:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
+          <Text style={{ color:'rgb(33,192,196)',fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
           {this.state.talk ?
-          <TouchableOpacity style={{marginLeft:15}} onPress={() => {this.stopRecognizing()
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.stopRecognizing()
           }}>
             <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
           </TouchableOpacity>
           :
-          <TouchableOpacity style={{marginLeft:15}} onPress={() => {this.startRecognizing()
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.startRecognizing()
           }}>
             <FontAwesome name="microphone" size={24} color="black" />
           </TouchableOpacity>
@@ -206,59 +201,65 @@ export default class Enotes extends Component {
 
         <View  style={{ flexDirection:'row',height:'10%',justifyContent: "center", alignItems: "center",marginTop:10,marginBottom:'10%'}}>
           <TouchableOpacity style={{
-          width: '35%',
+          width: '17%',
           height: 40,
-          backgroundColor: '#68B0AB',
+          backgroundColor: 'rgb(33,192,196)',
           borderRadius: 5,
           alignItems: 'center',
           justifyContent: "center",
           margin:'2%'}} onPress={() => {
-          this.props.navigation.navigate(I18n.t('enote3'),{medicine:this.state.medicine})
+          this.props.navigation.navigate(I18n.t('enote3'),{
+            id:this.state.id,
+            medicine:this.props.route.params.medicine})
           }}>
           <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('prescrip')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{
-          width: '20%',
+          width: '17%',
           height: 40,
-          borderColor: '#68B0AB',
-          borderWidth:1,
-          borderRadius: 5,
-          alignItems: 'center',
-          justifyContent: "center",
-          margin:'1%'}} onPress={() => {
-
-          }}>
-          <Text style={{ fontSize:16, fontWeight: '500', color: 'black' }}>{I18n.t('referral')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{
-          width: '20%',
-          height: 40,
-          borderColor: '#68B0AB',
-          borderWidth:1,
-          borderRadius: 5,
-          alignItems: 'center',
-          justifyContent: "center",
-          margin:'1%'}} onPress={() => {
-
-          }}>
-          <Text style={{ fontSize:16, fontWeight: '500', color: 'black' }}>{I18n.t('followup')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{
-          width: '20%',
-          height: 40,
-          backgroundColor: '#68B0AB',
+          backgroundColor: 'rgb(33,192,196)',
           borderRadius: 5,
           alignItems: 'center',
           justifyContent: "center",
           margin:'2%'}} onPress={() => {
-          this.props.navigation.navigate(I18n.t('prescription'),{
-            id:this.state.id,
-            patientComplaint:this.state.complaint,
-            doctorComplaint:this.state.doctorComment,
-            medicine:this.state.medicine
-          })
+          this.props.navigation.navigate(I18n.t('pathology'),{id:this.state.id,tests:this.props.route.params.tests,ch:this.props.route.params.ch})}}>
+          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('pathology')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{
+          width: '17%',
+          height: 40,
+          backgroundColor: 'rgb(33,192,196)',
+          borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: "center",
+          margin:'2%'}} onPress={() => {
+          this.props.navigation.navigate(I18n.t('image'),{id:this.state.id,er:this.props.route.params.er,ich:this.props.route.params.ich})
           }}>
-          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('finish')}</Text>
+          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('image')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{
+          width: '17%',
+          height: 40,
+          backgroundColor: 'rgb(33,192,196)',
+          borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: "center",
+          margin:'1%'}} onPress={() => {
+
+          }}>
+          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff'  }}>{I18n.t('referral')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{
+          width: '17%',
+          height: 40,
+          backgroundColor: 'rgb(33,192,196)',
+          borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: "center",
+          margin:'1%'}} onPress={() => {
+
+          }}>
+          <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff'  }}>{I18n.t('followup')}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -270,8 +271,8 @@ export default class Enotes extends Component {
         useNativeDriver={true}
       />
       <View style={{width:'30%',borderRadius:5,padding:'2%'}}>
-        <ScrollView style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
+        <ScrollView style={{height:'30%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('name')}: {this.state.name}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
@@ -292,7 +293,7 @@ export default class Enotes extends Component {
           <View style={{height:10}}/>
         </ScrollView>
         <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('allergy')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('allergy')}</Text>
           {this.state.allergy ?
             this.state.allergy.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -306,8 +307,8 @@ export default class Enotes extends Component {
           }
           <View style={{height:10}}/>
         </ScrollView>
-        <ScrollView style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('mediHis')}</Text>
+        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('mediHis')}</Text>
           {this.state.medicineUsage ?
             this.state.medicineUsage.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -321,8 +322,8 @@ export default class Enotes extends Component {
           }
           <View style={{height:10}}/>
         </ScrollView>
-        <ScrollView style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('famHis')}</Text>
+        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('famHis')}</Text>
           {this.state.familyHistory?
             this.state.familyHistory.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -337,7 +338,7 @@ export default class Enotes extends Component {
           <View style={{height:10}}/>
         </ScrollView>
         <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('chronic')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('chronic')}</Text>
           {this.state.chronic?
             this.state.chronic.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -351,6 +352,36 @@ export default class Enotes extends Component {
           }
           <View style={{height:10}}/>
         </ScrollView>
+        <TouchableOpacity style={{
+        width: '100%',
+        height: '9%',
+        borderWidth:2,
+        borderColor:'rgb(33,192,196)',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: "center",
+        marginTop:'1%'}} onPress={() => {
+        this.props.navigation.navigate(I18n.t('recordDetail'),{appointmentId:this.props.route.params.id,customerUserInfoId:this.state.infoId})
+        }}>
+        <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('personalRecord')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{
+        width: '100%',
+        height: '9%',
+        backgroundColor: 'rgb(33,192,196)',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: "center",
+        marginTop:'1%'}} onPress={() => {
+        this.props.navigation.navigate(I18n.t('prescription'),{
+          id:this.state.id,
+          patientComplaint:this.state.complaint,
+          doctorComplaint:this.state.doctorComment,
+          medicine:this.state.medicine
+        })
+        }}>
+        <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('finish')}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );}}

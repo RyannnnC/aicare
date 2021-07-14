@@ -113,9 +113,9 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('name')} *</Text>
           </View>
-          <TextInput style={styles.resumeInput}
-          placeholder={I18n.t('nameInput')}
-          onChangeText={(text) => {this.setState({ name: text})}}
+          <TextInput style={{width:'80%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
+            placeholder={I18n.t('nameInput')}
+            onChangeText={(text) => {this.setState({ name: text})}}
           />
 
           <View style={{flex:1,marginTop:15, marginBottom:15,flexDirection: 'row'}}>
@@ -125,7 +125,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('mobile')} *</Text>
           </View>
-          <TextInput style={styles.resumeInput}
+          <TextInput style={{width:'80%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
           placeholder={I18n.t('phoneInput')}
           keyboardType="numeric"
           onChangeText={(text) => {this.setState({ phone: text})}}
@@ -138,7 +138,7 @@ export default class Signup extends Component {
             />
             <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('password')} *</Text>
           </View>
-          <TextInput style={styles.resumeInput}
+          <TextInput style={{width:'80%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
           placeholder={I18n.t('passwordInput')}
           secureTextEntry={true}
           onChangeText={(text) => {this.setState({ password: text})}}
@@ -191,7 +191,7 @@ export default class Signup extends Component {
           </View>
 
           <View style={{flex:1,flexDirection: 'row'}}>
-            <TextInput style={styles.resumeInput3}
+            <TextInput style={{width:'70%',borderBottomWidth:1,borderBottomColor:'#EEEEEE'}}
             placeholder= {I18n.t('verifyInput')}
             onChangeText={(text) => {this.setState({ code: text})}}
             />
@@ -201,7 +201,7 @@ export default class Signup extends Component {
           </TouchableOpacity>
             :
             <TouchableOpacity style={styles.codeTab} onPress={()=>this.sendCode()}>
-            <Text style={{ fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
+            <Text style={{ color:'white',fontSize:14, fontWeight: '300' }}>{I18n.t('sendCode')}</Text>
           </TouchableOpacity>
             }
           </View>

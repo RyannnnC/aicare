@@ -192,7 +192,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#8FD7D3',
     padding:10,
     width:'80%',
-    marginTop:40,
+    marginTop:'5%',
     height:40,
     alignItems: 'center',
     borderRadius:20,
@@ -234,7 +234,7 @@ export const styles = StyleSheet.create({
     height:300,
   },
   img4:{
-    marginTop:90,
+    marginTop:'5%',
     width:120,
     height:32,
   },

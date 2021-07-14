@@ -90,7 +90,7 @@ export default class HealthMain extends Component {
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => {}}>
+              onPress={() => {this.props.navigation.navigate('病历')}}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -202,7 +202,7 @@ export default class HealthMain extends Component {
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
               }}>
-                <Text>{I18n.t('report')}</Text>
+                <Text>{I18n.t('emRecord')}</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity

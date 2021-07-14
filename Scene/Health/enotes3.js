@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import { Alert,Modal,Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
+import { Image,Alert,Modal,Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
@@ -101,10 +101,10 @@ export default class Enotes3 extends Component {
 
   deleteMedicine(id) {
     Alert.alert(
-      '提醒',
-      '您确定要删除这个药吗？',
+      'Alert',
+      'Do you want to delete this Medicine?',
       [
-        {text: '确定', onPress: () => {
+        {text: 'Yes', onPress: () => {
           for(let i =0;i<this.state.medicine.length;i++){
               if(this.state.medicine[i].id === id) {
                 let temp = this.state.medicine;
@@ -113,7 +113,7 @@ export default class Enotes3 extends Component {
               }
           }
         }},
-        {text: '取消', onPress: () => console.log('no button clicked'),style: "cancel"},
+        {text: 'No', onPress: () => console.log('no button clicked'),style: "cancel"},
       ],
       {
         cancelable: false
@@ -146,17 +146,6 @@ export default class Enotes3 extends Component {
     return true
   }
 
-  /*  <View style={{flexDirection: 'row', marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
-        </View>
-        <View style={{width:'100%', height:150,borderWidth:1, borderColor:'#bbbbbb',borderRadius:11}}>
-          <TextInput style={{width:'90%',height:60,marginTop:15,marginLeft:20,marginRight:20}}
-            placeholder={this.context.intro}
-            value={this.state.doctorComment}
-            onChangeText={(text) => {this.setState({doctorComment:text})}}
-            multiline={true}
-          />
-        </View>*/
   _onChangeText(text) {
       if (text) {
         this.setState({ dname: text,visible:true })  //实时变化值
@@ -200,14 +189,23 @@ export default class Enotes3 extends Component {
     medicine = this.state.medicine.map((item) => {
       return (
         <View key = {item.id} style={{width:'90%',flexDirection:'row',marginTop:'5%'}}>
-          <View style={{justifyContent:'center',width:'90%',padding:'5%',height:100,borderRadius:10,backgroundColor:'#EBEBEB'}}>
-            <Text style={{ color: 'black', fontSize: 21, fontWeight: '600'}}>{item.name}</Text>
+          <View style={{justifyContent:'center',width:'100%',padding:'5%',height:120,borderRadius:10,backgroundColor:'#EBEBEB'}}>
+            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+              <View style={{flexDirection:'row'}}>
+                <Image
+                  style = {{width:18,height:18}}
+                  source={require('../../images/providerImg/cf-04.png')}
+                />
+                <Text style={{ color: 'rgb(33,192,196)',marginLeft:'1%', fontSize: 18, fontWeight: '600'}}>{item.name}</Text>
+              </View>
+              <TouchableOpacity onPress={() =>{this.deleteMedicine(item.id)}}>
+                <Image
+                  style = {{width:16,height:18}}
+                  source={require('../../images/providerImg/cf-05.png')}
+                />
+              </TouchableOpacity>
+            </View>
             <Text style={{ color: '#696969', fontSize: 16, fontWeight: '400'}}>{I18n.t('usage')}：{item.usage}</Text>
-          </View>
-          <View style={{width:'10%'}}>
-            <TouchableOpacity onPress={() =>{this.deleteMedicine(item.id)}}>
-              <AntDesign name="minuscircleo" size={20} color="black" />
-            </TouchableOpacity>
           </View>
         </View>
       )
@@ -343,12 +341,12 @@ export default class Enotes3 extends Component {
               height: 40,
               marginTop: 10,
               marginBottom:20,
-              backgroundColor: '#68B0AB',
+              backgroundColor: 'rgb(33,192,196)',
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: "center",}} onPress={() => {
                 if (!this.addMedicine()){
-                  alert('请填写完整')
+                  alert('Please fill the blanks')
                 } else {
                   console.log('ok')
                 }
@@ -364,12 +362,13 @@ export default class Enotes3 extends Component {
               height: 40,
               marginTop: 10,
               marginBottom:20,
-              backgroundColor: '#68B0AB',
+              backgroundColor: 'rgb(33,192,196)',
               borderRadius: 20,
               alignItems: 'center',
               justifyContent: "center",}} onPress={() => {
                 this.props.navigation.navigate(I18n.t('enote'),{
-                medicine:this.state.medicine})}}>
+                  medicine:this.state.medicine})
+                }}>
               <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('nextStep')}</Text>
             </TouchableOpacity>
           </View>
@@ -377,7 +376,7 @@ export default class Enotes3 extends Component {
 
       <View style={{width:'30%',borderRadius:5,padding:'2%'}}>
         <ScrollView style={{height:'33%',backgroundColor:'white',borderTopLeftRadius:5,borderTopRightRadius:5,padding:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('pInfo')}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('pInfo')}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('name')}: {this.state.name}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('gender')}: {this.state.gender}</Text>
           <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('dateofBirth')}: {this.state.dob}</Text>
@@ -395,9 +394,10 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('nomcInfo')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
-        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('allergy')}</Text>
+        <ScrollView style={{height:'14%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('allergy')}</Text>
           {this.state.allergy ?
             this.state.allergy.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -409,9 +409,10 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
-        <ScrollView style={{height:'20%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('mediHis')}</Text>
+        <ScrollView style={{height:'14%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('mediHis')}</Text>
           {this.state.medicineUsage ?
             this.state.medicineUsage.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -423,9 +424,10 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
-        <ScrollView style={{height:'15%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('famHis')}</Text>
+        <ScrollView style={{height:'14%',backgroundColor:'white',padding:'3%',marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('famHis')}</Text>
           {this.state.familyHistory?
             this.state.familyHistory.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -437,9 +439,10 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
-        <ScrollView style={{height:'13%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
-          <Text style={{ fontSize:18, fontWeight: '500', color: '#68B0AB' }}>{I18n.t('chronic')}</Text>
+        <ScrollView style={{height:'14%',backgroundColor:'white',padding:'3%',borderBottomLeftRadius:5,borderBottomRightRadius:5,marginTop:'2%'}}>
+          <Text style={{ fontSize:18, fontWeight: '500', color: 'rgb(33,192,196)' }}>{I18n.t('chronic')}</Text>
           {this.state.chronic?
             this.state.chronic.map((item)=>(
               <View key={item.id} style={{flexDirection:'row'}}>
@@ -451,7 +454,21 @@ export default class Enotes3 extends Component {
             <Text style={{ fontSize:15, fontWeight: '400',marginTop:'2%' }}>{I18n.t('none')}</Text>
           </View>
           }
+          <View style={{height:10}}/>
         </ScrollView>
+        <TouchableOpacity style={{
+        width: '100%',
+        height: '7%',
+        borderWidth:2,
+        borderColor:'rgb(33,192,196)',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: "center",
+        marginTop:'1%'}} onPress={() => {
+        this.props.navigation.navigate(I18n.t('recordDetail'),{appointmentId:this.props.route.params.id,customerUserInfoId:this.state.infoId})
+        }}>
+        <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('personalRecord')}</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );}}
