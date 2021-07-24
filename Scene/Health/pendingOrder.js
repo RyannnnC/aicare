@@ -332,7 +332,7 @@ export default class PendingOrder extends Component {
           })
           this.setState({cardVisible:true})
         }}>
-          {item.sex == 'Male'?
+          {item.sex == 'M'?
           <Image
             style = {{width:20,height:20,marginRight:5}}
             source = {require('../../images/providerImg/Gender-2.png')}

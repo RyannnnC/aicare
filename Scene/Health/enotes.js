@@ -144,6 +144,8 @@ export default class Enotes extends Component {
 
 
   render() {
+    console.log(this.props.route.params)
+    console.log(this.props.route.params.ch == null)
     if (this.state.isLoading){
       return(
      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -377,7 +379,11 @@ export default class Enotes extends Component {
           id:this.state.id,
           patientComplaint:this.state.complaint,
           doctorComplaint:this.state.doctorComment,
-          medicine:this.state.medicine
+          medicine:this.props.route.params.medicine,
+          er:this.props.route.params.er,
+          ch:this.props.route.params.ch,
+          ich:this.props.route.params.ich,
+          tests:this.props.route.params.tests
         })
         }}>
         <Text style={{ fontSize:16, fontWeight: '500', color: '#ffffff' }}>{I18n.t('finish')}</Text>

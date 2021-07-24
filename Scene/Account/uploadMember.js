@@ -24,7 +24,7 @@ export default class UploadMember extends Component {
         oimage:null,
         pressed:false,
         we:0,
-        gender:0,
+        gender:'0',
         racgp:0,
         pn:0,
         isLoading:false,
@@ -69,7 +69,6 @@ export default class UploadMember extends Component {
     }
 
     async componentDidMount ()  {
-      console.log(this.props.route.params.id);
       this.setState({isLoading:true})
       if(this.props.route.params.id !=null){
         let url = 'http://'
@@ -101,7 +100,7 @@ export default class UploadMember extends Component {
                 we:json.employerInfo.workLong,
                 languages:json.employerInfo.languages,
                 email:json.employerInfo.email,
-                gender:parseInt(json.employerInfo.gender),
+                gender:json.employerInfo.gender,
                 oimage:json.employerInfo.imgUrl,
                 racgp:json.employerInfo.racgpNumber,
                 pn:json.employerInfo.prescriberNumber,
@@ -152,7 +151,7 @@ export default class UploadMember extends Component {
                 for (i=0;i<json.employerInfo.videoChannel.length;i++){
                   let j;
                   for (j=0;j<this.state.videoChannel.length;j++){
-                    if (this.state.videoChannel[j].channel ==json.employerInfo.videoChannel[i].channel){
+                    if (this.state.videoChannel[j].value ==json.employerInfo.videoChannel[i].value){
                       let but = this.state.videoChannel;
                       but[j].status = 1;
                       this.setState({videoChannel: but});
@@ -647,8 +646,8 @@ export default class UploadMember extends Component {
         style={{width:200,marginLeft:30}}
         height={25}
         options={[
-          { label: I18n.t('female'), value: 0,},
-          { label: I18n.t('male'), value: 1, }
+          { label: I18n.t('female'), value: '0',},
+          { label: I18n.t('male'), value: '1', }
         ]}
         testID="gender-switch-selector"
         accessibilityLabel="gender-switch-selector"
@@ -1422,7 +1421,7 @@ export default class UploadMember extends Component {
               <View style={{flexDirection: 'row'}}>
                 <CheckBox
                   center
-                  title='FaceTime(IOS)                                '
+                  title='Phone Call                                '
                   iconRight
                   checkedIcon='check-circle-o'
                   uncheckedIcon='circle-o'
@@ -1439,7 +1438,7 @@ export default class UploadMember extends Component {
               <View style={{flexDirection: 'row'}}>
                 <CheckBox
                   center
-                  title='Skype (Android)                              '
+                  title='Skype                             '
                   iconRight
                   checkedIcon='check-circle-o'
                   uncheckedIcon='circle-o'

@@ -2,6 +2,7 @@ import React ,{Component}from 'react';
 import { ActivityIndicator,ScrollView,Text, View,  Image,TouchableOpacity,SafeAreaView,TextInput } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
+import moment from 'moment';
 import I18n from '../switchLanguage';
 
 export default class Eprescription extends Component {
@@ -11,10 +12,13 @@ export default class Eprescription extends Component {
       medicine:[],
       isLoading:false,
       customerUserInfoId:null,
+      page:0,
+      tPage:10,
     }
   }
 
   async componentDidMount(){
+    this.setState({isLoading:true})
     if(this.props.route.params.customerUserInfoId != null) {
       this.setState({customerUserInfoId:this.props.route.params.customerUserInfoId});
     }
@@ -22,13 +26,11 @@ export default class Eprescription extends Component {
   }
 
   queryPrescription() {
-    this.setState({isLoading:true})
     let url = 'http://'
     +this.context.url
     +'/aicare-business-api/business/emr/query-emr-pescription'
-    +'?customerUserInfoId='+ this.props.route.params.customerUserInfoId;
     fetch(url,{
-      method: 'GET',
+      method: 'POST',
       mode: 'cors',
       credentials: 'include',
       headers: {
@@ -40,15 +42,21 @@ export default class Eprescription extends Component {
       'Access-Control-Allow-Credentials': true,
       'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-    }})
+    },
+    body: JSON.stringify({
+      customerUserInfoId: this.props.route.params.customerUserInfoId,
+      limit:'10',
+      page: (this.state.page+1).toString()
+    })})
     .then((response) => response.json())
     .then((json) => {
       this.setState({isLoading:false})
       if (json.code === 0) {
-        for (let i =0; i<json.data.length; i++) {
-          if (json.data[i].prescriptionEntityList != null && json.data[i].prescriptionEntityList.length>0) {
+        this.setState({tPage:json.page.totalPage,page:json.page.currPage});
+        for (let i =0; i<json.page.list.length; i++) {
+          if (json.page.list[i].prescriptionEntityList != null && json.page.list[i].prescriptionEntityList.length>0) {
             let medicine = this.state.medicine;
-            medicine.push(json.data[i])
+            medicine.push(json.page.list[i])
             this.setState({medicine:medicine})
           }
         }
@@ -60,6 +68,13 @@ export default class Eprescription extends Component {
     })
     .catch(error => console.warn(error));
   }
+
+  isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 20;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+  };
+
   render() {
     if (this.state.isLoading){
       return(
@@ -70,7 +85,14 @@ export default class Eprescription extends Component {
     return (
     <SafeAreaView style={{ flex:1,height:'100%', justifyContent: "center", alignItems: "center" , backgroundColor:'rgb(51,51,51)'}}>
       <ScrollView style={{ flex:1, width:'90%',height:'100%',backgroundColor:'white'}}
-      contentContainerStyle={{alignItems:'center'}}>
+      contentContainerStyle={{alignItems:'center'}}
+      onScroll={({nativeEvent}) => {
+        if (this.isCloseToBottom(nativeEvent)) {
+          if (this.state.page < this.state.tPage) {
+            this.queryPrescription()
+          }
+        }
+      }}>
       {this.state.medicine.length>0 ?
         this.state.medicine.map((item)=>(
           <View key={item.appointmentId} style={{width:'90%',borderColor:'rgb(32,191,195)',borderWidth:1,padding:'2%',margin:'1%'}}>
@@ -79,7 +101,7 @@ export default class Eprescription extends Component {
             </View>
             <View style={{width:'90%',flexDirection: 'row',marginTop:'1%'}}>
               <View style={{width:'30%'}}>
-                <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('date')}: {item.dateOfDiagnosis!=null && item.dateOfDiagnosis.substring(0,10)}</Text>
+                <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('date')}: {item.dateOfDiagnosis!=null && moment(item.dateOfDiagnosis).format().substring(0,10)}</Text>
               </View>
               <View style={{width:'30%'}}>
                 <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('dt')}: {item.businessEmployerName}</Text>

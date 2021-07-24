@@ -2,6 +2,7 @@ import React ,{Component}from 'react';
 import {Modal,ActivityIndicator,ScrollView,Text, View,  Image,TouchableOpacity,SafeAreaView,TextInput } from 'react-native';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
+import moment from 'moment';
 import I18n from '../switchLanguage';
 
 export default class BasicInformation extends Component {
@@ -28,6 +29,8 @@ export default class BasicInformation extends Component {
     mclass:'',
     mdoctor:'',
     mclinic:'',
+    page:0,
+    tPage:10,
     }
   }
 
@@ -36,6 +39,7 @@ export default class BasicInformation extends Component {
       this.setState({customerAppointmentId:this.props.route.params.appointmentId});
     }
     this.queryPatient()
+    this.queryHistory()
   }
 
   queryPatient() {
@@ -76,7 +80,6 @@ export default class BasicInformation extends Component {
           medicineUsage:json.medicalInfo.medicineUsage,
           familyHistory:json.medicalInfo.familyHistory,
           chronic:json.medicalInfo.chronic,
-          historyMedicalRecords:json.medicalInfo.historyMedicalRecords,
         })
         if(json.medicalInfo.medicareCard!=null){
           this.setState({
@@ -94,6 +97,56 @@ export default class BasicInformation extends Component {
     .catch(error => console.warn(error));
   }
 
+  queryHistory() {
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/emr/query-past-medical-records'
+    fetch(url,{
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'sso-auth-token': this.context.token,
+      'sso-refresh-token': this.context.refresh_token,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+    },
+      body: JSON.stringify({
+        customerUserInfoId: this.props.route.params.customerUserInfoId,
+        limit:'10',
+        page: (this.state.page+1).toString()
+      })})
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.code === 0) {
+        this.setState({
+          tPage:json.page.totalPage,
+          page:json.page.currPage,
+        })
+        let data = this.state.historyMedicalRecords
+        for (let i=0;i<json.page.list.length;i++){
+          data.push(json.page.list[i])
+        }
+        this.setState({historyMedicalRecords:data})
+      } else if (json.code == 10011) {
+        this.loggedin(json.msg)
+      } else {
+        alert(json.msg)
+      }
+    })
+    .catch(error => console.warn(error));
+  }
+
+  isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 20;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+  };
+
   render() {
     if (this.state.isLoading){
       return(
@@ -104,7 +157,14 @@ export default class BasicInformation extends Component {
       return (
     <SafeAreaView style={{ flex:1,height:'100%', justifyContent: "center", alignItems: "center" , backgroundColor:'rgb(51,51,51)'}}>
       <ScrollView style={{ flex:1, width:'90%',height:'100%',backgroundColor:'white'}}
-      contentContainerStyle={{alignItems:'center'}}>
+      contentContainerStyle={{alignItems:'center'}}
+      onScroll={({nativeEvent}) => {
+        if (this.isCloseToBottom(nativeEvent)) {
+          if (this.state.page < this.state.tPage) {
+            this.queryHistory()
+          }
+        }
+      }}>
       <View style={{width:'90%',flexDirection: 'row',marginTop:'2%'}}>
         <Image
           style = {{width:20,height:20,marginTop:2}}
@@ -250,14 +310,14 @@ export default class BasicInformation extends Component {
                 mpcomment:item.patientComment,
                 mdcomment:item.doctorComment,
                 mdoctor:item.businessEmployerName,
-                mdate:item.dateOfDiagnosis.substring(0,10),
+                mdate:moment(item.dateOfDiagnosis).format().substring(0,10),
                 mclinic:item.orgName,
                 mclass:item.serviceClassName,
               })
               this.setState({visible:true})
             }}>
             <View style={{width:'30%'}}>
-              <Text style={{ fontSize:16, fontWeight: '400' }}>{item.dateOfDiagnosis!=null && item.dateOfDiagnosis.substring(0,10)}</Text>
+              <Text style={{ fontSize:16, fontWeight: '400' }}>{item.dateOfDiagnosis!=null && moment(item.dateOfDiagnosis).format().substring(0,10)}</Text>
             </View>
             <View style={{width:'60%'}}>
               <Text style={{ fontSize:16, fontWeight: '400' }}>{item.doctorComment}</Text>

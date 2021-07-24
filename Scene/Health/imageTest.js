@@ -5,15 +5,15 @@ import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 import * as Permissions from "expo-permissions";
 import ImageView from 'react-native-image-view';
-import SignatureScreen from 'react-native-signature-canvas';
 import { CheckBox } from 'react-native-elements';
+
 
 export default class Radiology extends Component {
     constructor(props) {
       super(props);
+      this.newRef = React.createRef();
       this.state={
       id:null,
-      hasAudioPermission: null,
       name:'',
       gender:'',
       dob:'',
@@ -35,21 +35,6 @@ export default class Radiology extends Component {
       ich:'',
       fast:0,
       canscroll:true,
-      style:`.m-signature-pad {
-            font-size: 15px;
-            width: 280px;
-            height: 150px;
-            border: 1px solid #e8e8e8;
-            background-color: #fff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.08) inset;
-          }
-          .m-signature-pad--footer {
-            position: absolute;
-            left: 20px;
-            right: 10px;
-            bottom: 20px;
-            height: 40px;
-          }`
       }
     }
 
@@ -165,42 +150,6 @@ export default class Radiology extends Component {
     .catch(error => console.warn(error));
   }
 
-  sendimage() {
-    let url = 'http://'
-    +this.context.url
-    +'/aicare-business-api/business/medical-report/add-radiology-report'
-      fetch(url,{
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': this.context.token,
-        'sso-refresh-token': this.context.refresh_token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      },
-        body: JSON.stringify({
-          businessTelehealthAppointmentId: this.props.route.params.id,
-          examinationRequired: this.state.er,
-          clinicalNotes: this.state.ich,
-        })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({isLoading:false});
-        if (json.code === 0) {
-          alert('Success')
-        } else if (json.code == 10011) {
-          this.loggedin(json.msg)
-        } else {
-          alert(json.msg)
-        }
-      }).catch(error => console.warn(error));
-  }
 
   loggedin(msg) {
     Alert.alert(
@@ -273,7 +222,7 @@ export default class Radiology extends Component {
               </View>
             </View>
           </View>
-          <View style={{marginTop:'5%',width:'100%',alignItems:'center',flexDirection:'row',height:950,justifyContent:'space-between'}}>
+          <View style={{marginTop:'5%',width:'100%',alignItems:'center',flexDirection:'row',height:900,justifyContent:'space-between'}}>
             <View style={{width:'100%',height:'100%',borderWidth:2,borderColor:'rgb(33,192,196)'}}>
               <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'5%',backgroundColor:'rgb(33,192,196)'}}>
                 <Text style={{color:'white',marginLeft:'5%',fontSize:20,fontWeight:'500'}}>{I18n.t('checkList')}</Text>
@@ -283,7 +232,7 @@ export default class Radiology extends Component {
                 <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
                   <Text style={{color:'rgb(33,192,196)',fontSize:20, fontWeight: '500'}}>{I18n.t('examR')}</Text>
                 </View>
-                  <TextInput style={{width:'100%',height: 200,padding:'2%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:5}}
+                  <TextInput style={{width:'100%',height: 250,padding:'2%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:5}}
                     value={this.state.er}
                     onChangeText={(text) => {this.setState({er:text})}}
                     multiline={true}
@@ -291,28 +240,12 @@ export default class Radiology extends Component {
                   <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
                     <Text style={{color:'rgb(33,192,196)',fontSize:20, fontWeight: '500'}}>{I18n.t('clinicalHis')}</Text>
                   </View>
-                    <TextInput style={{width:'100%',height: 200,padding:'2%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:5}}
+                    <TextInput style={{width:'100%',height: 250,padding:'2%',borderWidth:1, borderColor:'#bbbbbb',borderRadius:5}}
                       value={this.state.ich}
                       onChangeText={(text) => {this.setState({ich:text})}}
                       multiline={true}
                     />
-                    <View style={{marginTop:20,flexDirection:'row',width:'100%',height:300}}>
-                      <View style={{width:'45%',height:280}}>
-                      <Text style={{ fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)'}}>{I18n.t('esign')}</Text>
-                      <SignatureScreen
-                        onBegin={()=>this.setState({canscroll:false})}
-                        onEnd={()=>this.setState({canscroll:true})}
-                        onOK={this.handleSignature}
-                        onEmpty={this.handleEmpty}
-                        onClear={this.handleClear}
-                        descriptionText='Please Sign Above'
-                        clearText="Clear"
-                        confirmText="Save"
-                        webStyle={this.state.style}
-                      />
-                      </View>
-                    </View>
-                    <View  style={{ marginTop: 20,height:40, width:'90%',justifyContent: "center", alignItems: "center"}}>
+                    <View  style={{ marginTop: 20,height:40, width:'100%',justifyContent: "center", alignItems: "center"}}>
                     <TouchableOpacity style={{
                       width: '100%',
                       height: 40,
@@ -321,8 +254,7 @@ export default class Radiology extends Component {
                       borderRadius: 20,
                       alignItems: 'center',
                       justifyContent: "center",}} onPress={() => {
-                        this.sendimage()
-                        this.props.navigation.navigate(I18n.t('enote'),{er:this.state.er,ich:this.state.ich})        
+                        this.props.navigation.navigate(I18n.t('enote'),{er:this.state.er,ich:this.state.ich})
                       }}>
                       <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>
                     </TouchableOpacity>

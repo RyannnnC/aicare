@@ -34,7 +34,7 @@ export default class Path extends Component {
     let url = 'http://'
     +this.context.url
     +'/aicare-business-api/business/medical-report/get-pathology-report-list'
-    +'?businessEmployerId='+ this.context.employerId;
+    +'?customerUserInfoId='+ this.props.route.params.customerUserInfoId;
     fetch(url,{
       method: 'GET',
       mode: 'cors',
@@ -79,22 +79,24 @@ export default class Path extends Component {
       <View style={{width:'90%',flexDirection: 'row',marginTop:'2%'}}>
         <Text style={{ marginLeft:'1%',fontSize:22, fontWeight: '600' ,color: 'rgb(32,191,195)'}}>{I18n.t('pathReport')}</Text>
       </View>
-      <View style={{width:'90%',flexDirection: 'row',marginTop:'1%'}}>
+      <View style={{width:'90%',marginTop:'1%'}}>
       {this.state.pathList.length>0 ?
         this.state.pathList.map((item)=>(
-          <View key={item.appointmentId} style={{width:'90%',borderColor:'rgb(32,191,195)',borderWidth:1,padding:'2%',margin:'1%'}}>
+          <View key={item.appointmentId} style={{width:'90%',padding:'2%',margin:'1%'}}>
             <View style={{width:'90%',flexDirection: 'row',marginTop:'1%'}}>
-              <Text style={{ fontSize:20, fontWeight: '500' }}>{item.serviceClassName}</Text>
-            </View>
-            <View style={{width:'90%',flexDirection: 'row',marginTop:'1%'}}>
-              <View style={{width:'30%'}}>
-                <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('date')}: {item.dateOfCommit!=null && item.dateOfCommit}</Text>
+              <View style={{width:'5%'}}>
+                <Image
+                  style = {{width:17,height:17}}
+                  source = {require('../../images/providerImg/dzbl-B8.png')}
+                />
+              </View>
+              <View style={{width:'25%'}}>
+                <Text style={{ fontSize:17, fontWeight: '400' }}>{item.dateOfCommit!=null && item.dateOfCommit}</Text>
               </View>
               <View style={{width:'70%'}}>
                 <Text style={{ fontSize:16, fontWeight: '400' }}>{I18n.t('testRequested')}: {item.testsRequested}</Text>
               </View>
             </View>
-            <View style={{width:'90%',borderBottomWidth:1,borderStyle:'dashed',marginTop:'2%'}}/>
           </View>
         ))
       :

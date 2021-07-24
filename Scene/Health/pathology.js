@@ -5,7 +5,6 @@ import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 import * as Permissions from "expo-permissions";
 import ImageView from 'react-native-image-view';
-import SignatureScreen from 'react-native-signature-canvas';
 import { CheckBox } from 'react-native-elements';
 
 export default class Pathology extends Component {
@@ -28,22 +27,8 @@ export default class Pathology extends Component {
       ch:'',
       fast:0,
       canscroll:true,
-      style:`.m-signature-pad {
-            font-size: 15px;
-            width: 280px;
-            height: 150px;
-            border: 1px solid #e8e8e8;
-            background-color: #fff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.08) inset;
-          }
-          .m-signature-pad--footer {
-            position: absolute;
-            left: 20px;
-            right: 10px;
-            bottom: 20px;
-            height: 40px;
-          }`
       }
+      this.pref = React.createRef();
     }
 
   async componentDidMount(){
@@ -158,44 +143,6 @@ export default class Pathology extends Component {
     .catch(error => console.warn(error));
   }
 
-  sendPathology() {
-    let url = 'http://'
-    +this.context.url
-    +'/aicare-business-api/business/medical-report/add-pathology'
-      fetch(url,{
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-        'Accept':       'application/json',
-        'Content-Type': 'application/json',
-        'sso-auth-token': this.context.token,
-        'sso-refresh-token': this.context.refresh_token,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-      },
-        body: JSON.stringify({
-          businessTelehealthAppointmentId : this.props.route.params.id,
-          isFasting : this.state.fast,
-          testsRequested : this.state.tests,
-          clinicalNotes : this.state.ch,
-        })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({isLoading:false});
-        if (json.code === 0) {
-          alert('Success')
-        } else if (json.code == 10011) {
-          this.loggedin(json.msg)
-        } else {
-          alert(json.msg)
-        }
-      }).catch(error => console.warn(error));
-  }
-
   loggedin(msg) {
     Alert.alert(
       '',
@@ -291,22 +238,8 @@ export default class Pathology extends Component {
                       multiline={true}
                     />
                     <View style={{marginTop:20,flexDirection:'row',width:'100%',height:300}}>
-                      <View style={{width:'45%',height:280}}>
-                      <Text style={{ fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)'}}>{I18n.t('esign')}</Text>
-                      <SignatureScreen
-                        onBegin={()=>this.setState({canscroll:false})}
-                        onEnd={()=>this.setState({canscroll:true})}
-                        onOK={this.handleSignature}
-                        onEmpty={this.handleEmpty}
-                        onClear={this.handleClear}
-                        descriptionText='Please Sign Above'
-                        clearText="Clear"
-                        confirmText="Save"
-                        webStyle={this.state.style}
-                      />
-                      </View>
                       <View style={{width:'45%',height:250}}>
-                        <Text style={{ fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)'}}>{I18n.t('esign')}</Text>
+                        <Text style={{ fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)'}}>Addition</Text>
                         <CheckBox
                           title={I18n.t('fasting')}
                           iconRight
@@ -331,7 +264,7 @@ export default class Pathology extends Component {
                          />
                       </View>
                     </View>
-                    <View  style={{ marginTop: 20,height:40, width:'90%',justifyContent: "center", alignItems: "center"}}>
+                    <View  style={{ marginTop: 20,height:40, width:'100%',justifyContent: "center", alignItems: "center"}}>
                     <TouchableOpacity style={{
                       width: '100%',
                       height: 40,
@@ -340,10 +273,10 @@ export default class Pathology extends Component {
                       borderRadius: 20,
                       alignItems: 'center',
                       justifyContent: "center",}} onPress={() => {
-                        this.sendPathology();
                         this.props.navigation.navigate(I18n.t('enote'),{
                             tests:this.state.tests,
-                            ch:this.state.ch
+                            ch:this.state.ch,
+                            fast:this.state.fast
                           })
                       }}>
                       <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirmation')}</Text>

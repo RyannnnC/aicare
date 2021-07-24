@@ -1,13 +1,12 @@
-import React ,{Component, useContext}from 'react';
+import React ,{Component, useContext,useState}from 'react';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator, DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem, } from "@react-navigation/drawer";
+import { createDrawerNavigator, DrawerContentScrollView,DrawerItemList,DrawerItem} from "@react-navigation/drawer";
 import { Platform,SafeAreaView,ScrollView,Text,View,Image,TouchableOpacity} from 'react-native';
 import moment from 'moment-timezone';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
 import Welcome from './Scene/welcome';
 import Login from './Scene/login';
@@ -39,51 +38,91 @@ import Finish from './Scene/Health/finish'
 import Pathology from './Scene/Health/pathology'
 import Radiology from './Scene/Health/imageTest'
 import RecordDetail from './Scene/MedicalRecord/recordDetail'
+import TobeClaimed from './Scene/claim/tobeClaimed';
+import UnderReview from './Scene/claim/underReview';
+import Success from './Scene/claim/success';
+import Fail from './Scene/claim/fail';
+import Patients from './Scene/patients/patients';
+import DataPolicy from './Scene/dataPolicy';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
+  const [datas, setDatas] = useState([false,false,false,false,false,false,false,false,false,false,false]);
+
+  const updateFieldChanged = index => {
+    var focus = [];
+    for (var i = 0; i < 11; i++) {
+      focus.push(false);
+    }
+    focus[index] = true;
+    setDatas(focus);
+  }
+  const user = useContext(DataContext);
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItem
+      focused={datas[0]}
       label={I18n.t('homePage')}
-      style={{backgroundColor:'rgb(33,192,196)'}}
+      activeTintColor='rgb(33,192,196)'
       icon={({color,size}) =>
       <MaterialIcons name="home" size={size} color={color} />}
-      onPress={() => props.navigation.navigate('主页')}/>
+      onPress={() => {props.navigation.navigate('主页');updateFieldChanged(0)}}/>
       <DrawerItem
+      focused={datas[1]}
       icon={({color,size}) => <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />}
       label={I18n.t('booking')}
-      style={{backgroundColor:'rgb(33,192,196)'}}
-      onPress={() => props.navigation.navigate('预约')}/>
-        <DrawerItem label={I18n.t('processingOrder')}
-         onPress={() => props.navigation.navigate('预约',{screen:I18n.t('processingOrder')})} />
-        <DrawerItem label={I18n.t('pendingOrder')}
-         onPress={() => props.navigation.navigate('预约',{screen:I18n.t('pendingOrder')})} />
+      activeTintColor='rgb(33,192,196)'
+      onPress={() => {props.navigation.navigate('预约');updateFieldChanged(1)}}/>
+        <DrawerItem focused={datas[2]} label={I18n.t('processingOrder')} activeTintColor='rgb(33,192,196)'
+         onPress={() => {props.navigation.navigate('预约',{screen:I18n.t('processingOrder')});updateFieldChanged(2)}} />
+        <DrawerItem focused={datas[3]} label={I18n.t('pendingOrder')} activeTintColor='rgb(33,192,196)'
+         onPress={() => {props.navigation.navigate('预约',{screen:I18n.t('pendingOrder')});updateFieldChanged(3)}} />
       <DrawerItem
+      focused={datas[4]}
       icon={({color,size}) =><MaterialCommunityIcons name="account" color={color} size={size} />}
       label={I18n.t('account')}
-      style={{backgroundColor:'rgb(33,192,196)'}}
-      onPress={() => {props.navigation.navigate('账号')}}/>
-        <DrawerItem label={I18n.t('myAccount')} onPress={() => {
+      activeTintColor='rgb(33,192,196)'
+      onPress={() => {{props.navigation.navigate('账号');updateFieldChanged(4)}}}/>
+        <DrawerItem focused={datas[5]} label={I18n.t('myAccount')} onPress={() => {
           props.navigation.navigate('账号')
           props.navigation.navigate(I18n.t('myAccount'))
+          updateFieldChanged(5)
         }} />
-        <DrawerItem label={I18n.t('changePassword')}
+        <DrawerItem focused={datas[6]} label={I18n.t('changePassword')}
+         activeTintColor='rgb(33,192,196)'
          onPress={() => {
           props.navigation.navigate('账号')
           props.navigation.navigate(I18n.t('changePassword'))
+          updateFieldChanged(6)
         }} />
-        <DrawerItem label={I18n.t('orginfo')}
+        <DrawerItem focused={datas[7]} label={I18n.t('orginfo')}
+         activeTintColor='rgb(33,192,196)'
          onPress={() => {
           props.navigation.navigate('账号')
-          props.navigation.navigate(I18n.t('doctorInfo'))
+          props.navigation.navigate(I18n.t('uploadMember'),{id:user.employerId})
+          updateFieldChanged(7)
         }} />
-      <DrawerItem label={I18n.t('md')} style={{backgroundColor:'rgb(33,192,196)'}}
+      <DrawerItem focused={datas[8]} label={I18n.t('md')} activeTintColor='rgb(33,192,196)'
         icon={({color,size}) =><FontAwesome5 name="notes-medical" size={size} color={color} />}
-        onPress={() => {props.navigation.navigate('病历')}}/>
+        onPress={() => {props.navigation.navigate('病历');updateFieldChanged(8)}}/>
+      <DrawerItem focused={datas[9]} label={I18n.t('claim')} activeTintColor='rgb(33,192,196)'
+      icon={({color,size}) =><Image
+        style={{height:size,width:size}}
+        source={require('./images/providerImg/ICON-7-2.png')}
+      />}
+        onPress={() => {props.navigation.navigate(I18n.t('claim'));updateFieldChanged(9)}}/>
+      <DrawerItem focused={datas[10]}
+        label={I18n.t('myPatient')}
+        activeTintColor='rgb(33,192,196)'
+        icon={({color,size}) =><Image
+          style={{height:size,width:size}}
+          source={require('./images/providerImg/ICON-2-2.png')}
+        />}
+        onPress={() => {props.navigation.navigate(I18n.t('myPatient'));updateFieldChanged(10)}}/>
     </DrawerContentScrollView>
   );
 }
@@ -92,8 +131,76 @@ function Draw() {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name={I18n.t('homePage')} component={DoctorHome}/>
+      <Drawer.Screen name={I18n.t('claim')} component={ClaimMain}/>
+      <Drawer.Screen name={I18n.t('myPatient')} component={Patient}/>
     </Drawer.Navigator>
   )
+}
+function Patient({navigation}) {
+  const Tab = createMaterialTopTabNavigator();
+  const user = useContext(DataContext);
+  return (
+    <SafeAreaView style={{flex:1,backgroundColor:'rgb(51,51,51)'}}>
+      <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)'}}>
+        <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'space-between'}}>
+          <TouchableOpacity style={{marginLeft:'2%',height:'100%',alignItems:'center',justifyContent:'center'}} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Feather name="menu" size={35} color="white" />
+          </TouchableOpacity>
+          <Image
+            style={{height:36,width:160,marginLeft:'5%'}}
+            resizeMode='stretch'
+            source={require('./images/providerImg/顶端LOGO.png')}
+          />
+        <View style={{width:'70%',height:'100%',flexDirection:'row',alignItems:'center',justifyContent:'flex-end'}}>
+          <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{user.name}</Text>
+          <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{moment(new Date()).format('ll')}</Text>
+        </View>
+      </View>
+      <Tab.Navigator tabBarOptions={{
+          style:{width:'90%',backgroundColor:'white',alignSelf:'center'},
+          inactiveTintColor:'black',
+          activeTintColor:'rgb(33,192,196)',
+        }} headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
+        <Tab.Screen name='patients'  component={Patients}  />
+      </Tab.Navigator>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+function ClaimMain({navigation}) {
+  const Tab = createMaterialTopTabNavigator();
+  const user = useContext(DataContext);
+  return (
+    <SafeAreaView style={{flex:1,backgroundColor:'rgb(51,51,51)'}}>
+      <View style={{paddingTop: Platform.OS === 'android' ? 21 : 0,width:'100%',height:'100%',backgroundColor:'rgb(51,51,51)'}}>
+        <View style={{flexDirection:'row',width:'100%',height:'8%',backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'space-between'}}>
+          <TouchableOpacity style={{marginLeft:'2%',height:'100%',alignItems:'center',justifyContent:'center'}} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Feather name="menu" size={35} color="white" />
+          </TouchableOpacity>
+          <Image
+            style={{height:36,width:160,marginLeft:'5%'}}
+            resizeMode='stretch'
+            source={require('./images/providerImg/顶端LOGO.png')}
+          />
+        <View style={{width:'70%',height:'100%',flexDirection:'row',alignItems:'center',justifyContent:'flex-end'}}>
+          <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{user.name}</Text>
+          <Text style={{fontSize:24,color:'white',marginRight:'10%'}}>{moment(new Date()).format('ll')}</Text>
+        </View>
+      </View>
+      <Tab.Navigator tabBarOptions={{
+          style:{width:'90%',backgroundColor:'white',alignSelf:'center'},
+          inactiveTintColor:'black',
+          activeTintColor:'rgb(33,192,196)',
+        }} headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
+        <Tab.Screen name={I18n.t('tobeClaimed')}  component={TobeClaimed}  />
+        <Tab.Screen name={I18n.t('UnderReview')} component={UnderReview} />
+        <Tab.Screen name={I18n.t('success')}  component={Success}  />
+        <Tab.Screen name={I18n.t('fail')} component={Fail} />
+      </Tab.Navigator>
+      </View>
+    </SafeAreaView>
+  );
 }
 
 function OrgHome() {
@@ -608,7 +715,7 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('enote')} component={Enotes} />
             <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />
             <Stack.Screen name={I18n.t('prescription')} component={PrescriptionCheck} />
-            <Stack.Screen name={I18n.t('finish')} component={Finish} />
+            <Stack.Screen options={{headerShown: false}} name={I18n.t('finish')} component={Finish} />
             <Stack.Screen name={I18n.t('recordDetail')} component={RecordDetail} />
             <Stack.Screen name={I18n.t('pathology')} component={Pathology} />
             <Stack.Screen name={I18n.t('image')} component={Radiology} />
@@ -620,6 +727,7 @@ export default class App extends React.Component {
         <Stack.Screen options={{headerShown: false}} name= {I18n.t('login')} component={Login} />
         <Stack.Screen name={I18n.t('signup')}  component={Signup} />
         <Stack.Screen name={I18n.t('forgotPassword')}  component={Forget}/>
+        <Stack.Screen name='DataPolicy' component={DataPolicy} />
         </>
       )}
       </Stack.Navigator>

@@ -1,9 +1,9 @@
-import React ,{Component,useRef}from 'react';
+import React ,{Component}from 'react';
 import { Alert,Button,Image,Text, View, TouchableOpacity,ScrollView,SafeAreaView,ActivityIndicator } from 'react-native';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 import moment from 'moment';
-import SignatureScreen from 'react-native-signature-canvas';
+import Signature from 'react-native-signature-canvas';
 import * as FileSystem from 'expo-file-system';
 import ViewShot from "react-native-view-shot";
 import * as Print from 'expo-print';
@@ -37,6 +37,10 @@ export default class PrescriptionCheck extends Component {
       signature:null,
       html:``,
       canscroll:true,
+      er:null,
+      ich:null,
+      ch:null,
+      tests:null,
       style:`.m-signature-pad {
             font-size: 15px;
             width: 280px;
@@ -54,15 +58,29 @@ export default class PrescriptionCheck extends Component {
           }`
       }
       this.onCapture = this.onCapture.bind(this);
-      this.refs = React.createRef();
+      this.newRef = React.createRef();
     }
   componentDidMount(){
-    this.setState({
-      id:this.props.route.params.id,
-      medicine:this.props.route.params.medicine});
+    this.setState({id:this.props.route.params.id});
+    if(this.props.route.params.medicine != null) {
+      this.setState({medicine:this.props.route.params.medicine});
+    }
+    if(this.props.route.params.tests != null && this.props.route.params.ch != null) {
+      this.setState({
+        tests:this.props.route.params.tests,
+        ch:this.props.route.params.ch
+      });
+    }
+    if(this.props.route.params.er != null && this.props.route.params.ich != null) {
+      this.setState({
+        er:this.props.route.params.er,
+        ich:this.props.route.params.ich
+      });
+    }
     this.queryPatient();
     this.queryDoctor();
   }
+
 
   loggedin(msg) {
     Alert.alert(
@@ -405,6 +423,12 @@ export default class PrescriptionCheck extends Component {
         if (json.code === 0) {
           this.savePrescription(json.reportId)
           this.renderHtml()
+          if (this.props.route.params.tests !=null) {
+            this.sendPathology()
+          }
+          if (this.props.route.params.er !=null) {
+            this.sendimage()
+          }
           console.log(json.msg)
         } else {
           console.log(json.msg)
@@ -447,13 +471,81 @@ export default class PrescriptionCheck extends Component {
       .catch(error => console.warn(error));
   }
 
-  /*  <WebView
-      allowFileAccess={true}
-      style={{width:200,height:300}}
-      source={{html : this.state.html}}
-      onMessage={this.onMessage}
-    >
-    </WebView>*/
+  sendPathology() {
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/medical-report/update-pathology'
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      },
+        body: JSON.stringify({
+          businessTelehealthAppointmentId : this.props.route.params.id,
+          isFasting : this.props.route.params.fast,
+          testsRequested : this.props.route.params.tests,
+          clinicalNotes : this.props.route.params.ch,
+        })
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({isLoading:false});
+        if (json.code === 0) {
+          alert('Success upload pathology')
+        } else if (json.code == 10011) {
+          this.loggedin(json.msg)
+        } else {
+          alert(json.msg)
+        }
+      }).catch(error => console.warn(error));
+  }
+
+  sendimage() {
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/medical-report/update-radiology-report'
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'sso-refresh-token': this.context.refresh_token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      },
+        body: JSON.stringify({
+          businessTelehealthAppointmentId: this.props.route.params.id,
+          examinationRequired: this.props.route.params.er,
+          clinicalNotes: this.props.route.params.ich,
+        })
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({isLoading:false});
+        if (json.code === 0) {
+          alert('Success upload Image')
+        } else if (json.code == 10011) {
+          this.loggedin(json.msg)
+        } else {
+          alert(json.msg)
+        }
+      }).catch(error => console.warn(error));
+  }
+
 
   render() {
     if (this.state.isLoading){
@@ -521,8 +613,8 @@ export default class PrescriptionCheck extends Component {
           </ScrollView>
         <Text style={{marginTop:20, fontSize:20, fontWeight: '500', color: 'rgb(33,192,196)'}}>{I18n.t('esign')}</Text>
         <View style={{width:'90%',height:250}}>
-          <SignatureScreen
-            ref="sig"
+          <Signature
+            ref={this.newRef}
             onBegin={()=>this.setState({canscroll:false})}
             onEnd={()=>this.setState({canscroll:true})}
             onOK={this.handleSignature}

@@ -15,12 +15,17 @@ export default class Signup extends Component {
     type:"",
     checked3:1,
     checked4:0,
+    read:false,
     timer:null,
     counter:60,
   }
   sendRequest() {
-    if(this.state.code==''){
-      Alert.alert('请输入一个验证码')
+    if(!this.state.read) {
+      Alert.alert('Please read and agree to User Manual')
+      return false;
+    } else if(this.state.code==''){
+      Alert.alert('Please enter verification code')
+      return false;
     } else {
     let s = this.state;
     let rt = 1;
@@ -205,6 +210,26 @@ export default class Signup extends Component {
           </TouchableOpacity>
             }
           </View>
+
+          <View style={{marginTop:15, marginBottom:15, flexDirection: 'row'}}>
+           <CheckBox
+             center
+             iconRight
+             uncheckedIcon='square-o'
+             checkedIcon='check-square-o'
+             checkedColor='red'
+             size={this.state.size}
+             checked={this.state.read}
+             onPress={() => {
+               this.setState({
+               read:!this.state.read
+             })}}
+            />
+            <Text style={{marginTop:18}}>I have read and agreed with</Text>
+            <TouchableOpacity onPress={()=>this.props.navigation.navigate('DataPolicy')}>
+              <Text style={{marginLeft:2,marginTop:18,color:"#8FD7D3"}}>AICARE User Manual</Text>
+            </TouchableOpacity>
+         </View>
 
           <TouchableOpacity style={styles.resumeButton} onPress={()=>this.sendRequest()}>
             <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t('confirm')}</Text>
