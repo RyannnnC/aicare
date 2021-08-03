@@ -195,7 +195,7 @@ export default class HealthMain extends Component {
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => {}}>
+              onPress={() => {this.props.navigation.navigate(I18n.t('myAccount'));}}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -215,7 +215,7 @@ export default class HealthMain extends Component {
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
               }}>
-                <Text>{I18n.t('claim')}</Text>
+                <Text>{I18n.t('invoice')}</Text>
               </View>
             </TouchableOpacity>
           </View>

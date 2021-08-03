@@ -252,4 +252,5 @@ export default {
   failmsg:'个申报没有通过审核，请重新提交',
   undermsg:'%{num} 个审报审核中，总计 %{money}$. 请耐心等待',
   delete:'删除',
+  invoice:'收益',
 }
