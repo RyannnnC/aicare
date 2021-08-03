@@ -25,7 +25,6 @@ import HealthServiceType from './Scene/Account/healthServiceType';
 import OtherStores from './Scene/Account/otherStores';
 import Members from './Scene/Account/members';
 import UploadMember from './Scene/Account/uploadMember';
-import DoctorInfo from './Scene/Account/doctorInfo';
 import Mintro from './Scene/Account/mintro';
 import Mlan from './Scene/Account/mlan';
 import I18n from './Scene/switchLanguage';
@@ -337,7 +336,7 @@ export default class App extends React.Component {
     health: true,
     employerId:null,
     orgId:null,
-    url:'3.104.232.106:8084',
+    url:'3.104.87.14:8084',
     date: "",
     name: '',
     phone: '',
@@ -695,11 +694,11 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('introduction')} component={Introduction} />
             <Stack.Screen name={I18n.t('mintro')} component={Mintro} />
             <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
+            <Stack.Screen name={I18n.t('myAccount')} component={MyAccount} />
             <Stack.Screen name={I18n.t('languages')} component={Languages} />
             <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
             <Stack.Screen name={I18n.t('stores')} component={OtherStores} />
             <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
-            <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
             </>
           ):(
             <>
@@ -710,7 +709,6 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
             <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
             <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
-            <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
             <Stack.Screen name={I18n.t('myAccount')} component={MyAccount} />
             <Stack.Screen name={I18n.t('enote')} component={Enotes} />
             <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />

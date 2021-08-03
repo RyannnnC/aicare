@@ -10,9 +10,9 @@ import ImageView from 'react-native-image-view';
 export default class Enotes extends Component {
     constructor(props) {
       super(props);
-  //    Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
-  //    Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
-  //    Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
+//      Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
+//      Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
+//      Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
       this.state={
       pressed:false,
       pressed1:false,
@@ -87,8 +87,8 @@ export default class Enotes extends Component {
   }
 
   componentWillUnmount() {
-    //  Voice.destroy()
-    //  .then(Voice.removeAllListeners);
+      Voice.destroy()
+      .then(Voice.removeAllListeners);
   }
   queryPatient() {
     let url = 'http://'
@@ -184,12 +184,12 @@ export default class Enotes extends Component {
         <View style={{flexDirection: 'row', marginBottom:10,marginTop:10}}>
           <Text style={{ color:'rgb(33,192,196)',fontSize:18, fontWeight: '500' }}>{I18n.t('diagnosisSuggestion')}</Text>
           {this.state.talk ?
-          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.stopRecognizing()
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {this.stopRecognizing()
           }}>
             <MaterialCommunityIcons name="microphone-off" size={24} color="black" />
           </TouchableOpacity>
           :
-          <TouchableOpacity style={{marginLeft:15}} onPress={() => {//this.startRecognizing()
+          <TouchableOpacity style={{marginLeft:15}} onPress={() => {this.startRecognizing()
           }}>
             <FontAwesome name="microphone" size={24} color="black" />
           </TouchableOpacity>

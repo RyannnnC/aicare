@@ -25,37 +25,7 @@ export default class HealthMain extends Component {
           <View style={{height:'25%',width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
             <TouchableOpacity
               style={{
-                width:'20%',
-                height:'90%',
-                borderRadius:15,
-                margin:'2%',
-              }}
-              onPress={() => {}}>
-              <View style={{
-                width:'100%',
-                height:'35%',
-                backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'flex-end',
-                borderTopLeftRadius: 15,
-                borderTopRightRadius: 15,
-              }}>
-                <Image
-                  style={{height:40,width:40}}
-                  source={require('../../images/providerImg/mokuai-1-2.png')}
-                />
-              </View>
-              <View style={{
-                width:'100%',
-                height:'65%',
-                backgroundColor:'white',alignItems:'center',justifyContent:'center',
-                borderBottomLeftRadius: 15,
-                borderBottomRightRadius: 15,
-              }}>
-                <Text>{I18n.t('myPatient')}</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width:'20%',
+                width:'30%',
                 height:'90%',
                 borderRadius:15,
                 margin:'2%',
@@ -85,12 +55,17 @@ export default class HealthMain extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width:'20%',
+                opacity: this.context.employerId ? 1 : 0.6,
+                width:'30%',
                 height:'90%',
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => {this.props.navigation.navigate('病历')}}>
+              onPress={() => {
+                if (this.context.employerId) {
+                  this.props.navigation.navigate('病历')
+                }
+              }}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -115,7 +90,8 @@ export default class HealthMain extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width:'20%',
+                opacity: 0.6,
+                width:'30%',
                 height:'90%',
                 borderRadius:15,
                 margin:'2%',
@@ -145,14 +121,51 @@ export default class HealthMain extends Component {
             </TouchableOpacity>
           </View>
           <View style={{height:'25%',width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
+          <TouchableOpacity
+            style={{
+              opacity: 0.6,
+              width:'30%',
+              height:'90%',
+              borderRadius:15,
+              margin:'2%',
+            }}
+            onPress={() => {}}>
+            <View style={{
+              width:'100%',
+              height:'35%',
+              backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'flex-end',
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+            }}>
+              <Image
+                style={{height:40,width:40}}
+                source={require('../../images/providerImg/mokuai-1-2.png')}
+              />
+            </View>
+            <View style={{
+              width:'100%',
+              height:'65%',
+              backgroundColor:'white',alignItems:'center',justifyContent:'center',
+              borderBottomLeftRadius: 15,
+              borderBottomRightRadius: 15,
+            }}>
+              <Text>{I18n.t('myPatient')}</Text>
+            </View>
+          </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width:'20%',
+                width:'30%',
                 height:'90%',
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => this.props.navigation.navigate(I18n.t('myAccount'))}>
+              onPress={() => {
+                if (this.context.employerId != null) {
+                  this.props.navigation.navigate(I18n.t('uploadMember'), {id: this.context.employerId})
+                } else {
+                  this.props.navigation.navigate(I18n.t('orginfo'));
+                }
+              }}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -172,72 +185,12 @@ export default class HealthMain extends Component {
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
               }}>
-                <Text>{I18n.t('myAccount')}</Text>
+                <Text>{I18n.t('account')}</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width:'20%',
-                height:'90%',
-                borderRadius:15,
-                margin:'2%',
-              }}
-              onPress={() => {}}>
-              <View style={{
-                width:'100%',
-                height:'35%',
-                backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'flex-end',
-                borderTopLeftRadius: 15,
-                borderTopRightRadius: 15,
-              }}>
-                <Image
-                  style={{height:40,width:40}}
-                  source={require('../../images/providerImg/mokuai-6-2.png')}
-                />
-              </View>
-              <View style={{
-                width:'100%',
-                height:'65%',
-                backgroundColor:'white',alignItems:'center',justifyContent:'center',
-                borderBottomLeftRadius: 15,
-                borderBottomRightRadius: 15,
-              }}>
-                <Text>{I18n.t('emRecord')}</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width:'20%',
-                height:'90%',
-                borderRadius:15,
-                margin:'2%',
-              }}
-              onPress={() => {}}>
-              <View style={{
-                width:'100%',
-                height:'35%',
-                backgroundColor:'rgb(33,192,196)',alignItems:'center',justifyContent:'flex-end',
-                borderTopLeftRadius: 15,
-                borderTopRightRadius: 15,
-              }}>
-                <Image
-                  style={{height:40,width:40}}
-                  source={require('../../images/providerImg/mokuai-7-2.png')}
-                />
-              </View>
-              <View style={{
-                width:'100%',
-                height:'65%',
-                backgroundColor:'white',alignItems:'center',justifyContent:'center',
-                borderBottomLeftRadius: 15,
-                borderBottomRightRadius: 15,
-              }}>
-                <Text>{I18n.t('vr')}</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width:'20%',
+                width:'30%',
                 height:'90%',
                 borderRadius:15,
                 margin:'2%',

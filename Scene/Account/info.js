@@ -4,7 +4,7 @@ import {styles} from '../providerStyle';
 import {  MaterialIcons} from '@expo/vector-icons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
-import moment from 'moment-timezone';
+import moment from 'moment';
 import DataContext from '../../providerContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
@@ -46,15 +46,51 @@ export default class Info extends Component {
       ]
     }
     }
-/*    <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
-        <Text style={{ fontSize:16, fontWeight: '400' }}>分支机构（选填）</Text>
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('分支机构')}>
-        <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-      </TouchableOpacity>
-    </View>
-*/
 
   async componentDidMount(){
+    let url = 'http://'
+    +this.context.url
+    +'/aicare-business-api/business/orginfo/list';
+    fetch(url,{
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/json',
+      'sso-auth-token': this.context.token,
+      'sso-refresh-token': this.context.refresh_token,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+    }})
+    .then((response) => response.json())
+    .then((json) => {
+      this.setState({ isLoading: false });
+      if (json.code === 0) {
+        if(json.orginfo.name!=null){
+          this.context.action.changeorg(json.orginfo.orgId);
+          this.context.action.changeimg(json.orginfo.orgImg);
+          this.context.action.changename(json.orginfo.name);
+          this.context.action.changeemail(json.orginfo.email);
+          this.context.action.changephone(json.orginfo.mobile);
+          this.context.action.changestreet(json.orginfo.address);
+          this.context.action.changepostcode(json.orginfo.postalCode);
+          this.context.action.changeintro(json.orginfo.introduce);
+          this.context.action.changestate(json.orginfo.city);
+          this.context.action.changelanguage(json.orginfo.languages);
+          this.context.action.changeserviceclass(json.orginfo.serviceClassList);
+          this.context.action.changetime(json.orginfo.orgschedulevos);
+          this.context.action.changetypelist(json.orginfo.serviceTypeList);
+        }
+        console.log(json.orginfo.orgschedulevos);
+      } else if (json.code == 10011) {
+        this.loggedin(json.msg)
+      } else {
+        console.log(json.msg)
+      }
+    }).catch(error => console.warn(error));
     if (this.context.time.length>0){
       let i;
       for (i=0;i<this.context.time.length;i++){
@@ -66,8 +102,8 @@ export default class Info extends Component {
           but[i].fontColor = '#FFFFFF';
           this.setState({buttons: but});
           let t = this.state.times;
-          t[i].time1 = this.context.time[i].startTime;
-          t[i].time2 = this.context.time[i].endTime;
+          t[i].time1 = moment(this.context.time[i].startTime,'HH:mm:ss');
+          t[i].time2 = moment(this.context.time[i].endTime,'HH:mm:ss');
           this.setState({times:t})
         }
       }
@@ -86,14 +122,7 @@ export default class Info extends Component {
       }
 
     }
-/*   navigator.geolocation.getCurrentPosition(
-     position=>{
-       this.setState({
-         latitude:position.coords.latitude,
-         longitude:position.coords.longitude
-       });
-     },
-   );*/
+
    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
    this.setState({ hasCameraPermission: status === "granted" });
    const { c_status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -122,25 +151,6 @@ export default class Info extends Component {
       this.setState({buttons: but});
     }
   };
-
-/*  getData(){
-    Geocoder.init("AIzaSyCXUX-a8NteFRhltP-WJ0npzFKiKiG8wb8"); // use a valid API key
-    Geocoder.from(this.state.latitude, this.state.longitude)
-		.then(json => {
-      var addressComponent = json.results[0].address_components;
-      if (addressComponent.length==7){
-      this.context.action.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name + ' ' + addressComponent[2].long_name);
-      this.context.action.changestate(addressComponent[4].long_name);
-      this.context.action.changepostcode(addressComponent[6].long_name);
-      }
-      else{
-        this.context.action.changestreet(addressComponent[0].long_name + ' ' + addressComponent[1].long_name);
-        this.context.action.changestate(addressComponent[3].long_name);
-        this.context.action.changepostcode(addressComponent[5].long_name);
-      }
-		})
-		.catch(error => console.warn(error));
-  }*/
 
   sendRequest() {
     let s = this.state;
@@ -318,12 +328,7 @@ export default class Info extends Component {
       }
     );
   }
-/*  <TouchableOpacity style={{flexDirection: 'row', marginRight: 5}} onPress = {()=>{this.getData()}}>
-    <Image style = {{width:12, height:15}}
-      source= {require('../../images/providerImg/order_icon_location.png')}
-    />
-    <Text>自动定位</Text>
-  </TouchableOpacity>*/
+
   render() {
     let languages =[];
     if(this.context.languages.length>0) {
@@ -349,9 +354,9 @@ export default class Info extends Component {
     })};
     if (this.state.isLoading){
       return(
-     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-         <ActivityIndicator size="large" color="#00ff00"  />
-      </View>
+        <View style={{ flex: 1, backgroundColor:'rgb(51,51,51)', justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" color="white"  />
+        </View>
     )
     }else {
     return (
@@ -427,22 +432,30 @@ export default class Info extends Component {
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('postcode')}</Text>
           <TextInput
-            style={styles.resumeInput1}
+          style={{width: '30%',
+          fontSize:18,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE'}}
             placeholder= "2113"
             value = {this.context.postcode}
             keyboardType="numeric"
             onChangeText={(text) => {this.context.action.changepostcode(text)}}
           />
-          <Text style={{marginLeft:20, fontSize:16, fontWeight: '400' }}>{I18n.t('state')}</Text>
+          <Text style={{marginLeft:20, fontSize:18, fontWeight: '500' }}>{I18n.t('state')}</Text>
           <TextInput
-            style={styles.resumeInput1}
+          style={{width: '30%',
+          fontSize:18,
+          marginLeft: 5,
+          borderBottomWidth:1,
+          borderBottomColor:'#EEEEEE'}}
             value = {this.context.state}
             onChangeText={(text) => {this.context.action.changestate(text)}}
             placeholder= "NSW"/>
         </View>
         <View style={{flexDirection: 'row', marginTop:10, marginBottom:10}}>
           <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t('introduction')}</Text>
-          <Text numberOfLines={1} style={{ fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.intro}</Text>
+          <Text numberOfLines={1} style={{ marginLeft:5,fontSize:16, fontWeight: '400' , color:'#999999',width:'80%'}}>{this.context.intro}</Text>
           <TouchableOpacity style={{marginTop:5}} onPress={() => this.props.navigation.navigate(I18n.t('introduction'))}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
@@ -462,7 +475,7 @@ export default class Info extends Component {
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
         </TouchableOpacity>
         </View>
-        <Text style={{ marginTop:10,marginBottom:10,fontSize:16, fontWeight: '400' }}>{I18n.t('serviceHours')}</Text>
+        <Text style={{ marginTop:10,marginBottom:10,fontSize:18, fontWeight: '500' }}>{I18n.t('serviceHours')}</Text>
         <View  style={{flexDirection: 'row'}}>
           <TouchableOpacity style={{
             backgroundColor:this.state.buttons[0].backgroundColor,
@@ -485,14 +498,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[0].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[0].time1,'HH:mm:ss').format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[0].time1,'HH:mm:ss').format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[0].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[0].time2,'HH:mm:ss').format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[0].time2,'HH:mm:ss').format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
@@ -565,14 +578,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[1].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[1].time1,'HH:mm:ss').format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[1].time1,'HH:mm:ss').format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[1].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[1].time2,'HH:mm:ss').format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[1].time2,'HH:mm:ss').format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
@@ -652,7 +665,7 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[2].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[2].time2,'HH:mm:ss').format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[2].time2,'HH:mm:ss').format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
@@ -725,7 +738,7 @@ export default class Info extends Component {
               let t = this.state.times;
               t[3].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[3].time1,'HH:mm:ss').format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[3].time1,'HH:mm:ss').format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
@@ -805,14 +818,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[4].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[4].time1,'HH:mm:ss').format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[4].time1,'HH:mm:ss').format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[4].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[4].time2,'HH:mm:ss').format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[4].time2,'HH:mm:ss').format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
@@ -885,14 +898,14 @@ export default class Info extends Component {
               let t = this.state.times;
               t[5].visible1 = true;
               this.setState({times:t})}}>
-              <Text>{moment(this.state.times[5].time1,'HH:mm:ss').format('HH:mm')} </Text>
+              <Text>{moment(this.state.times[5].time1,'HH:mm:ss').format('HH:mm')}</Text>
             </TouchableOpacity>
               <Text> _ </Text>
               <TouchableOpacity style={styles.timePick} onPress={()=>{
                 let t = this.state.times;
                 t[5].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[5].time2,'HH:mm:ss').format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[5].time2,'HH:mm:ss').format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
@@ -972,7 +985,7 @@ export default class Info extends Component {
                 let t = this.state.times;
                 t[6].visible2 = true;
                 this.setState({times:t})}}>
-                <Text>{moment(this.state.times[6].time2,'HH:mm:ss').format('HH:mm')} </Text>
+                <Text>{moment(this.state.times[6].time2,'HH:mm:ss').format('HH:mm')}</Text>
               </TouchableOpacity>
             </View>
           }
