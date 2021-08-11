@@ -1,17 +1,16 @@
 
 import React,{useContext, useEffect,useState} from 'react';
-import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList,Platform,AsyncStorage} from 'react-native';
+import { Text, Button, View, Alert, Image,TouchableOpacity, FlatList,Platform,AsyncStorage,Modal} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
+import I18n from "./language"
+import ChatBot from 'react-native-chatbot-expo';
 
-//call(args).catch(console.error)
 export default function ProviderMain({navigation}) {
-    const alertHandler= () => {
-      Alert.alert('功能将在下一版本更新，敬请期待')
-    }
+    
     const [len, setLen] = useState(0)
     const [order,setOrder]=useState([]);
     const [rec,setRec]=useState(-1);
@@ -25,14 +24,14 @@ export default function ProviderMain({navigation}) {
       console.log(user.token);
       if(checkToken()){
         Alert.alert(
-          "登陆提醒",
-          "您还没登陆，如需使用此功能请移步注册登录",
+          I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
           [
-            {text:"取消",
+            {text:I18n.t("cancel"),
               onPress:()=>console.log("cancel redirect"),
               style:"cancel"
           },{
-            text:"注册登陆",
+            text:I18n.t("go_login"),
             onPress:()=>removeToken()
 
           }
@@ -43,6 +42,19 @@ export default function ProviderMain({navigation}) {
       }
       navigation.navigate("telehealthMain")
   }
+  const steps = [
+    {
+      id: '0',
+      message: 'Welcome to react chatbot!',
+      trigger: '1',
+    },
+    {
+      id: '1',
+      message: 'Bye!',
+      end: true,
+    },
+  ];
+  
     const checkToken=()=>{
       if (user.token==-1){
         return true
@@ -66,15 +78,15 @@ export default function ProviderMain({navigation}) {
     console.log(user.token)
     if(checkToken()){
       Alert.alert(
-        "登陆提醒",
-        "您还没登陆，如需使用此功能请移步注册登录",
-        [
-          {text:"取消",
-            onPress:()=>console.log("cancel redirect"),
-            style:"cancel"
-        },{
-          text:"注册登陆",
-          onPress:()=>removeToken()
+        I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
+          [
+            {text:I18n.t("cancel"),
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:I18n.t("go_login"),
+            onPress:()=>removeToken()
 
         }
         
@@ -83,15 +95,15 @@ export default function ProviderMain({navigation}) {
       return;
     }
     Alert.alert(
-      "新冠疫苗阶段提醒",
-      "根据澳大利亚政府信息，目前(2021.6.8之后)澳大利亚新冠疫苗阶段处于2a阶段，只有符合2a条件(40岁以上或关键高风险工作者)可以注射疫苗，诊所提供的疫苗类型是阿斯利康，请在预约之前自行核实自己是否符合标准。具体信息可在health.gov.au查看。点击确认继续疫苗预约。",
+      I18n.t("vaccine_notice"),
+      I18n.t("vaccine_text"),      
       [
         {
-          text: "取消",
+          text: I18n.t("cancel"),
           onPress: () => console.log(user.token),
           style: "cancel"
         },
-        { text: "确定", onPress :()=>{
+        { text: I18n.t("confirm_cancel"), onPress :()=>{
         if(Platform.OS==="ios"){
           navigation.navigate("telehealthClinic",{return:"",type:true,doctype:7,state:"NSW"})//navigation.navigate("telehealthSub",{docType:7})
         }else{
@@ -106,15 +118,15 @@ export default function ProviderMain({navigation}) {
   const goSomewhere=(index)=>{
     if(checkToken()){
       Alert.alert(
-        "登陆提醒",
-        "您还没登陆，如需使用此功能请移步注册登录",
-        [
-          {text:"取消",
-            onPress:()=>console.log("cancel redirect"),
-            style:"cancel"
-        },{
-          text:"注册登陆",
-          onPress:()=>removeToken()//navigation.navigate("登陆")
+        I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
+          [
+            {text:I18n.t("cancel"),
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:I18n.t("go_login"),
+            onPress:()=>removeToken()
 
         }
         
@@ -125,15 +137,16 @@ export default function ProviderMain({navigation}) {
     navigation.navigate("telehealthClinic",{return:"",type:true,doctype:index,state:"NSW"})
   }
   const user = useContext(DataContext);
+  const [visible,setVisible]=useState(user.ad);
 
   useEffect(() => {
     getting();
-    /*let poll = setInterval(() => {
+    let poll = setInterval(() => {
       getting();
     }, 5000);
     setRec(poll);
-    return()=>clearInterval(poll)
-    */
+  return()=>clearInterval(poll)
+    
             //
             /**/
     },[])
@@ -180,222 +193,12 @@ export default function ProviderMain({navigation}) {
                 //Alert.alert('查询失败');
               }
             }).catch(error => console.warn(error));
-            /*url2 = "http://"+user.url+"/aicare-customer-api/customer/user/query-appointment?appointDate="+date+"&dateFlg=0";
-            fetch(url2,{
-              method: 'GET',
-              mode: 'cors',
-              credentials: 'include',
-              headers: {
-              'Accept':       'application/json',
-              'Content-Type': 'application/json',
-              'sso-auth-token': user.token,
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true,
-              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-            }})
-            .then((response) => response.json())
-            .then((json) => {
-              if (json.code == 0) {
-                //this.setState({query:json.page})
-                setLen(json.page.length)
-                //console.log(order)
-              } else {
-                console.log(json.msg);
-                //Alert.alert('查询失败');
-              }
-            }).catch(error => console.warn(error));*/
-            /*if(user.first_svisit==0){
-            let url = "http://"+user.url+"/aicare-customer-api/customer/customer-info/all-info";
-            fetch(url,{
-              method: 'POST',
-              mode: 'cors',
-              credentials: 'include',
-              headers: {
-              'Accept':       'application/json',
-              'Content-Type': 'application/json',
-              'sso-auth-token': user.token,
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true,
-              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-            }})
-            .then((response) => response.json())
-            .then((json) => {
-              if (json.code == 0) {
-                //console.log(json);
-
-                console.log("已录入")
-                //console.log("schedule");
-                //console.log(timeSection);
-                //console.log(json.code);
-                //Alert.alert('查询成功');
-              } else if(json.code==1){
-                  console.log("基本信息未录入")
-                  console.log("you got nothing")
-            Alert.alert(
-              "提醒",
-              "检测到您的基本信息还未完善，需要进一步完善您的基本信息吗？",
-              [
-                {
-                  text: "取消",
-                  onPress: () => {user.action.changevisit(1);console.log("Cancel Pressed")},
-                  style: "cancel"
-                },
-                { text: "确定", onPress: () => {user.action.changevisit(1);navigation.navigate("accountInfo")} } //this should navigate to the login page
-              ],
-              { cancelable: false }
-              )
-              }else if(json.code==2){
-                console.log("you got nothing")
-                Alert.alert(
-                  "提醒",
-                  "检测到您的医疗卡信息还未完善，需要进一步完善您的医疗卡信息吗？",
-                  [
-                    {
-                      text: "取消",
-                      onPress: () => {user.action.changevisit(1);console.log("Cancel Pressed")},
-                      style: "cancel"
-                    },
-                    { text: "确定", onPress: () => {user.action.changevisit(1);navigation.navigate("accountInfo")} } //this should navigate to the login page
-                  ],
-                  { cancelable: false }
-                  )
-                  console.log("医保信息未录入")
-                  setBase(json.user_base_info);
-              }else if(json.code == 3){
-
-                console.log("you got nothing")
-                Alert.alert(
-                  "提醒",
-                  "检测到您的个人信息还未完善，需要进一步完善您的个人信息吗？",
-                  [
-                    {
-                      text: "取消",
-                      onPress: () => {user.action.changevisit(1);console.log("Cancel Pressed")},
-                      style: "cancel"
-                    },
-                    { text: "确定", onPress: () => {user.action.changevisit(1);navigation.navigate("accountInfo")} } //this should navigate to the login page
-                  ],
-                  { cancelable: false }
-                  )
-              }else{
-                console.log(json.msg);
-                Alert.alert('查询失败');
-              }
-            }).catch(error => console.warn(error));}*/
+            
 
     }
 
     
-    /*let url = "http://3.104.87.14:8085/aicare-customer-api/customer/user/query-appointment";
-            fetch(url,{
-              method: 'GET',
-              mode: 'cors',
-              credentials: 'include',
-              headers: {
-              'Accept':       'application/json',
-              'Content-Type': 'application/json',
-              'sso-auth-token': user.token,
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Credentials': true,
-              'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-              'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-            }})
-            .then((response) => response.json())
-            .then((json) => {
-              if (json.code == 0) {
-                //this.setState({query:json.page})
-                setLen(json.page.length)
-                Alert.alert('查询成功');
-              } else {
-                console.log(json.msg);
-                Alert.alert('查询失败');
-              }
-            }).catch(error => console.warn(error));
-    */
-    /* if (user.first_vist==0){
-        let url2= "http://3.104.87.14:8085/aicare-customer-api/customer/customer-info/all-info";
-        fetch(url2,{
-          method: 'POST',
-          mode: 'cors',
-          credentials: 'include',
-          headers: {
-          'Accept':       'application/json',
-          'Content-Type': 'application/json',
-          'sso-auth-token': user.token,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
-          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
-        }})
-        .then((response) => response.json())
-        .then((json) => {
-          if (json.code == 0) {
-            //console.log(json);
-
-           // setBase(json.user_base_info);
-            //setMedi(json.user_health_card);
-            console.log("info all loged")
-            //console.log("schedule");
-            //console.log(timeSection);
-            //console.log(json.code);
-            //Alert.alert('查询成功');
-          } else if(json.code==1){
-              console.log("基本信息未录入")
-              //setMedi(json.user_health_card);
-              Alert.alert(
-                "提醒",
-                "您的个人基本信息还未录入，是否录入？",
-                [
-                  {
-                    text: "取消",
-                    onPress: () => {user.action.changevisit(1);console.log("Cancel Pressed")},
-                    style: "cancel"
-                  },
-                  { text: "确定", onPress: () => {user.action.changevisit(1);navigation.navigate("accountInfo")} } //this should navigate to the login page
-                ],
-                { cancelable: false }
-                )
-          }else if(json.code==2){
-
-              console.log("医保信息未录入")
-              Alert.alert(
-                "提醒",
-                "您的医疗卡信息还未录入，是否录入？",
-                [
-                  {
-                    text: "取消",
-                    onPress: () => {user.action.changevisit(1);console.log("Cancel Pressed")},
-                    style: "cancel"
-                  },
-                  { text: "确定", onPress: () => {user.action.changevisit(1);navigation.navigate("accountInfo")} } //this should navigate to the login page
-                ],
-                { cancelable: false }
-                )
-              //setBase(json.user_base_info);
-          }else if(json.code == 3){
-
-              console.log("you got nothing")
-              Alert.alert(
-                "提醒",
-                "您的所有个人信息还未录入，是否录入？",
-                [
-                  {
-                    text: "取消",
-                    onPress: () => {user.action.changevisit(1);console.log("Cancel Pressed")},
-                    style: "cancel"
-                  },
-                  { text: "确定", onPress: () => {user.action.changevisit(1);navigation.navigate("accountInfo")} } //this should navigate to the login page
-                ],
-                { cancelable: false }
-                )
-          }else{
-            console.log(json.msg);
-            //Alert.alert('查询失败');
-          }
-        }).catch(error => console.warn(error));
-      }*/
+   
       const getToken =async() => {
         console.log("getting")
         try {
@@ -419,7 +222,7 @@ export default function ProviderMain({navigation}) {
     date.setDate(date.getDate() + 1)
     var today = new Date();
     if (today== date){
-      return "今日"
+      return I18n.t("today")
     }
     date=date.toLocaleDateString().slice(5,);
     return date;
@@ -428,7 +231,7 @@ export default function ProviderMain({navigation}) {
     const gotoOrderPage=()=>{
       navigation.navigate("订单")
     }
-    var date = new Date().getDate();
+    var date = new Date();
     var day = new Date().getDay();
     var month = new Date().getMonth() + 1;
     var icon = null;
@@ -449,42 +252,44 @@ export default function ProviderMain({navigation}) {
 
         <View style={{flexDirection: 'row', marginBottom: 15,marginTop:85}}>
           <View style={{marginLeft:15, marginRight:10}}>
-            <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{month}月{date}日，</Text>
+            <Text style={{ color: '#006A71', fontSize: 24, fontWeight: '600'}} >{I18n.strftime(date, "%b %d")}</Text>
             {/*<Text>您今日有{len}项订单</Text>*/}
-            <Text style={{fontSize:12,marginTop:5}}>使用AI助手来测试今日心情吧。</Text>
+            <Text style={{fontSize:12,marginTop:5}}>{I18n.t('aitext_homepage')}</Text>
           </View>
-          <TouchableOpacity onPress={()=>Alert.alert("该功能目前正在升级，敬请期待！")}>
+          <TouchableOpacity onPress={()=>Alert.alert(I18n.t("updating_module"))}>
           <Image
             style = {{height:70,width:70,marginTop:-10}}
             source = {require('../images/Group.png')}
           />
           </TouchableOpacity>
         </View>
+
       <View style={{textAlign: "left",marginBottom:8,marginTop:25 }}>
-        <Text style={{ color: '#333333', fontSize: 19,marginLeft:8, fontWeight: '500'}}>热门服务</Text>
+        <Text style={{ color: '#333333', fontSize: 19,marginLeft:8, fontWeight: '500'}}>{I18n.t('myservice_homepage')}</Text>
       </View>
+
       <View style={styles.buttons}>
         
       <TouchableOpacity style={{marginTop:12,marginLeft:-2}} onPress={goToTelehealth}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/appointment.png')}
+          source = {user.language=="en"?require("../images/appointment_eng.png"):require('../images/appointment.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity style={{marginTop:14,marginLeft:5}} onPress={goVaccine}>
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/vaccine.png')}
+          source = {user.language=="en"?require("../images/vaccine_eng.png"):require('../images/vaccine.png')}
           />
           </View>
         </TouchableOpacity>
         
-        <TouchableOpacity style={{marginTop:14,marginLeft:5}} onPress={()=>goSomewhere(9)}>
+        <TouchableOpacity style={{marginTop:14,marginLeft:5}} onPress={()=>navigation.navigate("reservation")}>
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/check.png')}
+          source = {user.language=="en"?require("../images/covid_test_s_e.png"):require('../images/covid_test_s.png')}
           />
           </View>
         </TouchableOpacity>
@@ -501,14 +306,14 @@ export default function ProviderMain({navigation}) {
       <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{
          if(checkToken()){
           Alert.alert(
-            "登陆提醒",
-            "您还没登陆，如需使用此功能请移步注册登录",
+            I18n.t("login_notice"),
+            I18n.t("login_notice_text"),
             [
-              {text:"取消",
+              {text:I18n.t("cancel"),
                 onPress:()=>console.log("cancel redirect"),
                 style:"cancel"
             },{
-              text:"注册登陆",
+              text:I18n.t("go_login"),
               onPress:()=>removeToken()
   
             }
@@ -520,21 +325,21 @@ export default function ProviderMain({navigation}) {
         console.log(user.customerUserInfoId);navigation.navigate("资料收集");}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/now.png')}
+          source = {user.language=="en"?require("../images/telehealth.png"):require('../images/now.png')}
           />
         </TouchableOpacity>
 
         <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{
            if(checkToken()){
             Alert.alert(
-              "登陆提醒",
-              "您还没登陆，如需使用此功能请移步注册登录",
+              I18n.t("login_notice"),
+              I18n.t("login_notice_text"),
               [
-                {text:"取消",
+                {text:I18n.t("cancel"),
                   onPress:()=>console.log("cancel redirect"),
                   style:"cancel"
               },{
-                text:"注册登陆",
+                text:I18n.t("go_login"),
                 onPress:()=>removeToken()
     
               }
@@ -546,21 +351,21 @@ export default function ProviderMain({navigation}) {
           navigation.navigate("healthRecord");}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/record.png')}
+          source = {user.language=="en"?require("../images/record_eng.png"):require('../images/record.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity style={{marginTop:-5,marginLeft:-2}} onPress={()=>{
             if(checkToken()){
               Alert.alert(
-                "登陆提醒",
-                "您还没登陆，如需使用此功能请移步注册登录",
+                I18n.t("login_notice"),
+                I18n.t("login_notice_text"),
                 [
-                  {text:"取消",
+                  {text:I18n.t("cancel"),
                     onPress:()=>console.log("cancel redirect"),
                     style:"cancel"
                 },{
-                  text:"注册登陆",
-                  onPress:()=>removeToken()      
+                  text:I18n.t("go_login"),
+                  onPress:()=>removeToken()
                 }                
               ]
               )
@@ -569,7 +374,7 @@ export default function ProviderMain({navigation}) {
             navigation.navigate("prescription");}}>
           <Image
           style = {{width:110,height:110}}
-          source = {require('../images/pres.png')}
+          source = {user.language=="en"?require("../images/pres_eng.png"):require('../images/pres.png')}
           />
         </TouchableOpacity>
         
@@ -577,15 +382,15 @@ export default function ProviderMain({navigation}) {
         
       </View>
         <View style={{textAlign: "left",marginTop:15,marginBottom:8 }}>
-          <Text style={{ color: '#333333', marginLeft:8,fontSize: 19, fontWeight: '500',marginBottom:8}}>最近预约</Text>
+          <Text style={{ color: '#333333', marginLeft:8,fontSize: 19, fontWeight: '500',marginBottom:8}}>{I18n.t('myappointment_homepage')}</Text>
         </View>
       <TouchableOpacity onPress ={gotoOrderPage}>
       {order[0]?
       <View style={styles.home}>
         <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
-          <View style={{marginLeft:20 }}>
-            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}> {moment(order[0].appointDate).tz(Localization.timezone).format('L')} {order[0].startTime?order[0].startTime.slice(0,5) + " - "+order[0].endTime.slice(0,5):null}</Text>
-            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{order[0].deptId+1?"您预约了一门"+user.deptType[order[0].deptId]+"。":null}</Text>
+          <View style={{marginLeft:20,width:220 }}>
+            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}>{moment(order[0].appointDate).tz(Localization.timezone).format('DD/MM')} {order[0].startTime?order[0].startTime.slice(0,5) + " - "+order[0].endTime.slice(0,5):null}</Text>
+            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{order[0].deptId+1?I18n.t("ordertype_homepage")+I18n.t("types")[order[0].deptId]+"。":null}</Text>
           </View>
         
         <Image
@@ -596,33 +401,63 @@ export default function ProviderMain({navigation}) {
         <View style={{flexDirection: 'row', marginTop:10}}>
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:20}}>{order[0].businessEmployerName+" - "+order[0].orgName}</Text>
         </View>
+        <View style={{height:10}}></View>
     </View>:<View style={styles.home}><View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
-          <View style={{marginLeft:20,marginTop:15 }}>
-            <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}>您目前还没有预约哦。</Text>
+          <View style={{marginLeft:20,marginTop:0,width:200 }}>
+            <Text style={{ color: '#333333', fontSize: 12, fontWeight: '400', marginBottom:5}}>{I18n.t("no_appointment1")}</Text>
           </View>
-        <Image
+          <Image
           style = {styles.img3}
           source = {require('../images/crayon-892.png')}
           />
+        
         </View>
         <View style={{flexDirection: 'row', marginTop:10}}>
-          <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:20}}>如需预约医生，请点击上方医生预约:)</Text>
+          <Text style={{fontSize:12, color:'#333333', fontWeight: '400',marginLeft:20}}>{I18n.t("no_appointment2")}</Text>
         </View>
+        <View style={{height:10}}></View>
         {/*<View style={{flexDirection: 'row', marginTop:2}}>
           <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:20}}>如需预约新冠疫苗，请点击上方新冠疫苗:)</Text>
       </View>*/}
           </View>}
       </TouchableOpacity>
+      <Modal
+        transparent={true}
+        style={{marginTop:0,alignContent:"center",alignItems:"center"}}
+        //backgroundColor="#000000"
+        visible={visible}
+        onRequestClose={()=>{
+          setVisible(!visible);}
+        }>
+          <View style={{marginTop:270,alignContent:"center",alignItems:"center",backgroundColor:"#F7FAFA",borderColor:"#68B0AB",borderRadius:50,borderWidth:1,width:350,marginLeft:33}}>
+         <View style={{flexDirection: 'row', marginBottom: 15,marginTop:30}}>
+         <TouchableOpacity onPress={()=>{
+          setVisible(visible=>!visible);user.action.changeAd(false)}}>
+                     <Text style={{marginLeft:-40,fontSize:16,color:"#999999"}}>{'X'}</Text>
+
+          </TouchableOpacity>
+
+          <Text style={{marginLeft:5,fontSize:18}}>{"双阴检测Covid Test"}</Text> 
+         
+        </View>
+        <Image style={{width:240,height:180}}source={require('../images/healthpac.png')}></Image>
+        <View style={{marginTop:20,marginBottom:20,borderTopWidth:0.8,width:250,alignItems:"center",borderColor:'#999999'}}>
+          <TouchableOpacity onPress={()=>{user.action.changeAd(false);setVisible(visible=>!visible);navigation.navigate("reservation")}}>
+          <Text style={{marginTop:10,color:"#61B0AB",fontSize:17,fontWeight:"600"}}>立刻预约</Text>
+          <View style={{borderTopWidth:2,marginTop:3,borderColor:"#61B0AB"}}></View>
+          </TouchableOpacity>
+        </View>
+        </View>
+        </Modal>
       <View style={{marginBottom:20,marginTop:60,}}>
-      {/*<TouchableOpacity onPress={()=>Alert.alert("情绪识别模块未就绪。") } 
-      style={{right:-240}}
+      <TouchableOpacity onPress={()=>navigation.navigate("chatbot") } 
       >     
             
             <Image
-                style={{width:100,height:100,borderRadius:30,}}
-                source = {icon}
+                style={{width:160,height:50,borderRadius:0,marginLeft:0}}
+                source = {require("../images/symptom_check.png")}
             />
-      </TouchableOpacity>*/}
+      </TouchableOpacity>
     </View>
       </ScrollView>
 

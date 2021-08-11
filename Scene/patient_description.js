@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ActivityIndicator} from 'react-native';
+import { Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ActivityIndicator,Modal} from 'react-native';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -8,6 +8,9 @@ import * as Permissions from "expo-permissions";
 import * as Localization from 'expo-localization';
 import { StackActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
+//import ImageViewer from 'rn-image-zoom-viewer';
+import ImageView from 'react-native-image-view';
+import I18n from "./language"
 
 export default class Patient_description extends Component {
   constructor(props) {
@@ -19,6 +22,7 @@ export default class Patient_description extends Component {
       members:[],
       press:[],
       id:"",
+      zoom:false,
     }
     
     
@@ -53,11 +57,11 @@ export default class Patient_description extends Component {
   
   uploadComplain(){
     if(this.state.image.length==0){
-      Alert.alert("您需要先上传附件才可以提交。")
+      Alert.alert(I18n.t("online_alert1"))
       return;
     }
     this.setState({loading:true});
-    Alert.alert("正在为您寻找医生，请稍等")
+    Alert.alert(I18n.t("online_loading"))
 
 
     let data = new FormData();
@@ -185,7 +189,7 @@ export default class Patient_description extends Component {
 
   }*/
   render(){
-    const { members,press,image} = this.state;
+    const { members,press,image,zoom} = this.state;
     
     const orders = members.length>0?members.map((item,index)=>{
         return(
@@ -219,18 +223,18 @@ export default class Patient_description extends Component {
             <Text style={{
               fontSize:16,
 
-              marginTop:3,marginLeft:85}}>在线问诊</Text>
+              marginTop:3,marginLeft:85}}>{I18n.t("online_title")}</Text>
           </View>
-          <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0,width:330}}>
+          <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0,width:340}}>
           
       
-      <Text style={{marginTop:15,marginLeft:0,color:"#68B0AB"}}>在本模块，AIcare在线助手将对您的相关资料进行收集，对您进行病情初步的评估，并根据评估结果为您寻找与您匹配度最高的医生。</Text>
+      <Text style={{marginTop:15,marginLeft:0,color:"#68B0AB"}}>{I18n.t("online_text1")}</Text>
       </View>  
-          <Text style={{fontSize:18,fontWeight:"500",marginLeft:0,marginTop:15}}>病情描述</Text>
+          <Text style={{fontSize:18,fontWeight:"500",marginLeft:0,marginTop:15}}>{I18n.t("description")}</Text>
 
       <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0}}>
       <View style={{width:330}}>
-      <Text style={{marginTop:15,marginLeft:0}}>请仔细描述您的病情(如症状，患病时长，用药状况等)</Text>
+      <Text style={{marginTop:15,marginLeft:0}}>{I18n.t("online_text2")}</Text>
       </View>
       {/*<TouchableOpacity style={{    borderColor:"#999999",
       borderWidth:1,
@@ -265,39 +269,54 @@ export default class Patient_description extends Component {
       />
       
       
-      <Text style={{fontSize:18,fontWeight:"500",marginLeft:0,marginTop:30}}>附件上传</Text>
+      <Text style={{fontSize:18,fontWeight:"500",marginLeft:0,marginTop:30}}>{I18n.t("attachment")}</Text>
       <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:0,width:330}}>
           
       
-      <Text style={{marginTop:15,marginLeft:0}}>请问患者是否有相关病症照片等附件？请在此上传以便医生进行判断。(必填)</Text>
+      <Text style={{marginTop:15,marginLeft:0}}>{I18n.t("online_text3")}</Text>
       </View>     
       {this.state.loading?<ActivityIndicator size="large" style={{marginTop:0}} color="#8FD7D3"></ActivityIndicator>:null}
       <View style={{flexDirection:"row"}}>
       {this.state.image.length==0?null:
+      <TouchableOpacity onPress={()=>this.setState({zoom:true})}>
       <Image
       style = {{height:100,width:100,marginTop:14}}
       source={{ uri: this.state.image }}
  
       />
-      
+      </TouchableOpacity>
       }
+      <ImageView
+      images={[{
+        source: {
+            uri: this.state.image,
+        },
+        title: 'patient',
+        width: 806,
+        height: 720,
+
+    }]}
+      imageIndex={0}
+      isVisible={this.state.zoom}
+      onClose={()=>(this.setState({zoom:false}))}
+      ></ImageView>
       <TouchableOpacity style={{
               marginTop:20,
               alignItems: 'center',
            }}
               onPress = {()=>Alert.alert(
-                "照片上传",
-                "您可以上传与病情相关的照片，请问请问你是要打开相机拍照还是从相册选择呢?",
+                I18n.t("upload_image_title"),
+                I18n.t("upload_image_text"),
                 [
-                  {text:"打开相机",
+                  {text:I18n.t("open_camera"),
                     onPress:()=>this.launchCamera(),
                     
                 },{
-                  text:"从相册选择",
+                  text:I18n.t("open_album"),
                   onPress:()=>this.pickImage()//navigation.navigate("登陆")
         
                 },{
-                    text:"取消",
+                    text:I18n.t("cancel"),
                     style:"cancel"
                 }
                 
@@ -311,7 +330,9 @@ export default class Patient_description extends Component {
       
       </View>
       <View>
-      <Text style={{marginTop:40,marginLeft:-5}}>  如填写完毕，请点击此处上传。</Text>
+      <View style={{width:330}}>
+      <Text style={{marginTop:40,marginLeft:0}}>{/*I18n.t("online_text4")*/}</Text>
+      </View>
       <TouchableOpacity style={{backgroundColor: '#8FD7D3',
               padding:10,
               width:280,
@@ -321,9 +342,10 @@ export default class Patient_description extends Component {
               marginLeft:20,
               borderRadius:25,}}
               onPress = {()=>this.uploadComplain()}>
-        <Text style={{color:"white"}}>{"提交"}</Text>
+        <Text style={{color:"white"}}>{I18n.t("submit")}</Text>
       </TouchableOpacity>
       </View>
+      
       <View style={{flexDirection:"row"}}>
       <Image style = {{marginTop:70,
     width:120,
@@ -333,6 +355,7 @@ export default class Patient_description extends Component {
       </View>
       
     </View>
+
     <View style={{height:100,backgroundColor:'white'}}></View> 
     </ScrollView>
   );}

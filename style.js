@@ -364,7 +364,6 @@ export const styles = StyleSheet.create({
   },
   home :{
     width:315,
-    height:140,
     borderRadius:15,
     backgroundColor:'#FFFFFF',
     //borderColor:"#999999",

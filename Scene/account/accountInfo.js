@@ -10,16 +10,24 @@ import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
 import RNPickerSelect from 'react-native-picker-select';
 import DataContext from "../../consumerContext";
+import I18n from "../language";
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from "expo-permissions";
+import mime from "mime";
+
 const AccountInfo = ({navigation}) => {
     const user=useContext(DataContext)
     const goBack= () => {
       navigation.dispatch(StackActions.pop(1))  
     }
+    const [img,SetImg]=useState("")
+    const [hasPermission,SetHasPermission]=useState(false)
+    const [rollPermision, setRollPermission] = useState(false);
     const update=()=>{
-      let url = 'http://'
+      let l = 'http://'
       +user.url
       +'/aicare-customer-api/customer/customer-info/save?customerInfoId='+user.customerUserInfoId;
-      fetch(url,{
+      fetch(l,{
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -48,7 +56,7 @@ const AccountInfo = ({navigation}) => {
       .then((json) => {
         //this.setState({loading:false})
         if (json.code === 0) {
-          Alert.alert("信息保存成功")
+          Alert.alert(I18n.t("saved"))
           console.log(json.msg)
 
         } else {
@@ -57,12 +65,106 @@ const AccountInfo = ({navigation}) => {
         }
       }).catch(error => console.warn(error));
     }
+    const updateImg=()=>{
+    {/*const newImageUri =  "file://" + img.split("file:/").join("");
+    let data = new FormData();
+            data.append('filename', 'avatar');
+            data.append('file', {
+              uri: newImageUri,
+              name:  '1.jpg',
+              type: mime.getType(newImageUri)
+            });
+    console.log(newImageUri);
+    let lll = 'http://'
+      +user.url
+      +'/aicare-customer-api/customer/customer-info/upload-profile-photo?customerUserInfoId='+user.customerUserInfoId;
+      console.log(lll)
+      fetch(lll,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Content-Type': 'multipart/form-data,x-www-form-urlencoded',
+        'sso-auth-token': user.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        },
+        body: data
+     
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        if (json.code === 0) {
+          //this.setState({members:json.infos});
+          //this.setState({press:new Array(members.length).fill(true)})
+          //console.log(json.infos);
+          //this.props.navigation.navigate("onlineDoc",{Did:json.id})
+        } else {
+          console.log(json.msg)
+          console.log(json.code)
+          Alert.alert('网络异常');
+        }
+      }).catch(error => console.warn(error));*/}
+
+      let data = new FormData();
+            data.append('filename','avatar');
+            data.append('file', {
+              uri: img,
+              name:  '1.jpg',
+              type: 'image/png'
+            });
+    let l = 'http://'
+      +user.url
+      +'/aicare-customer-api/customer/customer-info/upload-profile-photo?customerUserInfoId='+user.customerUserInfoId;
+      fetch(l,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Content-Type': 'multipart/form-data',
+        'sso-auth-token': user.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        },
+        body:data
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.code === 0) {
+          Alert.alert("success")
+        } else {
+          console.log(json.msg)
+          Alert.alert(json.msg);
+        }
+      }).catch(error => console.warn(error));
+    }
+    const askPermission =()=>{
+      (async () => {
+        //getpermission()
+        const { status } = await Camera.requestPermissionsAsync();
+        SetHasPermission(status === "granted");
+        // camera roll
+        if (Constants.platform.ios) {
+          const { cam_roll } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+          setRollPermission(cam_roll === "granted");
+        } else {
+          setRollPermission(true);
+        }
+      }
+      )();
+    }
     useEffect(() => {
     console.log(user.customerUserInfoId)
-      let url = 'http://'
+    console.log(user.token)
+      let l = 'http://'
       +user.url
       +'/aicare-customer-api/customer/customer-info/query-medical-info?customerUserInfoId='+user.customerUserInfoId;
-      fetch(url,{
+      fetch(l,{
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -90,6 +192,11 @@ const AccountInfo = ({navigation}) => {
           setPostcode(json.medicalInfo.postcode);
           setState(json.medicalInfo.state)
           setAddress(json.medicalInfo.address)
+          if(json.medicalInfo.profilePhoto){
+          setUrl(json.medicalInfo.profilePhoto)
+
+          Alert.alert(json.medicalInfo.profilePhoto)
+          }
         } else {
           console.log(json.msg)
           Alert.alert(json.msg);
@@ -100,6 +207,35 @@ const AccountInfo = ({navigation}) => {
     const goEmail= () => {
         navigation.navigate("changeEmail")
     }
+    const pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      //this.setState({visible:false});
+      if (!result.cancelled) {
+        SetImg(result.uri);
+        console.log(img)
+        updateImg()
+      }
+    };
+  
+  const launchCamera = async () => {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        //this.setState({loading:true})
+        SetImg(result.uri);
+        updateImg()
+        //this.setState({loading:false})
+      }
+    };
     const [first, setFirst] = React.useState("");
     const [gender, setGender] = React.useState("");
     const [age, setAge] = React.useState("");
@@ -111,7 +247,8 @@ const AccountInfo = ({navigation}) => {
     const [dob, setDob] = React.useState("");
     const [serial, setSerial] = React.useState(0);
     const [email, setEmail] = React.useState("");
-    const [visible,setVisible]=React.useState(false)
+    const [visible,setVisible]=React.useState(false);
+    const [url,setUrl]=React.useState("");
 
     return (
         <ScrollView style={{marginTop:-20,backgroundColor:"white"}}>
@@ -128,11 +265,30 @@ const AccountInfo = ({navigation}) => {
         <Text style = {{color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:100,}}>个人信息</Text>
+    marginLeft:100,}}>{I18n.t("account_info")}</Text>
         </View>
+        <TouchableOpacity  onPress = {/*()=>Alert.alert(
+                I18n.t("upload_image_title"),
+                I18n.t("upload_image_text"),
+                [
+                  {text:I18n.t("open_camera"),
+                    onPress:()=>launchCamera(),
+                    
+                },{
+                  text:I18n.t("open_album"),
+                  onPress:()=>pickImage()
+        
+                },{
+                    text:I18n.t("cancel"),
+                    style:"cancel"
+                }
+                
+              ]
+            )*/console.log("not switchable for now")}>
         <Image style = {{width:80,height:80,borderRadius:40}}
-            source= {require('../../images/emotion1.png')}
+            source= {img.length!=0?{uri:img}:url.length==0?require('../../images/emotion1.png'):{uri:url}}
           />
+          </TouchableOpacity>
         <View style={{ marginTop:10,marginLeft:-20,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row'}}>
             <Image
           style = {{width:22,
@@ -141,29 +297,29 @@ const AccountInfo = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/singup_icon_name.png')}
         />
-            <Text style={{fontSize:16}}>基本信息</Text>
+            <Text style={{fontSize:16}}>{I18n.t("title_account_info")}</Text>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>姓： </Text>
-            <TextInput defaultValue={last}  placeholder="请输入您的姓" placeholderTextColor="grey" onChangeText={text => setLast(text)}></TextInput>
+            <Text>{I18n.t("last_name")}： </Text>
+            <TextInput defaultValue={last}  placeholder={I18n.t("last_name_pd")} placeholderTextColor="grey" onChangeText={text => setLast(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>名： </Text>
-            <TextInput placeholder="请输入您的名" defaultValue={first}  placeholderTextColor="grey" onChangeText={text => setFirst(text)}></TextInput>
+            <Text>{I18n.t("first_name")}： </Text>
+            <TextInput placeholder={I18n.t("first_name_pd")} defaultValue={first}  placeholderTextColor="grey" onChangeText={text => setFirst(text)}></TextInput>
         </View>
         <DateTimePickerModal
         display="spinner"
         isVisible={visible}
         mode="date"
-        headerTextIOS='出生日期'
-        cancelTextIOS="取消"
-        confirmTextIOS='确认'
+        headerTextIOS={I18n.t("DOB")}
+        cancelTextIOS={I18n.t("cancel")}
+        confirmTextIOS={I18n.t("confirm_cancel")}
         onConfirm={(time)=>{setDob(moment(time).tz(Localization.timezone).format("DD/MM/YYYY"));setVisible(false);console.log(time)}}
         onCancel={()=>setVisible(false)}
         
       />
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>出生日期： </Text>
+            <Text>{I18n.t("DOB")}： </Text>
             <TouchableOpacity style={{borderColor:"#8FD7D3",
       borderWidth:1,
     padding:8,
@@ -178,7 +334,7 @@ const AccountInfo = ({navigation}) => {
     </TouchableOpacity>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>性别： </Text>
+            <Text>{I18n.t("gender")}： </Text>
             <SwitchSelector
   initial={gender=="M"?1:0}
   onPress={value => {setGender(value);}}
@@ -189,30 +345,30 @@ const AccountInfo = ({navigation}) => {
   height={35}
   defaultValue={"M"}//?
   options={[
-    { label: "女性", value: "F",  }, 
-    { label: "男性", value: "M", } 
+    { label: I18n.t("female"), value: "F",  }, 
+    { label: I18n.t("male"), value: "M", } 
   ]}
   testID="gender-switch-selector"
   accessibilityLabel="gender-switch-selector"></SwitchSelector>            
         </View>
         
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>电话： </Text>
-            <TextInput placeholder="请输入您的电话" defaultValue={telephone} placeholderTextColor="grey" onChangeText={text => setTelephone(text)}></TextInput>
+            <Text>{I18n.t("mobile")}： </Text>
+            <TextInput placeholder={I18n.t("mobile_pd")} defaultValue={telephone} placeholderTextColor="grey" onChangeText={text => setTelephone(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>邮箱： </Text>
-            <TextInput placeholder="请输入您的邮箱" defaultValue={email} placeholderTextColor="grey" onChangeText={text => setEmail(text)}></TextInput>
+            <Text>{I18n.t("email")}： </Text>
+            <TextInput placeholder={I18n.t("email_pd")} defaultValue={email} placeholderTextColor="grey" onChangeText={text => setEmail(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>地址： </Text>
-            <TextInput placeholder="请输入您的地址" defaultValue={address} placeholderTextColor="grey" onChangeText={text => setAddress(text)}></TextInput>
+            <Text>{I18n.t("address")}： </Text>
+            <TextInput placeholder={I18n.t("address_pd")} defaultValue={address} placeholderTextColor="grey" onChangeText={text => setAddress(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>编码： </Text>
-            <TextInput placeholder="请输入邮编" defaultValue={postcode} placeholderTextColor="grey" onChangeText={text => setPostcode(text)}></TextInput>
-            <Text style={{marginLeft:50}}>州： </Text>
-            <TextInput placeholder="请输入州" defaultValue={state} placeholderTextColor="grey" onChangeText={text => setState(text)}></TextInput>
+            <Text>{I18n.t("postcode")}： </Text>
+            <TextInput placeholder={I18n.t("postcode_pd")} defaultValue={postcode} placeholderTextColor="grey" onChangeText={text => setPostcode(text)}></TextInput>
+            <Text style={{marginLeft:10}}>{I18n.t("state")}： </Text>
+            <TextInput placeholder={I18n.t("state_pd")} defaultValue={state} placeholderTextColor="grey" onChangeText={text => setState(text)}></TextInput>
         </View>
         {/*<View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
             <Text>邮箱： </Text>
@@ -315,7 +471,7 @@ const AccountInfo = ({navigation}) => {
     
         <View style={{marginLeft:-75,marginTop:20}}>
         <TouchableOpacity style={styles.next_wrapper} onPress ={()=>update()}>
-            <Text style={styles.onsite_text}>确认</Text>
+            <Text style={styles.onsite_text}>{I18n.t("confirm_account")}</Text>
         </TouchableOpacity>
         </View>
         <View style={{height:300}}></View>

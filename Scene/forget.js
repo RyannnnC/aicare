@@ -2,7 +2,7 @@ import React ,{Component}from 'react';
 import { Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Alert,Platform } from 'react-native';
 import {styles} from '../style';
 import DataContext from "../consumerContext";
-
+import I18n from "./language"
 class Forget extends Component {
   state = {
     mail:"",
@@ -43,12 +43,12 @@ class Forget extends Component {
               if (json.code == 0) {
                 //this.setState({query:json.page})
                 //setNum(json.page.length)
-                Alert.alert('密码更改成功');
+                Alert.alert(I18n.t("pw_update_success"));
                 this.props.navigation.navigate('登陆');
 
               } else {
                 console.log(json.msg);
-                Alert.alert('联系方式或验证码错误');
+                Alert.alert(I18n.t("verification_code_wrong"));
               }
             }).catch(error => console.warn(error));
           }else{
@@ -102,10 +102,10 @@ class Forget extends Component {
         
         console.log(json.msg);
         if (json.code==0){
-          Alert.alert("验证码已发送。")
+          Alert.alert(I18n.t("code_send"))
 
         }else{
-          Alert.alert("验证码发送失败，请检查网络或联系客服。")
+          Alert.alert(I18n.t("fail"))
         }
       });
     } else {
@@ -138,13 +138,13 @@ class Forget extends Component {
               style = {styles.smallIconImg}
               source={require('../images/telehealth_icon/signup_icon_phone.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>电话号码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("mobile")}</Text>
             
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
 
           <TextInput style={{height:20,width:280}}
-          placeholder="请输入您的电话"
+          placeholder={I18n.t("mobile_pd")}
           keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
           onChangeText={(text) => {this.setState({ mail: text})}}
           />
@@ -154,16 +154,16 @@ class Forget extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_key.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>验证码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("verification")}</Text>
             <TouchableOpacity style={{width:'auto', marginTop: 3, marginLeft: 25, paddingLeft:10, paddingRight:10, height:20,borderRadius:10,borderWidth:1}}
               onPress={()=>this.sendCode()}
             >
-              <Text style={{ fontSize:14, fontWeight: '300' }}>发送验证码</Text>
+              <Text style={{ fontSize:14, fontWeight: '300' }}>{I18n.t("send")}</Text>
             </TouchableOpacity>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
 
-          <TextInput style={{height:20,width:280}} placeholder= "请输入您电话收到的验证码" onChangeText={(text) => {this.setState({ code: text})}}
+          <TextInput style={{height:20,width:280}} placeholder= {I18n.t("verification_pd")} onChangeText={(text) => {this.setState({ code: text})}}
 />
           </View>
           <View style={{marginTop:15, marginBottom:15,flexDirection: 'row'}}>
@@ -171,12 +171,12 @@ class Forget extends Component {
               style = {styles.smallIconImg}
               source={require('../images/telehealth_icon/account_icon_pswd.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>密码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("password_up")}</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
 
           <TextInput style={{height:20,width:280}}
-          placeholder="请输入您的密码"
+          placeholder={I18n.t("ps_up_pd")}
           onChangeText={(text) => {this.setState({ password: text})}}
           />
           </View>
@@ -185,12 +185,12 @@ class Forget extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_confirm.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>确认新密码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("new_password")}</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
 
           <TextInput style={{height:20,width:280}}
-          placeholder="请再次输入您的密码"
+          placeholder={I18n.t("new_ps_pd")}
           onChangeText={(text) => {this.setState({ confirm: text})}}
           />
           </View>
@@ -202,7 +202,7 @@ class Forget extends Component {
    borderRadius: 20,
    alignItems: 'center',
    justifyContent: "center",}} onPress={()=>this.sendRequest()}>
-            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t("confirm_cancel")}</Text>
           </TouchableOpacity>
           <Image style = {{marginTop:90,
     width:120,

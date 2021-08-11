@@ -4,6 +4,9 @@ import {styles} from '../style';
 //import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
 import DataContext from "../consumerContext";
+import I18n from "./language"
+import PhoneInput from "react-native-phone-number-input";
+import * as Localization from 'expo-localization';
 
 class Signup extends Component {
   state = {
@@ -23,44 +26,89 @@ class Signup extends Component {
     try {
        await AsyncStorage.setItem("token", token);
        await AsyncStorage.setItem("infoId", JSON.stringify(id));
+       SystemLanguage=Localization.locale.slice(0,2)
+       
+       if(SystemLanguage){
+         this.context.action.changeLan({language:SystemLanguage})
+       }
+  var lan = "en";
+  if(SystemLanguage=="en"){
+    lan= "en_US"
+  }else{
+    lan = "zh_CN"
+  }
+  //Alert.alert(this.state.token);
+  let url = 'http://'
+      +this.context.url
+      +'/aicare-customer-api/changeSessionLanauage?lang='+lan;
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }, 
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        //Alert.alert(json.code)
+        if (json.code === 0) {
+          //Alert.alert(I18n.t("changed"))
+          
+          console.log(json.msg)
+
+        } else {
+          console.log(json.msg)
+          //Alert.alert(this.state.token);
+        }
+      }).catch(error => console.warn(error));
        console.log("Store token success");
     } catch (error) {
       console.log("Something went wrong", error);
     }
   }
   sendRequest() {
-    if (this.state.confirm != this.state.password) {
-      Alert.alert("两次密码必须相同")
-    } else {
+    
 
     if(this.state.name.length==0){
-      Alert.alert("请填写姓名")
+      Alert.alert(I18n.t("fill_name"))
       return
     }
 
     if(this.state.phone.length==0){
-      Alert.alert("请填写电话")
+      Alert.alert(I18n.t("fill_mobile"))
       return
     }
     
     if(this.state.password.length==0){
-      Alert.alert("请填写密码")
+      Alert.alert(I18n.t("fill_password"))
       return
     }
     if(this.state.password.length<6){
-      Alert.alert("密码需要至少6位")
+      Alert.alert(I18n.t("password_length"))
       return
     }
+    if (this.state.confirm != this.state.password) {
+      Alert.alert(I18n.t("same_password"))
+      return;
+    } 
     if(this.state.userCode.length==0){
-      Alert.alert("请填写验证码")
+      Alert.alert(I18n.t("fill_code"))
       return
     }
     if(!this.state.checked3){
-      Alert.alert("请阅读并同意用户须知")
+      Alert.alert(I18n.t("read_TOS"))
       return
     }
     if(!this.state.press){
-      Alert.alert("请获取验证码验证电话号码")
+      Alert.alert(I18n.t("press_send"))
       return
     }
     let s = this.state;
@@ -84,7 +132,7 @@ class Signup extends Component {
         console.log(json.msg)
         if(json.code==0){
            //console.log(json.msg);
-           Alert.alert("注册成功！")
+           Alert.alert(I18n.t("signup_success"))
            console.log(json)
            this.storeToken(json.token,json.customerUserInfoId);
           //this.props.navigation.navigate('登陆');
@@ -93,8 +141,7 @@ class Signup extends Component {
         }else{
           Alert.alert(json.msg)
         }
-      });}
-  //  .then(json => {console.log(json)});
+      });
   }
 
 
@@ -121,9 +168,9 @@ class Signup extends Component {
         if(json.code==0){
         console.log(json.msg);
         this.setState({press:true})
-        Alert.alert("验证码已发送。")
+        Alert.alert(I18n.t("code_send"))
         }else{
-          Alert.alert("验证码请求失败，请检查网络或者咨询客服。")
+          Alert.alert(I18n.t("fail"))
         }
       });
     } else {
@@ -166,11 +213,11 @@ class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/telehealth_icon/account_icon_info.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>姓名</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("name_up")}</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的名字"
+          placeholder={I18n.t("name_up_pd")}
           onChangeText={(text) => {this.setState({ name: text})}}
           />
           </View>
@@ -180,14 +227,29 @@ class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_phone.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>电话</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("mobile")}</Text>
           </View>
-          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
-          <TextInput style={styles.resumeInput}
-                keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
-          placeholder="请输入您的电话号码"
-          onChangeText={(text) => {this.setState({ phone: text})}}
+          <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5,flexDirection:"row"}}>
+          <PhoneInput
+            //ref={phoneInput}
+            //defaultValue={value}
+            defaultCode="AU"
+            layout="first"
+            placeholder={I18n.t("m_pd")}
+            onChangeFormattedText={(text) => {
+              //console.log("format")
+              console.log(text.slice(1));
+              this.setState({phone:text.slice(1)})
+            }}
+            withDarkTheme
+            withShadow
+            autoFocus
           />
+          {/*<TextInput style={styles.resumeInput}
+                keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
+          placeholder={I18n.t("mobile_up")}
+          onChangeText={(text) => {this.setState({ phone: text})}}
+          />*/}
           </View>
 
           
@@ -197,11 +259,11 @@ class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/telehealth_icon/account_icon_pswd.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>密码</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("password_up")}</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
-          placeholder="请输入您的密码"
+          placeholder={I18n.t("ps_up_pd")}
           secureTextEntry={true}
 
           onChangeText={(text) => {this.setState({ password: text})}}
@@ -213,11 +275,11 @@ class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_confirm.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>确认</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("confirmation_up")}</Text>
           </View>
           <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10,marginBottom:5}}>
           <TextInput style={styles.resumeInput}
-          placeholder="请再次输入您的密码"
+          placeholder={I18n.t("confirmation_up_pd")}
           secureTextEntry={true}
 
           onChangeText={(text) => {this.setState({ confirm: text})}}
@@ -229,26 +291,26 @@ class Signup extends Component {
               style = {styles.smallIconImg}
               source={require('../images/signup_icon_link.png')}
             />
-            <Text style={{ fontSize:16, fontWeight: '500' }}>验证</Text>
+            <Text style={{ fontSize:16, fontWeight: '500' }}>{I18n.t("verification")}</Text>
           </View>
 
          
           <View style={{flexDirection: 'row'}}>
             <View style={{borderBottomWidth:1, borderBottomColor:'#BBBBBB',marginLeft:10}}>
             <TextInput style={{width:200}}
-            placeholder= "请输入您收到的验证码"
+            placeholder= {I18n.t("verification_pd")}
             onChangeText={(text) => {this.setState({ userCode: text})}}
             />
             </View>
             <TouchableOpacity style={{borderWidth:0,borderColor:"#BBBBBB",borderRadius:10,width:100,height:30,padding:5,paddingLeft:8,marginLeft:3,backgroundColor:"#FF7E67"}}
               onPress={()=>this.sendCode()}
             >
-              <Text style={{ fontSize:13, fontWeight: '300',color:"white" }}>获取验证码</Text>
+              <Text style={{ fontSize:13, fontWeight: '300',color:"white" }}>{I18n.t("send")}</Text>
             </TouchableOpacity>
           </View>
 
           </View>
-          <View style={{marginTop:60, marginBottom:0,flexDirection: 'row',marginLeft:-25}}>
+          <View style={{marginTop:60, marginBottom:0,flexDirection: 'row',marginLeft:-15}}>
             <CheckBox
               center
               iconRight
@@ -263,9 +325,9 @@ class Signup extends Component {
                 checked3:!this.state.checked3
               })}}
              />
-             <Text style={{marginTop:18,marginLeft:-18}}>我已阅读并同意该</Text>
+             <Text style={{marginTop:18,marginLeft:-18}}>{I18n.t("read")}</Text>
              <TouchableOpacity onPress={()=>this.props.navigation.navigate('数据协议')}>
-               <Text style={{marginLeft:2,marginTop:18,color:"#8FD7D3"}}>用户须知条款。</Text>
+               <Text style={{marginLeft:2,marginTop:18,color:"#8FD7D3"}}>{I18n.t("TOS")}</Text>
              </TouchableOpacity>
           </View>
           <TouchableOpacity style={{width: 280,
@@ -275,7 +337,7 @@ class Signup extends Component {
    borderRadius: 20,
    alignItems: 'center',
    justifyContent: "center",}} onPress={()=>{this.sendRequest()}}>
-            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>确认</Text>
+            <Text style={{ fontSize:16, fontWeight: '400', color: '#ffffff' }}>{I18n.t("confirm_cancel")}</Text>
           </TouchableOpacity>
           <View style={{flexDirection:"row"}}>
       <Image style = {{marginTop:90,

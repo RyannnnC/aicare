@@ -4,6 +4,7 @@ import { SearchBar } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../../consumerContext";
+import I18n from "../language"
 
 export default function TelehealthrMain({navigation}) {
     user=useContext(DataContext);
@@ -115,7 +116,7 @@ export default function TelehealthrMain({navigation}) {
             source={item.headPortrait?{uri:item.headPortrait}:require('../../images/telehealth_icon/service_doctor_img1.png')}/>
           </View>
           <Text style={{fontSize:17,marginTop:-78,marginLeft:103}}>{item.employerName}</Text>
-          <Text style={{fontSize:12,color:'#999999',marginLeft:102,marginTop:10}}>全科医生{item.orgName}</Text>
+          <Text style={{fontSize:12,color:'#999999',marginLeft:102,marginTop:10}}>{I18n.t("gp")} {item.orgName}</Text>
           {/*<View style={{flexDirection: 'row'}}>
           
           <Image
@@ -133,19 +134,25 @@ export default function TelehealthrMain({navigation}) {
       <ScrollView style={{ flex:1,backgroundColor:"white",}}>
       <View style={{ flex:1, justifyContent: "center", alignItems: "center" ,paddingTop: 40,backgroundColor:"white",marginTop:10}}>
          <View style={{flexDirection: 'row', marginTop:180, marginBottom:10}}>
-            <TouchableOpacity onPress={goBack}>
-            <Image
-            style = {{width:30,
-                height:30,
-                marginTop:-150,
-                marginLeft:-125,}}
-            source={require('../../images/icon/2/Arrow_left.png')}
-            />
-            </TouchableOpacity>
+         <TouchableOpacity style={{
+                            width:80,
+                            marginLeft:-110,
+                            marginTop:-150,
+                            height:80,
+                            }}
+                            onPress={goBack}>
+                            
+          <Image
+            style={{width:30,height:30}}
+            source = {require('../../images/icon/2/Arrow_left.png')}
+          />
+          
+
+          </TouchableOpacity>
             <Text style={{
               fontSize:16,
-
-              marginTop:-150}}>远程医疗</Text>
+              marginLeft:40,
+              marginTop:-150}}>{I18n.t("title_type")}</Text>
           </View>
 
         {/*<Image
@@ -177,11 +184,11 @@ export default function TelehealthrMain({navigation}) {
           value={search}
         />*/}
         <View style={{flexDirection: 'row', marginBottom: 15,marginTop:-100}}>
-          <Text style={{marginLeft:-20,fontSize:18}}>预约种类</Text>
+          <Text style={{marginLeft:-20,fontSize:18}}>{I18n.t("category_type")}</Text>
           <TouchableOpacity style={{marginLeft:180,marginTop:5}}  onPress={()=>{
           setModalVisible(modalVisible=>!modalVisible)}}>
             <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:14,color:"#999999"}}>全部  {'>'}</Text>
+            <Text style={{fontSize:14,color:"#999999"}}>{I18n.t("all_type")}  {'>'}</Text>
             
             </View>
           </TouchableOpacity>
@@ -209,7 +216,7 @@ export default function TelehealthrMain({navigation}) {
             style={{width:30,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_gp.png')}
           />
-          <Text style={{color:'#FFFFFF',marginTop:2}}>全科</Text>
+          <Text style={{color:'#FFFFFF',marginTop:2}}>{I18n.t("gp")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -235,7 +242,7 @@ export default function TelehealthrMain({navigation}) {
             style={{width:34,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_child.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>儿科</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("children")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -261,7 +268,7 @@ export default function TelehealthrMain({navigation}) {
             style={{width:30,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_mental.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>心理</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("mental")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -287,7 +294,7 @@ export default function TelehealthrMain({navigation}) {
             style={{width:30,height:30}}
             source = {require('../../images/中医.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>中医</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("chinese")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -313,7 +320,7 @@ export default function TelehealthrMain({navigation}) {
             style={{width:30,height:30}}
             source = {require('../../images/康复.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>康复</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("recovery")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -340,17 +347,17 @@ export default function TelehealthrMain({navigation}) {
             style={{width:30,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_dentist.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>牙医</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("dentist")}</Text>
           </TouchableOpacity>
           </View>
           
         </View>
         </ScrollView>
         <View style={{flexDirection: 'row', marginBottom: 15}}>
-          <Text style={{marginLeft:-20,fontSize:18}}>名医推荐</Text>
+          <Text style={{marginLeft:-20,fontSize:18}}>{I18n.t("recommendation_type")}</Text>
           <TouchableOpacity style={{marginLeft:180,marginTop:5}} onPress={goToRecommend}>
             <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:14,color:"#999999"}}>全部  {'>'}</Text>
+            <Text style={{fontSize:14,color:"#999999"}}>{I18n.t("all_type")}  {'>'}</Text>
             
             </View>
           </TouchableOpacity>
@@ -392,7 +399,7 @@ elevation: 24,}}>
     <Text style = {{ color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:90,marginBottom:30}}>全部类型</Text>
+    marginLeft:90,marginBottom:30}}>{I18n.t("category_type")}</Text>
     </View>
       <ScrollView style={{backgroundColor:"#F7FAFA",}}>
         
@@ -421,7 +428,7 @@ elevation: 24,}}>
             style={{width:30,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_gp.png')}
           />
-          <Text style={{color:'#FFFFFF',marginTop:2}}>全科</Text>
+          <Text style={{color:'#FFFFFF',marginTop:2}}>{I18n.t("gp")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -449,7 +456,7 @@ elevation: 24,}}>
             style={{width:34,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_child.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>儿科</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("children")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -477,7 +484,7 @@ elevation: 24,}}>
             style={{width:30,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_mental.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>心理</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("mental")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -505,7 +512,7 @@ elevation: 24,}}>
             style={{width:30,height:30}}
             source = {require('../../images/中医.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>中医</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("chinese")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -537,7 +544,7 @@ elevation: 24,}}>
             style={{width:30,height:30}}
             source = {require('../../images/康复.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>康复</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("recovery")}</Text>
 
           </TouchableOpacity>
           </View>
@@ -567,7 +574,7 @@ elevation: 24,}}>
             style={{width:30,height:30}}
             source = {require('../../images/telehealth_icon/service_telehealth_icon_dentist.png')}
           />
-          <Text style={{color:'#68B0AB',marginTop:2}}>牙医</Text>
+          <Text style={{color:'#68B0AB',marginTop:2}}>{I18n.t("dentist")}</Text>
           </TouchableOpacity>
           </View>
           </View>

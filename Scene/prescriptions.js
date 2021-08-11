@@ -9,7 +9,7 @@ import DataContext from "../consumerContext";
 import * as Linking from 'expo-linking';
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
-//import { UserOfflineReason } from 'react-native-agora';
+import I18n from "./language"
 
 //import moment from "moment"
 
@@ -96,7 +96,7 @@ class prescription extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>电子处方</Text>
+        marginTop:20}}>{I18n.t("e_prescription")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -111,7 +111,7 @@ class prescription extends Component {
         />
         </View>
         <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>
-          正在搜索相关医生，请耐心等待..
+        {I18n.t("loading_pres")}
         </Text>
         <ActivityIndicator size="large" style={{marginTop:-90}} color="#FF8570"></ActivityIndicator>
         </View>
@@ -129,7 +129,7 @@ class prescription extends Component {
           }} key={item.employerId}> 
             <View style={{flexDirection: 'row',}}>
 
-          <Text style={{marginBottom:10,marginLeft:15,marginTop:10,fontSize:15,fontWeight:"500",color:"#006A71"}}>处方总览</Text>
+          <Text style={{marginBottom:10,marginLeft:15,marginTop:10,fontSize:15,fontWeight:"500",color:"#006A71"}}>{I18n.t("overview")}</Text>
           <View style={{
             width: 150,marginLeft:30,
             borderColor:"#68B0AB",
@@ -139,7 +139,7 @@ class prescription extends Component {
             borderWidth:0.5,paddingLeft:3,paddingTop:2
           }}>
               <Text style={{fontSize:11,color:"#68B0AB"}}>
-                  处方号：
+                  {I18n.t("P_ID")}：{item.prescriptionNumber}
               </Text>
               </View> 
           </View>
@@ -193,7 +193,7 @@ class prescription extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:23}}>电子处方</Text>
+        marginTop:23}}>{I18n.t("e_prescription")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -220,7 +220,7 @@ class prescription extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:20,
-        marginTop:-245}}>电子病历</Text>
+        marginTop:-245}}>{I18n.t("e_prescription")}</Text>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}>
             <Image
@@ -236,7 +236,7 @@ class prescription extends Component {
         style = {styles.finishImg}
         source = {require('../images/complete_empty.png')}
       />
-     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您目前还没有已登记的就诊记录。</Text>
+     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t("no_pres")}</Text>
      </View>
     )
   }

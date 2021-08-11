@@ -3,7 +3,7 @@ import React,{useContext} from 'react';
 import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,TextInput,ScrollView } from 'react-native';
 import {styles} from '../../style';
 import DataContext from "../../consumerContext";
-
+import I18n from "../language"
 export default function TeleSuccess({navigation,route}) {
   const user = useContext(DataContext);
 
@@ -20,14 +20,14 @@ export default function TeleSuccess({navigation,route}) {
     height:360,
     width:315,
     marginLeft:0}}
-        source= {require('../../images/success.png')}
+        source= {user.language=="en"?require("../../images/success_eng.png"):require('../../images/success.png')}
       />
       <View style={{alignItems:"flex-start",marginLeft:5}}>
-      <Text style={{marginBottom:15,marginTop:20,color:"#808080"}}>预约医生:  {docName}</Text>
-      <Text style={{marginBottom:15,color:"#808080"}}>就诊时间:  {user.date} {startTime.slice(0,5)} - {endTime.slice(0,5)}</Text>
-      <Text style={{marginBottom:15,color:"#808080"}}>就诊科目:  {user.deptType[doctype]}</Text>
-      <Text style={{marginBottom:15,color:"#808080"}}>就诊方式:  {teleFlg==2?"远程就诊":"实地会诊"}</Text>
-      {teleFlg==2?<Text style={{marginBottom:10,color:"#808080"}}>远程方式:  {method==1?"FaceTIme(IOS)":"Skype(Android)"}</Text>:null}
+      <Text style={{marginBottom:15,marginTop:20,color:"#808080"}}>{I18n.t("doctor")}:  {docName}</Text>
+      <Text style={{marginBottom:15,color:"#808080"}}>{I18n.t("slot_doctorinfo")}:  {user.date} {startTime.slice(0,5)} - {endTime.slice(0,5)}</Text>
+      <Text style={{marginBottom:15,color:"#808080"}}>{I18n.t("doctor_type_doctorinfo")}:  {I18n.t("types")[doctype]}</Text>
+      <Text style={{marginBottom:15,color:"#808080"}}>{I18n.t("on_clinicinfo")}:  {teleFlg==2?I18n.t("online_clinicinfo"):I18n.t("onsite_clinicinfo")}</Text>
+      {teleFlg==2?<Text style={{marginBottom:10,color:"#808080"}}>{I18n.t("online_method_doctorinfo")}:  {method==1?"FaceTIme(IOS)":"Skype(Android)"}</Text>:null}
       </View>
     <TouchableOpacity style={{
     backgroundColor:'#8FD7D3',
@@ -39,7 +39,7 @@ export default function TeleSuccess({navigation,route}) {
     alignItems: 'center',
     borderRadius:25,
     }} onPress={goToIcon}>
-      <Text style={styles.onsite_text}>确定</Text>
+      <Text style={styles.onsite_text}>{I18n.t("confirm_success")}</Text>
     </TouchableOpacity>
 
     

@@ -3,6 +3,10 @@ import { Platform,KeyboardAvoidingView,Text, Button, View, Alert, Image,Touchabl
 import {styles} from '../style';
 import DataContext from "../consumerContext";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import I18n from "./language"
+import * as Localization from 'expo-localization';
+
+import PhoneInput from "react-native-phone-number-input";
 
 export default class Login extends Component {
   constructor(props) {
@@ -12,7 +16,7 @@ export default class Login extends Component {
       password:"",
       type:"mobile",
       text:"切换邮箱登陆",
-      text1:"请输入您的注册手机号码"
+      text1:I18n.t('mobile_signin_placeholder')
     }
   }
   switch(){
@@ -34,6 +38,45 @@ export default class Login extends Component {
        await AsyncStorage.setItem("token", token);
        await AsyncStorage.setItem("infoId", JSON.stringify(id));
        console.log("Store token success");
+       SystemLanguage=Localization.locale.slice(0,2)
+  var lan = "en";
+  if(SystemLanguage=="en"){
+    lan= "en_US"
+  }else{
+    lan = "zh_CN"
+  }
+  //Alert.alert(this.state.token);
+  let url = 'http://'
+      +this.context.url
+      +'/aicare-customer-api/changeSessionLanauage?lang='+lan;
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.context.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }, 
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        //Alert.alert(json.code)
+        if (json.code === 0) {
+          //Alert.alert(I18n.t("changed"))
+          
+          console.log(json.msg)
+
+        } else {
+          console.log(json.msg)
+          //Alert.alert(this.state.token);
+        }
+      }).catch(error => console.warn(error));
     } catch (error) {
       console.log("Something went wrong", error);
     }
@@ -41,7 +84,10 @@ export default class Login extends Component {
   async getToken() {
     console.log("getting")
     try {
+
       let userData = await AsyncStorage.getItem("token");
+      
+  
       
       console.log(userData);
       //let id = await AsyncStorage.getItem("id");
@@ -60,6 +106,19 @@ export default class Login extends Component {
   loginRequest() {
     //console.log(this.context.token)
     this.getToken()
+    SystemLanguage=Localization.locale.slice(0,2)
+  if(SystemLanguage){
+    this.context.action.changeLan({language:SystemLanguage})
+  }
+  var lan = "en";
+  if(SystemLanguage=="en"){
+    lan= "en_US"
+  }else{
+    lan = "zh_CN"
+  }
+  //Alert.alert(this.state.token);
+  
+    
     let s = this.state;
     let errors=[];
     if (s.name.length === 0) {
@@ -86,8 +145,10 @@ export default class Login extends Component {
           //this.context.action.changeLogin(true);
           //this.storeToken(json.data);
           this.context.action.changetoken(json.data);
+          
           this.context.action.changeInfoId(json.customerUserInfoId);
           this.storeToken(json.data,json.customerUserInfoId);
+
           //console.log(json.customerUserInfoId);
           
           //console.log(json.code)
@@ -119,7 +180,7 @@ export default class Login extends Component {
           <Image style = {{height:20,width:20,marginTop:34}}
         source = {require('../images/telehealth_icon/signup_icon_phone.png')}
       />
-      <Text style={{marginTop:35,marginLeft:10}}>手机号码</Text>
+      <Text style={{marginTop:35,marginLeft:10}}>{I18n.t('phone_signin')}</Text>
       {/*<TouchableOpacity style={{    borderColor:"#999999",
       borderWidth:1,
     padding:8,
@@ -132,18 +193,28 @@ export default class Login extends Component {
       <Text style={{fontSize:12}}>{this.state.text}</Text>
     </TouchableOpacity>*/}
       </View>
-      <TextInput
-      style = {styles.account}
-      placeholder={this.state.text1}
-      defaultValue=""
-      //keyboardType={Platform.OS != "ios" ? "numeric" : "number-pad"}
-      onChangeText={(text) => {this.setState({ name: text})}}
-      />
+      <View style={{marginLeft:-15}}>
+      <PhoneInput
+            //ref={phoneInput}
+            //defaultValue={value}
+            defaultCode="AU"
+            layout="first"
+            placeholder={I18n.t("m_pd")}
+            onChangeFormattedText={(text) => {
+              //console.log("format")
+              console.log(text.slice(1));
+              this.setState({name:text.slice(1)})
+            }}
+            withDarkTheme
+            withShadow
+            autoFocus
+          />
+          </View>
       <View style={{flexDirection:"row",marginLeft:0,marginBottom:10,marginTop:10}}>
           <Image style = {{height:20,width:20,marginTop:24}}
         source = {require('../images/telehealth_icon/account_icon_pswd.png')}
       />
-      <Text style={{marginTop:25,marginLeft:10}}>账户密码</Text>
+      <Text style={{marginTop:25,marginLeft:10}}>{I18n.t('password_signin')}</Text>
       {/*<TouchableOpacity style={{borderColor:"#999999",
       borderWidth:1,
     padding:8,
@@ -158,19 +229,19 @@ export default class Login extends Component {
       </View>
       <TextInput
       style = {styles.password}
-      placeholder="请输入您的密码"
+      placeholder={I18n.t("password_signin_placeholder")}
       defaultValue=""
       secureTextEntry={true}
       onChangeText={(text) => {this.setState({ password: text})}}
       />
       <View style ={styles.container2}>
         <View style={{marginLeft:0}}>
-        <TouchableOpacity style={styles.f_wrapper} onPress={() => this.props.navigation.navigate('忘记密码')}>
-          <Text style={styles.f_Text}>忘记密码？</Text>
+        <TouchableOpacity style={styles.f_wrapper} onPress={() => this.props.navigation.navigate(I18n.t("forget_password_signin"))}>
+          <Text style={styles.f_Text}>{I18n.t('forget_password_signin')}</Text>
         </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{marginTop:20,marginLeft:130}} onPress={() => this.props.navigation.navigate('注册')}>
-          <Text style={styles.r_Text}>注册账户</Text>
+        <TouchableOpacity style={{marginTop:20,marginLeft:130}} onPress={() => this.props.navigation.navigate(I18n.t("signup_signin"))}>
+          <Text style={styles.r_Text}>{I18n.t('signup_signin')}</Text>
         </TouchableOpacity>
       </View>
       <View style={{marginTop:0}}></View>
@@ -182,7 +253,7 @@ export default class Login extends Component {
               alignItems: 'center',
               borderRadius:25,}}
               onPress = {()=>this.loginRequest()}>
-        <Text style={{color:"white"}}>登陆</Text>
+        <Text style={{color:"white"}}>{I18n.t('signin')}</Text>
       </TouchableOpacity>
       <View style={{flexDirection:"row"}}>
       <Image style = {{marginTop:70,

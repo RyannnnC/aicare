@@ -6,8 +6,7 @@ import { StackActions } from '@react-navigation/native';
 //import { SearchBar } from 'react-native-elements';
 //import DateFilter from "./datefilter";
 import DataContext from "../consumerContext";
-//import { UserOfflineReason } from 'react-native-agora';
-
+import I18n from "./language"
 //import moment from "moment"
 
 class HealthRecord extends Component {
@@ -90,7 +89,7 @@ class HealthRecord extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>电子病历</Text>
+        marginTop:20}}>{I18n.t("health_record")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -105,8 +104,7 @@ class HealthRecord extends Component {
         />
         </View>
         <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>
-          正在搜索您的相关报告，请耐心等待..
-        </Text>
+{I18n.t("loading_record")}        </Text>
         <ActivityIndicator size="large" style={{marginTop:-90}} color="#FF8570"></ActivityIndicator>
         </View>
       )
@@ -131,7 +129,7 @@ class HealthRecord extends Component {
             </View>
             <View style={{flexDirection:"row"}}>
             {/*types*/}
-            <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:0,marginTop:10}}>{ "全科问诊" }</Text>
+            <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:0,marginTop:10}}>{ I18n.t("gp") }</Text>
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginLeft:75,marginTop:8}}>{item.dateOfDiagnosis}</Text>
 
             </View>
@@ -159,7 +157,7 @@ class HealthRecord extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:23}}>电子病历</Text>
+        marginTop:23}}>{I18n.t("health_record")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -186,7 +184,7 @@ class HealthRecord extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:20,
-        marginTop:-245}}>电子病历</Text>
+        marginTop:-245}}>{I18n.t("health_record")}</Text>
         <TouchableOpacity onPress={() =>{
             this.props.navigation.dispatch(StackActions.pop(1))}}>
             <Image
@@ -202,7 +200,7 @@ class HealthRecord extends Component {
         style = {styles.finishImg}
         source = {require('../images/complete_empty.png')}
       />
-     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您目前还没有已登记的就诊记录。</Text>
+     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t("no_record")}</Text>
      </View>
     )
   }

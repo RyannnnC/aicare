@@ -1,8 +1,10 @@
+import * as Localization from 'expo-localization';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import {Platform,Alert,Linking,AsyncStorage} from "react-native";
+import VersionCheck from "react-native-version-check-expo";
+import {Platform,Alert,Linking,AsyncStorage,BackHandler} from "react-native";
 import Info from './Scene/consumerInfo';
 import ConsumerOrder from './Scene/consumerOrder';
 import ConsumerIcon from "./Scene/consumerIcon";
@@ -55,6 +57,7 @@ import changeDocInfo from './Scene/telehealth/changeDocInfo';
 import telehealthPayment from "./Scene/telehealth/telehealthPayment";
 import Intro from "./intro";
 import Report from "./Scene/report"
+import covid_confirm from "./Scene/covid_test/covid_confirm"
 import CardInfo from "./Scene/account/cardInfo";
 import HealthRecord from "./Scene/healthRecord";
 import HistoryInfo from "./Scene/account/historyInfo";
@@ -62,6 +65,12 @@ import AiTest from "./Scene/aiTest";
 import Result from "./Scene/result";
 import prescription from './Scene/prescriptions';
 import Pdf from './Scene/pdf';
+import I18n from './Scene/language';
+import chatbot from "./Scene/chatbot"
+import reservation from "./Scene/covid_test/reservation"
+import covid_finish from "./Scene/covid_test/covid_finish"
+import covid_info from "./Scene/covid_test/covid_info"
+import covid_pay from "./Scene/covid_test/covid_pay";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -72,7 +81,7 @@ function Home() {
             name="consumerMain"
             component={ConsumerMain}
             options={{
-              tabBarLabel: '主页',
+              tabBarLabel: I18n.t("homepage_tab"),
               tabBarIcon: ({ color, size }) => (
                 <MaterialIcons name="home" size={size} color={color} />
               ),
@@ -82,17 +91,18 @@ function Home() {
             name="Icon"
             component={ConsumerIcon}
             options={{
-              tabBarLabel: '服务',
+              tabBarLabel: I18n.t("service_tab"),
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="room-service" size={size} color={color} />
               ),
             }}
           />
+          
           <Tab.Screen
             name="订单"
             component={ConsumerOrderPage}
             options={{
-              tabBarLabel: '预约',
+              tabBarLabel: I18n.t("appointment_tab"),
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="calendar-text-outline" size={size} color={color} />              ),
             }}
@@ -101,7 +111,7 @@ function Home() {
             name="账号"
             component={AccountMain}
             options={{
-              tabBarLabel: '账号',
+              tabBarLabel: I18n.t("account_tab"),
               tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="account" color={color}  size={size} />
             ),
@@ -116,6 +126,22 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      des:"",
+      air:"",
+      dep:"",
+      tes:"",
+      fir:"",
+      las:"",
+      gen:"",
+      dob:"",
+      add:"",
+      sub:"",
+      sta:"",
+      post:"",
+      mob:"",
+      ema:"",
+      pass:"",
+      nat:"",
       customer_service:"+61 421326182",
       loading:true,
       first_visit:0,
@@ -127,7 +153,7 @@ class App extends React.Component {
       name:"kim",
       mobile:"",
       customerUserInfoId:-1,
-
+      language:"en",
       date: "请点击右边箭头按钮输入时间",
       start_time:"",
       end_time:"",
@@ -137,6 +163,7 @@ class App extends React.Component {
       username: '',
       address:null,
       authenticate: false,
+      ad:true,
       token:"",
       orgId:0,
       docId:0,
@@ -144,7 +171,7 @@ class App extends React.Component {
       consultWay:["就诊方式","实地就诊","远程医疗"],
       deptType:["推荐医生","全科","牙科","心理","中医","儿科","康复","疫苗"],
       lan:["语言","普通话","英语","粤语"],
-      version:1.27,
+      version:1.343,
       action: {
         changeLogin: this.changeLogin,
         changesupply: this.changesupply,
@@ -167,13 +194,30 @@ class App extends React.Component {
         changeLoading:this.changeLoading,
         contact:this.contact,
         changeInfoId:this.changeInfoId,
+        changeLan:this.changeLan,
+        changeDes:this.changeDes,
+        changeAir:this.changeAir,
+        changeDep:this.changeDep,
+        changeBook:this.changeBook,
+        changeFir:this.changeFir,
+        changeLas:this.changeLas,
+        changeDob:this.changeDob,
+        changeAdd:this.changeAdd,
+        changeSub:this.changeSub,
+        changeAd:this.changeAd,
+        changeSta:this.changeSta,
+        changePost:this.changePost,
+        changeMob:this.changeMob,
+        changeEma:this.changeEma,
+        changePass:this.changePass,
+        changeNat:this.changeNat
       }
     }
   }
   contact = () => {
     //phone='0403555432';
     //let phoneNumber = phone;
-    mobile = this.state.customer_service;
+    const mobile = "+61 421326182";
     if (Platform.OS !== 'android') {
       Linking.canOpenURL(`telprompt:${mobile}`)
     .then(supported => {
@@ -200,6 +244,23 @@ class App extends React.Component {
   };
   clearstate=()=>{
     this.setState({
+      des:"",
+      air:"",
+      dep:"",
+      tes:"",
+      fir:"",
+      las:"",
+      gen:"",
+      dob:"",
+      add:"",
+      sub:"",
+      sta:"",
+      post:"",
+      mob:"",
+      ema:"",
+      pass:"",
+      nat:"",
+      ad:true,
     loading:true,
     street:"请点击右边箭头按钮输入您的地址",
     suburb:"",
@@ -223,6 +284,8 @@ class App extends React.Component {
     first_visit:0,
     first_time:null,
     customerUserInfoId:-1,
+    language:"en"
+
     })
   }
   async getToken() {
@@ -237,8 +300,50 @@ class App extends React.Component {
       }*/
       if(userData){
         this.setState({token:userData})
+        //Alert.alert(this.state.token)
         this.setState({customerUserInfoId:userId})
+        SystemLanguage=Localization.locale.slice(0,2)
+  if(SystemLanguage){
+    this.setState({language:SystemLanguage})
+  }
+  var lan = "en";
+  if(this.state.language=="en"){
+    lan= "en_US"
+  }else{
+    lan = "zh_CN"
+  }
+  //Alert.alert(this.state.token);
+  let url = 'http://'
+      +this.state.url
+      +'/aicare-customer-api/changeSessionLanauage?lang='+lan;
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': this.state.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+      }, 
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        //Alert.alert(json.code)
+        if (json.code === 0) {
+          //Alert.alert(I18n.t("changed"))
+          
+          console.log(json.msg)
 
+        } else {
+          console.log(json.msg)
+          //Alert.alert(this.state.token);
+        }
+      }).catch(error => console.warn(error));
         console.log("Get token success");
       }
     } catch (error) {
@@ -256,6 +361,7 @@ class App extends React.Component {
       if(userData){
         //this.setState({token:userData})
         this.setState({first_time:userData});
+        
       }
     } catch (error) {
       console.log("Something went wrong", error);
@@ -263,6 +369,90 @@ class App extends React.Component {
   }
   changeLoading = (value) => {
     this.setState({loading: value});
+    console.log(value);
+  }
+
+
+
+
+  changeAd = (value) => {
+    this.setState({ad: value});
+    console.log(value);
+  }
+  changeSub = (value) => {
+    this.setState({sub: value});
+    console.log(value);
+  }
+
+  changeSta = (value) => {
+    this.setState({sta: value});
+    console.log(value);
+  }
+  changePost = (value) => {
+    this.setState({post: value});
+    console.log(value);
+  }
+  changeMob = (value) => {
+    this.setState({mob: value});
+    console.log(value);
+  }
+  changeEma = (value) => {
+    this.setState({ema: value});
+    console.log(value);
+  }
+  changePass = (value) => {
+    this.setState({pass: value});
+    console.log(value);
+  }
+  changeNat = (value) => {
+    this.setState({nat: value});
+    console.log(value);
+  }
+
+
+
+  changeDes = (value) => {
+    this.setState({des: value});
+    console.log(value);
+  }
+  changeDep = (value) => {
+    this.setState({dep: value});
+    console.log(value);
+  }
+  changeAir = (value) => {
+    this.setState({air: value});
+    console.log(value);
+  }
+  changeBook = (value) => {
+    this.setState({book: value});
+    console.log(value);
+  }
+  changeTes = (value) => {
+    this.setState({tes: value});
+    console.log(value);
+  }
+  changeFir = (value) => {
+    this.setState({fir: value});
+    console.log(value);
+  }
+  changeLas = (value) => {
+    this.setState({las: value});
+    console.log(value);
+  }
+  changeGen = (value) => {
+    this.setState({gen: value});
+    console.log(value);
+  }
+  changeDob = (value) => {
+    this.setState({dob: value});
+    console.log(value);
+  }
+  changeAdd = (value) => {
+    this.setState({add: value});
+    console.log(value);
+  }
+  changeSub = (value) => {
+    this.setState({sub: value});
     console.log(value);
   }
   changeInfoId = (value) => {
@@ -353,8 +543,73 @@ changetime = (value) => {
       date: value
   });
 }
+changeLan=(lan)=>{
+  this.setState({
+    language:lan
+  })
+}
+checkVersion = async()=>{
+ 
+  
+
+  var version_latest = 0;
+
+  try {
+    let url = 'http://version.doctoraicare.com.au/getVersion';
+      fetch(url,{
+        method: 'GET',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        }})
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        //Alert.alert(json.code)
+        if (json.status === "success") {
+          //Alert.alert(I18n.t("changed"))
+          
+          version_latest=parseFloat(json.result)
+          //checking until the third decimal(inclsuive)
+          if(parseFloat(json.result)-this.state.version >0.001){
+
+
+            Alert.alert(
+              "Please Update",
+              "You will have to update your app to the latest version to the continue using.",
+              [
+                {
+                  text:"Update",
+                  onPress:()=>{
+                    
+                    Linking.openURL(Platform.OS != 'android'?"https://apps.apple.com/us/app/aicare-health/id1565283508":"https://play.google.com/store/apps/details?id=com.jingzhuo.aicare")
+                    //RNExitApp.exitApp();
+      
+                  },
+                },
+              ],
+              {cancelable:false},
+            );
+          }
+        } else {
+          console.log(json.msg)
+          //Alert.alert(this.state.token);
+        }
+      }).catch(error => console.warn(error));
+      //Alert.alert("whats wrong")
+
+    
+  }catch (error){
+
+    console.log(error)
+    Alert.alert("error")
+  }
+}
 componentDidMount() {
   this.getToken();
+  this.checkVersion();
+      //Alert.alert(this.state.token);
+
  }
 
 render() {
@@ -413,6 +668,13 @@ render() {
         <Stack.Screen name="result" component={Result} options={{headerShown:false}}/>
         <Stack.Screen name="prescription" component={prescription} options={{headerShown:false}}/>
         <Stack.Screen name="pdf" component={Pdf} options={{headerShown:false}}/>
+        <Stack.Screen name="chatbot" component={chatbot} options={{headerShown:false}}/>
+        <Stack.Screen name="reservation" component={reservation} options={{headerShown:false}}/>
+        <Stack.Screen name="covid_info" component={covid_info} options={{headerShown:false}}/>
+        <Stack.Screen name="covid_confirm" component={covid_confirm} options={{headerShown:false}}/>
+        <Stack.Screen name="covid_finish" component={covid_finish} options={{headerShown:false}}/>
+        <Stack.Screen name="covid_pay" component={covid_pay} options={{headerShown:false}}/>
+
 
 
 
@@ -422,9 +684,9 @@ render() {
           <>
           {this.first_time?null:<Stack.Screen options={{headerShown: false}} name="intro" component={Intro} />}
           <Stack.Screen options={{headerShown: false}} name="登陆" component={Login} />
-          <Stack.Screen name="注册" component={Signup} />
+          <Stack.Screen name={I18n.t("signup_signin")} component={Signup} />
           <Stack.Screen name="数据协议" component={DataPolicy} />
-          <Stack.Screen name="忘记密码" component={Forget}/>
+          <Stack.Screen name={I18n.t("forget_password_signin")} component={Forget}/>
           </>
         )}
 

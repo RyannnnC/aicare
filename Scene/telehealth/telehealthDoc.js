@@ -6,7 +6,7 @@ import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import DateFilter from "./datefilter";
 import DataContext from "../../consumerContext";
-//import { UserOfflineReason } from 'react-native-agora';
+import I18n from "../language"
 
 //import moment from "moment"
 
@@ -58,7 +58,7 @@ class telehealthDoc extends Component {
                 //Alert.alert('查询成功');
               } else {
                 console.log(json.msg);
-                Alert.alert('查询失败');
+                Alert.alert(I18n.t("fail"));
               }
             }).catch(error => console.warn(error));
     });
@@ -88,7 +88,7 @@ class telehealthDoc extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>医生选择</Text>
+        marginTop:20}}>{I18n.t("title_doctor")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -102,8 +102,7 @@ class telehealthDoc extends Component {
             source={require('../../images/waiting.png')}
         />
         </View>
-        <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>
-          正在搜索相关医生，请耐心等待..
+        <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>{I18n.t("waiting_doctor")}
         </Text>
         <ActivityIndicator size="large" style={{marginTop:-90}} color="#FF8570"></ActivityIndicator>
         </View>
@@ -146,7 +145,7 @@ class telehealthDoc extends Component {
               style = {{width: 20, height:20 , marginLeft:85, marginRight:1}}
               source = {require('../../images/telehealth_icon/stars.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{5+" ("+1+"条评价)"}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>5(1{I18n.t("comments_doctor")})</Text>
           </View>
           </TouchableOpacity>    
 
@@ -167,7 +166,7 @@ class telehealthDoc extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:23}}>医生选择</Text>
+        marginTop:23}}>{I18n.t("title_doctor")}</Text>
         </View>
         <View style={{marginTop:5}}>
         <TouchableOpacity style={{shadowColor:"000000",shadowOffset: {
@@ -190,17 +189,17 @@ class telehealthDoc extends Component {
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginTop:5}}>{5.0}</Text>
           </View>
           <View style={{borderColor:"#EEEEEE",borderTopWidth:1.5,marginTop:-10,width:280}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13,color:"#666666" }}>地址: {this.props.route.params.address}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13,color:"#666666" }}>{I18n.t("address_doctor")}: {this.props.route.params.address}</Text>
           <View style={{flexDirection:"row"}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666"  }}>电话: {this.props.route.params.item.mobile}</Text>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666",marginLeft:70  }}>点击查看介绍 {'->'}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666"  }}>{I18n.t("tele_doctor")}: {this.props.route.params.item.mobile}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666",marginLeft:70  }}>{I18n.t("click_for_more_doctor")} {'->'}</Text>
           </View>
           </View>
         </View>
         </TouchableOpacity>
         </View>
-        <View style ={{flexDirection:'row',marginTop:15}}>
-        <Text style={{marginLeft:50,color:"#333333",fontSize:14,marginTop:5}}>科目</Text>
+        {/*<View style ={{flexDirection:'row',marginTop:15}}>
+        <Text style={{marginLeft:50,color:"#333333",fontSize:14,marginTop:5}}>{I18n.t("category_doctor")}</Text>
       <TouchableOpacity onPress={()=>{
           this.setVisible(true)}
         }>
@@ -208,7 +207,7 @@ class telehealthDoc extends Component {
           source = {require('../../images/telehealth_icon/科目选择.png')}
         />
       </TouchableOpacity>  
-      <Text style={{marginLeft:170,color:"#333333",fontSize:14,marginTop:5}}>日期</Text>
+      <Text style={{marginLeft:170,color:"#333333",fontSize:14,marginTop:5}}>{I18n.t("date_doctor")}</Text>
 
       <TouchableOpacity onPress={()=>{
           this.setModalVisible(true)}
@@ -217,11 +216,11 @@ class telehealthDoc extends Component {
         source= {require('../../images/telehealth_icon/时间选择.png')}
       />
     </TouchableOpacity>
-    </View>
+    </View>*/}
         <View style={{alignItems:'center',marginTop:5}}>
         
         </View>
-        <ScrollView style={{ flex:1,marginTop:-5,paddingTop:13,marginLeft:-30,maxHeight:540}}>
+        <ScrollView style={{ flex:1,marginTop:-5,paddingTop:13,marginLeft:-30}}>
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>

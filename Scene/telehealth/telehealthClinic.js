@@ -6,8 +6,7 @@ import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import DateFilter from "./datefilter";
 import DataContext from "../../consumerContext";
-//import { UserOfflineReason } from 'react-native-agora';
-
+import I18n from "../language";
 
 //import moment from "moment"
 
@@ -62,7 +61,7 @@ class telehealthClinic extends Component {
                 //Alert.alert('查询成功');
               } else {
                 console.log(json.msg);
-                Alert.alert('查询失败');
+                Alert.alert(I18n.t("fail"));
               }
             }).catch(error => console.warn(error));
   }
@@ -91,7 +90,7 @@ class telehealthClinic extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>诊所选择</Text>
+        marginTop:20}}>{I18n.t("title_clinic")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -105,8 +104,7 @@ class telehealthClinic extends Component {
             source={require('../../images/waiting.png')}
         />
         </View>
-        <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>
-          正在搜索相关诊所，请耐心等待..
+        <Text style={{marginTop:10,marginLeft:65,fontSize:15}}>{I18n.t("waiting_clinic")}
         </Text>
         <ActivityIndicator size="large" style={{marginTop:-90}} color="#FF8570"></ActivityIndicator>
         </View>
@@ -140,12 +138,12 @@ class telehealthClinic extends Component {
               style = {{width: 20, height:20 , marginLeft:85, marginRight:1}}
               source = {require('../../images/telehealth_icon/stars.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{5+" (1条评价)"}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>5(1{I18n.t("comments_clinic")})</Text>
             <Image
               style = {{width: 15, height:15,marginLeft:40, marginRight:5}}
               source = {require('../../images/telehealth_icon/service_icon_location_green.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{'未知km'}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{I18n.t("unknown_clinic")+'km'}</Text>
           </View>
           </TouchableOpacity>
           
@@ -167,16 +165,16 @@ class telehealthClinic extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:105,
-        marginTop:20}}>诊所选择</Text>
+        marginTop:20}}>{I18n.t("title_clinic")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
             style = {styles.topping_image}
             source={require('../../images/telehealth_icon/service_img.png')}
         />
-        </View>
+        </View>{/* 
         <View style ={{flexDirection:'row',marginTop:15}}>
-        <Text style={{marginLeft:50,color:"#333333",fontSize:14,marginTop:5}}>科目</Text>
+        <Text style={{marginLeft:50,color:"#333333",fontSize:14,marginTop:5}}>{I18n.t("category_clinic")}</Text>
       <TouchableOpacity onPress={()=>{
           this.setVisible(true);
           console.log(this.props.route.params.doctype)}
@@ -185,7 +183,7 @@ class telehealthClinic extends Component {
           source = {require('../../images/telehealth_icon/科目选择.png')}
         />
       </TouchableOpacity>  
-      <Text style={{marginLeft:170,color:"#333333",fontSize:14,marginTop:5}}>日期</Text>
+      <Text style={{marginLeft:170,color:"#333333",fontSize:14,marginTop:5}}>{I18n.t("date_clinic")}</Text>
 
       <TouchableOpacity onPress={()=>{
           this.setModalVisible(true)}
@@ -194,7 +192,7 @@ class telehealthClinic extends Component {
         source= {require('../../images/telehealth_icon/时间选择.png')}
       />
     </TouchableOpacity>
-    </View>
+    </View>*/}
         <View style={{alignItems:'center',marginTop:10}}>
         {/*<SearchBar
           round
@@ -219,7 +217,7 @@ class telehealthClinic extends Component {
           value={this.state.search}
         />*/}
         </View>
-        <ScrollView style={{ flex:1,marginTop:0,marginLeft:-30,maxHeight:590}}>
+        <ScrollView style={{ flex:1,marginTop:0,marginLeft:-30,}}>
           <View  style={{alignItems:'center'}}>
           {orders}
           </View>

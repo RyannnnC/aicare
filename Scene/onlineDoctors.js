@@ -5,6 +5,7 @@ import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import DataContext from "../consumerContext";
+import I18n from "./language"
 
 //import moment from "moment"
 
@@ -66,7 +67,7 @@ class OnlineDoc extends Component {
     const orders = this.state.candidates.map((item) => {
       const types = item.serviceClass?this.splitString(item.serviceClass).map((sth) => {
         return (
-            <Text style={{ marginTop:2,marginRight:5,fontSize:12, fontWeight: '400',color:'#666666'}}>{this.context.deptType[sth]}</Text>
+            <Text style={{ marginTop:2,marginRight:5,fontSize:12, fontWeight: '400',color:'#666666'}}>{I18n.t("types")[sth]}</Text>
 
         )
       }):null;
@@ -90,12 +91,12 @@ class OnlineDoc extends Component {
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400',marginLeft:0}}>{item.orgName}</Text>
           </View>
           </View>
-          <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE',marginTop:-15}}>
+          <View style={{flexDirection: 'row',paddingBottom: 15, borderBottomWidth: 1, borderBottomColor:'#EEEEEE',marginTop:-5}}>
             <Image
               style = {{width: 20, height:20 , marginLeft:85, marginRight:1}}
               source = {require('../images/telehealth_icon/stars.png')}
             />
-            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>{5+" ("+1+"条评价)"}</Text>
+            <Text style={{fontSize:12, color:'#999999', fontWeight: '400'}}>5 (1{I18n.t("comments_doctor")})</Text>
             
           </View>
           </TouchableOpacity>    
@@ -116,7 +117,7 @@ class OnlineDoc extends Component {
         <Text style={{
         fontSize:16,
         marginLeft:125,
-        marginTop:23}}>名医推荐</Text>
+        marginTop:23}}>{I18n.t("matching_doctors_title")}</Text>
         </View>
         <View style={{marginTop:10}}>
         <Image
@@ -132,7 +133,7 @@ class OnlineDoc extends Component {
           {orders}
           </View>
         </ScrollView>
-        <Text style={{marginTop:10,marginLeft:115,fontSize:15,color:"grey"}}>下滑浏览所有推荐名医</Text>
+        <Text style={{marginTop:10,marginLeft:115,fontSize:15,color:"grey"}}>{I18n.t("scroll_down_more")}</Text>
       </View>
     )} else {
     return (
@@ -141,7 +142,7 @@ class OnlineDoc extends Component {
         style = {styles.finishImg}
         source = {require('../images/complete_empty.png')}
       />
-     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>目前没有可服务人员！</Text>
+     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t("no_matching")}</Text>
      </View>
     )
   }

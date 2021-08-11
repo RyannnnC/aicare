@@ -6,6 +6,7 @@ import {data} from './data';
 import DataContext from "../../consumerContext";
 import DateSelect from "../telehealth/DateSelect";
 import moment from 'moment-timezone';
+import I18n from "../language";
 import * as Localization from 'expo-localization';
 class OngoingingOrder extends Component {
     constructor(props) {
@@ -52,30 +53,30 @@ class OngoingingOrder extends Component {
     };
   cancelOrder =(id)=>{
     Alert.alert(
-      "提醒",
-      "您确定要取消这单预约吗？请注意仅在预约时间一小时之前可以取消预约。",
+      I18n.t("cancel_order"),
+      I18n.t("cancelalert_order"),
       [
         {
-          text: "取消",
+          text: I18n.t("cancel"),
           onPress: () => console.log("didnt cancel order"),
           style: "cancel"
         },
-        { text: "确定", onPress: () => this.cancelAppointment(id) } 
+        { text: I18n.t("confirm_cancel"), onPress: () => this.cancelAppointment(id) } 
       ],
       { cancelable: false }
       )
   }
   changeOrder =(id,businessEmployerId,orgId,address)=>{
     Alert.alert(
-      "更改",
-      "您要更改预约时间吗？请注意仅在预约时间一小时之前可以进行更改。",
+      I18n.t("change_order"),
+      I18n.t("changealert_order"),
       [
         {
-          text: "取消",
+          text: I18n.t("cancel"),
           onPress: () => console.log("didnt cancel order"),
           style: "cancel"
         },
-        { text: "更改时间", onPress: () => {this.setModalVisible(true);this.setState({id:id});this.context.action.changeOrgId(orgId);this.context.action.changeDocId(businessEmployerId)}},
+        { text: I18n.t("confirm_change"), onPress: () => {this.setModalVisible(true);this.setState({id:id});this.context.action.changeOrgId(orgId);this.context.action.changeDocId(businessEmployerId)}},
         //{ text: "更改医生", onPress: () => this.changeAlert(orgId,address,id)} 
       ],
       { cancelable: false }
@@ -98,7 +99,7 @@ class OngoingingOrder extends Component {
       )
   }
   componentDidMount() {
-    this.getAITraining()
+    this.getAITraining();
     this.dataPolling = setInterval(
       () => {
         this.getAITraining();
@@ -176,10 +177,10 @@ class OngoingingOrder extends Component {
             .then((json) => {
               if (json.code == 0) {
                 console.log("ok");
-                Alert.alert('更改成功');
+                Alert.alert(I18n.t("change_success"));
               } else {
                 console.log(json.msg);
-                Alert.alert('更改失败');
+                Alert.alert(I18n.t("fail"));
               }
             }).catch(error => console.warn(error));
   }
@@ -205,10 +206,10 @@ class OngoingingOrder extends Component {
               if (json.code == 0) {
                 console.log("ok");
                
-                Alert.alert("订单已取消。")
+                Alert.alert(I18n.t("cancel_success"))
               } else {
                 console.log(json.msg);
-                Alert.alert('更改失败');
+                Alert.alert(I18n.t("fail"));
               }
             }).catch(error => console.warn(error));
   }
@@ -218,15 +219,15 @@ class OngoingingOrder extends Component {
     date.setDate(date.getDate() + 1)
     date=date.toLocaleDateString();    
     Alert.alert(
-      "提醒",
-      "确定要更改时间到".concat(time.slice(0,5)).concat(" - ").concat(end.slice(0,5)).concat("吗？"),
+      I18n.t("change_order"),
+      I18n.t("changealert2_order").concat(time.slice(0,5)).concat(" - ").concat(end.slice(0,5)).concat(I18n.t("changealert3_order")),
       [
         {
-          text: "取消",
+          text: I18n.t("cancel"),
           onPress: () => console.log("cancel change"),
           style: "cancel"
         },
-        { text: "确定", onPress: () => {this.updateAppointment(s_id);
+        { text: I18n.t("confirm_change"), onPress: () => {this.updateAppointment(s_id);
           this.setModalVisible(!this.state.modalVisible);
           this.setState({id:0})}},
       ],
@@ -284,11 +285,11 @@ class OngoingingOrder extends Component {
             <View style={{flexDirection:"row"}}>
             <Text style={{fontSize:14, color:'#333333', fontWeight: '500',marginTop:5}}>{item.businessEmployerName}</Text>
             <Image style={{marginTop:9,height:15,width:15,marginLeft:3}} source={item.serviceType==2?require('../../images/telehealth_icon/order_icon_video.png'):require('../../images/telehealth_icon/service_icon_location.png')}></Image>
-            <Text style={{fontSize:12,color: '#666666',marginTop:8,marginLeft:3}}>{item.serviceType==1?"实地问诊":"远程问诊 - "}</Text>
+            <Text style={{fontSize:12,color: '#666666',marginTop:8,marginLeft:3}}>{item.serviceType==1?I18n.t("onsite_order"):I18n.t("online_order")}</Text>
             {item.serviceType==2?<Text style={{fontSize:12,color: '#666666',marginTop:8}}>{item.videoChannel==1?"FaceTime":"Skype"}</Text>:null}
 
             </View>
-            <Text style={{fontSize:12, color:'#333333', }}>{this.context.deptType[item.deptId]+" - "+item.orgName}</Text>
+            <Text style={{fontSize:12, color:'#333333', }}>{I18n.t("types")[item.deptId]+" - "+item.orgName}</Text>
 
             <Text style={{fontSize:12, color:'#666666', fontWeight: '400'}}>{item.address}</Text>
           </View>
@@ -307,7 +308,7 @@ class OngoingingOrder extends Component {
               marginTop: 15,
             }} 
             onPress={()=>this.contact(item.orgMobile)}>
-              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20}}>联系</Text>
+              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20}}>{I18n.t("contact_order")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{
               width: 75,
@@ -319,7 +320,7 @@ class OngoingingOrder extends Component {
               marginTop: 15,
             }} 
             onPress={()=>this.changeOrder(item.id,item.businessEmployerId,item.orgId,item.address)}>
-              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20}}>更改</Text>
+              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20}}>{I18n.t("change_order")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{
               width: 75,
@@ -331,7 +332,7 @@ class OngoingingOrder extends Component {
               marginTop: 15,
             }} 
             onPress={()=>this.cancelOrder(String(item.id))}>
-              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20}}>取消</Text>
+              <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20}}>{I18n.t("cancel_order")}</Text>
             </TouchableOpacity>
             
           </View>
@@ -344,7 +345,7 @@ class OngoingingOrder extends Component {
         <ScrollView style={{ flex:1,marginTop:-25,maxHeight:530}}>
           {orders}
         </ScrollView>
-        <Text style={{fontSize:11,color:"#999999",marginTop:10}}>仅在预约一小时之前可以进行订单取消或更改。</Text>
+        <Text style={{fontSize:11,color:"#999999",marginTop:10}}>{I18n.t("notice_order")}</Text>
         <Modal
         animationType="slide"
         transparent={true}
@@ -376,14 +377,14 @@ elevation: 24,}}>
         <Text style = {{color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:70,}}>时间筛选</Text>
+    marginLeft:70,}}>{I18n.t("slot_doctorinfo")}</Text>
     </View>
       <DateSelect/>
       {this.context.loading?<ActivityIndicator color="#00FF00" size="large"></ActivityIndicator>:
       this.context.schedule.length!=0?
       <ScrollView style={{ maxHeight:140,marginLeft:150 }}>
           {time}
-      </ScrollView>:<Text style={{marginTop:15,marginBottom:10,marginLeft:100}}>抱歉，这一天没有可选时间哦。</Text>}
+      </ScrollView>:<Text style={{marginTop:15,marginBottom:10,marginLeft:100}}>{I18n.t("no_slot_doctorinfo")}</Text>}
 
         
         <View style={{height:20}}/>
@@ -398,7 +399,7 @@ elevation: 24,}}>
         style = {styles.finishImg}
         source = {require('../../images/telehealth_icon/order_img_empty.png')}
       />
-     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>您还没有新订单哦，快去预定吧！</Text>
+     <Text style={{ color: '#333333', fontSize: 16, fontWeight: '400'}}>{I18n.t("no_order")}</Text>
      </View>
     )
   }

@@ -9,6 +9,7 @@ import DateSelect from "./DateSelect";
 import DateFilter from "./datefilter";
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
+import I18n from "../language";
 
 const args = {
   number: '0403555432', // String value with the number to call
@@ -74,7 +75,7 @@ export default function DocInfo({route,navigation}) {
               } else {
                 console.log(json.msg);
                 console.log(queryId);
-                Alert.alert('查询失败');
+                Alert.alert(I18n.t("fail"));
               }
             }).catch(error => console.warn(error));
     },[])
@@ -147,16 +148,16 @@ export default function DocInfo({route,navigation}) {
       }
       if (doc.videoChannel.length!=0){
       Alert.alert(
-      "就诊方式",
-      "您是要选择与医生远程视频/电话问诊还是去诊所就诊呢？",
+      I18n.t("slot_doctorinfo"),
+      I18n.t("type_text_doctorinfo"),
       [
         {
-          text: "取消",
+          text: I18n.t("cancel_order"),
           onPress: () => console.log("didnt cancel order"),
           style: "cancel"
         },
-        { text: "远程问诊", onPress: () => {goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,2)}},
-        { text: "实地问诊", onPress: () => {goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,1)}} 
+        { text:I18n.t("online_clinicinfo"), onPress: () => {goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,2)}},
+        { text: I18n.t("onsite_clinicinfo"), onPress: () => {goInsurance(item.item.scheduleDetailedId,item.item.startTime,item.item.endTime,1)}} 
       ],
       { cancelable: false }
       )}else{
@@ -183,7 +184,7 @@ export default function DocInfo({route,navigation}) {
     <Text style = {{color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:40,}}>医生信息</Text>
+    marginLeft:40,}}>{I18n.t("title_doctorinfo")}</Text>
     <CheckBox
             checked={isEnabled }
             checkedColor='#FF7E67'
@@ -196,7 +197,7 @@ export default function DocInfo({route,navigation}) {
               console.log(user.schedule);
 
               if (!isEnabled){
-                Alert.alert("已收藏")
+                Alert.alert(I18n.t("save_doctorInfo"))
               }
 
             }}
@@ -227,16 +228,16 @@ export default function DocInfo({route,navigation}) {
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginTop:5}}>{5.0}</Text>
           </View>
           <View style={{borderColor:"#EEEEEE",borderTopWidth:1.5,marginTop:-10,width:280}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13,color:"#666666" }}>地址: {address}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13,color:"#666666" }}>{I18n.t("address_doctor")}: {address}</Text>
           <View style={{flexDirection:"row"}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666"  }}>电话: {doc.mobile}</Text>
-          <Text style={{ fontSize:12, fontWeight: '400',color:"#666666",marginTop:7, marginLeft:20 }}>经验:{doc.workLong?doc.workLong+"年":"未填写"}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7,color:"#666666"  }}>{I18n.t("tele_doctor")}: {doc.mobile}</Text>
+          <Text style={{ fontSize:12, fontWeight: '400',color:"#666666",marginTop:7, marginLeft:20 }}>{I18n.t("experience_doctorinfo")}:{doc.workLong?doc.workLong+I18n.t("year"):I18n.t("not_fiiled")}</Text>
           </View>
           </View>
         </View>
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>医生简介</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("brief_clinicinfo")}</Text>
         </View>
         <View style={{flexWrap: 'wrap', alignItems: 'flex-start',marginBottom:10}}>
           <Text style={{ fontSize:14, fontWeight: '300' }}>{doc.introduce}</Text>
@@ -245,7 +246,7 @@ export default function DocInfo({route,navigation}) {
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
 
         <View style={{marginTop:15, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>服务语言</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("languages_doctorinfo")}</Text>
         </View>
         <View style={{flexDirection: 'row' , marginTop:10, marginBottom:10}}>
           {doc.languages?languages:null}
@@ -253,7 +254,7 @@ export default function DocInfo({route,navigation}) {
         </View>
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>医生类型</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("doctor_type_doctorinfo")}</Text>
         </View>
         <View style={{flexWrap: 'wrap', alignItems: 'flex-start',flexDirection:"row",marginBottom:10}}>
             {doc.serviceClassList?types:null}
@@ -262,7 +263,7 @@ export default function DocInfo({route,navigation}) {
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
 
         <View style={{ marginTop:15, marginBottom:15}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>服务类型</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("on_clinicinfo")}</Text>
         </View>
         
 
@@ -272,7 +273,7 @@ export default function DocInfo({route,navigation}) {
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
 
         <View style={{ marginTop:15, marginBottom:15}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>远程方式</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("online_method_doctorinfo")}</Text>
         </View>
         
         {videochannel}
@@ -284,24 +285,24 @@ export default function DocInfo({route,navigation}) {
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1,width:340,marginLeft:18}}>
 
         <View style={{marginTop:10,marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>服务时间</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("open_hour_doctorinfo")}</Text>
         </View>
         {times?
         times
         :
-        <Text>这位医生暂时没有服务时间</Text>}
+        <Text>{I18n.t("notime_doctorinfo")}</Text>}
         </View>
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18}}>
 
         <View style={{ marginTop:15, marginBottom:15}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>收费方式</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("charge_clinicinfo")}</Text>
         </View>
         <View style={{flexDirection:'row'}}>
           <Image style={{width:17,height:17,marginBottom:10,marginTop:2}}
             source = {require('../../images/order_iocn_money.png')}
           />
 
-          {doc.chargingMethodList&&doc.chargingMethodList[0].value==1?<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>支持bulk billing</Text>:<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>不支持bulk billing</Text>
+          {doc.chargingMethodList&&doc.chargingMethodList[0].value==1?<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>{I18n.t("support_clinicinfo")}bulk billing</Text>:<Text style={{ marginLeft:5,fontSize:14, fontWeight: '300',marginBottom:10 }}>{I18n.t("not_support_clinicinfo")}bulk billing</Text>
         }</View>
         </View>
         
@@ -344,7 +345,7 @@ elevation: 24,}}>
       />
     </TouchableOpacity>
     <View style={{marginLeft:30,marginTop:10}}>
-    <Text style = {styles.service}>预约时间</Text>
+    <Text style = {styles.service}>{I18n.t("slot_doctorinfo")}</Text>
     </View>
     </View>
     
@@ -362,7 +363,7 @@ elevation: 24,}}>
         data={timeSection}
         renderItem={item => renderItemComponent(item)}
         keyExtractor={item => item.scheduleDetailedId.toString()}
-      />:<Text style={{marginTop:15,marginBottom:10}}>抱歉，这天无可选时间哦。</Text>}
+      />:<Text style={{marginTop:15,marginBottom:10}}>{I18n.t("no_slot_doctorinfo")}</Text>}
       </View>
      
         </ScrollView>
@@ -372,7 +373,7 @@ elevation: 24,}}>
       </Modal>
     <View style={{marginTop:15,marginLeft:-13}}>
     <TouchableOpacity style={styles.next_wrapper} onPress={() => {setModalVisible(modalVisible=>!modalVisible);user.action.changeOrgId(orgId);user.action.changeDocId(docId)}}>
-      <Text style={styles.onsite_text}>预约</Text>
+      <Text style={styles.onsite_text}>{I18n.t("make_appointment_doctorinfo")}</Text>
     </TouchableOpacity>
     </View>
     <View style={{height:100}}></View>

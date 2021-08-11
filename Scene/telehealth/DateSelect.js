@@ -7,7 +7,7 @@ import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 import DataContext from "../../consumerContext";
 
-
+import I18n from "../language"
 class DateSelect extends Component {
   
   constructor(props) {
@@ -38,7 +38,7 @@ class DateSelect extends Component {
     //console.log(new Date())
     const sdate = new Date(date);
     if(sdate<newTime){
-      Alert.alert("不可以选择过去的日期。")
+      Alert.alert(I18n.t("no_past_allowed"))
       this.context.action.changeSchedule([]);
 
       return

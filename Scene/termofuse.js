@@ -18,10 +18,10 @@ export default function TermOfUse({navigation}){
 This Collection Statement describes how Aicare health collects and handles personal information. This notice is provided pursuant to Australian Privacy Principle 5.
 
 Booking Services and Personal Profiles
-HealthEngine collects and uses your personal information to provide online booking services to you, to facilitate appointments with medical practices, and to communicate with you about these appointments.
+Aicare Health collects and uses your personal information to provide online booking services to you, to facilitate appointments with medical practices, and to communicate with you about these appointments.
 
 Why we collect your booking information
-HealthEngine collects your name, date of birth and contact details (address, email address and contact number), from you at the time that you use our online booking services, usually via our website or mobile applications (Aicare health Network).
+Aicare Health collects your name, date of birth and contact details (address, email address and contact number), from you at the time that you use our online booking services, usually via our website or mobile applications (Aicare health Network).
 
 If you decide to create a personal profile on the Aicare health Network we will store that information securely on those platforms for the purpose of making your future interactions with Aicare health more convenient.
 

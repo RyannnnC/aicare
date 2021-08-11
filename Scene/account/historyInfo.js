@@ -4,7 +4,7 @@ import {styles} from '../../style';
 import { StackActions } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
-
+import I18n from "../language"
 import RNPickerSelect from 'react-native-picker-select';
 import DataContext from "../../consumerContext";
 const HistoryInfo = ({navigation}) => {
@@ -50,7 +50,7 @@ const HistoryInfo = ({navigation}) => {
       .then((json) => {
         //this.setState({loading:false})
         if (json.code === 0) {
-          Alert.alert("信息保存成功")
+          Alert.alert(I18n.t("saved"))
           console.log(json.msg)
 
         } else {
@@ -136,11 +136,9 @@ const HistoryInfo = ({navigation}) => {
         <Text style = {{color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:100,}}>病史信息</Text>
+    marginLeft:100,}}>{I18n.t("medical_history")}</Text>
         </View>
-        <Image style = {{width:80,height:80,borderRadius:40}}
-            source= {require('../../images/emotion1.png')}
-          />
+        
         <View style={{ marginTop:10,marginLeft:-20,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row'}}>
             <Image
           style = {{width:22,
@@ -149,23 +147,23 @@ const HistoryInfo = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/telehealth_icon/account_icon_medical.png')}
         />
-            <Text style={{fontSize:16}}>病史信息</Text>
+            <Text style={{fontSize:16}}>{I18n.t("medical_history")}</Text>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>慢性病史： </Text>
-            <TextInput defaultValue={history}  placeholder="慢性病史" placeholderTextColor="grey" onChangeText={text => setHistory(text)}></TextInput>
+            <Text>{I18n.t("chronic")}： </Text>
+            <TextInput defaultValue={history}  placeholder={I18n.t("chronic_pd")} placeholderTextColor="grey" onChangeText={text => setHistory(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>家庭病史： </Text>
-            <TextInput defaultValue={family}  placeholder="家族病史" placeholderTextColor="grey" onChangeText={text => setFamily(text)}></TextInput>
+            <Text>{I18n.t("family_history")}： </Text>
+            <TextInput defaultValue={family}  placeholder={I18n.t("family_history_pd")} placeholderTextColor="grey" onChangeText={text => setFamily(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>过敏史： </Text>
-            <TextInput defaultValue={allergy} placeholder="过敏史" placeholderTextColor="grey" onChangeText={text => setAllergy(text)}></TextInput>
+            <Text>{I18n.t("allergy")}： </Text>
+            <TextInput defaultValue={allergy} placeholder={I18n.t("allergy_pd")} placeholderTextColor="grey" onChangeText={text => setAllergy(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>用药历史： </Text>
-            <TextInput  defaultValue={medicine} placeholder="用药历史" placeholderTextColor="grey" onChangeText={text => setMedicine(text)}></TextInput>
+            <Text>{I18n.t("medication_history")}： </Text>
+            <TextInput  defaultValue={medicine} placeholder={I18n.t("medication_history_pd")} placeholderTextColor="grey" onChangeText={text => setMedicine(text)}></TextInput>
         </View>
         
        
@@ -270,7 +268,7 @@ const HistoryInfo = ({navigation}) => {
     
         <View style={{marginLeft:-75,marginTop:20}}>
         <TouchableOpacity style={styles.next_wrapper} onPress ={update}>
-            <Text style={styles.onsite_text}>确认</Text>
+            <Text style={styles.onsite_text}>{I18n.t("confirm_account")}</Text>
         </TouchableOpacity>
         </View>
         <View style={{height:300}}></View>

@@ -4,7 +4,7 @@ import {styles} from '../style';
 import { StackActions } from '@react-navigation/native';
 import { CheckBox } from 'react-native-elements';
 import DataContext from "../consumerContext";
-
+import I18n from "./language"
 
 export default function Report({route,navigation}) {
   
@@ -51,7 +51,7 @@ export default function Report({route,navigation}) {
               } else {
                 console.log(json.msg);
                 //console.log(queryId);
-                Alert.alert('查询失败');
+                Alert.alert(I18n.t("fail"));
               }
             }).catch(error => console.warn(error));
     },[])
@@ -60,12 +60,12 @@ export default function Report({route,navigation}) {
     const pres = doc.prescription?doc.prescription.map((item) => {
         return (
           <View style={{borderTopWidth:0.7}}>
-            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>药名：{item.medicineName}</Text>
-            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>用法：{item.usage}</Text>
-            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>剂量：{item.dose}</Text>
-            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>数量：{item.amount}</Text>
-            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>疗程：{item.repetition}</Text>
-            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6,marginBottom:10 }}>是否重复:{item.isRepeat==0?"不重复":"重复"}</Text>
+            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("medicine_name")}：{item.medicineName}</Text>
+            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("usage")}：{item.usage}</Text>
+            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("dosage")}：{item.dose}</Text>
+            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("number_medicine")}：{item.amount}</Text>
+            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("repetition")}：{item.repetition}</Text>
+            <Text style={{ fontSize:12, fontWeight: '300',paddingTop:6,marginBottom:10 }}>{I18n.t("repeat")}:{item.isRepeat==0?I18n.t("no"):I18n.t("yes")}</Text>
 
           </View>
         )
@@ -87,13 +87,13 @@ export default function Report({route,navigation}) {
     <Text style = {{color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:40,}}>电子病历</Text>
+    marginLeft:40,}}>{I18n.t("health_record")}</Text>
     
     
     </View>
     <View style={{borderBottomColor:"#EEEEEE",width:340,marginLeft:18}}>
         <View style={{marginTop:20, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>诊断总览</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("overview")}</Text>
         </View>
         
         </View>
@@ -112,20 +112,20 @@ export default function Report({route,navigation}) {
                 shadowRadius: 3.05,
 
                 elevation: 0,marginTop:-60,width:'90%',marginLeft:15,height:200,justifyContent: "center",alignItems: "center",marginBottom:18,borderRadius:30}}>
-          <Text style={{ fontSize:18, fontWeight: '600',marginTop:0 }}>{doc.businessEmployerName}</Text>
+          <Text style={{ fontSize:18, fontWeight: '600',marginTop:0 }}>   {doc.businessEmployerName}</Text>
           <View style={{flexDirection: 'row',paddingBottom: 15, }}>
             
             <Text style={{fontSize:12, color:'#999999', fontWeight: '400',marginTop:5}}>{doc.orgName}</Text>
           </View>
           <View style={{borderColor:"#EEEEEE",borderTopWidth:1.5,marginTop:-10,width:280}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13 }}>时间: {doc.dateOfDiagnosis} </Text>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7 }}>科目: {doc.serviceClass} </Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:13 }}>{I18n.t("slot_doctorinfo")}: {doc.dateOfDiagnosis} </Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7 }}>{I18n.t("category_type")}: {doc.serviceClass} </Text>
           <View style={{flexDirection:"row"}}>
-          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7 }}>就诊方式: {user.consultWay[doc.type]} </Text>
+          <Text style={{ fontSize:12, fontWeight: '400',marginTop:7 }}>{I18n.t("on_clinicinfo")}: {doc.type} </Text>
 
           </View>
-          <Text style={{fontSize:12, fontWeight: '400',paddingTop:6 }}>Presciber号码：{doc.prescriberNumber?doc.prescriberNumber:"未填写"}</Text>
-          <Text style={{fontSize:12, fontWeight: '400',paddingTop:6 }}>医生电话：{doc.doctorMobile?doc.doctorMobile:"未填写"}</Text>
+          <Text style={{fontSize:12, fontWeight: '400',paddingTop:6 }}>Presciber{I18n.t("number")}：{doc.prescriberNumber?doc.prescriberNumber:I18n.t("not_fiiled")}</Text>
+          <Text style={{fontSize:12, fontWeight: '400',paddingTop:6 }}>{I18n.t("mobile")}：{doc.doctorMobile?doc.doctorMobile:I18n.t("not_fiiled")}</Text>
 
           </View>
         </View>
@@ -133,11 +133,11 @@ export default function Report({route,navigation}) {
 
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18,}}>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>病人信息</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>姓名：{doc.lastName?doc.lastName:"未填写姓"} {doc.firstName?doc.firstName:"未填写名"}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>性别：{doc.gender?doc.gender:"未填写"}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>出生日期：{doc.dob?doc.dob:"未填写"}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>Medicare卡号：{doc.medicare?doc.medicare.number:"未填写"}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("patient_info")}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("name")}：{doc.lastName?doc.lastName:I18n.t("not_fiiled")} {doc.firstName?doc.firstName:"未填写名"}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("gender")}：{doc.gender?doc.gender:I18n.t("not_fiiled")}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("DOB")}：{doc.dob?doc.dob:I18n.t("not_fiiled")}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("medicare_number")}：{doc.medicare?doc.medicare.number:I18n.t("not_fiiled")}</Text>
 
         </View>
         
@@ -145,9 +145,9 @@ export default function Report({route,navigation}) {
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18}}>
 
         <View style={{marginTop:15, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>病情陈述</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{"病人描述："+doc.patientStatement}</Text>
-          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{"附件上传："}</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("patient_statement")}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("description")}{"："+doc.patientStatement}</Text>
+          <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{I18n.t("files")}{"："}</Text>
           {doc.patientStatementAttachment?
       <Image
       style = {{height:130,width:130,marginTop:14}}
@@ -157,7 +157,7 @@ export default function Report({route,navigation}) {
       
       }
         <View style={{marginTop:20, marginBottom:0,borderTopWidth:0.5,}}>
-          <Text style={{ fontSize:18, fontWeight: '500',marginTop:15}}>病人主诉</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginTop:15}}>{I18n.t("doctor_diagnosis")}</Text>
           <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{doc.patientComment}</Text>
 
         </View>
@@ -167,7 +167,7 @@ export default function Report({route,navigation}) {
         </View>
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18}}>
         <View style={{marginTop:10, marginBottom:10}}>
-          <Text style={{ fontSize:18, fontWeight: '500' }}>诊疗意见</Text>
+          <Text style={{ fontSize:18, fontWeight: '500' }}>{I18n.t("medical_advice")}</Text>
           <Text style={{fontSize:12, fontWeight: '300',paddingTop:6 }}>{doc.doctorComment}</Text>
 
         </View>
@@ -177,7 +177,7 @@ export default function Report({route,navigation}) {
         <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:0,width:340,marginLeft:18}}>
 
         <View style={{ marginTop:15, marginBottom:15}}>
-          <Text style={{ fontSize:18, fontWeight: '500',marginBottom:10 }}>处方信息</Text>
+          <Text style={{ fontSize:18, fontWeight: '500',marginBottom:10 }}>{I18n.t("prescription")}</Text>
           {pres}
         </View>
 

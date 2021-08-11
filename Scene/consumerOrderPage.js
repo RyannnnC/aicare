@@ -8,6 +8,7 @@ import CompletedOrder from './order/completedOrder';
 import ConsumerPaySuccess from "./consumerPaySuccess"
 import OngoingingOrder from './order/onGoingOrder';
 import DataContext from "../consumerContext";
+import I18n from "./language";
 /*class ConsumerOrderPage(){
   this.state={
     num=0;
@@ -72,7 +73,7 @@ export default function ConsumerOrderPage() {
         source = {require('../images/telehealth_icon/order_img.png')}
       />
       <Tab.Navigator headerMode="screen" screenOptions={{headerTitleAlign: 'center'}}>
-        <Tab.Screen name={"订单"+"("+num+")"} component={OngoingingOrder} />
+        <Tab.Screen name={I18n.t("order_order")+"("+num+")"} component={OngoingingOrder} />
       </Tab.Navigator>
     </View>
   );

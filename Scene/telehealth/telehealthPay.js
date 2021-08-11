@@ -11,8 +11,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-//import { isNullishCoalesce } from 'typescript';
-
+import I18n from "../language"
 
 const args = {
   number: '0403555432', // String value with the number to call
@@ -113,17 +112,17 @@ export default function TelePay({navigation,route}) {
   const [dob,setDob]=useState("")
   const gotoSuccess= () => {
     if (!checked4){
-      Alert.alert("您需要阅读并同意用户须知。")
+      Alert.alert(I18n.t("read_TOS"))
       return;
     }
     if (checked1){
       setType("Medicare")
       if(number.length<10){
-        Alert.alert("Medicare卡号位数为10位")
+        Alert.alert(I18n.t("fill_medicare"))
         return
       }
       if(serial.length==0){
-        Alert.alert("请输入序列号")
+        Alert.alert(I18n.t("fill_serial"))
         return
       }
     }else {
@@ -161,7 +160,7 @@ export default function TelePay({navigation,route}) {
               insuranceType:type,
               videoChannel:teleFlg==1?0:1,
               currency:"AUD",
-              price:100,
+              price:4000,
               orgId:orgId,
 
               channel:"CardPayment",
@@ -179,7 +178,7 @@ export default function TelePay({navigation,route}) {
                 if(json.ispay==1){
                   //navigation.navigate("telehealthPayment")
                   console.log(json.ispay)
-                  Alert.alert("正在跳转支付"),
+                  Alert.alert(I18n.t("redirecting_pay")),
                   //Linking.openURL("wechat://")
                   //Linking.openURL(json.order_url)
                   navigation.navigate("pay",{url:json.order_url,orderId:json.partnerOrderId,docName:docName,startTime:startTime,endTime:endTime})
@@ -193,7 +192,7 @@ export default function TelePay({navigation,route}) {
                 console.log(json.msg);
                 console.log(json.ispay)
 
-                Alert.alert('预约失败,请重试或者联系客服。');
+                Alert.alert(I18n.t("fail"));
               }
             }).catch(error => console.warn(error));      
   }
@@ -368,15 +367,15 @@ export default function TelePay({navigation,route}) {
     <Text style = {{    color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:40,}}>费用报销</Text>
+    marginLeft:40,}}>{I18n.t("title_medicare")}</Text>
     </View>
     <View style={{marginTop:30,marginLeft:-170}}>
-    <Text style={{marginLeft:100,marginTop:40,fontSize:17,fontWeight:"500"}}>患者是否拥有Medicare卡?</Text>
+    <Text style={{marginLeft:100,marginTop:40,fontSize:17,fontWeight:"500"}}>{I18n.t("question_medicare")}</Text>
     </View>
     <View style={{marginTop:-5}}></View>
     <View style ={styles.comment_container}>
     
-      <Text style={{fontSize:16,marginLeft:-10}}>我有Medicare卡</Text>
+      <Text style={{fontSize:16,marginLeft:-10}}>{I18n.t("yes_medicare")}</Text>
 
     <CheckBox
             checked={checked1 }
@@ -394,7 +393,7 @@ export default function TelePay({navigation,route}) {
     </View>
     <View style={{marginTop:-20}}></View>
     <View style ={styles.comment_container}>
-      <Text style={{fontSize:16,marginLeft:-10}}>我没有Medicare卡</Text>
+      <Text style={{fontSize:16,marginLeft:-10}}>{I18n.t("no_medicare")}</Text>
       <CheckBox
             checked={checked3 }
             checkedColor='#FF8570'
@@ -415,7 +414,7 @@ export default function TelePay({navigation,route}) {
         
         <Image
         style = {{height:125,width:375}}
-        source={require('../../images/telehealth_icon/service_order_img_card.png')}
+        source={user.language=="en"?require("../../images/medicare_eng.png"):require('../../images/telehealth_icon/service_order_img_card.png')}
       />
       <View style={{flexDirection:"row",marginTop:15}}>
         <Image style = {{width:20,
@@ -423,22 +422,22 @@ export default function TelePay({navigation,route}) {
         marginTop:2,
         marginLeft:0,}}
         source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
-        <Text style={{color:"#999999",}}> 持有medicare的用户在支持bulk billing</Text>
+        <Text style={{color:"#999999",}}> {I18n.t("medicare_notice1")}</Text>
         </View>
-        <Text style={{color:"#999999",marginLeft:-90,marginBottom:5}}> 的诊所看诊可全额报销。</Text>
+        <Text style={{color:"#999999",marginLeft:-90,marginBottom:5}}> {I18n.t("medicare_notice2")}</Text>
         <View style={{flexDirection:"row"}}>
         <Image style = {{width:20,
         height:20,
         marginTop:2,
         marginLeft:10,}}
         source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
-        <Text style={{color:"#999999"}}> 所有医保卡信息(例如姓名，出生日期等)</Text>
+        <Text style={{color:"#999999"}}> {I18n.t("medicare_notice3")}</Text>
         </View>
-        <Text style={{color:"#999999",marginLeft:-125,marginBottom:0}}> 仅用于医保卡验证。</Text>
+        <Text style={{color:"#999999",marginLeft:25,marginBottom:0}}> {I18n.t("medicare_notice4")}</Text>
 
 
         <View style={{flexDirection:"row",marginTop:10}}>
-        <Text style={{marginTop:7,fontWeight:"500"}}>持卡人姓:</Text>
+        <Text style={{marginTop:7,fontWeight:"500"}}>{I18n.t("last_name")}</Text>
         <TextInput style = {{height: 35,
     width: 200,
     borderBottomColor: '#999999',
@@ -447,18 +446,18 @@ export default function TelePay({navigation,route}) {
           
           onChangeText={(text)=>setLast(text)}
           defaultValue={last}
-          placeholder="持卡人姓(Last Name)"
+          placeholder={I18n.t("last_name_pd")}
         />
         </View>
         <View style={{flexDirection:"row",marginTop:10}}>
-        <Text style={{marginTop:7,fontWeight:"500"}}>持卡人名:</Text>
+        <Text style={{marginTop:7,fontWeight:"500"}}>{I18n.t("first_name")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
     marginLeft:0,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-          placeholder="持卡人名(First Name)"
+          placeholder={I18n.t("first_name_pd")}
           onChangeText={(text)=>setFirst(text)}
           defaultValue={first}
 
@@ -469,15 +468,15 @@ export default function TelePay({navigation,route}) {
         display="spinner"
         isVisible={visible}
         mode="date"
-        headerTextIOS='出生日期'
-        cancelTextIOS="取消"
-        confirmTextIOS='确认'
+        headerTextIOS={I18n.t("DOB")}
+        cancelTextIOS={I18n.t("cancel")}
+        confirmTextIOS={I18n.t("confirm_cancel")}
         onConfirm={(time)=>{setDob(moment(time).tz(Localization.timezone).format('DD/MM/YYYY'));setVisible(false);console.log(dob)}}
         onCancel={()=>setVisible(false)}
         
       />
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:-48}}>出生日期:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:-48}}>{I18n.t("DOB")}</Text>
 
       {/*<TextInput style = {{height: 35,
         width: 200,
@@ -502,7 +501,7 @@ export default function TelePay({navigation,route}) {
     </TouchableOpacity>
         </View>
         <View style={{flexDirection:"row",marginTop:10}}>
-        <Text style={{marginTop:7,fontWeight:"500"}}>性别:</Text>
+        <Text style={{marginTop:7,fontWeight:"500"}}>{I18n.t("gender")}</Text>
         <SwitchSelector
   initial={gender=="M"?1:0}
   onPress={value => {setGender(value);}}
@@ -513,8 +512,8 @@ export default function TelePay({navigation,route}) {
   height={35}
   initial={gender=="M"?1:0}
   options={[
-    { label: "女性", value: "F",  }, 
-    { label: "男性", value: "M", } 
+    { label: I18n.t("female"), value: "F",  }, 
+    { label: I18n.t("male"), value: "M", } 
   ]}
   testID="gender-switch-selector"
   accessibilityLabel="gender-switch-selector"
@@ -522,7 +521,7 @@ export default function TelePay({navigation,route}) {
         
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500"}}>医疗卡号:</Text>
+      <Text style={{marginTop:7,fontWeight:"500"}}>{I18n.t("medicare_number")}</Text>
 
         <TextInput style = {{height: 35,
     width: 200,
@@ -530,13 +529,13 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
         maxLength={10} 
-          placeholder="请输入10位卡号"
+          placeholder={I18n.t("medicare_number_pd")}
           onChangeText={(text)=>setNumber(text)}
           defaultValue={number}
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500"}}>序列号:</Text>
+      <Text style={{marginTop:7,fontWeight:"500"}}>{I18n.t("serial_number")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
@@ -544,7 +543,7 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
     maxLength={5} 
-          placeholder="请输入序列号(Ref Number)"
+          placeholder={I18n.t("serial_number_pd")}
           onChangeText={(text)=>setSerial(text)}
           defaultValue={serial}
 
@@ -553,15 +552,15 @@ export default function TelePay({navigation,route}) {
       <DateTimePickerModal
         isVisible={expVis}
         mode="date"
-        headerTextIOS='到期日期'
-        cancelTextIOS="取消"
+        headerTextIOS={I18n.t("expire_date")}
+        cancelTextIOS={I18n.t("cancel")}
         display="spinner"
-        confirmTextIOS='确认'
+        confirmTextIOS={I18n.t("confirm_cancel")}
         onConfirm={(time)=>{setExpire(moment(time).tz(Localization.timezone).format('MM/YYYY'));setExpVis(false);console.log(expire)}}
         onCancel={()=>setExpVis(false)}
       />
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:-47}}>到期日期:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:-47}}>{I18n.t("expire_date")}</Text>
   
       <TouchableOpacity style={{borderColor:"#8FD7D3",
       borderWidth:1,
@@ -577,7 +576,7 @@ export default function TelePay({navigation,route}) {
     </TouchableOpacity>
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>手机号码:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>{I18n.t("mobile")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
@@ -585,13 +584,13 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
     maxLength={10} 
-          placeholder="手机号码(Mobile Number)"
+          placeholder={I18n.t("mobile_pd")}
           onChangeText={(text)=>setMobile(text)}
         defaultValue={mobile}
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>电子邮箱:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>{I18n.t("email")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
@@ -599,7 +598,7 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
     
-          placeholder="电子邮箱(Email)"
+          placeholder={I18n.t("email_pd")}
           onChangeText={(text)=>setEmial(text)}
         defaultValue={email}
       />
@@ -618,7 +617,7 @@ export default function TelePay({navigation,route}) {
             setChecked4(!checked4);
             }}
           />
-    <Text style={{marginTop:-40,marginLeft:-20}}>我确认我有完整并正确的填写信息。</Text>
+    <Text style={{marginTop:-40,marginLeft:-20}}>{I18n.t("tick_info_medicare")}</Text>
     </View>
     <View>
     <Text style={{marginLeft:120,marginTop:-15}}>I certify that I have completed this form completely and accurately to the best of my knowledge.</Text>
@@ -636,7 +635,7 @@ export default function TelePay({navigation,route}) {
     <View style={{marginLeft:80}}>
     <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
       {/*this need to manually calculated */}
-      <Text style={styles.onsite_text}>信息核对</Text>
+      <Text style={styles.onsite_text}>{I18n.t("confirm_medicare")}</Text>
     </TouchableOpacity>
     </View>
     </View>
@@ -702,37 +701,37 @@ export default function TelePay({navigation,route}) {
         marginTop:2,
         marginLeft:10,}}
         source= {require('../../images/telehealth_icon/service_icon_info.png')}/>
-        <Text style={{color:"#999999"}}> 若未持有Medicare卡，就诊费用需要自费。</Text>
+        <Text style={{color:"#999999"}}> {I18n.t("medicare_notice5")}</Text>
         </View>
         
         <View style={{flexDirection:"row",marginTop:30}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>患者姓:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>{I18n.t("last_name")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
     marginLeft:5,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-          placeholder="患者姓名(Patient Name)"
+          placeholder={I18n.t("last_name_pd")}
           defaultValue={last}          onChangeText={(text)=>setLast(text)}
 
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>患者名:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>{I18n.t("first_name")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
     marginLeft:5,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-          placeholder="患者姓名(Patient Name)"
+          placeholder={I18n.t("first_name_pd")}
           defaultValue={first}          onChangeText={(text)=>setFirst(text)}
 
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>手机号码:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>{I18n.t("mobile")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
@@ -740,21 +739,21 @@ export default function TelePay({navigation,route}) {
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
     maxLength={10} 
-          placeholder="手机号码(Mobile Number)"
+          placeholder={I18n.t("mobile_pd")}
           defaultValue={mobile}
           onChangeText={(text)=>setMobile(text)}
 
       />
       </View>
       <View style={{flexDirection:"row",marginTop:10}}>
-      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>电子邮箱:</Text>
+      <Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>{I18n.t("email")}</Text>
 
       <TextInput style = {{height: 35,
     width: 200,
     marginLeft:5,
     borderBottomColor: '#999999',
     borderBottomWidth:1,}}
-          placeholder="手机号码(Mobile Number)"
+          placeholder={I18n.t("email_pd")}
           defaultValue={email}
           onChangeText={(text)=>setEmial(text)}
 
@@ -773,7 +772,7 @@ export default function TelePay({navigation,route}) {
             setChecked4(!checked4);
             }}
           />
-    <Text style={{marginTop:-40,marginLeft:-20}}>我确认我有完整并正确的填写信息。</Text>
+    <Text style={{marginTop:-40,marginLeft:-20}}>{I18n.t("tick_info_medicare")}</Text>
     </View>
     <View>
     <Text style={{marginLeft:40,marginTop:-15}}>I certify that I have completed this form completely and accurately to the best of my knowledge.</Text>
@@ -793,7 +792,7 @@ export default function TelePay({navigation,route}) {
 
     <TouchableOpacity style={styles.next_wrapper} onPress = {gotoSuccess}>
       {/*this need to manually calculated */}
-      <Text style={styles.onsite_text}>{"信息核对"}</Text>
+      <Text style={styles.onsite_text}>{I18n.t("confirm_medicare")}</Text>
     </TouchableOpacity>
     </View>
     </View>: null}
@@ -824,20 +823,20 @@ elevation: 24,}}>
         source={require('../../images/icon/2/Arrow_left.png')}
       />
     </TouchableOpacity>
-    <Text style = {styles.service}>信息检对</Text>
+    <Text style = {styles.service}>{I18n.t("confirm_medicare")}</Text>
 
     </View>
     <ScrollView style={{backgroundColor:"#F7FAFA"}}>
       <View style={{marginLeft:115,marginTop:30}}>
-      <Text style={{marginBottom:10}}>患者姓名: {first + " "+ last}</Text>
-      <Text style={{marginBottom:10}}>患者电话: {mobile}</Text>
-      <Text style={{marginBottom:10}}>就诊时间: {user.date} {startTime.slice(0,5)} - {endTime.slice(0,5)}</Text>
-      <Text style={{marginBottom:10}}>就诊医生: {docName}</Text>
-      <Text style={{marginBottom:10}}>就诊科目: {doctype?user.deptType[doctype]:"全科问诊"}</Text>
-      {teleFlg==1?<Text style={{marginBottom:10}}>就诊地址: {address}</Text>:null}
-      <Text style={{marginBottom:10}}>就诊方式: {teleFlg==2?"远程就诊":"实地会诊"}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t("name")}: {first + " "+ last}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t("mobile")}: {mobile}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t("slot_doctorinfo")}: {user.date} {startTime.slice(0,5)} - {endTime.slice(0,5)}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t("doctor")}: {docName}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t("doctor_type_doctorinfo")}: {doctype?I18n.t("types")[doctype]:I18n.t("gp")}</Text>
+      {teleFlg==1?<Text style={{marginBottom:10}}>{I18n.t("address_doctor")}: {address}</Text>:null}
+      <Text style={{marginBottom:10}}>{I18n.t("on_clinicinfo")}: {teleFlg==2?I18n.t("online_clinicinfo"):I18n.t("onsite_clinicinfo")}</Text>
       {teleFlg==2?<View>
-      <Text style={{marginBottom:10}}>远程方式: {"FaceTime(苹果)"}</Text>
+      <Text style={{marginBottom:10}}>{I18n.t("online_method_doctorinfo")}: {"FaceTime(IOS)"}</Text>
       
       </View>:null}
       {loading?
@@ -850,7 +849,7 @@ elevation: 24,}}>
             //state.action.changetotal(Number(state.end_time.substring(0,2))-Number(state.start_time.substring(0,2))+(Number(state.end_time.substring(3,5))-Number(state.start_time.substring(3,5)))/60);
             //this.props.navigation.dispatch(StackActions.pop(1))}
           >
-          <Text style={styles.onsite_text}>确定</Text>
+          <Text style={styles.onsite_text}>{I18n.t("confirm")}</Text>
         </TouchableOpacity>:null}
         </ScrollView>
 

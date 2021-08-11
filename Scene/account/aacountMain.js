@@ -3,7 +3,7 @@ import { Text, Button, View, Alert, Image,TouchableOpacity,Switch,AsyncStorage }
 import {styles} from '../../style';
 import DataContext from '../../consumerContext';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import I18n from "../language"
 //import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 
@@ -11,19 +11,19 @@ const AccountMain = ({navigation}) => {
   const [first,setFirst] = React.useState("");
   const [last,setLast] = React.useState("");
   const [email,setEmail] = React.useState("");
-
+  const [port,setPort]=React.useState("")
 
   const goInfo= () => {
     if(checkToken()){
       Alert.alert(
-        "登陆提醒",
-        "您还没登陆，如需使用此功能请移步注册登录",
-        [
-          {text:"取消",
-            onPress:()=>console.log("cancel redirect"),
-            style:"cancel"
-        },{
-          text:"注册登陆",
+        I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
+          [
+            {text:I18n.t("cancel"),
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:I18n.t("go_login"),
           onPress:()=>{removeToken(); user.action.clearstate()}
 
         }
@@ -34,6 +34,54 @@ const AccountMain = ({navigation}) => {
     }
     navigation.navigate("accountInfo");
     
+  }
+  const changeLan=(lan)=>{
+    if (lan==0){
+      //chinese
+      user.changeLan("zh")
+      console.log(user.language)
+      //send request to backend
+      /*let url = 'http://'
+      +user.url
+      +'/aicare-customer-api/changeSessionLanauage?lang=en_US';
+      fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+        'Accept':       'application/json',
+        'Content-Type': 'application/json',
+        'sso-auth-token': user.token,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'content-type, sso-auth-token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE',
+        },
+     
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        //this.setState({loading:false})
+        if (json.code === 0) {
+          if(json.medicalInfo.firstName){
+          setFirst(json.medicalInfo.firstName)
+          }
+          if(json.medicalInfo.lastName){
+          setLast(json.medicalInfo.lastName)
+          }
+          if(json.medicalInfo.email){
+          setEmail(json.medicalInfo.email)
+          }
+
+        } else {
+          console.log(json.msg)
+          //Alert.alert(json.msg);
+        }
+      }).catch(error => console.warn(error));*/
+    }else{
+      user.changeLan("en")
+      //send request to backend
+    }
   }
   const checkToken=()=>{
     if (user.token==-1){
@@ -93,6 +141,9 @@ const AccountMain = ({navigation}) => {
           if(json.medicalInfo.email){
           setEmail(json.medicalInfo.email)
           }
+          if (json.medicalInfo.profilePhoto){
+            setPort(json.medicalInfo.profilePhoto)
+          }
 
         } else {
           console.log(json.msg)
@@ -121,18 +172,18 @@ const AccountMain = ({navigation}) => {
             overflow: "hidden",
             borderWidth: 5,
             borderColor: "white",width:80,height:80}}
-          source = {require('../../images/emotion1.png')}
+          source = {port.length==0?require('../../images/emotion1.png'):{uri:port}}
         />
         </View>
         <View style={{marginTop:50}}>
-        <Text style={{ fontSize:20, fontWeight: '600',marginLeft:20, }}>{first.length==0 &&last.length==0?"未填写":first+" "+ last}</Text>
-        <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{email.length==0?"未填写":email}</Text>
+        <Text style={{ fontSize:20, fontWeight: '600',marginLeft:20, }}>{first.length==0 &&last.length==0?I18n.t("not_fiiled"):first+" "+ last}</Text>
+        <Text style={{ fontSize:14, fontWeight: '300',marginTop:10,marginLeft:20 }}>{email.length==0?I18n.t("not_fiiled"):email}</Text>
         </View>
       </View>
       </TouchableOpacity>
-      <ScrollView style={{marginTop:-16,paddingTop:15}}>
+      <ScrollView style={{marginTop:-16,paddingTop:15}} >
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
+      <View style={{marginLeft:0}}>
       <TouchableOpacity style={styles.profileBar} onPress = {goInfo} >
         <Image
           style = {{width: 22,
@@ -141,22 +192,22 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/13.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>个人信息</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{I18n.t("personalinfo_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
+      <View style={{marginLeft:0}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>{ if(checkToken()){
       Alert.alert(
-        "登陆提醒",
-        "您还没登陆，如需使用此功能请移步注册登录",
-        [
-          {text:"取消",
-            onPress:()=>console.log("cancel redirect"),
-            style:"cancel"
-        },{
-          text:"注册登陆",
+        I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
+          [
+            {text:I18n.t("cancel"),
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:I18n.t("go_login"),
           onPress:()=>{removeToken(); user.action.clearstate()}
 
         }
@@ -172,22 +223,22 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/8.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>医保信息</Text>
+        <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t("medicare_info_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
+      <View style={{marginLeft:0}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>{ if(checkToken()){
       Alert.alert(
-        "登陆提醒",
-        "您还没登陆，如需使用此功能请移步注册登录",
-        [
-          {text:"取消",
-            onPress:()=>console.log("cancel redirect"),
-            style:"cancel"
-        },{
-          text:"注册登陆",
+        I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
+          [
+            {text:I18n.t("cancel"),
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:I18n.t("go_login"),
           onPress:()=>{removeToken(); user.action.clearstate()}
 
         }
@@ -203,13 +254,30 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/6.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>病史信息</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{I18n.t("medical_history_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}>
+      <View style={{marginLeft:0}}>
+      <TouchableOpacity style={styles.profileBar}  onPress={()=>{ if(checkToken()){
+      Alert.alert(
+        I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
+          [
+            {text:I18n.t("cancel"),
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:I18n.t("go_login"),
+          onPress:()=>{removeToken(); user.action.clearstate()}
+
+        }
+        
+      ]
+      )
+      return;
+    }navigation.navigate("prescription")}}>
         <Image
           style = {{width: 22,
             height: 22,
@@ -217,13 +285,13 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/6.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>电子处方</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{I18n.t("electronic_prescription_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}  >
+      <View style={{marginLeft:0}}>
+      <TouchableOpacity style={styles.profileBar} onPress={()=>Alert.alert(I18n.t("updating_module"))}  >
         <Image
           style = {{width: 22,
             height: 22,
@@ -231,13 +299,13 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/4.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>用药历史</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{I18n.t("medication_history_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar} onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")} >
+      <View style={{marginLeft:0}}>
+      <TouchableOpacity style={styles.profileBar} onPress={()=>Alert.alert(I18n.t("updating_module"))} >
         <Image
           style = {{width: 22,
             height: 22,
@@ -245,27 +313,14 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/12.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>疫苗记录</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{I18n.t("vaccine_record_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
+      
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}>
-        <Image
-          style = {{width: 22,
-            height: 22,
-            marginLeft:10,
-            marginRight:10,}}
-          source={require('../../images/11.png')}
-        />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>治愈历史</Text>
-      </TouchableOpacity>
-      </View>
-      </View>
-      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
-      <TouchableOpacity style={styles.profileBar}  onPress={()=>Alert.alert("该模块还在升级中，敬请期待。")}>
+      <View style={{marginLeft:0}}>
+      <TouchableOpacity style={styles.profileBar}  onPress={()=>Alert.alert(I18n.t("updating_module"))}>
         <Image
           style = {{width: 22,
             height: 22,
@@ -273,7 +328,7 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/5.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>检验报告</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{I18n.t("pathology_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
@@ -324,8 +379,53 @@ const AccountMain = ({navigation}) => {
       </View>
       </View>
       */}
-      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      {/*<View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
       <View style={{marginLeft:-70}}>
+      <TouchableOpacity style={styles.profileBar}  onPress={()=>{ if(checkToken()){
+      Alert.alert(
+        I18n.t("login_notice"),
+          I18n.t("login_notice_text"),
+          [
+            {text:I18n.t("cancel"),
+              onPress:()=>console.log("cancel redirect"),
+              style:"cancel"
+          },{
+            text:I18n.t("go_login"),
+          onPress:()=>{removeToken(); user.action.clearstate()}
+
+        }
+        
+      ]
+      )
+      return;
+    }Alert.alert(
+      I18n.t("language_switch"),
+      I18n.t("lan_text"),
+      [
+        {
+          text: I18n.t("cancel"),
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: I18n.t("chi"), onPress: () =>console.log(0)} ,
+        { text: I18n.t("eng"), onPress: () =>console.log(1)} //this should navigate to the login page
+      ],
+      { cancelable: false }
+      )}}>
+        <Image
+          style = {{width: 22,
+            height: 22,
+            marginLeft:10,
+            marginRight:10,}}
+          source={require('../../images/language.png')}
+        />
+        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>{I18n.t("language_switch")}</Text>
+      </TouchableOpacity>
+      </View>
+          </View>*/}
+           
+      <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
+      <View style={{marginLeft:0}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>user.action.contact()} >
         <Image
           style = {{width: 22,
@@ -334,22 +434,22 @@ const AccountMain = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/2.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>联系我们</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{I18n.t("contact_us_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>
       <View style={{borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:360}}>
-      <View style={{marginLeft:-70}}>
+      <View style={{marginLeft:0}}>
       <TouchableOpacity style={styles.profileBar} onPress = {()=>Alert.alert(
-      "提醒",
-      user.token==-1?"点击确认前往注册登陆页面":"您确定要退出登陆吗？",
+      I18n.t("logout_account"),
+      user.token==-1?I18n.t("login_notice_text"):I18n.t("log_out_alert"),
       [
         {
-          text: "取消",
+          text: I18n.t("cancel"),
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "确定", onPress: () =>{removeToken(); state.action.clearstate()} } //this should navigate to the login page
+        { text: I18n.t("confirm_logout"), onPress: () =>{removeToken(); state.action.clearstate()} } //this should navigate to the login page
       ],
       { cancelable: false }
       )} >
@@ -357,7 +457,7 @@ const AccountMain = ({navigation}) => {
           style = {styles.smallIconImg}
           source={require('../../images/14.png')}
         />
-        <Text style={{ marginLeft:-170,fontSize:18, fontWeight: '400' }}>{user.token==-1?"前往注册":"退出登录"}</Text>
+        <Text style={{ marginLeft:0,fontSize:18, fontWeight: '400' }}>{user.token==-1?I18n.t("signup_account"):I18n.t("logout_account")}</Text>
       </TouchableOpacity>
       </View>
       </View>

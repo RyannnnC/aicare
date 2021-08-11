@@ -9,6 +9,7 @@ import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
 import RNPickerSelect from 'react-native-picker-select';
 import DataContext from "../../consumerContext";
+import I18n from "../language"
 const CardInfo = ({navigation}) => {
     const user=useContext(DataContext)
     useEffect(() => {
@@ -106,7 +107,7 @@ const CardInfo = ({navigation}) => {
       .then((response) => response.json())
       .then((json) => {
         if (json.code === 0) {
-          Alert.alert("信息保存成功")
+          Alert.alert(I18n.t("saved"))
           console.log(json.msg)
   
         } else {
@@ -132,11 +133,9 @@ const CardInfo = ({navigation}) => {
         <Text style = {{color:'black',
     fontSize:17,
     marginTop:20,
-    marginLeft:100,}}>医保信息</Text>
+    marginLeft:100,}}>{I18n.t("medicare_info")}</Text>
         </View>
-        <Image style = {{width:80,height:80,borderRadius:40}}
-            source= {require('../../images/emotion1.png')}
-          />
+        
         <View style={{ marginTop:10,marginLeft:-20,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row'}}>
             <Image
           style = {{width:22,
@@ -145,29 +144,29 @@ const CardInfo = ({navigation}) => {
             marginRight:10,}}
           source={require('../../images/telehealth_icon/service_telehealth_select_icon_calender.png')}
         />
-            <Text style={{fontSize:16}}>医保卡信息</Text>
+            <Text style={{fontSize:16}}>{I18n.t("card_info")}</Text>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>Medicare卡号码：</Text>
-            <TextInput defaultValue={cardNumber} maxLength={10} placeholder="请输入您的十位医保卡号码" placeholderTextColor="grey" onChangeText={text => setCardNumber(text)}></TextInput>
+            <Text>{I18n.t("medicare_number")}：</Text>
+            <TextInput defaultValue={cardNumber} maxLength={10} placeholder={I18n.t("medicare_number_pd")} placeholderTextColor="grey" onChangeText={text => setCardNumber(text)}></TextInput>
         </View>
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>序列号： </Text>
-            <TextInput placeholder="请输入序列号" defaultValue={serial}  placeholderTextColor="grey" onChangeText={text => setSerial(text)}></TextInput>
+            <Text>{I18n.t("serial_number")}： </Text>
+            <TextInput placeholder={I18n.t("serial_number_pd")} defaultValue={serial}  placeholderTextColor="grey" onChangeText={text => setSerial(text)}></TextInput>
         </View>
         <DateTimePickerModal
         display="spinner"
         isVisible={visible}
         mode="date"
-        headerTextIOS='出生日期'
-        cancelTextIOS="取消"
-        confirmTextIOS='确认'
+        headerTextIOS={I18n.t("DOB")}
+        cancelTextIOS={I18n.t("cancel")}
+        confirmTextIOS={I18n.t("confirm_cancel")}
         onConfirm={(time)=>{setDob(moment(time).tz(Localization.timezone).format("DD/MM/YYYY"));setVisible(false);console.log(time)}}
         onCancel={()=>setVisible(false)}
         
       />
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>生日：</Text>
+            <Text>{I18n.t("DOB")}：</Text>
             <TouchableOpacity style={{borderColor:"#8FD7D3",
       borderWidth:1,
     padding:8,
@@ -184,15 +183,15 @@ const CardInfo = ({navigation}) => {
         <DateTimePickerModal
         isVisible={expVis}
         mode="date"
-        headerTextIOS='到期日期'
-        cancelTextIOS="取消"
+        headerTextIOS={I18n.t("expire_date")}
+        cancelTextIOS={I18n.t("cancel")}
         display="spinner"
-        confirmTextIOS='确认'
+        confirmTextIOS={I18n.t("confirm_cancel")}
         onConfirm={(time)=>{setExpire(moment(time).tz(Localization.timezone).format('MM/YYYY'));setExpVis(false);console.log(expire)}}
         onCancel={()=>setExpVis(false)}
       />
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>
-            <Text>过期日期：</Text>
+            <Text>{I18n.t("expire_date")}：</Text>
             <TouchableOpacity style={{borderColor:"#8FD7D3",
       borderWidth:1,
     padding:8,
@@ -211,7 +210,7 @@ const CardInfo = ({navigation}) => {
     
         <View style={{marginLeft:-75,marginTop:20}}>
         <TouchableOpacity style={styles.next_wrapper} onPress ={renew}>
-            <Text style={styles.onsite_text}>确认</Text>
+            <Text style={styles.onsite_text}>{I18n.t("confirm_account")}</Text>
         </TouchableOpacity>
         </View>
         <View style={{height:300}}></View>

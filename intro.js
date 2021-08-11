@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { AppRegistry, StyleSheet, Text, View,Image,TouchableOpacity,AsyncStorage } from 'react-native'
 import DataContext from "./consumerContext";
 import Swiper from 'react-native-swiper'
-
+import I18n from "./Scene/language"
 const styles = StyleSheet.create({
   wrapper: {},
   slide1: {
@@ -86,7 +86,7 @@ class Intro extends Component {
           width:430,
           height:700,
         }}
-          source = {require('./images/turn1.png')}
+          source = {this.context.language=="en"?require('./images/turn1_eng.png'):require('./images/turn1.png')}
       />
       <TouchableOpacity style={{backgroundColor: '#8FD7D3',
               padding:10,
@@ -96,7 +96,7 @@ class Intro extends Component {
               alignItems: 'center',
               borderRadius:25,}}
               onPress = {()=>this.goSignUp()}>
-        <Text style={{color:"white"}}>开始体验</Text>
+        <Text style={{color:"white"}}>{I18n.t("trail_now")}</Text>
       </TouchableOpacity>
         </View>
         <View style={styles.slide2}>
@@ -104,7 +104,7 @@ class Intro extends Component {
           width:430,
           height:700,
         }}
-          source = {require('./images/turn2.png')}
+          source = {this.context.language=="en"?require('./images/turn2_eng.png'):require('./images/turn2.png')}
       />
       <TouchableOpacity style={{backgroundColor: '#8FD7D3',
               padding:10,
@@ -114,7 +114,7 @@ class Intro extends Component {
               alignItems: 'center',
               borderRadius:25,}}
               onPress = {()=>this.goSignUp()}>
-        <Text style={{color:"white"}}>开始体验</Text>
+        <Text style={{color:"white"}}>{I18n.t("trail_now")}</Text>
       </TouchableOpacity>
         </View>
         <View style={styles.slide3}>
@@ -122,7 +122,7 @@ class Intro extends Component {
           width:430,
           height:700,
         }}
-          source = {require('./images/turn3.png')}
+          source = {this.context.language=="en"?require('./images/turn3_eng.png'):require('./images/turn3.png')}
       />
       <TouchableOpacity style={{backgroundColor: '#8FD7D3',
               padding:10,
@@ -132,7 +132,7 @@ class Intro extends Component {
               alignItems: 'center',
               borderRadius:25,}}
               onPress = {()=>this.goSignUp()}>
-        <Text style={{color:"white"}}>开始体验</Text>
+        <Text style={{color:"white"}}>{I18n.t("trail_now")}</Text>
       </TouchableOpacity>
         </View>
       </Swiper>
