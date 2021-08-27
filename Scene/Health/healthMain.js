@@ -1,6 +1,5 @@
 import React ,{Component} from 'react';
 import { Platform,SafeAreaView,ScrollView,Text,View,Image,TouchableOpacity} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import {styles} from '../providerStyle';
 import DataContext from "../../providerContext";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -55,17 +54,12 @@ export default class HealthMain extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                opacity: this.context.employerId ? 1 : 0.6,
                 width:'30%',
                 height:'90%',
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => {
-                if (this.context.employerId) {
-                  this.props.navigation.navigate('病历')
-                }
-              }}>
+              onPress={() => {this.props.navigation.navigate('病历')}}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -90,7 +84,6 @@ export default class HealthMain extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                opacity: 0.6,
                 width:'30%',
                 height:'90%',
                 borderRadius:15,
@@ -123,7 +116,6 @@ export default class HealthMain extends Component {
           <View style={{height:'25%',width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
           <TouchableOpacity
             style={{
-              opacity: 0.6,
               width:'30%',
               height:'90%',
               borderRadius:15,
@@ -159,13 +151,7 @@ export default class HealthMain extends Component {
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => {
-                if (this.context.employerId != null) {
-                  this.props.navigation.navigate(I18n.t('uploadMember'), {id: this.context.employerId})
-                } else {
-                  this.props.navigation.navigate(I18n.t('orginfo'));
-                }
-              }}>
+              onPress={() => this.props.navigation.navigate(I18n.t('myAccount'))}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -195,7 +181,7 @@ export default class HealthMain extends Component {
                 borderRadius:15,
                 margin:'2%',
               }}
-              onPress={() => {this.props.navigation.navigate(I18n.t('myAccount'));}}>
+              onPress={() => {}}>
               <View style={{
                 width:'100%',
                 height:'35%',
@@ -205,7 +191,7 @@ export default class HealthMain extends Component {
               }}>
                 <Image
                   style={{height:40,width:40}}
-                  source={require('../../images/providerImg/mokuai-8-2.png')}
+                  source={require('../../images/providerImg/mokuai-7-2.png')}
                 />
               </View>
               <View style={{
@@ -215,7 +201,7 @@ export default class HealthMain extends Component {
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
               }}>
-                <Text>{I18n.t('invoice')}</Text>
+                <Text>{I18n.t('vr')}</Text>
               </View>
             </TouchableOpacity>
           </View>

@@ -1,14 +1,12 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
   "dependencies": {
-    "@expo/vector-icons": "^12.0.2",
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/datetimepicker": "^3.4.6",
     "@react-native-community/masked-view": "0.1.10",
@@ -20,12 +18,15 @@
     "@react-navigation/stack": "^5.12.8",
     "expo": "~40.0.0",
     "expo-file-system": "~9.3.0",
-    "expo-image-picker": "~9.2.0",
+    "expo-font": "~8.4.0",
+    "expo-image-picker": "^10.2.2",
     "expo-linear-gradient": "~8.4.0",
     "expo-localization": "~9.1.0",
     "expo-permissions": "~10.0.0",
     "expo-print": "~9.2.0",
+    "expo-splash-screen": "~0.8.0",
     "expo-status-bar": "~1.0.3",
+    "expo-updates": "~0.4.0",
     "i18n-js": "^3.8.0",
     "i18next": "^20.0.0",
     "moment": "^2.29.1",
@@ -33,7 +34,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-mobile-picker-scroll": "^0.2.14",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+    "react-native": "^0.64.2",
     "react-native-calendar-picker": "^7.1.0",
     "react-native-elements": "^3.2.0",
     "react-native-geocoding": "^0.5.0",
@@ -41,7 +42,7 @@
     "react-native-image-view": "^2.1.9",
     "react-native-maps": "^0.27.1",
     "react-native-modal-datetime-picker": "^9.2.0",
-    "react-native-reanimated": "~1.13.0",
+    "react-native-reanimated": "^2.0.0",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
     "react-native-signature-canvas": "^4.0.0",
@@ -49,6 +50,9 @@
     "react-native-switch-selector": "^2.1.4",
     "react-native-tab-navigator": "^0.3.4",
     "react-native-tab-view": "^2.16.0",
+    "react-native-twilio-video-webrtc": "git+https://github.com/blackuy/react-native-twilio-video-webrtc.git",
+    "react-native-unimodules": "^0.14.6",
+    "react-native-vector-icons": "^8.1.0",
     "react-native-view-shot": "3.1.2",
     "react-native-web": "^0.16.3",
     "react-native-webview": "^11.6.4",
@@ -58,7 +62,12 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0"
+    "@babel/core": "~7.9.0",
+    "babel-jest": "~25.2.6",
+    "jest": "~25.2.6",
+    "react-test-renderer": "~16.13.1"
   },
-  "private": true
+  "private": true,
+  "name": "aicare",
+  "version": "1.0.0"
 }

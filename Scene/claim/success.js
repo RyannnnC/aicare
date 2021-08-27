@@ -1,4 +1,3 @@
-
 import React ,{Component}from 'react';
 import { TextInput,Alert,Text, View, Image,SafeAreaView,ScrollView,TouchableOpacity,Modal,ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
@@ -6,7 +5,6 @@ import DataContext from '../../providerContext';
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import I18n from '../switchLanguage';
-import { FontAwesome5  } from '@expo/vector-icons';
 
 export default class Success extends Component {
     constructor(props) {

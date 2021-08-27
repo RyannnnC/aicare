@@ -4,6 +4,7 @@ import {styles} from '../style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DataContext from "../providerContext";
 import I18n from './switchLanguage';
+import * as Localization from 'expo-localization';
 
 export default class Login extends Component {
   constructor(props) {
@@ -118,6 +119,7 @@ export default class Login extends Component {
    }
  }
   render(){
+    console.log(Localization.locale)
   return (
     <KeyboardAvoidingView
     style={{flex:1}}

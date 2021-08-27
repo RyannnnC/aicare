@@ -5,7 +5,7 @@ import DataContext from '../../providerContext';
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import I18n from '../switchLanguage';
-import { FontAwesome5  } from '@expo/vector-icons';
+import FontAwesome5 from '../../node_modules/react-native-vector-icons/FontAwesome5';
 
 export default class CaseRecord extends Component {
     constructor(props) {

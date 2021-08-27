@@ -7,7 +7,11 @@ import moment from 'moment-timezone';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { MaterialCommunityIcons, MaterialIcons, Feather,FontAwesome5,AntDesign   } from '@expo/vector-icons';
+import AntDesign from './node_modules/react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from './node_modules/react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from './node_modules/react-native-vector-icons/MaterialIcons';
+import Feather from './node_modules/react-native-vector-icons/Feather';
+import FontAwesome5 from './node_modules/react-native-vector-icons/FontAwesome5';
 import Welcome from './Scene/welcome';
 import Login from './Scene/login';
 import ChangePwd from './Scene/Account/changePwd';
@@ -25,6 +29,7 @@ import HealthServiceType from './Scene/Account/healthServiceType';
 import OtherStores from './Scene/Account/otherStores';
 import Members from './Scene/Account/members';
 import UploadMember from './Scene/Account/uploadMember';
+import DoctorInfo from './Scene/Account/doctorInfo';
 import Mintro from './Scene/Account/mintro';
 import Mlan from './Scene/Account/mlan';
 import I18n from './Scene/switchLanguage';
@@ -694,11 +699,11 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('introduction')} component={Introduction} />
             <Stack.Screen name={I18n.t('mintro')} component={Mintro} />
             <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
-            <Stack.Screen name={I18n.t('myAccount')} component={MyAccount} />
             <Stack.Screen name={I18n.t('languages')} component={Languages} />
             <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
             <Stack.Screen name={I18n.t('stores')} component={OtherStores} />
             <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
+            <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
             </>
           ):(
             <>
@@ -709,6 +714,7 @@ export default class App extends React.Component {
             <Stack.Screen name={I18n.t('mlan')} component={Mlan} />
             <Stack.Screen name={I18n.t('serviceType')} component={HealthServiceType} />
             <Stack.Screen name={I18n.t('uploadMember')}component={UploadMember} />
+            <Stack.Screen name={I18n.t('doctorInfo')} component={DoctorInfo} />
             <Stack.Screen name={I18n.t('myAccount')} component={MyAccount} />
             <Stack.Screen name={I18n.t('enote')} component={Enotes} />
             <Stack.Screen name={I18n.t('enote3')} component={Enotes3} />

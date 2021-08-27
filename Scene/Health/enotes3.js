@@ -1,6 +1,5 @@
 import React ,{Component}from 'react';
 import { Image,Alert,Modal,Text, View, TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 import {styles} from '../providerStyle';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';

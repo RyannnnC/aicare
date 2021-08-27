@@ -1,7 +1,8 @@
 import React ,{Component}from 'react';
 import { Alert,Modal,Text, View, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,ActivityIndicator  } from 'react-native';
 import {styles} from '../providerStyle';
-import { MaterialIcons,AntDesign} from '@expo/vector-icons';
+import AntDesign from '../../node_modules/react-native-vector-icons/AntDesign';
+import MaterialIcons from '../../node_modules/react-native-vector-icons/MaterialIcons';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
@@ -24,7 +25,7 @@ export default class UploadMember extends Component {
         oimage:null,
         pressed:false,
         we:0,
-        gender:'0',
+        gender:0,
         racgp:0,
         pn:0,
         isLoading:false,
@@ -100,7 +101,7 @@ export default class UploadMember extends Component {
                 we:json.employerInfo.workLong,
                 languages:json.employerInfo.languages,
                 email:json.employerInfo.email,
-                gender:json.employerInfo.gender,
+                gender:parseInt(json.employerInfo.gender),
                 oimage:json.employerInfo.imgUrl,
                 racgp:json.employerInfo.racgpNumber,
                 pn:json.employerInfo.prescriberNumber,
@@ -646,8 +647,8 @@ export default class UploadMember extends Component {
         style={{width:200,marginLeft:30}}
         height={25}
         options={[
-          { label: I18n.t('female'), value: '0',},
-          { label: I18n.t('male'), value: '1', }
+          { label: I18n.t('female'), value: 0,},
+          { label: I18n.t('male'), value: 1, }
         ]}
         testID="gender-switch-selector"
         accessibilityLabel="gender-switch-selector"

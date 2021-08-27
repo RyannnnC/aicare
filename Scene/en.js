@@ -251,6 +251,4 @@ export default {
   resubmit:'resubmit',
   failmsg:'claim did not pass the review. Please modify the information and resubmit',
   undermsg:'%{num} claims are under review of total amount %{money}$. Please wait patiently',
-  delete:'Delete',
-  invoice:'Invoice',
 }

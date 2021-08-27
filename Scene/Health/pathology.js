@@ -1,6 +1,5 @@
 import React ,{Component}from 'react';
 import { KeyboardAvoidingView,Text,  View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
-import { MaterialCommunityIcons,  FontAwesome} from '@expo/vector-icons';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
 import * as Permissions from "expo-permissions";

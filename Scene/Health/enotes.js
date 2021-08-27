@@ -1,18 +1,19 @@
 import React ,{Component}from 'react';
 import { KeyboardAvoidingView,Text,  View, Alert, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput,Platform,ActivityIndicator } from 'react-native';
-import { MaterialCommunityIcons,  FontAwesome} from '@expo/vector-icons';
+import MaterialCommunityIcons from '../../node_modules/react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from '../../node_modules/react-native-vector-icons/FontAwesome';
 import DataContext from '../../providerContext';
 import I18n from '../switchLanguage';
-//import Voice from '@react-native-voice/voice';
+import Voice from '@react-native-voice/voice';
 import * as Permissions from "expo-permissions";
 import ImageView from 'react-native-image-view';
 
 export default class Enotes extends Component {
     constructor(props) {
       super(props);
-//      Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
-//      Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
-//      Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
+      Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
+      Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
+      Voice.onSpeechResults = this.onSpeechResultsHandler.bind(this);
       this.state={
       pressed:false,
       pressed1:false,
@@ -46,7 +47,7 @@ export default class Enotes extends Component {
   onSpeechResultsHandler = (e) => {
     //Invoked when SpeechRecognizer is finished recognizing
     console.log('onSpeechResults: ', e);
-    this.setState({complaint:e.value});
+    this.setState({complaint:e.value[0]});
   };
 
   onSpeechEndHandler = (e) => {

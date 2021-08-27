@@ -5,7 +5,6 @@ import DataContext from '../../providerContext';
 import { CheckBox } from 'react-native-elements';
 import moment from 'moment';
 import I18n from '../switchLanguage';
-import { FontAwesome5  } from '@expo/vector-icons';
 
 export default class TobeClaimed extends Component {
     constructor(props) {

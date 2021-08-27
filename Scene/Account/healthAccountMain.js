@@ -202,6 +202,7 @@ export default class HealthAccountMain extends Component {
           <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('members')}</Text>
         </TouchableOpacity>
       }
+      {this.context.employerId != null &&
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('myAccount'))}>
         <Image
           style = {styles.smallIconImg}
@@ -209,6 +210,7 @@ export default class HealthAccountMain extends Component {
         />
         <Text style={{ fontSize:18, fontWeight: '400' }}>{I18n.t('myAccount')}</Text>
       </TouchableOpacity>
+      }
       <TouchableOpacity style={styles.profileBar} onPress={() => this.props.navigation.navigate(I18n.t('changePassword'))}>
         <Image
           style = {styles.smallIconImg}

@@ -1,7 +1,8 @@
 import React ,{Component}from 'react';
 import { Platform,KeyboardAvoidingView,Alert,Text, Button, View, Switch, Image,TouchableOpacity,ScrollView,SafeAreaView,TextInput } from 'react-native';
 import {styles} from './providerStyle';
-import { MaterialCommunityIcons, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { CheckBox } from 'react-native-elements';
 import DataContext from "../providerContext";
 import I18n from './switchLanguage';
