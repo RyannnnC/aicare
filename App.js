@@ -1,9 +1,8 @@
 import * as Localization from 'expo-localization';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import VersionCheck from "react-native-version-check-expo";
+//import VersionCheck from "react-native-version-check-expo";
 import {Platform,Alert,Linking,AsyncStorage,BackHandler} from "react-native";
 import Info from './Scene/consumerInfo';
 import ConsumerOrder from './Scene/consumerOrder';
@@ -19,22 +18,15 @@ import 'react-native-gesture-handler';
 import AccountInfo from "./Scene/account/accountInfo";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
-import ChangeEmail from './Scene/account/changeEmail';
-import ChangePwd from "./Scene/account/changePwd";
-import Setting from "./Scene/account/setting";
+
 import ConsumerOrderPage from "./Scene/consumerOrderPage";
-import ConsumerProvider from "./Scene/consumerProvider";
-import ProviderInfo from "./Scene/ProviderInfo";
-import Consumer from './Scene/consumerOrder';
-import ConsumerMapView from "./Scene/consumerMapView";
-import consumerRating from './Scene/order/rating';
+
 import CompletedOrder from "./Scene/order/completedOrder";
 import TelehealthrMain from './Scene/telehealth/telehealthMain';
 import teleSuburb from './Scene/telehealth/telehealthSuburb';
 import telehealthClinic from './Scene/telehealth/telehealthClinic';
 import DocInfo from "./Scene/telehealth/docInfo";
 import TeleSuccess from "./Scene/telehealth/telehealthPaySuccess";
-//import AccountMain from "./Scene/account/aacountMain"
 import Confirm from "./Scene/telehealth/telehealthConfirm";
 import TelePay from "./Scene/telehealth/telehealthPay";
 import ClinicInfo from "./Scene/telehealth/clinicInfo";
@@ -45,15 +37,11 @@ import OnlineDoc from "./Scene/onlineDoctors";
 import DataPolicy from './Scene/datapolicy';
 import TermOfUse from './Scene/termofuse';
 import Patient_description from "./Scene/patient_description";
-import Welcome from './Scene/welcome';
 import Login from './Scene/login';
 import Signup from './Scene/signUp';
 import Forget from './Scene/forget';
 import DocRecommend from './Scene/telehealth/docRecommend';
-import changeSuburb from './Scene/telehealth/changeSuburb';
-import changeClinic from './Scene/telehealth/changeClinic';
-import changeDoc from './Scene/telehealth/changeDoc';
-import changeDocInfo from './Scene/telehealth/changeDocInfo';
+
 import telehealthPayment from "./Scene/telehealth/telehealthPayment";
 import Intro from "./intro";
 import Report from "./Scene/report"
@@ -66,7 +54,7 @@ import Result from "./Scene/result";
 import prescription from './Scene/prescriptions';
 import Pdf from './Scene/pdf';
 import I18n from './Scene/language';
-import chatbot from "./Scene/chatbot"
+//import chatbot from "./Scene/chatbot"
 import reservation from "./Scene/covid_test/reservation"
 import covid_finish from "./Scene/covid_test/covid_finish"
 import covid_info from "./Scene/covid_test/covid_info"
@@ -153,7 +141,7 @@ class App extends React.Component {
       name:"kim",
       mobile:"",
       customerUserInfoId:-1,
-      language:"en",
+      language:"zh",//"en"
       date: "请点击右边箭头按钮输入时间",
       start_time:"",
       end_time:"",
@@ -171,7 +159,7 @@ class App extends React.Component {
       consultWay:["就诊方式","实地就诊","远程医疗"],
       deptType:["推荐医生","全科","牙科","心理","中医","儿科","康复","疫苗"],
       lan:["语言","普通话","英语","粤语"],
-      version:1.343,
+      version:1.360,
       action: {
         changeLogin: this.changeLogin,
         changesupply: this.changesupply,
@@ -284,7 +272,7 @@ class App extends React.Component {
     first_visit:0,
     first_time:null,
     customerUserInfoId:-1,
-    language:"en"
+    language:"zh"//"en"
 
     })
   }
@@ -304,11 +292,11 @@ class App extends React.Component {
         this.setState({customerUserInfoId:userId})
         SystemLanguage=Localization.locale.slice(0,2)
   if(SystemLanguage){
-    this.setState({language:SystemLanguage})
+    //this.setState({language:SystemLanguage})
   }
   var lan = "en";
   if(this.state.language=="en"){
-    lan= "en_US"
+    lan= "zh_CN"
   }else{
     lan = "zh_CN"
   }
@@ -545,7 +533,7 @@ changetime = (value) => {
 }
 changeLan=(lan)=>{
   this.setState({
-    language:lan
+    language:"zh"
   })
 }
 checkVersion = async()=>{
@@ -611,7 +599,6 @@ componentDidMount() {
       //Alert.alert(this.state.token);
 
  }
-
 render() {
   return (
     <DataContext.Provider value={ this.state }>
@@ -630,13 +617,9 @@ render() {
         <Stack.Screen name="consumerPayInfo" component={ConsumerPayInfo} />
         <Stack.Screen name="consumerPaySuccess" component={ConsumerPaySuccess} />
         <Stack.Screen name="accountInfo" component ={AccountInfo} options={{headerShown: false}}/>
-        <Stack.Screen name="changeEmail" component ={ChangeEmail}/>
-        <Stack.Screen name="changePwd" component ={ChangePwd}/>
-        <Stack.Screen name="setting" component ={Setting}/>
-        <Stack.Screen name="cp" component ={ConsumerProvider}/>
-        <Stack.Screen name="ProviderInfo" component ={ProviderInfo}/>
-        <Stack.Screen name="consumerMV" component ={ConsumerMapView}/>
-        <Stack.Screen name="consumerRating" component ={consumerRating}/>
+        {/*<Stack.Screen name="cp" component ={ConsumerProvider}/>*/}
+        {/*<Stack.Screen name="ProviderInfo" component ={ProviderInfo}/>*/}
+        {/*<Stack.Screen name="consumerMV" component ={ConsumerMapView}/>*/}
         <Stack.Screen name="completedOrder" component ={CompletedOrder}/>
         <Stack.Screen name="telehealthMain" component ={TelehealthrMain} options={{headerShown: false}}/>
         <Stack.Screen name="telehealthSub" component ={teleSuburb} options={{headerShown: false}}/>
@@ -650,10 +633,6 @@ render() {
         <Stack.Screen name="TelehealthMV" component ={TelehealthMV}/>
         <Stack.Screen name="ConsumerOrderPage" component ={ConsumerOrderPage}/>
         <Stack.Screen name ="docRecommend" component={DocRecommend} options={{headerShown:false}}/>
-        <Stack.Screen name ="changeSuburb" component={changeSuburb}/>
-        <Stack.Screen name ="changeClinic" component={changeClinic}/>
-        <Stack.Screen name ="changeDoc" component={changeDoc}/>
-        <Stack.Screen name ="changeDocInfo" component={changeDocInfo}/>
         <Stack.Screen name ="telehealthPayment" component={telehealthPayment}/>
         <Stack.Screen name ="pay" component={Pay} options={{headerShown:false}}/>
         <Stack.Screen name="数据协议" component={DataPolicy} />
@@ -668,16 +647,14 @@ render() {
         <Stack.Screen name="result" component={Result} options={{headerShown:false}}/>
         <Stack.Screen name="prescription" component={prescription} options={{headerShown:false}}/>
         <Stack.Screen name="pdf" component={Pdf} options={{headerShown:false}}/>
-        <Stack.Screen name="chatbot" component={chatbot} options={{headerShown:false}}/>
+        {/*<Stack.Screen name="chatbot" component={chatbot} options={{headerShown:false}}/>*/}
         <Stack.Screen name="reservation" component={reservation} options={{headerShown:false}}/>
         <Stack.Screen name="covid_info" component={covid_info} options={{headerShown:false}}/>
         <Stack.Screen name="covid_confirm" component={covid_confirm} options={{headerShown:false}}/>
         <Stack.Screen name="covid_finish" component={covid_finish} options={{headerShown:false}}/>
         <Stack.Screen name="covid_pay" component={covid_pay} options={{headerShown:false}}/>
 
-
-
-
+         {/*  <Stack.Screen name="数据协议" component={DataPolicy} />*/}
 
         </>
         ):(

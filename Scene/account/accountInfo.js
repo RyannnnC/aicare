@@ -8,22 +8,34 @@ import SwitchSelector from "react-native-switch-selector";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
-import RNPickerSelect from 'react-native-picker-select';
 import DataContext from "../../consumerContext";
 import I18n from "../language";
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
-import mime from "mime";
 
 const AccountInfo = ({navigation}) => {
     const user=useContext(DataContext)
     const goBack= () => {
       navigation.dispatch(StackActions.pop(1))  
     }
-    const [img,SetImg]=useState("")
-    const [hasPermission,SetHasPermission]=useState(false)
+    const [first, setFirst] = React.useState("");
+    const [gender, setGender] = React.useState("");
+    const [age, setAge] = React.useState("");
+    const [telephone, setTelephone] = React.useState("");
+    const [address, setAddress] = React.useState("");
+    const [postcode, setPostcode] = React.useState("");
+    const [state, setState] = React.useState("");
+    const [last, setLast] = React.useState("");
+    const [dob, setDob] = React.useState("");
+    const [serial, setSerial] = React.useState(0);
+    const [email, setEmail] = React.useState("");
+    const [visible,setVisible]=React.useState(false);
+    const [url,setUrl]=React.useState("");
+    const [img,SetImg]=useState("");
+    const [hasPermission,SetHasPermission]=useState(false);
     const [rollPermision, setRollPermission] = useState(false);
     const update=()=>{
+      console.log(gender)
       let l = 'http://'
       +user.url
       +'/aicare-customer-api/customer/customer-info/save?customerInfoId='+user.customerUserInfoId;
@@ -157,10 +169,12 @@ const AccountInfo = ({navigation}) => {
         }
       }
       )();
-    }
+    }                                             
     useEffect(() => {
-    console.log(user.customerUserInfoId)
-    console.log(user.token)
+    //console.log(user.customerUserInfoId)
+    //console.log(user.token)
+
+    console.log(gender)
       let l = 'http://'
       +user.url
       +'/aicare-customer-api/customer/customer-info/query-medical-info?customerUserInfoId='+user.customerUserInfoId;
@@ -186,6 +200,11 @@ const AccountInfo = ({navigation}) => {
           setFirst(json.medicalInfo.firstName)
           setLast(json.medicalInfo.lastName)
           setGender(json.medicalInfo.gender)
+          console.log(json.medicalInfo.gender)
+          console.log(gender)
+          
+          //console.log(json.medicalInfo.gender)
+          //console.log(json.medicalInfo.gender)
           setDob(json.medicalInfo.dob);
           setTelephone(json.medicalInfo.mobile)
           setEmail(json.medicalInfo.email)
@@ -195,7 +214,7 @@ const AccountInfo = ({navigation}) => {
           if(json.medicalInfo.profilePhoto){
           setUrl(json.medicalInfo.profilePhoto)
 
-          Alert.alert(json.medicalInfo.profilePhoto)
+          //Alert.alert(json.medicalInfo.profilePhoto)
           }
         } else {
           console.log(json.msg)
@@ -236,19 +255,7 @@ const AccountInfo = ({navigation}) => {
         //this.setState({loading:false})
       }
     };
-    const [first, setFirst] = React.useState("");
-    const [gender, setGender] = React.useState("");
-    const [age, setAge] = React.useState("");
-    const [telephone, setTelephone] = React.useState("");
-    const [address, setAddress] = React.useState("");
-    const [postcode, setPostcode] = React.useState("");
-    const [state, setState] = React.useState("");
-    const [last, setLast] = React.useState("");
-    const [dob, setDob] = React.useState("");
-    const [serial, setSerial] = React.useState(0);
-    const [email, setEmail] = React.useState("");
-    const [visible,setVisible]=React.useState(false);
-    const [url,setUrl]=React.useState("");
+    
 
     return (
         <ScrollView style={{marginTop:-20,backgroundColor:"white"}}>
@@ -341,15 +348,15 @@ const AccountInfo = ({navigation}) => {
   buttonColor='#8FD7D3'
   borderColor='#8FD7D3'
   hasPadding
-  style={{width:200,marginLeft:10}}
+  style={{width:200,marginLeft:30}}
   height={35}
-  defaultValue={"M"}//?
   options={[
     { label: I18n.t("female"), value: "F",  }, 
     { label: I18n.t("male"), value: "M", } 
   ]}
   testID="gender-switch-selector"
-  accessibilityLabel="gender-switch-selector"></SwitchSelector>            
+  accessibilityLabel="gender-switch-selector"
+/>
         </View>
         
         <View style={{ marginLeft:25,width: 300, height: 50, marginBottom: 0, alignItems: "center", flexDirection: 'row',borderBottomColor:"#EEEEEE",borderBottomWidth:1.5,width:320}}>

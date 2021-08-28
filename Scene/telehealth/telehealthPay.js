@@ -79,9 +79,8 @@ export default function TelePay({navigation,route}) {
           }
           
           setGender(json.medicalInfo.gender)
+          console.log(gender)
           
-          
-          console.log(json.medicalInfo.medicareCard[0])
           //this.setState({press:new Array(members.length).fill(true)})
           //console.log(candidate.medicareCard);
         } else {
@@ -510,7 +509,6 @@ export default function TelePay({navigation,route}) {
   hasPadding
   style={{width:200,marginLeft:30}}
   height={35}
-  initial={gender=="M"?1:0}
   options={[
     { label: I18n.t("female"), value: "F",  }, 
     { label: I18n.t("male"), value: "M", } 

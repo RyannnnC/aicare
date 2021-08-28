@@ -7,7 +7,7 @@ import DataContext from "../consumerContext";
 import moment from 'moment-timezone';
 import * as Localization from 'expo-localization';
 import I18n from "./language"
-import ChatBot from 'react-native-chatbot-expo';
+//import ChatBot from 'react-native-chatbot-expo';
 
 export default function ProviderMain({navigation}) {
     
@@ -183,11 +183,12 @@ export default function ProviderMain({navigation}) {
                 //this.setState({query:json.page})
                 //setLen(json.page.length)
                 setOrder(json.page);
+          
                 //Alert.alert('查询成功');
                 //console.log(json.page)
                 //console.log("查询成功");
                 //console.log(json.page[0].deptId)
-                console.log(order[0].deptId)
+                //console.log(order[0].deptId)
               } else {
                 console.log(json.msg);
                 //Alert.alert('查询失败');
@@ -285,11 +286,26 @@ export default function ProviderMain({navigation}) {
           </View>
         </TouchableOpacity>
         
-        <TouchableOpacity style={{marginTop:14,marginLeft:5}} onPress={()=>navigation.navigate("reservation")}>
+        <TouchableOpacity style={{marginTop:14,marginLeft:5}} onPress={()=>{if(checkToken()){
+              Alert.alert(
+                I18n.t("login_notice"),
+                I18n.t("login_notice_text"),
+                [
+                  {text:I18n.t("cancel"),
+                    onPress:()=>console.log("cancel redirect"),
+                    style:"cancel"
+                },{
+                  text:I18n.t("go_login"),
+                  onPress:()=>removeToken()
+                }                
+              ]
+              )
+              return;}
+              navigation.navigate("Icon")}}>
           <View style={{marginTop:-3,marginLeft:-6}}>
           <Image
           style = {{width:110,height:110}}
-          source = {user.language=="en"?require("../images/covid_test_s_e.png"):require('../images/covid_test_s.png')}
+          source = {user.language=="en"?require("../images/covid_test_s_e.png"):require('../images/double_s.png')}
           />
           </View>
         </TouchableOpacity>
@@ -390,7 +406,7 @@ export default function ProviderMain({navigation}) {
         <View style={{flexDirection: 'row', borderBottomColor:'#EEEEEE',borderBottomWidth:1, marginTop:21, paddingBottom:10}}>
           <View style={{marginLeft:20,width:220 }}>
             <Text style={{ color: '#333333', fontSize: 16, fontWeight: '500', marginBottom:5}}>{moment(order[0].appointDate).tz(Localization.timezone).format('DD/MM')} {order[0].startTime?order[0].startTime.slice(0,5) + " - "+order[0].endTime.slice(0,5):null}</Text>
-            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{order[0].deptId+1?I18n.t("ordertype_homepage")+I18n.t("types")[order[0].deptId]+"。":null}</Text>
+            <Text style={{ color: '#666666', fontSize: 12, fontWeight: '300'}}>{I18n.t("ordertype_homepage")+I18n.t("types")[order[0].deptId]+"。"}</Text>
           </View>
         
         <Image
@@ -421,6 +437,7 @@ export default function ProviderMain({navigation}) {
       </View>*/}
           </View>}
       </TouchableOpacity>
+      <View style={{alignContent:"center",alignItems:"center"}}>
       <Modal
         transparent={true}
         style={{marginTop:0,alignContent:"center",alignItems:"center"}}
@@ -429,35 +446,53 @@ export default function ProviderMain({navigation}) {
         onRequestClose={()=>{
           setVisible(!visible);}
         }>
-          <View style={{marginTop:270,alignContent:"center",alignItems:"center",backgroundColor:"#F7FAFA",borderColor:"#68B0AB",borderRadius:50,borderWidth:1,width:350,marginLeft:33}}>
+          <View style={{alignContent:"center",alignItems:"center"}}>
+          <View style={{marginTop:270,alignContent:"center",alignItems:"center",backgroundColor:"#F7FAFA",borderColor:"#68B0AB",borderRadius:50,borderWidth:1,width:300}}>
          <View style={{flexDirection: 'row', marginBottom: 15,marginTop:30}}>
          <TouchableOpacity onPress={()=>{
           setVisible(visible=>!visible);user.action.changeAd(false)}}>
-                     <Text style={{marginLeft:-40,fontSize:16,color:"#999999"}}>{'X'}</Text>
+                     <Text style={{marginLeft:0,fontSize:23,color:"#999999",marginTop:-5}}>{'X'}</Text>
 
           </TouchableOpacity>
 
-          <Text style={{marginLeft:5,fontSize:18}}>{"双阴检测Covid Test"}</Text> 
+          <Text style={{marginLeft:15,fontSize:18}}>{"双阴检测Covid Test"}</Text> 
          
         </View>
         <Image style={{width:240,height:180}}source={require('../images/healthpac.png')}></Image>
         <View style={{marginTop:20,marginBottom:20,borderTopWidth:0.8,width:250,alignItems:"center",borderColor:'#999999'}}>
-          <TouchableOpacity onPress={()=>{user.action.changeAd(false);setVisible(visible=>!visible);navigation.navigate("reservation")}}>
-          <Text style={{marginTop:10,color:"#61B0AB",fontSize:17,fontWeight:"600"}}>立刻预约</Text>
+          <TouchableOpacity onPress={()=>{if(checkToken()){
+              Alert.alert(
+                I18n.t("login_notice"),
+                I18n.t("login_notice_text"),
+                [
+                  {text:I18n.t("cancel"),
+                    onPress:()=>console.log("cancel redirect"),
+                    style:"cancel"
+                },{
+                  text:I18n.t("go_login"),
+                  onPress:()=>removeToken()
+                }                
+              ]
+              )
+              return;
+            }user.action.changeAd(false);setVisible(visible=>!visible);navigation.navigate("reservation");}}>
+          <Text style={{marginTop:10,color:"#61B0AB",fontSize:20,fontWeight:"600"}}>立刻预约</Text>
           <View style={{borderTopWidth:2,marginTop:3,borderColor:"#61B0AB"}}></View>
           </TouchableOpacity>
         </View>
         </View>
+        </View>
         </Modal>
+        </View>
       <View style={{marginBottom:20,marginTop:60,}}>
-      <TouchableOpacity onPress={()=>navigation.navigate("chatbot") } 
+      {/*<TouchableOpacity onPress={()=>navigation.navigate("chatbot") } 
       >     
             
             <Image
                 style={{width:160,height:50,borderRadius:0,marginLeft:0}}
                 source = {require("../images/symptom_check.png")}
             />
-      </TouchableOpacity>
+          </TouchableOpacity>*/}
     </View>
       </ScrollView>
 

@@ -345,11 +345,11 @@ export default function reservation({navigation,route}) {
     width: 320,
     marginLeft:10,
     borderBottomColor: '#999999',
-    borderBottomWidth:1,}}
+    borderBottomWidth:0,}}
     placeholder="请点击选择航空公司"
     editable={false}
     value={airline}
-
+    color="black"
          onChangeText={(text)=>{setAirline(text);user.action.changeAir(text)}}
 
       />
@@ -431,7 +431,7 @@ export default function reservation({navigation,route}) {
 
       />
       
-<Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>预约日期 Booking Date DD/MM/YYYY</Text>
+<Text style={{marginTop:7,fontWeight:"500",marginLeft:10}}>检测日期 Booking Date DD/MM/YYYY</Text>
 
       <TextInput style = {{height: 35,
     width: 320,
@@ -440,7 +440,7 @@ export default function reservation({navigation,route}) {
     borderBottomWidth:1,}}
     value={user.book}
     
-          placeholder="请输入预约日期 DD/MM/YYYY"
+          placeholder="请输入检测日期 DD/MM/YYYY"
 
           onChangeText={(text)=>{setBook(text);user.action.changeBook(text)}}
 
@@ -457,8 +457,10 @@ export default function reservation({navigation,route}) {
     marginLeft:10,
     marginTop:-10,
     borderBottomColor: '#999999',
-    borderBottomWidth:1,
+    borderBottomWidth:0,
     }}
+    color="black"
+
     value={center}
     editable={false}
           placeholder="点击下方选项"

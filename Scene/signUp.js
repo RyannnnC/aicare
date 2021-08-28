@@ -33,7 +33,7 @@ class Signup extends Component {
        }
   var lan = "en";
   if(SystemLanguage=="en"){
-    lan= "en_US"
+    lan= "zh_CN"
   }else{
     lan = "zh_CN"
   }

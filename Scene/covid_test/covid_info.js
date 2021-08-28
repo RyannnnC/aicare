@@ -92,6 +92,9 @@ export default function covid_info({navigation,route}) {
       />
     <View style={{marginTop:0,marginLeft:20,alignContent:"flex-start"}}>
     <Text style={{marginLeft:0,marginTop:20,fontSize:17,fontWeight:"500"}}>个人信息</Text>
+    <View style={{width:350,marginLeft:0,marginTop:10}}>
+        <Text>请用英文规范书写并核对以下信息，姓名必须与护照上一致，如果有误有可能直接影响到您的登记过程。</Text>
+    </View>
     <View style={{flexDirection:"row",marginTop:10}}>  
       <Text style={{marginLeft:0}}>名 First name</Text>
       <Text style={{marginLeft:65}}>姓 Last name</Text>

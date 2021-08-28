@@ -41,7 +41,7 @@ export default class Login extends Component {
        SystemLanguage=Localization.locale.slice(0,2)
   var lan = "en";
   if(SystemLanguage=="en"){
-    lan= "en_US"
+    lan= "zh_CN"
   }else{
     lan = "zh_CN"
   }
@@ -145,7 +145,7 @@ export default class Login extends Component {
           //this.context.action.changeLogin(true);
           //this.storeToken(json.data);
           this.context.action.changetoken(json.data);
-          
+
           this.context.action.changeInfoId(json.customerUserInfoId);
           this.storeToken(json.data,json.customerUserInfoId);
 

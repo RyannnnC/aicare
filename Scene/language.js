@@ -11,9 +11,9 @@ I18n.translations = {
 };
 const systemLanguage = Localization.locale;
 if (systemLanguage) {
-  I18n.locale = systemLanguage.slice(0, 2)//systemLanguage;
+  I18n.locale = "zh"//systemLanguage.slice(0, 2)//systemLanguage;
 } else {
-  I18n.locale = 'en';  // 默认语言为英文
+  I18n.locale = 'zh';//"en"  // 默认语言为英文
 }
 
 // Set the locale once at the beginning of your app.

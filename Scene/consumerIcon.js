@@ -93,7 +93,7 @@ useEffect(() => {
               setContent(json.page.list)
             } else {
               console.log(json.msg)
-              Alert.alert(json.msg);
+              //Alert.alert(json.msg);
             }
           }).catch(error => console.warn(error));
         
@@ -153,9 +153,9 @@ useEffect(() => {
 
           </View>
         <View style={{flexDirection:"row",width:300}}>
-          <Text style={{ontSize:12, fontWeight: '400',marginLeft:0}}>{moment(item.appointDate).tz(Localization.timezone).format('DD/MM/YYYY')}</Text>
+          <Text style={{fontSize:12, fontWeight: '400',marginLeft:0}}>{"检测时间: "+ moment(item.appointDate).tz(Localization.timezone).format('DD/MM/YYYY')}</Text>
           </View>
-          <View style={{width:200}}>
+          <View style={{width:200,marginTop:5}}>
           <Text style={{fontSize:10, fontWeight: '300',marginLeft:0}}>{item.ncp}</Text>
           <Text style={{fontSize:10, fontWeight: '300',marginLeft:0}}>{item.ncm}</Text>
 
@@ -176,7 +176,7 @@ useEffect(() => {
             marginTop: 3,
           }} 
           onPress={()=>Linking.openURL(item.pdf)}>
-            <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20,paddingRight:20}}>{"Download Attachment"}</Text>
+            <Text style={{fontSize:12, color:'#FAFAFA',paddingTop:6,paddingLeft:20,paddingRight:20}}>{"附件下载"}</Text>
           </TouchableOpacity>
           
           
@@ -201,7 +201,7 @@ useEffect(() => {
     <Text style={{color:'#006A71',
     fontSize:17,
     marginTop:20,
-    marginLeft:-85,}}>{"Examination Service"}</Text>
+    marginLeft:-185,}}>{"检测预约"}</Text>
     <View style={{marginTop:0}}></View>
     {/* 
     <TouchableOpacity onPress = {goToTelehealth}>
@@ -239,21 +239,36 @@ useEffect(() => {
       />
     </TouchableOpacity>
     <View style={{marginTop:0}}></View> */}
-    <TouchableOpacity onPress={()=>navigation.navigate("reservation")} >
+    <TouchableOpacity onPress={()=>{if(checkToken()){
+              Alert.alert(
+                I18n.t("login_notice"),
+                I18n.t("login_notice_text"),
+                [
+                  {text:I18n.t("cancel"),
+                    onPress:()=>console.log("cancel redirect"),
+                    style:"cancel"
+                },{
+                  text:I18n.t("go_login"),
+                  onPress:()=>removeToken()
+                }                
+              ]
+              )
+              return;}
+              navigation.navigate("reservation")}} >
       <Image
         style = {{marginTop:15,
           height:115,
           width:290,
           marginLeft:10,
           }}
-        source = {user.language=="en"?require("../images/covid_test_e.png"):require('../images/covid_test.png')}
+        source = {user.language=="en"?require("../images/covid_test_e.png"):require('../images/double_b.png')}
       />
     </TouchableOpacity>
     <View style={{marginTop:0}}></View>
     <Text style={{color:'#006A71',
     fontSize:17,
     marginTop:10,
-    marginLeft:-95,}}>{"Examination Result"}</Text>
+    marginLeft:-185,}}>{"检测附件"}</Text>
     {len>0?<ScrollView height={360}><View style={{marginLeft:10}}>{orders}</View></ScrollView>:Null}
     <TouchableOpacity onPress={()=>user.action.contact()}>
             <Image
